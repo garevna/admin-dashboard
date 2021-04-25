@@ -1,29 +1,31 @@
 <template>
-  <v-app>
-    <v-app-bar app flat height="150" class="homefone">
-        <v-card flat class="transparent text-left ml-4" height="50" style="margin-top: -64px">
-          <v-img :src="require('@/assets/dgtek-logo.svg')" width="70" class="mr-8" />
-        </v-card>
-        <h3 class="main-header">DGtek provisioning RSP portal</h3>
+  <v-app class="transparent">
+    <v-app-bar app flat height="80" class="homefone">
+      <v-card flat class="transparent text-left mt-4 ml-0" height="50">
+        <v-img :src="require('@/assets/dgtek-logo.svg')" width="70" class="mr-8" />
+      </v-card>
+      <h3 class="main-header mt-4">DGtek Admin provisioning portal</h3>
+      <v-spacer />
+      <v-btn icon v-if="$route.name !== 'home'" @click="$router.push({ name: 'home' })">
+        <v-icon large color="primary">mdi-location-exit</v-icon>
+      </v-btn>
+    </v-app-bar>
 
+    <v-main class="main-content mt-8" style="margin-bottom: 320px;">
       <v-progress-linear
         :active="progress"
         :indeterminate="progress"
-        absolute
-        top
-        color="buttons"
-        style="z-index: 8"
+        color="primary"
+        style="z-index: 5"
       ></v-progress-linear>
-    </v-app-bar>
 
-    <v-row>
-      <v-main class="main-content mt-8">
-        <Home />
-      </v-main>
-    </v-row>
+      <transition name="page-fade-transition" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </v-main>
 
-    <v-snackbar v-model="snackbar" timeout="5000" color="primary" top>
-      {{ message }}
+    <v-snackbar v-model="snackbar" :timeout="timeout" :color="color" top>
+      {{ text }}
       <template v-slot:action="{ attrs }">
         <v-btn
           color="#fff"
@@ -38,6 +40,15 @@
     </v-snackbar>
     <error-message />
     <simple-message />
+    <v-row justify="center" style="position: fixed; bottom: 0; z-index: 100; width: 100%; height: 32px; background: #aaa;">
+      <p class="text-center" style="color: #efefef;">
+        <small>
+          <sub>2021 &copy; Dgtek Pty. Ltd ABN 61 600 896 115</sub>
+        </small>
+      </p>
+    </v-row>
+    <error-message />
+    <simple-message />
   </v-app>
 </template>
 
@@ -46,26 +57,42 @@
 import '@/sass/main.scss'
 import 'dgtek-styles'
 
+const servicesImage = require('@/assets/images/melbourne-2-1.svg')
+const homeImage = require('@/assets/images/Webb-Bridge-Melbourne-Drawing-effect.svg')
+
 export default {
   name: 'App',
   components: {
-    Home: () => import('@/views/Home.vue')
+    // Home: () => import('@/views/Home.vue')
   },
   data: () => ({
     ready: false,
+    signIn: false,
     progress: false,
     snackbar: false,
-    message: 'Welcome to DGtek provisioning RSP portal'
+    message: 'Welcome to DGtek Admin provisioning portal',
+    timeout: 8000
   }),
-  methods: {
-    errorHandler (event) {
-      const { errorType, errorMessage } = event.data
-      this.$root.$emit('open-error-popup', { errorType, errorMessage })
+  computed: {
+    color () {
+      return this.authError || this.registeredError || this.error ? '#900' : '#09b'
     },
-    messageHandler (event) {
-      const { messageType, messageText } = event.data
-      this.$root.$emit('open-message-popup', { messageType, messageText })
+    text () {
+      return this.error || this.registeredError ? 'Error' : 'Success'
+    },
+    backgroundImage () {
+      return this.$route.name === 'home' ? homeImage : servicesImage
     }
+  },
+  methods: {
+    // errorHandler (event) {
+    //   const { errorType, errorMessage } = event.data
+    //   this.$root.$emit('open-error-popup', { errorType, errorMessage })
+    // },
+    // messageHandler (event) {
+    //   const { messageType, messageText } = event.data
+    //   this.$root.$emit('open-message-popup', { messageType, messageText })
+    // }
   },
   mounted () {
     this.$root.$on('app-is-ready', function (event) {
@@ -73,13 +100,14 @@ export default {
     }.bind(this))
 
     this.$root.$on('progress-event', function (event) {
+      console.log('PROGRESS: ', event.progress)
       this.progress = event.progress
     }.bind(this))
 
-    this.__worker.addEventListener('message', function (event) {
-      event.data.error && this.errorHandler(event)
-      event.data.message && this.messageHandler(event)
-    }.bind(this))
+    // this.__worker.addEventListener('message', function (event) {
+    //   event.data.error && this.errorHandler(event)
+    //   event.data.message && this.messageHandler(event)
+    // }.bind(this))
   },
   errorCaptured (err, instance, info) {
     console.warn('ERROR:\n', err, info, instance.$options._componentTag)
@@ -92,6 +120,7 @@ export default {
 body {
   overflow: hidden;
   margin-bottom: 88px;
+  background: #fbfbfb;
 }
 * {
   user-select: none;
@@ -100,6 +129,9 @@ body {
   font-weight: 900;
   margin-top: -64px;
 }
+/* .main-content {
+  padding-top: 64px;
+} */
 .field-set {
   border: solid 1px #ddd;
   padding: 32px 0;

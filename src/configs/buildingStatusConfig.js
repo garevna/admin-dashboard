@@ -2,38 +2,39 @@ export const buildingStatusConfig = {
   'on-net': {
     title: 'on-net',
     terms: '1-3 days',
-    status: 'LIT',
+    buildingStatus: 'LIT',
     storeName: 'lit',
     newCustomerDisabled: false
   },
   footprint: {
     title: 'footprint',
     terms: '1-2 weeks',
-    status: 'Footprint',
-    polygonStatus: 'ServiceAvailable',
+    buildingStatus: 'Footprint',
+    polygonType: 'ServiceAvailable',
     storeName: 'footprint',
     newCustomerDisabled: false
   },
   'construction-commenced': {
     title: 'Construction commenced',
     terms: '2-6 weeks',
-    status: 'BuildCommenced',
-    polygonStatus: 'UnderConstruction',
+    buildingStatus: 'BuildCommenced',
+    polygonType: 'UnderConstruction',
     storeName: 'build',
     newCustomerDisabled: false
   },
   'coming-soon': {
     title: 'Coming soon',
     terms: '4-8 weeks',
-    status: 'ComingSoon',
-    polygonStatus: 'ComingSoon',
+    buildingStatus: 'ComingSoon',
+    polygonType: 'ComingSoon',
     storeName: 'soon',
     newCustomerDisabled: false
   },
   'not-available': {
     title: 'Not available',
     terms: 'N/A',
-    status: 'Other',
+    buildingStatus: 'Other',
+    polygonType: null,
     storeName: 'other',
     newCustomerDisabled: true
   }

@@ -1,3 +1,4 @@
+import { mainDashboard } from './mainDashboard'
 import { dgtekMapEvents } from './dgtekMapEvents'
 import { buildingStatusConfig } from './buildingStatusConfig'
 import { stepsNames } from './steps'
@@ -14,6 +15,7 @@ import { validateABN } from './validateABN'
 import { rules } from './rules'
 
 export {
+  mainDashboard,
   dgtekMapEvents,
   buildingStatusConfig,
   stepsNames,
