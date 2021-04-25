@@ -1,17 +1,24 @@
+import {
+  loginHandler,
+  passwordHandler
+} from '@/controllers/data-handlers'
+
 import { normalizeAddress } from './normalizeAddress'
 import { testTextField } from './testTextField'
 import { createMapWorker } from './createMapWorker'
-import { createRspWorker } from './createRspWorker'
+import { createAdminWorker } from './createAdminWorker'
 import { validateAddress } from './validateAddress'
 import { validateABN } from './validateABN'
 import { readFile } from './readFile'
 import { getBuildingUniqueCode } from './getBuildingUniqueCode'
 
 export {
+  loginHandler,
+  passwordHandler,
   normalizeAddress,
   testTextField,
   createMapWorker,
-  createRspWorker,
+  createAdminWorker,
   validateAddress,
   validateABN,
   readFile,

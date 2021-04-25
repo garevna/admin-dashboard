@@ -3,6 +3,6 @@ export function createMapWorker () {
 
   window[Symbol.for('map.worker')] = new Worker(`/${path}map.worker.js`)
   window[Symbol.for('map.worker')].onerror = function (error) {
-    console.log('Map worker Error\n', error)
+    console.warn('Map worker Error\n', error)
   }
 }
