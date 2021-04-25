@@ -21,6 +21,8 @@
 
 <script>
 
+import { errorMessageHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'ErrorMessage',
   data: () => ({
@@ -46,10 +48,16 @@ export default {
     }
   },
   mounted () {
-    this.$root.$on('open-error-popup', function (event) {
+    this.$root.$on('open-error-popup', function (data) {
+      const { errorType, errorMessage } = errorMessageHandler()
+      if (errorType === data.errorType && errorMessage === data.errorMessage) return this.resetError()
+      errorMessageHandler({
+        errorType: data.errorType,
+        errorMessage: data.errorMessage
+      })
       this.error = true
-      this.errorType = event.errorType
-      this.errorMessage = event.errorMessage
+      this.errorType = data.errorType
+      this.errorMessage = data.errorMessage
     }.bind(this))
   }
 }

@@ -21,6 +21,8 @@
 
 <script>
 
+import { messageHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'MessagePopup',
   data: () => ({
@@ -46,10 +48,16 @@ export default {
     }
   },
   mounted () {
-    this.$root.$on('open-message-popup', function (event) {
+    this.$root.$on('open-message-popup', function (data) {
+      const { messageType, messageText } = messageHandler()
+      if (messageType === data.messageType && messageText === data.messageText) return this.resetMessage()
+      messageHandler({
+        messageType: data.messageType,
+        messageText: data.messageText
+      })
       this.message = true
-      this.messageType = event.messageType
-      this.messageText = event.messageText
+      this.messageType = data.messageType
+      this.messageText = data.messageText
     }.bind(this))
   }
 }

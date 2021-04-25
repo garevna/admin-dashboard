@@ -1,0 +1,90 @@
+<template>
+  <v-container>
+    <v-row justify="end" class="my-5">
+      <h5><small>Services list</small></h5>
+    </v-row>
+
+    <v-row class="my-5 mx-2 mr-12">
+      <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          dense
+          outlined
+          hide-details
+          style="display: inline-block; width: 280px"
+     ></v-text-field>
+
+     <v-spacer />
+
+     <v-btn text @click="createNewService">
+       <v-icon>mdi-plus</v-icon>
+       Create new service
+     </v-btn>
+   </v-row>
+
+    <v-data-table
+        :headers="headers"
+        :items="items"
+        :search="search"
+    >
+      <template v-slot:item.actions="{ item }">
+        <v-btn outlined @click="editItem(item)" dark class="primary">Edit</v-btn>
+      </template>
+    </v-data-table>
+
+    <span class="ml-12"><small>Total selected services: {{ selectedServicesNumber }}</small></span>
+  </v-container>
+</template>
+
+<script>
+
+export default {
+  name: 'ListOfServices',
+  data: () => ({
+    items: [],
+    search: '',
+    selectedServicesNumber: undefined,
+    headers: [
+      {
+        text: 'Service name',
+        align: 'start',
+        sortable: true,
+        value: 'serviceName'
+      },
+      { text: 'Service code', value: 'serviceCode' },
+      { text: 'Service type', value: 'type' },
+      { text: 'Contract term (months)', value: 'contractTerm' },
+      { text: 'MRC ($)', value: 'serviceStatus' },
+      { text: 'Connection fee', value: 'connectionFee' },
+      { text: 'Trial (months)', value: 'trialPeriod' },
+      { text: 'Actions', value: 'actions', sortable: false }
+    ]
+  }),
+  computed: {
+    //
+  },
+  methods: {
+    getData (data) {
+      console.log(data)
+      this.items = data.result
+    },
+    createNewService () {
+      this.$router.push({ name: 'create-new-service' })
+    },
+    editItem (item) {
+      console.log(item._id)
+      this.selectedServiceId = item.id
+      this.$router.push({ name: 'service-details', params: { serviceId: item._id } })
+    }
+  },
+  beforeDestroy () {
+    this.$root.$off('services-list-received', this.getData)
+  },
+  mounted () {
+    this.$root.$on('services-list-received', this.getData)
+    this.__getListOfServices()
+  }
+}
+</script>
