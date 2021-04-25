@@ -1,4 +1,4 @@
-export const getTicketsListError = function (status) {
+export const getCategoriesError = function (status) {
   return {
     status,
     route: 'tikets',

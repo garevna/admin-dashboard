@@ -1,0 +1,22 @@
+export const serviceSchema = {
+  serviceName: '',
+  serviceCode: '',
+  contractTerm: 0,
+  connectionFee: 0,
+  subscriptionFee: 0,
+  serviceType: 'residential',
+  productType: '',
+  freeTrial: '',
+  equipmentCost: 0,
+  equipmentType: '',
+  equipmentRequired: false,
+  dataLimit: '',
+  serviceDescription: '',
+  downstreamSpeed: 50,
+  upstreamSpeed: 50,
+  earlyTerminatioFee: 0,
+  gstIncEx: false,
+  serviceSLA: '',
+  promo: '',
+  partners: []
+}

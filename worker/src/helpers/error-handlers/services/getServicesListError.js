@@ -1,7 +1,7 @@
 export const getServicesListError = function (status) {
   return {
     status,
-    action: 'get',
+    action: 'list',
     route: 'services',
     error: true,
     errorType: 'Services',

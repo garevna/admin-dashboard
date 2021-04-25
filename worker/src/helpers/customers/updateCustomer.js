@@ -30,6 +30,6 @@ export const updateCustomer = async function (id, data) {
     result,
     message: true,
     messageType: 'Customer details',
-    messageText: 'Data has been saved'
+    messageText: 'Customer details were succesfully updated'
   }
 }

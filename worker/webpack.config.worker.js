@@ -19,7 +19,7 @@ module.exports = {
   entry: ['@babel/polyfill', './src/index.js'],
   output: {
     path: require('path').resolve(__dirname, '../public'),
-    filename: 'rsp.worker.js'
+    filename: 'admin.worker.js'
   },
   module: {
     rules: [

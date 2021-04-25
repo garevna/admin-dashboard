@@ -2,6 +2,7 @@ import {
   getFromRemoteServer,
   getAllCustomers,
   getCustomer,
+  createCustomer,
   updateCustomer,
   deleteCustomer
 } from '../helpers/customers'
@@ -25,6 +26,10 @@ class CustomersController {
 
   async updateCustomer (request) {
     self.postMessage(await updateCustomer(request.key, request.data))
+  }
+
+  async createCustomer (request) {
+    self.postMessage(await createCustomer(request.data))
   }
 }
 

@@ -1,24 +1,32 @@
 const {
+  authController,
   cryptoController,
   customersController,
   servicesController,
-  ticketsController,
-  rspController
+  ticketsController
+  // adminController
 } = require('../controllers')
 
 export const routes = {
-  rsp: {
-    credentials: rspController.credentials,
-    password: rspController.passwordChange,
-    refresh: rspController.refresh,
-    get: rspController.get,
-    put: rspController.update
+  admin: {
+    init: authController.init,
+    auth: authController.auth,
+    reset: authController.passwordReset,
+    code: authController.sendPasswordResetCode,
+    change: authController.changePassword
   },
+  // admin: {
+  //   credentials: adminController.credentials,
+  //   password: adminController.passwordChange,
+  //   refresh: adminController.refresh,
+  //   get: adminController.get,
+  //   put: adminController.update
+  // },
   customers: {
     refresh: customersController.getFromRemote,
     list: customersController.getAllCustomers,
     get: customersController.getCustomer,
-    post: customersController.addNewCustomer,
+    post: customersController.createCustomer,
     delete: customersController.deleteCustomer,
     put: customersController.updateCustomer
   },
@@ -29,7 +37,10 @@ export const routes = {
   },
   services: {
     refresh: servicesController.refresh,
-    get: servicesController.get
+    list: servicesController.list,
+    get: servicesController.get,
+    post: servicesController.post,
+    put: servicesController.put
   },
   tickets: {
     refresh: ticketsController.refresh,

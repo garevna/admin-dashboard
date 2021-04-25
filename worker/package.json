@@ -1,5 +1,5 @@
 {
-  "name": "rsp-worker",
+  "name": "admin-worker",
   "version": "1.0.0",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config webpack.config.worker.js --mode development -w && yarn remove crypto-js",
