@@ -1,28 +1,44 @@
-import { workerController } from './workerController'
+import * as actions from './actions'
 
 export const routes = {
-  init: workerController.init,
-  credentials: workerController.credentials,
-  refresh: workerController.refreshAllData,
-  rsp: {
-    get: window[Symbol.for('vue.prototype')].getClientData,
-    put: workerController.putClientData
+  admin: {
+    auth: {
+      method: actions.auth,
+      resolveEvent: 'auth-success',
+      rejectEvent: 'auth-failure'
+    },
+    resetPassword: {
+      resolveEvent: 'reset-success',
+      rejectEvent: 'reset-failure'
+    }
   },
   customers: {
-    list: workerController.getCustomersList,
-    post: workerController.createNewCustomer,
-    remove: workerController.removeCustomer,
-    get: workerController.getCustomerData,
-    put: workerController.putCustomerData
-  },
-  tickets: {
-    list: workerController.getTicketsList,
-    post: workerController.createNewTicket,
-    get: workerController.getTicketData,
-    put: workerController.putTicketData
-  },
-  services: {
-    list: workerController.getServicesList,
-    get: workerController.getServiceData
+    refresh: {
+      method: actions.refreshCustomers,
+      events: {
+        resolve: 'customers-list-refreshed',
+        reject: 'customers-list-refreshed-failure'
+      }
+    },
+    list: {
+      method: actions.getCustomers,
+      events: {
+        resolve: 'customers-list-received',
+        reject: 'customers-list-failure'
+      }
+    },
+    get: {
+      method: actions.getCustomerData,
+      events: {
+        resolve: 'customer-details-received',
+        reject: 'customers-details-failure'
+      }
+    },
+    post: {
+      events: {
+        resolve: 'customer-created-success',
+        reject: 'customer-created-failure'
+      }
+    }
   }
 }

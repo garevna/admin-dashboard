@@ -1,6 +1,6 @@
-export const putCustomer = function (id, data) {
+export const updateServiceDetails = function (id, data) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'customers',
+    route: 'services',
     action: 'put',
     key: id,
     data

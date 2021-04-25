@@ -1,4 +1,11 @@
 export const events = {
+  admin: {
+    redirect: 'auth-success',
+    auth: 'auth-error',
+    reset: 'reset-password',
+    code: 'verification-code',
+    change: 'password-change'
+  },
   rsp: {
     refresh: 'client-data-refreshed',
     get: 'client-data-received',
@@ -13,8 +20,10 @@ export const events = {
   },
   services: {
     refresh: 'services-list-refreshed',
-    get: 'services-list-received'
-    // get: 'service-data-received'
+    list: 'services-list-received',
+    get: 'service-data-received',
+    put: 'service-data-updated',
+    post: 'new-service-created'
   },
   tickets: {
     refresh: 'tickets-list-refreshed',

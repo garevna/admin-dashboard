@@ -1,48 +1,41 @@
 import * as actions from './actions'
+import { events } from './events.config'
+import { addWorkerListener } from './'
+
+console.log('Actions:\n', actions)
+console.log('Events:\n', events)
 
 export const createController = function () {
-  Object.assign(window[Symbol.for('vue.prototype')], {
-    __refreshClientData: actions.refreshClientData,
-    __getClientData: actions.getClientData,
-    __putClientData: (data) => actions.putClientData(data),
-    __putClientCredentials: (data) => actions.putClientCredentials(data),
+  window[Symbol.for('vue.prototype')].$dispatchProgressEvent = function (value) {
+    window[Symbol.for('vue.instance')].$root.$emit('progress-event', value)
+  }
 
-    __refreshCustomers: actions.refreshCustomers,
-    __getCustomers: actions.getCustomers,
-    __getCustomerData: actions.getCustomerData,
-    __putCustomer: actions.putCustomer,
-    __postCustomer: actions.postCustomer,
-    __deleteCustomer: actions.deleteCustomer,
+  window[Symbol.for('vue.prototype')].$sendMessageToWorker = function (message) {
+    const { route, action, ...data } = message
+    console.log('Send message to worker:\n', route, action, data)
+    window[Symbol.for('vue.prototype')].$dispatchProgressEvent(true)
+    window[Symbol.for('vue.prototype')].__worker.postMessage({ route, action, ...data })
+  }
 
-    __refreshTickets: actions.refreshTickets,
-    __getTickets: actions.getTickets,
-    __getCategories: actions.getCategories,
-    __getTicketData: actions.getTicketById,
-    __saveTicketData: actions.saveTicketData,
-    __postNewTicket: actions.postNewTicket,
-
-    __refreshServices: actions.refreshServices,
-    __getServices: actions.getServices
-  })
-
-  Object.assign(window[Symbol.for('vue.prototype')], {
-    __getBuildingById: function (id) {
-      window[Symbol.for('map.worker')].postMessage({ action: 'getById', key: id })
-    },
-    __getBuildingByAddress: function (address) {
-      window[Symbol.for('map.worker')].postMessage({ action: 'getByAddress', key: address })
-    },
-    __getLitBuildings: function () {
-      window[Symbol.for('map.worker')].postMessage({ action: 'list', key: 'lit' })
-    },
-    __getFootprintBuildings: function () {
-      window[Symbol.for('map.worker')].postMessage({ action: 'list', key: 'footprint' })
-    },
-    __putBuildingDetails: function (id, details) {
-      window[Symbol.for('map.worker')].postMessage({ action: 'put', key: id, data: details })
-    },
-    __postBuildingDetails: function (details) {
-      window[Symbol.for('map.worker')].postMessage({ action: 'post', data: details })
+  window[Symbol.for('admin.worker')].addEventListener('message', function (event) {
+    if (event.data.error) {
+      window[Symbol.for('vue.instance')].$root.$emit('open-error-popup', {
+        errorType: event.data.errorType || event.data.route,
+        errorMessage: event.data.errorMessage || 'Unknown error'
+      })
+    }
+    if (event.data.message) {
+      window[Symbol.for('vue.instance')].$root.$emit('open-message-popup', {
+        messageType: event.data.messageType || event.data.route,
+        messageText: event.data.messageText || 'Success'
+      })
     }
   })
+
+  Object.keys(actions).forEach(key => Object.assign(window[Symbol.for('vue.prototype')], {
+    [`__${key}`]: actions[key]
+  }))
+
+  Object.keys(events)
+    .forEach(route => Object.keys(events[route]).forEach(action => addWorkerListener(route, action)))
 }

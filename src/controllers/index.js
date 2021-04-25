@@ -1,13 +1,30 @@
+import {
+  codeHandler,
+  loginHandler,
+  passwordHandler,
+  credentialsHandler,
+  messageHandler,
+  errorMessageHandler
+} from '@/controllers/data-handlers'
+
+import { addWorkerListener } from './addWorkerListener'
 import { createController } from './createController'
 import { createMapWorker } from './createMapWorker'
-import { createRspWorker } from './createRspWorker'
+import { createAdminWorker } from './createAdminWorker'
 import { errors } from './errors.config'
 import { events } from './events.config'
 
 export {
+  codeHandler,
+  loginHandler,
+  passwordHandler,
+  credentialsHandler,
+  addWorkerListener,
   createMapWorker,
-  createRspWorker,
+  createAdminWorker,
   createController,
   events,
-  errors
+  errors,
+  messageHandler,
+  errorMessageHandler
 }

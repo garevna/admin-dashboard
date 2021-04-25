@@ -1,7 +1,8 @@
 export function authError () {
-  window[Symbol.for('vue.prototype')].__commit('ERROR', {
-    error: true,
-    errorType: 'Authentification error',
-    errorMessage: 'Invalid credentials'
-  })
+  console.warn('AUTH ERROR')
+  // window[Symbol.for('vue.instance')].$root.$emit('open-error-popup', {
+  //   error: true,
+  //   errorType: 'Authentification error',
+  //   errorMessage: 'Invalid login or password'
+  // })
 }

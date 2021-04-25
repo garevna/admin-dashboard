@@ -1,6 +1,6 @@
-export const postNewTicket = function (data) {
+export const createNewService = function (data) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'tickets',
+    route: 'services',
     action: 'post',
     data
   })

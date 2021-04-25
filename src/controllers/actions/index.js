@@ -1,48 +1,99 @@
 import { init } from './init'
-import { credentials } from './credentials'
 
-import { refreshClientData } from './rsp/refreshClientData'
-import { getClientData } from './rsp/getClientData'
-import { putClientData } from './rsp/putClientData'
-import { putClientCredentials } from './rsp/putClientCredentials'
+import {
+  loginHandler,
+  passwordHandler,
+  codeHandler
+} from '../data-handlers'
 
-import { refreshServices } from './services/refreshServices'
-import { getServices } from './services/getServices'
+import {
+  auth,
+  changePassword,
+  resetPassword,
+  sendPasswordResetCode
+} from './admin'
 
-import { refreshCustomers } from './customers/refreshCustomers'
-import { getCustomers } from './customers/getCustomers'
-import { getCustomerData } from './customers/getCustomerData'
-import { putCustomer } from './customers/putCustomer'
-import { postCustomer } from './customers/postCustomer'
-import { deleteCustomer } from './customers/deleteCustomer'
+import {
+  getClientData,
+  putClientData,
+  refreshClientData
+} from './rsp'
 
-import { refreshTickets } from './tickets/refreshTickets'
+import {
+  refreshServices,
+  getListOfServices,
+  getServiceDetails,
+  createNewService,
+  updateServiceDetails
+} from './services'
 
-import { getTickets } from './tickets/getTickets'
-import { getCategories } from './tickets/getCategories'
-import { getTicketById } from './tickets/getTicketById'
-import { postNewTicket } from './tickets/postNewTicket'
-import { saveTicketData } from './tickets/saveTicketData'
+import {
+  deleteCustomer,
+  getCustomerData,
+  getCustomers,
+  postCustomer,
+  putCustomer,
+  refreshCustomers
+} from './customers'
+
+import {
+  getCategories,
+  getTicketById,
+  getTickets,
+  postNewTicket,
+  refreshTickets,
+  saveTicketData
+} from './tickets'
+
+import {
+  getBuildingByAddress,
+  getBuildingById,
+  getFootprintBuildings,
+  getLitBuildings,
+  postBuildingDetails,
+  putBuildingDetails
+} from './map.worker'
 
 export {
   init,
-  credentials,
+
+  loginHandler,
+  passwordHandler,
+  codeHandler,
+
+  auth,
+  changePassword,
+  resetPassword,
+  sendPasswordResetCode,
+
   refreshClientData,
   refreshCustomers,
-  refreshServices,
   refreshTickets,
   getClientData,
   putClientData,
-  putClientCredentials,
+
   getCustomers,
   getCustomerData,
   putCustomer,
   postCustomer,
   deleteCustomer,
-  getServices,
+
+  refreshServices,
+  getListOfServices,
+  getServiceDetails,
+  createNewService,
+  updateServiceDetails,
+
   getTickets,
   getCategories,
   getTicketById,
   postNewTicket,
-  saveTicketData
+  saveTicketData,
+
+  getBuildingByAddress,
+  getBuildingById,
+  getFootprintBuildings,
+  getLitBuildings,
+  postBuildingDetails,
+  putBuildingDetails
 }

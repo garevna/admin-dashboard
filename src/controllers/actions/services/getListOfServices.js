@@ -1,6 +1,6 @@
-export const getCustomers = function () {
+export const getListOfServices = function () {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'customers',
+    route: 'services',
     action: 'list'
   })
 }
