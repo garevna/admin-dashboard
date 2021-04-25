@@ -1,5 +1,5 @@
 {
-  "name": "rsp-cabinet",
+  "name": "dgtek-admin-dash",
   "version": "1.0.0",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",

@@ -1,6 +1,6 @@
-# dgtek-reseller-cabinet
+# dgtek-admin-dasg
 
-[**demo**](https://vue-command.github.io/dgtek-reseller-cabinet/)
+[**demo**](https://vue-command.github.io/dgtek-admin-dash/)
 
 ## Project setup
 
