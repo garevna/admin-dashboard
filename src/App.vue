@@ -16,7 +16,8 @@
         :active="progress"
         :indeterminate="progress"
         color="primary"
-        style="z-index: 5"
+        fixed
+        style="top: 80px; z-index: 5"
       ></v-progress-linear>
 
       <transition name="page-fade-transition" mode="out-in">
@@ -38,8 +39,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <error-message />
-    <simple-message />
+
     <v-row justify="center" style="position: fixed; bottom: 0; z-index: 100; width: 100%; height: 32px; background: #aaa;">
       <p class="text-center" style="color: #efefef;">
         <small>
@@ -47,6 +47,7 @@
         </small>
       </p>
     </v-row>
+
     <error-message />
     <simple-message />
   </v-app>
@@ -62,9 +63,6 @@ const homeImage = require('@/assets/images/Webb-Bridge-Melbourne-Drawing-effect.
 
 export default {
   name: 'App',
-  components: {
-    // Home: () => import('@/views/Home.vue')
-  },
   data: () => ({
     ready: false,
     signIn: false,
@@ -99,15 +97,9 @@ export default {
       this.ready = true
     }.bind(this))
 
-    this.$root.$on('progress-event', function (event) {
-      console.log('PROGRESS: ', event.progress)
-      this.progress = event.progress
+    this.$root.$on('progress-event', function (progress) {
+      this.progress = progress
     }.bind(this))
-
-    // this.__worker.addEventListener('message', function (event) {
-    //   event.data.error && this.errorHandler(event)
-    //   event.data.message && this.messageHandler(event)
-    // }.bind(this))
   },
   errorCaptured (err, instance, info) {
     console.warn('ERROR:\n', err, info, instance.$options._componentTag)

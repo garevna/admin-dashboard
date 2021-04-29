@@ -1,7 +1,5 @@
 import Vue from 'vue'
 
-// import { createController } from './controllers/createController'
-
 import {
   createMapWorker,
   createAdminWorker

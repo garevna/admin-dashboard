@@ -5,8 +5,6 @@ import {
 
 import { normalizeAddress } from './normalizeAddress'
 import { testTextField } from './testTextField'
-import { createMapWorker } from './createMapWorker'
-import { createAdminWorker } from './createAdminWorker'
 import { validateAddress } from './validateAddress'
 import { validateABN } from './validateABN'
 import { readFile } from './readFile'
@@ -17,8 +15,6 @@ export {
   passwordHandler,
   normalizeAddress,
   testTextField,
-  createMapWorker,
-  createAdminWorker,
   validateAddress,
   validateABN,
   readFile,

@@ -94,21 +94,14 @@ export default {
   methods: {
     updatePassword (value) {
       passwordHandler(value)
-      console.log(passwordHandler())
     },
     showResult (event) {
-      console.log('EVENT:\n', event)
       roleHandler(event.result.data.role)
-      console.log(roleHandler())
-      // this.$emit('update:success', true)
-      console.log(this.$router)
-      console.log(this.$route)
       this.$router.push({ name: 'dash' })
     },
     async signIn () {
       this.$root.$on('auth-success', this.showResult)
       this.__auth(this.email, passwordHandler())
-      // this.$root.__authorize(this.email, this.password)
       this.step = 1
     }
   }

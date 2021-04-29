@@ -1,6 +1,7 @@
 import { mainDashboard } from './mainDashboard'
 import { dgtekMapEvents } from './dgtekMapEvents'
 import { buildingStatusConfig } from './buildingStatusConfig'
+import { footprintOptions } from './footprintOptions'
 import { stepsNames } from './steps'
 import { schema } from './schemaRSP'
 import { buildingSchema } from './buildingSchema'
@@ -18,6 +19,7 @@ export {
   mainDashboard,
   dgtekMapEvents,
   buildingStatusConfig,
+  footprintOptions,
   stepsNames,
   schema,
   buildingSchema,

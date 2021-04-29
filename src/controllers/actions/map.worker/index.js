@@ -1,15 +1,15 @@
 import { getBuildingByAddress } from './getBuildingByAddress'
 import { getBuildingById } from './getBuildingById'
-import { getFootprintBuildings } from './getFootprintBuildings'
-import { getLitBuildings } from './getLitBuildings'
+import { getBuildingsByStatus } from './getBuildingsByStatus'
+import { getAddressListByStatus } from './getAddressListByStatus'
 import { postBuildingDetails } from './postBuildingDetails'
 import { putBuildingDetails } from './putBuildingDetails'
 
 export {
   getBuildingByAddress,
   getBuildingById,
-  getFootprintBuildings,
-  getLitBuildings,
+  getBuildingsByStatus,
+  getAddressListByStatus,
   postBuildingDetails,
   putBuildingDetails
 }

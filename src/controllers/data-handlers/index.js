@@ -5,6 +5,7 @@ import { credentialsHandler } from './credentialsHandler'
 import { roleHandler } from './roleHandler'
 import { messageHandler } from './messageHandler'
 import { errorMessageHandler } from './errorMessageHandler'
+import { buildingStatusHandler } from './buildingStatusHandler'
 
 export {
   codeHandler,
@@ -13,5 +14,6 @@ export {
   credentialsHandler,
   roleHandler,
   messageHandler,
-  errorMessageHandler
+  errorMessageHandler,
+  buildingStatusHandler
 }

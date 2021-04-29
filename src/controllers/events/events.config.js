@@ -32,15 +32,5 @@ export const events = {
     get: 'ticket-data-received',
     post: 'ticket-created',
     put: 'ticket-updated'
-  },
-  buildings: {
-    list: {
-      LIT: 'lit-buildings-list',
-      Footprint: 'footprint-buildings-list'
-    },
-    put: 'buildings-data-saved',
-    post: 'new-building-created',
-    getById: 'building-data-received',
-    getByAddress: 'building-data-received'
   }
 }

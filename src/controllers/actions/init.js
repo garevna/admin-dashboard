@@ -10,4 +10,6 @@ export const init = function () {
       secret: $apiSecret()
     }
   })
+
+  window[Symbol.for('map.worker')].postMessage({ action: 'init' })
 }

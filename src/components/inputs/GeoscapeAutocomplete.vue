@@ -2,15 +2,17 @@
   <v-row justify="center">
     <v-toolbar class="transparent" style="box-shadow: none">
       <v-autocomplete
-        v-model="address"
+        v-model="addressId"
         :loading="loading"
-        :items="addresses"
+        :items="variants"
+        item-text="address"
+        item-value="id"
         :search-input.sync="search"
         cache-items
         flat
         hide-no-data
         hide-details
-        :placeholder="value"
+        :placeholder="buildingAddressData.address"
         outlined
         dense
         @change="notSubmited"
@@ -26,24 +28,24 @@
 export default {
   name: 'GeoscapeAutocomplete',
 
-  props: ['value'],
+  props: ['buildingAddressData'],
 
   data: () => ({
-    address: '',
+    // address: '',
+    addressId: '',
+    addressData: {},
     variants: [],
     loading: false,
     search: null,
-    google: '',
-    formula: '',
     color: 'transparent'
   }),
-  computed: {
-    addresses () {
-      return this.variants.map(item => item.address)
-    }
-  },
+  // computed: {
+  //   addresses () {
+  //     return this.variants.map(item => item.address)
+  //   }
+  // },
   watch: {
-    value: {
+    addressId: {
       immediate: true,
       handler (val) {
         console.log(val)
@@ -58,9 +60,14 @@ export default {
     notSubmited () {
       this.color = '#9004'
     },
-    submit () {
+    async submit () {
+      console.log(this.addressId)
+      if (!this.addressId) return
       this.color = 'transparent'
-      this.$emit('update:value', this.address)
+      await this.getAddressDetails()
+      // this.$emit('update:value', this.addressId)
+      console.log(this.addressData)
+      this.$emit('update:buildingAddressData', this.addressData)
     },
     async getVariants (val) {
       if (val.length < 4) return
@@ -69,10 +76,50 @@ export default {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: process.env.VUE_APP_GEOSCAPE_KEY
+          Authorization: this.$geoscapeKey()
         }
       })).json()).suggest
+
       this.loading = false
+    },
+
+    async getAddressDetails () {
+      const response = await (await fetch(`https://api.psma.com.au/v1/addresses/${this.addressId}?include=geo,addressDetails`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: this.$geoscapeKey()
+        }
+      })).json()
+
+      const {
+        cadastralIdentifier,
+        localityName: city,
+        postcode: postCode,
+        stateTerritory: state,
+        streetName: street,
+        streetType,
+        streetNumber1,
+        streetNumber2
+      } = response.addressDetails
+
+      this.addressData = {
+        address: response.addressDetails.formattedAddress,
+        addressComponents: {
+          cadastralIdentifier,
+          addressId: response.addressId,
+          city,
+          postCode,
+          state,
+          street,
+          streetType,
+          streetNumber1,
+          streetNumber2,
+          number: streetNumber2 ? `${streetNumber1}-${streetNumber2}` : streetNumber1
+        },
+        coordinates: response.geo.geometry.coordinates,
+        relatedBuildingIds: response.relatedBuildingIds
+      }
     }
   }
 }

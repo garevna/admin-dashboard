@@ -13,7 +13,8 @@ export const listBuildingsHandler = function () {
       return
     }
 
-    const eventName = `${store.toLowerCase()}-buildings-list`
+    // const eventName = `${store.toLowerCase()}-buildings-list`
+    const eventName = 'buildings-list-received'
     window[Symbol.for('vue.instance')].$root.$emit(eventName, result)
   })
 }

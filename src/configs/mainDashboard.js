@@ -1,81 +1,54 @@
 export const mainDashboard = [
   {
-    title: 'RSP list',
-    component: 'RspList',
-    route: 'rsp-list',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: ['View_only']
-    }
+    title: 'RSP',
+    icon: 'mdi-',
+    children: [
+      {
+        title: 'RSP list',
+        route: 'rsp-list',
+        icon: 'mdi-account-multiple',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      },
+      {
+        title: 'New RSP',
+        route: 'create-rsp',
+        icon: 'mdi-account-plus',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      }
+    ]
   },
   {
-    title: 'RSP details',
-    component: 'RspDetails',
-    route: 'rsp-details',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: ['View_only']
-    }
+    title: 'Services',
+    children: [
+      {
+        title: 'Service list',
+        route: 'services-list',
+        icon: 'mdi-ballot-outline',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      },
+      {
+        title: 'Add new service',
+        route: 'create-new-service',
+        icon: 'mdi-text-box-plus-outline',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: []
+        }
+      }
+    ]
   },
-  {
-    title: 'Services list',
-    component: 'servicesList',
-    route: 'services-list',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: ['View_only']
-    }
-  },
-  {
-    title: 'Service details',
-    component: 'serviceDetails',
-    route: 'service-details',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: ['View_only']
-    }
-  },
-  {
-    title: 'Add service',
-    component: 'AddService',
-    route: 'new-service',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: []
-    }
-  },
-  // {
-  //   title: 'Services',
-  //   component: 'Services',
-  //   route: 'services',
-  //   access: {
-  //     change: ['Account_manager', 'SuperAdmin'],
-  //     read: ['View_only']
-  //   },
-  //   children: [
-  //     {
-  //       title: 'Service list',
-  //       component: 'servicesList',
-  //       route: 'services-list',
-  //       access: {
-  //         change: ['Account_manager', 'SuperAdmin'],
-  //         read: ['View_only']
-  //       }
-  //     },
-  //     {
-  //       title: 'Add service',
-  //       component: 'AddService',
-  //       route: 'new-service',
-  //       access: {
-  //         change: ['Account_manager', 'SuperAdmin'],
-  //         read: []
-  //       }
-  //     }
-  //   ]
-  // },
   {
     title: 'Customers',
-    component: 'Customers',
+    route: 'customers',
     access: {
       change: ['Account_manager', 'SuperAdmin'],
       read: ['View_only']
@@ -83,15 +56,25 @@ export const mainDashboard = [
   },
   {
     title: 'Footprint',
-    component: 'Footprint',
+    icon: 'mdi-map',
     access: {
       change: ['SuperAdmin', 'Map_editor'],
       read: ['View_only']
     },
     children: [
       {
+        title: 'Search address',
+        route: 'footprint',
+        icon: 'mdi-map-search',
+        access: {
+          change: ['SuperAdmin', 'Map_editor'],
+          read: ['View_only']
+        }
+      },
+      {
         title: 'Edit polygins',
-        component: 'EditPolygons',
+        route: 'polygons',
+        icon: 'mdi-map-marker-path',
         access: {
           change: ['Map_editor', 'SuperAdmin'],
           read: ['View_only']
@@ -99,7 +82,8 @@ export const mainDashboard = [
       },
       {
         title: 'Edit building list',
-        component: 'Buildings',
+        route: 'buildings',
+        icon: 'mdi-home-map-marker',
         access: {
           change: ['Map_editor', 'SuperAdmin'],
           read: ['View_only']
@@ -110,14 +94,30 @@ export const mainDashboard = [
   {
     title: 'Scheduling',
     component: 'Scheduling',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: ['View_only']
-    }
+    icon: 'mdi-calendar-month',
+    children: [
+      {
+        title: 'Installation Schedule',
+        icon: 'mdi-table-network',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      },
+      {
+        title: 'Calendar Settings',
+        icon: 'mdi-calendar-edit',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      }
+    ]
   },
   {
     title: 'Tickets',
     component: 'Tickets',
+    icon: 'mdi-inbox-multiple',
     access: {
       change: ['Account_manager', 'SuperAdmin'],
       read: ['View_only']
@@ -126,6 +126,7 @@ export const mainDashboard = [
   {
     title: 'Documents',
     component: 'Documents',
+    icon: 'mdi-file-document-multiple',
     access: {
       change: ['Account_manager', 'SuperAdmin'],
       read: ['View_only']
@@ -134,6 +135,7 @@ export const mainDashboard = [
   {
     title: 'Settings',
     component: 'Settings',
+    icon: 'mdi-cog',
     access: {
       change: ['SuperAdmin'],
       read: ['View_only']

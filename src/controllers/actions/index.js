@@ -48,8 +48,7 @@ import {
 import {
   getBuildingByAddress,
   getBuildingById,
-  getFootprintBuildings,
-  getLitBuildings,
+  getBuildingsByStatus,
   postBuildingDetails,
   putBuildingDetails
 } from './map.worker'
@@ -92,8 +91,7 @@ export {
 
   getBuildingByAddress,
   getBuildingById,
-  getFootprintBuildings,
-  getLitBuildings,
+  getBuildingsByStatus,
   postBuildingDetails,
   putBuildingDetails
 }

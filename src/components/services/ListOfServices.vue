@@ -54,11 +54,11 @@ export default {
         value: 'serviceName'
       },
       { text: 'Service code', value: 'serviceCode' },
-      { text: 'Service type', value: 'type' },
+      { text: 'Service type', value: 'productType' },
       { text: 'Contract term (months)', value: 'contractTerm' },
-      { text: 'MRC ($)', value: 'serviceStatus' },
+      { text: 'MRC ($)', value: 'subscriptionFee' },
       { text: 'Connection fee', value: 'connectionFee' },
-      { text: 'Trial (months)', value: 'trialPeriod' },
+      { text: 'Trial (months)', value: 'freeTrial' },
       { text: 'Actions', value: 'actions', sortable: false }
     ]
   }),

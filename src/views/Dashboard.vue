@@ -15,14 +15,45 @@
 
       <v-divider></v-divider>
 
+      <v-list>
+        <v-list-group
+          v-for="item in items"
+          :key="item.title"
+          v-model="item.active"
+          no-action
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-icon small>{{ item.icon }}</v-icon> <small> {{ item.title }} </small>
+              </v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="child in item.children"
+            :key="child.title"
+            class="clickable"
+            @click="jumpTo(child)"
+          >
+            <v-list-item-content>
+              <v-list-item-title>
+                <v-icon small>{{ child.icon }}</v-icon>
+                <small>{{ child.title }}</small>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+
       <v-list dense>
         <v-list-item
           v-for="item in items"
           :key="item.title"
         >
           <v-list-item-content>
-            <v-list-item-title @click="$router.push({ name: item.route })" class="clickable" active-class="active-list-item">
-              {{ item.title }}
+            <v-list-item-title @click="jumpTo(item)" class="clickable" active-class="active-list-item">
+              <v-icon small>{{ item.icon }}</v-icon> {{ item.title }}
             </v-list-item-title>
             <v-list dense v-if="item.children">
               <v-list-item
@@ -30,12 +61,9 @@
                 :key="subitem.title"
                 active-class="active-list-item"
               >
-                <v-list-item-icon>
-                  <v-icon>mdi-file-table-outline</v-icon>
-                </v-list-item-icon>
                 <v-list-item-content>
                   <v-list-item-title @click="$router.push({ name: subitem.route })" class="clickable">
-                    {{ subitem.title }}
+                    <v-icon small>{{ subitem.icon }}</v-icon> {{ subitem.title }}
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -58,8 +86,6 @@
 import { roleHandler } from '@/controllers/data-handlers'
 import { mainDashboard } from '@/configs'
 
-console.log(mainDashboard)
-
 export default {
   name: 'Dashboard',
   components: {
@@ -69,10 +95,13 @@ export default {
     items: mainDashboard
   }),
   methods: {
-    //
+    jumpTo (item) {
+      item.route && this.$router.push({ name: item.route })
+    }
   },
   mounted () {
     console.log(roleHandler())
+    // if (!roleHandler()) this.$router.push({ name: 'home' })
     this.__refreshServices()
   }
 }
@@ -85,5 +114,14 @@ export default {
 .active-list-item {
   border: dotted 1px #900;
   background: #9007;
+}
+.v-application--is-ltr .v-list-group--no-action > .v-list-group__items > .v-list-item {
+  padding-left: 48px!important;
+  min-height: 24px!important;
+  max-height: 32px;
+}
+
+.v-icon.v-icon {
+  margin-right: 8px!important;
 }
 </style>
