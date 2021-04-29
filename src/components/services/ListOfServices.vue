@@ -68,7 +68,7 @@ export default {
   methods: {
     getData (data) {
       console.log(data)
-      this.items = data.result
+      this.items = data
     },
     createNewService () {
       this.$router.push({ name: 'create-new-service' })

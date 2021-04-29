@@ -96,7 +96,8 @@ export default {
       passwordHandler(value)
     },
     showResult (event) {
-      roleHandler(event.result.data.role)
+      console.log(event)
+      roleHandler(event.data.role)
       this.$router.push({ name: 'dash' })
     },
     async signIn () {

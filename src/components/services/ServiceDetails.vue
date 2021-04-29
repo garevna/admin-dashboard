@@ -93,7 +93,7 @@ export default {
     getData (data) {
       console.log(data)
       for (const prop in this.service) {
-        this.service[prop].value = data.result[prop]
+        this.service[prop].value = data[prop]
       }
       this.ready = true
     },

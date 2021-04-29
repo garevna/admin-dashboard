@@ -45,32 +45,6 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-
-      <v-list dense>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-        >
-          <v-list-item-content>
-            <v-list-item-title @click="jumpTo(item)" class="clickable" active-class="active-list-item">
-              <v-icon small>{{ item.icon }}</v-icon> {{ item.title }}
-            </v-list-item-title>
-            <v-list dense v-if="item.children">
-              <v-list-item
-                v-for="subitem in item.children"
-                :key="subitem.title"
-                active-class="active-list-item"
-              >
-                <v-list-item-content>
-                  <v-list-item-title @click="$router.push({ name: subitem.route })" class="clickable">
-                    <v-icon small>{{ subitem.icon }}</v-icon> {{ subitem.title }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
     </v-navigation-drawer>
 
     <v-card flat class="transparent mx-auto" max-width="1440">
@@ -101,7 +75,7 @@ export default {
   },
   mounted () {
     console.log(roleHandler())
-    // if (!roleHandler()) this.$router.push({ name: 'home' })
+    if (!roleHandler()) this.$router.push({ name: 'home' })
     this.__refreshServices()
   }
 }
