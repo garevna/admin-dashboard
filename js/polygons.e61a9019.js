@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["polygons"],{c9c6:function(t,e,n){"use strict";n.r(e);var s=function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("v-row",{attrs:{justify:"center"}},[n("h5",{staticClass:"text-center"},[n("small",{staticStyle:{"user-select":"text!important"}},[t._v("https://dka.dgtek.net/polygons")])])])},l=[],a={name:"EditPolygons"},o=a,c=n("2877"),r=n("6544"),i=n.n(r),u=n("0fd9"),p=Object(c["a"])(o,s,l,!1,null,null,null);e["default"]=p.exports;i()(p,{VRow:u["a"]})}}]);
+//# sourceMappingURL=polygons.e61a9019.js.map
