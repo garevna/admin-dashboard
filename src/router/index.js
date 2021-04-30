@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 
-// import { roleHandler } from '@/controllers/data-handlers'
+import { roleHandler } from '@/controllers/data-handlers'
 // import { mainDashboard } from '@/configs'
 
 Vue.use(VueRouter)
@@ -16,47 +16,80 @@ const routes = [
   {
     path: '/dash',
     name: 'dash',
+    beforeEnter (to, from, next) {
+      if (!roleHandler()) next({ name: 'home' })
+      next()
+    },
     component: () => import(/* webpackChunkName: 'dashboard' */ '@/views/Dashboard.vue'),
     children: [
       {
-        path: 'rsp-list',
+        path: '/rsp-list',
         name: 'rsp-list',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          next()
+        },
         component: () => import(/* webpackChunkName: 'rsp-list' */ '@/components/rsp/ListOfResellers.vue')
       },
       {
-        path: 'services-list',
+        path: '/services-list',
         name: 'services-list',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          next()
+        },
         component: () => import(/* webpackChunkName: 'services-list' */ '@/components/services/ListOfServices.vue')
       },
       {
-        path: 'create-new-service',
+        path: '/create-new-service',
         name: 'create-new-service',
         component: () => import(/* webpackChunkName: 'create-service' */ '@/components/services/ServiceDetails.vue')
       },
       {
-        path: 'service-details/:serviceId',
+        path: '/:serviceId',
         name: 'service-details',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          next()
+        },
         component: () => import(/* webpackChunkName: 'service-details' */ '@/components/services/ServiceDetails.vue'),
         props: true
       },
       {
-        path: 'footprint',
+        path: '/footprint',
         name: 'footprint',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          next()
+        },
         component: () => import(/* webpackChunkName: 'check-address' */ '@/components/footprint/CheckAddress.vue')
       },
       {
-        path: 'polygons',
+        path: '/polygons',
         name: 'polygons',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          next()
+        },
         component: () => import(/* webpackChunkName: 'polygons' */ '@/components/footprint/EditPolygons.vue')
       },
       {
-        path: 'buildings',
+        path: '/buildings',
         name: 'buildings',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'buildings') next(false)
+          next()
+        },
         component: () => import(/* webpackChunkName: 'buildings' */ '@/components/footprint/BuildingsList.vue')
       },
       {
-        path: ':buildingId',
+        path: '/:buildingId',
         name: 'building-details',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          next()
+        },
         component: () => import(/* webpackChunkName: 'buildings' */ '@/components/footprint/EditBuildingDetails.vue'),
         props: true
       }
@@ -70,14 +103,11 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeResolve((to, from, next) => {
-  console.log('ROUTER: BEFORE RESOLVE', to === from)
-  to.name === from.name ? next(false) : next()
-})
-
-router.beforeEach((to, from, next) => {
-  console.log('ROUTER: BEFORE EACH', to === from)
-  to.name === from.nam ? next(false) : next()
-})
+// router.beforeEach((to, from, next) => {
+//   console.log('ROUTER: ROLE = ', roleHandler())
+//   if (!roleHandler()) next({ name: 'home' })
+//   console.log('ROUTER', to, from)
+//   to.name === from.name ? next(from) : next(to)
+// })
 
 export default router

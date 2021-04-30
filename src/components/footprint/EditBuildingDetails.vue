@@ -1,10 +1,13 @@
 <template>
   <v-card flat class="transparent mx-auto" width="960" v-if="ready">
+    <v-toolbar class="transparent" style="box-shadow: none">
+      <v-spacer />
+      <v-btn icon @click="exit">
+        <v-icon large>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
     <fieldset class="my-4 pa-8">
       <legend class="ml-4"><h5>Building details</h5></legend>
-      <v-toolbar class="transparent" style="box-shadow: none">
-
-      </v-toolbar>
       <v-card flat class="transparent mt-0" v-if="schema">
         <v-container>
           <v-row justify="center">
@@ -88,6 +91,7 @@
         </v-container>
       </v-card>
       <v-card-actions class="my-8">
+        <v-btn outlined color="buttons" @click="exit">Exit</v-btn>
         <v-spacer />
         <v-btn dark class="buttons" @click="saveBuildingDetails">Save</v-btn>
       </v-card-actions>
@@ -199,8 +203,6 @@ export default {
       this.$root.$emit('progress-event', true)
 
       if (this.buildingId) {
-        console.log('PUT!!!!!!!!!!!!!!!!!!!!', this.buildingId)
-        console.log(result)
         this.__putBuildingDetails(this.buildingId, result)
       } else {
         this.__postBuildingDetails(result)
@@ -209,12 +211,15 @@ export default {
     sendMessage (event) {
       console.log('SAVE EVENT:\n', event)
       console.log('ROUTE: ', this.$route.name)
-      // console.log('ADDRESS: ', this.schema.address)
-      // this.$root.$emit('open-message-popup', {
-      //   messageType: this.schema.address,
-      //   messageText: 'Building details updated'
-      // })
-      if (this.$route.name !== 'buildings') this.$router.push({ name: 'buildings' })
+      console.log('ADDRESS: ', this.schema.address)
+      this.$root.$emit('open-message-popup', {
+        messageType: this.schema.address,
+        messageText: 'Building details updated'
+      })
+      this.$router.push({ name: 'buildings' })
+    },
+    exit () {
+      this.$router.push({ name: 'buildings' })
     }
   },
   beforeDestroy () {

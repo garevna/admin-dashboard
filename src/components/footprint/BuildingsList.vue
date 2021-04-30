@@ -127,7 +127,7 @@ export default {
     console.log('BUILDINGS LIST MOUNTED')
     this.$root.$on('buildings-address-list', this.getBuildings)
     this.$root.$on('buildings-data-list', this.getBuildings)
-    this.__getBuildingsByStatus('lit')
+    this.__getBuildingsByStatus(buildingStatusHandler() || 'lit')
   }
 }
 </script>

@@ -7,9 +7,6 @@ import ErrorMessage from '@/components/popups/error.vue'
 import Message from '@/components/popups/message.vue'
 
 import { init } from '@/controllers/actions'
-// import { initCallback /*, refreshCallback */ } from '@/controllers/callbacks'
-
-// import { setBuildingHandlers } from '@/helpers/map.worker'
 
 import { createController } from './controllers/createController'
 
@@ -26,9 +23,4 @@ window[Symbol.for('vue.instance')] = new Vue({
 
 createController()
 
-// window[Symbol.for('vue.instance')].__worker.addEventListener('message', initCallback)
 init()
-
-/* ===================== MAP WORKER ========================= */
-
-// setBuildingHandlers()
