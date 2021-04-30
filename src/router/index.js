@@ -18,6 +18,7 @@ const routes = [
     name: 'dash',
     beforeEnter (to, from, next) {
       if (!roleHandler()) next({ name: 'home' })
+      if (from.name === 'dash') next(false)
       next()
     },
     component: () => import(/* webpackChunkName: 'dashboard' */ '@/views/Dashboard.vue'),
@@ -27,6 +28,7 @@ const routes = [
         name: 'rsp-list',
         beforeEnter (to, from, next) {
           if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'rsp-list') next(false)
           next()
         },
         component: () => import(/* webpackChunkName: 'rsp-list' */ '@/components/rsp/ListOfResellers.vue')
@@ -36,6 +38,7 @@ const routes = [
         name: 'services-list',
         beforeEnter (to, from, next) {
           if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'services-list') next(false)
           next()
         },
         component: () => import(/* webpackChunkName: 'services-list' */ '@/components/services/ListOfServices.vue')
@@ -43,6 +46,11 @@ const routes = [
       {
         path: '/create-new-service',
         name: 'create-new-service',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'create-new-service') next(false)
+          next()
+        },
         component: () => import(/* webpackChunkName: 'create-service' */ '@/components/services/ServiceDetails.vue')
       },
       {
@@ -50,6 +58,7 @@ const routes = [
         name: 'service-details',
         beforeEnter (to, from, next) {
           if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'service-details') next(false)
           next()
         },
         component: () => import(/* webpackChunkName: 'service-details' */ '@/components/services/ServiceDetails.vue'),
@@ -60,6 +69,7 @@ const routes = [
         name: 'footprint',
         beforeEnter (to, from, next) {
           if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'footprint') next(false)
           next()
         },
         component: () => import(/* webpackChunkName: 'check-address' */ '@/components/footprint/CheckAddress.vue')
@@ -69,6 +79,7 @@ const routes = [
         name: 'polygons',
         beforeEnter (to, from, next) {
           if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'polygons') next(false)
           next()
         },
         component: () => import(/* webpackChunkName: 'polygons' */ '@/components/footprint/EditPolygons.vue')
@@ -88,6 +99,7 @@ const routes = [
         name: 'building-details',
         beforeEnter (to, from, next) {
           if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'building-details') next(false)
           next()
         },
         component: () => import(/* webpackChunkName: 'buildings' */ '@/components/footprint/EditBuildingDetails.vue'),
@@ -102,12 +114,5 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
-// router.beforeEach((to, from, next) => {
-//   console.log('ROUTER: ROLE = ', roleHandler())
-//   if (!roleHandler()) next({ name: 'home' })
-//   console.log('ROUTER', to, from)
-//   to.name === from.name ? next(from) : next(to)
-// })
 
 export default router

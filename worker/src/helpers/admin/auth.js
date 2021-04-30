@@ -30,7 +30,7 @@ export const auth = async (login, password) => {
 
   const result = await response.json()
 
-  self.postMessage({ status: 300, route: 'admin', action: 'credentials', result: credentialsHandler() })
+  // self.postMessage({ status: 300, route: 'admin', action: 'credentials', result: credentialsHandler() })
 
   if (response.status !== 200) return authError(response.status, login)
 

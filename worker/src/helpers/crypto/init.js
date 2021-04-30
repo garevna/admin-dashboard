@@ -16,7 +16,9 @@ export const init = (data) => {
   secretHandler(data.secret)
   hostHandler(data.host)
   apiKeyHandler(data.key)
+
   self.initialized = true
+
   return {
     status: 200,
     route,
