@@ -8,6 +8,7 @@ export const getRecordByKey = (storeName, recordKey) => new Promise((resolve) =>
         resolve({ status, result: null })
         return
       }
+      // self.postMessage({ status: 300, action: 'getRecordByKey', storeName, recordKey })
       const store = db.transaction([storeName]).objectStore(storeName)
       Object.assign(store.get(recordKey), {
         onsuccess: event => resolve({

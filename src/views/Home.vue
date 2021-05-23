@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="home-page-content mt-12">
+  <v-container fluid class="home-page-content mt-0">
     <v-row align="start" justify="center" justify-md="end">
       <SignIn :reset.sync="resetPassword" :success.sync="success" />
     </v-row>

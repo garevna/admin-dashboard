@@ -11,7 +11,7 @@ export const getFromRemoteServer = async function () {
 
   const { ticketCategories, tickets } = result
 
-  self.postMessage({ status: 300, route, action, result })
+  // self.postMessage({ status: 300, route, action, result })
 
   await clearStore('tickets')
 

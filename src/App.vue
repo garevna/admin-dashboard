@@ -11,7 +11,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-main class="main-content mt-8" style="margin-bottom: 320px;">
+    <v-main class="main-content mt-0" style="margin-bottom: 320px;">
       <v-progress-linear
         :active="progress"
         :indeterminate="progress"
@@ -25,8 +25,8 @@
       </transition>
     </v-main>
 
-    <v-snackbar v-model="snackbar" :timeout="timeout" :color="color" top>
-      {{ text }}
+    <v-snackbar v-model="snackbar" :timeout="timeout" color="primary" top>
+      {{ message }}
       <template v-slot:action="{ attrs }">
         <v-btn
           color="#fff"
@@ -40,8 +40,8 @@
       </template>
     </v-snackbar>
 
-    <v-row justify="center" style="position: fixed; bottom: 0; z-index: 100; width: 100%; height: 32px; background: #aaa;">
-      <p class="text-center" style="color: #efefef;">
+    <v-row justify="center" class="bottom-info-bar">
+      <p class="text-center bottom-info-bar--text">
         <small>
           <sub>2021 &copy; Dgtek Pty. Ltd ABN 61 600 896 115</sub>
         </small>
@@ -50,6 +50,7 @@
 
     <error-message />
     <simple-message />
+    <customer-info />
   </v-app>
 </template>
 
@@ -95,6 +96,16 @@ export default {
   mounted () {
     this.$root.$on('app-is-ready', function (event) {
       this.ready = true
+    }.bind(this))
+
+    this.$root.$on('db-refreshing', function (event) {
+      this.snackbar = true
+      this.message = 'Refreshing the data'
+    }.bind(this))
+
+    this.$root.$on('db-refreshing-complete', function (event) {
+      this.snackbar = false
+      this.message = 'Refreshing the data complete'
     }.bind(this))
 
     this.$root.$on('progress-event', function (progress) {
@@ -148,5 +159,20 @@ body {
   h3 {
     font-size: 18px;
   }
+}
+.bottom-info-bar {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  height: 28px;
+  background: #999;
+  margin: 0!important;
+  padding: 0;
+  line-height: 80%;
+}
+.bottom-info-bar--text {
+  color: #efefef;
+  margin-top: -4px;
 }
 </style>

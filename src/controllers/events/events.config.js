@@ -32,5 +32,13 @@ export const events = {
     get: 'ticket-data-received',
     post: 'ticket-created',
     put: 'ticket-updated'
+  },
+  booking: {
+    get: 'booking-rquests-received'
+  },
+  schedule: {
+    refresh: 'schedule-refreshed',
+    get: 'schedule-week-data-received',
+    put: 'schedule-week-data-updated'
   }
 }

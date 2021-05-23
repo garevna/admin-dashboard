@@ -8,10 +8,13 @@ export const putRecordByKey = async (storeName, recordKey, payload) => new Promi
         resolve({ status, result: 'Open IndexedDB error' })
         return
       }
+
       const store = db.transaction([storeName], 'readwrite').objectStore(storeName)
-      Object.assign(store.put(payload, recordKey), {
-        onsuccess: () => resolve({ status: 200, result: payload }),
-        onerror: () => resolve({ status: 708, result: 'IndexedDB saving data error' })
+      // self.postMessage({ status: 300, store: storeName, key: recordKey, keyPath: store.keyPath })
+
+      Object.assign(store.put(payload), {
+        onsuccess: event => resolve({ status: 200, result: event.target.result }),
+        onerror: event => resolve({ status: event.errorCode, result: 'IndexedDB saving data error' })
       })
     })
 })

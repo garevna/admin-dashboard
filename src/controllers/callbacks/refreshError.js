@@ -1,6 +1,6 @@
-import { errors } from '../errors.config'
+import { adminWorkerErrors } from '../errors'
 
-const [rsp, customers, tickets, services] = Object.keys(errors).map(prop => errors[prop].refresh)
+const [rsp, customers, tickets, services] = Object.keys(adminWorkerErrors).map(prop => adminWorkerErrors[prop].refresh)
 
 const refreshErrors = { rsp, customers, tickets, services }
 

@@ -1,7 +1,7 @@
 export const putCategories = function (data) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'tickets',
-    action: 'categories',
+    route: 'categories',
+    action: 'put',
     data
   })
 }

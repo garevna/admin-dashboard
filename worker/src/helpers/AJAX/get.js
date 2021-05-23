@@ -4,8 +4,6 @@ import {
   credentialsHandler
 } from '../env'
 
-import { getCustomerDataError } from '../error-handlers'
-
 export const get = async function (path) {
   if (!navigator.onLine) return { status: 0, result: 'Offline mode: operation is impossible' }
 
@@ -17,7 +15,16 @@ export const get = async function (path) {
     }
   })
 
-  if (response.status !== 200) return getCustomerDataError(response.status)
+  const result = await response.json()
 
-  return { status: 200, result: (await (response.json())).data }
+  // self.postMessage({ status: 300, route: path, action: 'GET', result: { status: response.status, result } })
+
+  if (response.status !== 200 || !result) {
+    return {
+      status: response.status,
+      result: 'Error fetching the data from remote server'
+    }
+  }
+
+  return { status: 200, result: result.data }
 }

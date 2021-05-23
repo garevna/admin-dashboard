@@ -9,6 +9,8 @@ import { encryptError } from './encryptError'
 import { resetError } from './resetError'
 import { codeError } from './codeError'
 
+import { invalidRequest } from './invalidRequest'
+
 export {
   authOffline,
   authError,
@@ -17,5 +19,6 @@ export {
   resetOffline,
   encryptError,
   resetError,
-  codeError
+  codeError,
+  invalidRequest
 }

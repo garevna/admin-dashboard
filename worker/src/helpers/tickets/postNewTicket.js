@@ -6,11 +6,11 @@ import { getFromRemoteServer, getFromLocalDb } from './'
 export const postNewTicket = async function (data) {
   const { data: ticket } = data
 
-  self.postMessage({ status: 300, route: 'tickets', action: 'post', result: ticket })
+  // self.postMessage({ status: 300, route: 'tickets', action: 'post', result: ticket })
 
   const { status, result } = await post('ticket', ticket)
 
-  self.postMessage({ status: 300, route: 'tickets', action: 'post', result: { status, ...result } })
+  // self.postMessage({ status: 300, route: 'tickets', action: 'post', result: { status, ...result } })
 
   if (status !== 200) return postNewTicketError(status)
 

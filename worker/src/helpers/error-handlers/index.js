@@ -2,6 +2,7 @@ import { credentialsError } from './admin/credentialsError'
 
 import {
   getCategoriesError,
+  putCategoriesError,
   getTicketDataError,
   getTicketsListError,
   postNewTicketError,
@@ -18,9 +19,11 @@ import {
 } from './services'
 
 import {
-  refreshClientsListError,
-  getClientsListError,
-  getClientDetailsError
+  refreshUsersError,
+  putUserRecordError,
+  updateUserDetailsError,
+  getUsersError,
+  getUserDetailsError
 } from './rsp'
 
 import {
@@ -32,10 +35,19 @@ import {
   refreshCustomersListError
 } from './customers'
 
+import {
+  refreshScheduleError,
+  getScheduleError,
+  updateScheduleError,
+  updateStatusError,
+  putScheduleRecordError
+} from './schedule'
+
 export {
   credentialsError,
 
   getCategoriesError,
+  putCategoriesError,
   getTicketDataError,
   getTicketsListError,
   postNewTicketError,
@@ -48,14 +60,22 @@ export {
   putServiceDetailsError,
   postServiceDetailsError,
 
-  refreshClientsListError,
-  getClientsListError,
-  getClientDetailsError,
+  refreshUsersError,
+  putUserRecordError,
+  updateUserDetailsError,
+  getUsersError,
+  getUserDetailsError,
 
   deleteCustomerError,
   getCustomerDataError,
   getCustomersListError,
   postNewCustomerError,
   putCustomerDataError,
-  refreshCustomersListError
+  refreshCustomersListError,
+
+  refreshScheduleError,
+  getScheduleError,
+  updateScheduleError,
+  updateStatusError,
+  putScheduleRecordError
 }

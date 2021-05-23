@@ -14,9 +14,9 @@ import {
 } from './admin'
 
 import {
-  getClientData,
-  putClientData,
-  refreshClientData
+  refreshResellersList,
+  getResellersList,
+  getResellerDetails
 } from './rsp'
 
 import {
@@ -38,6 +38,7 @@ import {
 
 import {
   getCategories,
+  putCategories,
   getTicketById,
   getTickets,
   postNewTicket,
@@ -53,6 +54,12 @@ import {
   putBuildingDetails
 } from './map.worker'
 
+import {
+  getScheduleWeekData,
+  getBookingRequests,
+  changeServiceDeliveryStatus
+} from './schedule'
+
 export {
   init,
 
@@ -65,11 +72,12 @@ export {
   resetPassword,
   sendPasswordResetCode,
 
-  refreshClientData,
+  refreshResellersList,
   refreshCustomers,
   refreshTickets,
-  getClientData,
-  putClientData,
+
+  getResellersList,
+  getResellerDetails,
 
   getCustomers,
   getCustomerData,
@@ -85,6 +93,7 @@ export {
 
   getTickets,
   getCategories,
+  putCategories,
   getTicketById,
   postNewTicket,
   saveTicketData,
@@ -93,5 +102,9 @@ export {
   getBuildingById,
   getBuildingsByStatus,
   postBuildingDetails,
-  putBuildingDetails
+  putBuildingDetails,
+
+  getScheduleWeekData,
+  getBookingRequests,
+  changeServiceDeliveryStatus
 }

@@ -1,11 +1,9 @@
-import { getClientData } from './getClientData'
-// import { putClientCredentials } from './putClientCredentials'
-import { putClientData } from './putClientData'
-import { refreshClientData } from './refreshClientData'
+import { getResellersList } from './getResellersList'
+import { refreshResellersList } from './refreshResellersList'
+import { getResellerDetails } from './getResellerDetails'
 
 export {
-  getClientData,
-  // putClientCredentials,
-  putClientData,
-  refreshClientData
+  getResellersList,
+  refreshResellersList,
+  getResellerDetails
 }

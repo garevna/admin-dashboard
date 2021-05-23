@@ -97,7 +97,17 @@ export const mainDashboard = [
     icon: 'mdi-calendar-month',
     children: [
       {
+        title: 'Unattended booking requests',
+        route: 'booking',
+        icon: 'mdi-table-network',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      },
+      {
         title: 'Installation Schedule',
+        route: 'schedule',
         icon: 'mdi-table-network',
         access: {
           change: ['Account_manager', 'SuperAdmin'],
@@ -116,12 +126,36 @@ export const mainDashboard = [
   },
   {
     title: 'Tickets',
-    component: 'Tickets',
     icon: 'mdi-inbox-multiple',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: ['View_only']
-    }
+    children: [
+      {
+        title: 'Tickets list',
+        route: 'tickets-list',
+        icon: 'mdi-ballot-outline',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      },
+      {
+        title: 'Edit categories',
+        route: 'ticket-categories',
+        icon: 'mdi-ballot-outline',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      }
+      // {
+      //   title: 'Create new ticket',
+      //   route: 'ticket-categories',
+      //   icon: 'mdi-ballot-outline',
+      //   access: {
+      //     change: ['Account_manager', 'SuperAdmin'],
+      //     read: ['View_only']
+      //   }
+      // }
+    ]
   },
   {
     title: 'Documents',

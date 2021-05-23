@@ -1,13 +1,23 @@
 const {
   authController,
   cryptoController,
+  rspController,
   customersController,
   servicesController,
-  ticketsController
-  // adminController
+  ticketsController,
+  scheduleController
 } = require('../controllers')
 
 export const routes = {
+  '*': {
+    refresh: () => {
+      rspController.refresh()
+      customersController.getFromRemote()
+      servicesController.refresh()
+      ticketsController.refresh()
+      scheduleController.refresh()
+    }
+  },
   admin: {
     init: authController.init,
     auth: authController.auth,
@@ -15,13 +25,11 @@ export const routes = {
     code: authController.sendPasswordResetCode,
     change: authController.changePassword
   },
-  // admin: {
-  //   credentials: adminController.credentials,
-  //   password: adminController.passwordChange,
-  //   refresh: adminController.refresh,
-  //   get: adminController.get,
-  //   put: adminController.update
-  // },
+  rsp: {
+    refresh: rspController.refresh,
+    list: rspController.list,
+    get: rspController.get
+  },
   customers: {
     refresh: customersController.getFromRemote,
     list: customersController.getAllCustomers,
@@ -44,10 +52,23 @@ export const routes = {
   },
   tickets: {
     refresh: ticketsController.refresh,
-    categories: ticketsController.getCategories,
     list: ticketsController.list,
     get: ticketsController.get,
     post: ticketsController.post,
     put: ticketsController.put
+  },
+  categories: {
+    get: ticketsController.getCategories,
+    put: ticketsController.putCategories
+  },
+  schedule: {
+    refresh: scheduleController.refresh,
+    get: scheduleController.getFullSchedule,
+    week: scheduleController.getByWeekNumber,
+    update: scheduleController.updateRecord
+  },
+  booking: {
+    get: scheduleController.getBookingList,
+    update: scheduleController.updateStatus
   }
 }

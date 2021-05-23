@@ -5,21 +5,15 @@ import { getCustomerDataError, putCustomerDataError } from '../error-handlers'
 export const updateCustomer = async function (id, data) {
   const [route, action] = ['customers', 'update']
 
-  const { status: getStatus, result: getResult } = await getRecordByKey('customers', id)
+  const { status: customerStatus, result: customer } = await getRecordByKey('customers', id)
 
-  if (getStatus !== 200) return getCustomerDataError(getStatus)
+  if (customerStatus !== 200) return getCustomerDataError(customerStatus)
 
-  const response = Object.assign({}, getResult, data)
+  const response = Object.assign({}, customer, data)
 
-  self.postMessage({ status: 300, route, action, result: response })
-
-  const { status: putStatus } = await putRecordByKey('customers', id, response)
-
-  if (putStatus !== 200) return putCustomerDataError(putStatus)
+  if ((await putRecordByKey('customers', id, response)).status !== 200) return putCustomerDataError(400)
 
   const { status, result } = await put(`customer/${id}`, response)
-
-  self.postMessage({ status: 300, route, action, result })
 
   if (status !== 200) return putCustomerDataError(status)
 

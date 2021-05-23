@@ -1,12 +1,3 @@
-// const events = {
-//   getByAddress: 'building-details',
-//   getById: 'building-details',
-//   list: 'buildings-address-list',
-//   data: 'buildings-data-list',
-//   post: 'new-building-created',
-//   put: 'building-data-updated'
-// }
-
 import { mapWorkerEvents } from './events'
 import { mapWorkerErrors } from './errors'
 

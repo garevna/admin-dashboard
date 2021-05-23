@@ -8,11 +8,11 @@ import {
 
 class AuthController {
   init (request) {
-    self.postMessage({ status: 300, controller: 'authController', request })
     self.postMessage(init(request))
   }
 
   async auth (request) {
+    // self.postMessage({ status: 300, login: request.login, password: request.password })
     self.postMessage(await auth(request.login, request.password))
   }
 

@@ -24,7 +24,7 @@ class AdminController {
   }
 
   async changePassword (request) {
-    self.postMessage({ status: 300, route: 'admin', action: 'changePassword', result: request.data })
+    // self.postMessage({ status: 300, route: 'admin', action: 'changePassword', result: request.data })
     self.postMessage(await changePassword(request.data))
   }
 }

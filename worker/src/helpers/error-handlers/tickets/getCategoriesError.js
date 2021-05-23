@@ -1,10 +1,10 @@
 export const getCategoriesError = function (status) {
   return {
     status,
-    route: 'tikets',
-    action: 'categories',
+    route: 'categories',
+    action: 'get',
     error: true,
-    errorType: 'Tickets',
-    errorMessage: 'Failed to get ticket\'s categories from local DB'
+    errorType: 'Ticket categories',
+    errorMessage: 'Failed to get data from local DB'
   }
 }

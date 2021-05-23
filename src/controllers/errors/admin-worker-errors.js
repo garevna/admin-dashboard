@@ -52,6 +52,16 @@ export const adminWorkerErrors = {
       errorMessage: localDbError
     }
   },
+  categories: {
+    get: {
+      errorType: 'Ticket categories',
+      errorMessage: localDbError
+    },
+    put: {
+      errorType: 'Ticket categories',
+      errorMessage: 'Data was not updated'
+    }
+  },
   services: {
     refresh: {
       errorType: 'Services',

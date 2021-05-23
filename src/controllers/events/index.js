@@ -1,16 +1,21 @@
 import { admin } from './admin'
 import { customers } from './customers'
 import { tickets } from './tickets'
+import { categories } from './categories'
 import { services } from './services'
 import { rsp } from './rsp'
 import { mapWorkerEvents } from './map-worker-events'
+import { schedule, booking } from './schedule'
 
 const adminWorkerEvents = {
   admin,
   customers,
   tickets,
+  categories,
   services,
-  rsp
+  rsp,
+  schedule,
+  booking
 }
 
 export {

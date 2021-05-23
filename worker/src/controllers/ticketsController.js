@@ -1,6 +1,7 @@
 import {
   getFromRemoteServer,
   getCategories,
+  putCategories,
   getFromLocalDb,
   getTicketData,
   putTicketData,
@@ -14,6 +15,10 @@ class TicketsController {
 
   async getCategories () {
     self.postMessage(await getCategories())
+  }
+
+  async putCategories (data) {
+    self.postMessage(await putCategories(data))
   }
 
   async list () {

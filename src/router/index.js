@@ -104,6 +104,21 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'buildings' */ '@/components/footprint/EditBuildingDetails.vue'),
         props: true
+      },
+      {
+        path: '/booking',
+        name: 'booking',
+        component: () => import(/* webpackChunkName: 'booking' */ '@/components/schedule/Booking.vue')
+      },
+      {
+        path: '/schedule',
+        name: 'schedule',
+        component: () => import(/* webpackChunkName: 'schedule' */ '@/components/schedule/InstallationSchedule.vue')
+      },
+      {
+        path: '/ticket-categories',
+        name: 'ticket-categories',
+        component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
       }
     ]
   }

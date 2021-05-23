@@ -6,6 +6,9 @@ import { roleHandler } from './roleHandler'
 import { messageHandler } from './messageHandler'
 import { errorMessageHandler } from './errorMessageHandler'
 import { buildingStatusHandler } from './buildingStatusHandler'
+import { buildingsListPageNumberHandler } from './buildingsListPageNumberHandler'
+
+import { refreshHandler } from './refreshHandler'
 
 export {
   codeHandler,
@@ -15,5 +18,8 @@ export {
   roleHandler,
   messageHandler,
   errorMessageHandler,
-  buildingStatusHandler
+  buildingStatusHandler,
+  buildingsListPageNumberHandler,
+
+  refreshHandler
 }

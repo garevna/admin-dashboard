@@ -1,9 +1,13 @@
-import { refreshClientsListError } from './refreshClientsListError'
-import { getClientsListError } from './getClientsListError'
-import { getClientDetailsError } from './getClientDetailsError'
+import { refreshUsersError } from './refreshUsersError'
+import { putUserRecordError } from './putUserRecordError'
+import { updateUserDetailsError } from './updateUserDetailsError'
+import { getUsersError } from './getUsersError'
+import { getUserDetailsError } from './getUserDetailsError'
 
 export {
-  refreshClientsListError,
-  getClientsListError,
-  getClientDetailsError
+  refreshUsersError,
+  putUserRecordError,
+  updateUserDetailsError,
+  getUsersError,
+  getUserDetailsError
 }

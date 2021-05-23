@@ -17,5 +17,7 @@ export const put = async (path, data) => {
     body: JSON.stringify(data)
   })
 
-  return { status: response.status, result: await response.json() }
+  const result = await response.json()
+
+  return { status: response.status, result }
 }

@@ -1,22 +1,23 @@
 import { refreshError } from './'
 
-window[Symbol.for('vue.prototype')].$refreshed = {
-  rsp: false,
-  customers: false,
-  categories: false,
-  tickets: false,
-  services: false
-}
+import { refreshHandler } from '../data-handlers'
 
 export function refreshCallback (event) {
-  const { status, route, action } = event.data
+  const { status, route /*, action, result */ } = event.data
 
-  if (action !== 'refresh') return
+  // console.log('REFRESH CALLBACK:\n', event.data)
 
-  event.stopImmediatePropagation()
   if (status !== 200) return refreshError(route)
 
-  window[Symbol.for('vue.prototype')].$refreshed[route] = true
+  // console.log('REFRESH CALLBACK:\n', status, route, action, result)
+  refreshHandler(route, true)
 
-  window[Symbol.for('vue.instance')].$root.$emit('data-refreshed', { route })
+  const routes = refreshHandler()
+  // console.log(routes)
+  if (!Object.keys(routes).filter(propName => !routes[propName]).length) {
+    window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
+    window[Symbol.for('vue.instance')].$root.$emit('db-refreshing-complete')
+
+    // window[Symbol.for('admin.worker')].removeEventListener('message', refreshCallback)
+  }
 }

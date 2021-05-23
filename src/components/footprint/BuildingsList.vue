@@ -4,6 +4,7 @@
       :headers="headers"
       :items="filteredItems"
       :search="search"
+      :page.sync="page"
       class="transparent"
     >
       <template v-slot:top>
@@ -59,7 +60,7 @@
 <script>
 
 import { getBuildingUniqueCode } from '@/helpers'
-import { buildingStatusHandler } from '@/controllers/data-handlers'
+import { buildingStatusHandler, buildingsListPageNumberHandler } from '@/controllers/data-handlers'
 import { footprintOptions } from '@/configs'
 
 export default {
@@ -68,6 +69,7 @@ export default {
     ready: false,
     buildings: [],
     search: '',
+    page: buildingsListPageNumberHandler(),
     available: footprintOptions,
     selectedBuildingId: undefined,
     selectedBuildingsNumber: null,
@@ -83,6 +85,7 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false }
     ]
   }),
+
   computed: {
     status: {
       get () {
@@ -100,6 +103,13 @@ export default {
       // this.selectedBuildingsNumber = result.length
     }
   },
+
+  watch: {
+    page (val) {
+      buildingsListPageNumberHandler(val)
+    }
+  },
+
   methods: {
     getBuildings (data) {
       console.log(data)
@@ -124,7 +134,7 @@ export default {
     this.$root.$off('buildings-list-received', this.getBuildings)
   },
   mounted () {
-    console.log('BUILDINGS LIST MOUNTED')
+    this.page = buildingsListPageNumberHandler()
     this.$root.$on('buildings-address-list', this.getBuildings)
     this.$root.$on('buildings-data-list', this.getBuildings)
     this.__getBuildingsByStatus(buildingStatusHandler() || 'lit')

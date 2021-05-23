@@ -13,7 +13,7 @@ export const auth = async (login, password) => {
 
   // self.postMessage({ status: 300, action: 'password hash', password, result: hashResult })
 
-  const { status, result: encryptResult } = encrypt(JSON.stringify({ login, password: hashResult }))
+  const { status, result: encryptResult } = await encrypt(JSON.stringify({ login, password: hashResult }))
 
   if (status !== 200) return authError(status)
 

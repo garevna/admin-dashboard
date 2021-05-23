@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mt-12">
     <v-navigation-drawer
       app
       permanent
@@ -34,6 +34,7 @@
             v-for="child in item.children"
             :key="child.title"
             class="clickable"
+            :disabled="$route.name === child.route"
             @click="jumpTo(child)"
           >
             <v-list-item-content>
@@ -70,6 +71,7 @@ export default {
   }),
   methods: {
     jumpTo (item) {
+      if (this.$route.name === item.route) return
       item.route && this.$router.push({ name: item.route })
     }
   },
@@ -90,7 +92,7 @@ export default {
   background: #9007;
 }
 .v-application--is-ltr .v-list-group--no-action > .v-list-group__items > .v-list-item {
-  padding-left: 48px!important;
+  padding-left: 32px!important;
   min-height: 24px!important;
   max-height: 32px;
 }
