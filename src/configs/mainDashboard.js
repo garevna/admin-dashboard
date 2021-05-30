@@ -11,16 +11,16 @@ export const mainDashboard = [
           change: ['Account_manager', 'SuperAdmin'],
           read: ['View_only']
         }
+      },
+      {
+        title: 'New RSP',
+        route: 'leads-request',
+        icon: 'mdi-account-plus',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
       }
-      // {
-      //   title: 'New RSP',
-      //   route: 'leads-request',
-      //   icon: 'mdi-account-plus',
-      //   access: {
-      //     change: ['Account_manager', 'SuperAdmin'],
-      //     read: ['View_only']
-      //   }
-      // }
     ]
   },
   {

@@ -1,20 +1,20 @@
 <template>
   <v-card flat class="transparent pb-12 px-12" v-if="ready">
+    <v-card-title>
+      Leads requests
+    </v-card-title>
     <v-data-table
       :headers="headers"
       :items="requests"
       :search="search"
     >
       <template v-slot:item.reject="{ item }">
-        <!-- <v-btn outlined @click="reject(item)" color="primary"> -->
           <v-icon
             small
             color="#888"
             class="table-icon-button"
             @click="reject(item)"
           > mdi-trash-can </v-icon>
-          <!-- Reject -->
-        <!-- </v-btn> -->
       </template>
 
       <template v-slot:item.confirm="{ item }">
@@ -75,21 +75,33 @@ export default {
       this.requests = data
       this.ready = true
     },
+    edit (item) {
+
+    },
     confirm (request) {
       this.__confirmRegistrationRequest(request._id)
     },
     reject (request) {
-      this.__rejectRegistrationRequest(request._id)
+      this.$root.$emit('open-confirmation-popup', {
+        title: 'Reject leads request',
+        message: 'Are you sure you wish to reject this request?',
+        source: request._id
+      })
+    },
+
+    rejectConfirmed (id) {
+      this.__rejectRegistrationRequest(id)
     }
   },
 
   beforeMount () {
-    console.log(this.__getRegistrationRequests)
+    this.$root.$on('operation-confirmed', this.rejectConfirmed)
     this.$root.$on('registration-requests-received', this.getData)
     this.__getRegistrationRequests()
   },
 
   beforeDestroy () {
+    this.$root.$off('operation-confirmed', this.rejectConfirmed)
     this.$root.$off('registration-requests-received', this.getData)
   }
 }
