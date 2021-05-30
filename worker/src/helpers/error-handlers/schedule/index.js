@@ -1,13 +1,15 @@
 import { refreshScheduleError } from './refreshScheduleError'
 import { getScheduleError } from './getScheduleError'
-import { updateScheduleError } from './updateScheduleError'
+import { updateScheduleRecordError } from './updateScheduleRecordError'
 import { updateStatusError } from './updateStatusError'
 import { putScheduleRecordError } from './putScheduleRecordError'
+import { deleteScheduleRecordError } from './deleteScheduleRecordError'
 
 export {
   refreshScheduleError,
   getScheduleError,
-  updateScheduleError,
+  updateScheduleRecordError,
   updateStatusError,
-  putScheduleRecordError
+  putScheduleRecordError,
+  deleteScheduleRecordError
 }

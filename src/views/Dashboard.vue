@@ -70,13 +70,25 @@ export default {
     items: mainDashboard
   }),
   methods: {
+    // pageOfCustomersReceived (data) {
+    //   console.log('CUSTOMERS: PAGE 1 RECEIVED\n', data)
+    // },
     jumpTo (item) {
       if (this.$route.name === item.route) return
       item.route && this.$router.push({ name: item.route })
     }
   },
+
+  beforeDestroy () {
+    // this.$root.$off('page-of-customers-received', this.pageOfCustomersReceived)
+  },
+
   mounted () {
-    console.log(roleHandler())
+    // this.$root.$on('page-of-customers-received', this.pageOfCustomersReceived)
+    // this.__getCustomersByPageNumber(1)
+
+    this.__updateScheduleLots()
+
     if (!roleHandler()) this.$router.push({ name: 'home' })
     this.__refreshServices()
   }

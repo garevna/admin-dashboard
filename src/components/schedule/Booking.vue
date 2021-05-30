@@ -1,62 +1,77 @@
 <template>
   <v-container>
     <v-card flat class="transparent mx-auto" max-width="900">
-      <table width="100%">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Customer unique code</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="record of records" :key="record._id">
-            <td>{{ new Date(record.modified).toDateString() }}</td>
-            <td>
-              <v-btn text @click="showCustomerDetails(record)">
-                {{ record.uniqueCode || record.customerId }}
-              </v-btn>
-            </td>
-            <td>
-              <v-icon :color="getIcon(record.status).color" small class="mr-1">
-                {{ getIcon(record.status).icon }}
-              </v-icon>
-              <v-menu offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    text
-                    color="primary"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    {{ record.status }}
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item @click="changeRecordStatus(record, 'Awaiting for scheduling')">
-                    <v-list-item-title>
-                      Awaiting for scheduling
-                    </v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="changeRecordStatus(record, 'Unable to connect')">
-                    <v-list-item-title>
-                      Unable to connect
-                    </v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-              <!-- <v-btn text @click="changeRecordStatus(record)">
+      <v-expansion-panels v-model="panel" multiple>
+        <v-expansion-panel v-for="(requests, date) in records" :key="date">
+          <v-expansion-panel-header>
+            <b>{{ date }}</b>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <table width="100%">
+              <thead>
+                <tr>
+                  <th>Customer unique code</th>
+                  <th>Service name</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
 
-              </v-btn> -->
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <tbody>
+                <tr v-for="record of requests" :key="record._id">
+                  <td>
+                    <v-btn text @click="showCustomerDetails(record.customer)">
+                      <v-icon small>mdi-account</v-icon>
+                      {{ record.customer.uniqueCode }}
+                    </v-btn>
+                  </td>
+                  <td>
+                    <p><small>{{ record.serviceName }}</small></p>
+                  </td>
+                  <td>
+                      <v-icon :color="getIcon(record.status).color" small class="mr-1">
+                        {{ getIcon(record.status).icon }}
+                      </v-icon>
+                      <v-menu offset-y>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            text
+                            small
+                            color="primary"
+                            v-bind="attrs"
+                            v-on="on"
+                            :disabled="record.status === 'Awaiting for scheduling'"
+                          >
+                            {{ record.status }}
+                          </v-btn>
+                        </template>
+                        <v-list>
+                          <v-list-item
+                            v-if="record.status === 'Awaiting for connection' || record.status === 'Unable to connect'"
+                            @click="changeRecordStatus(record, 'Awaiting for scheduling')"
+                          >
+                            <v-list-item-title>
+                              Awaiting for scheduling
+                            </v-list-item-title>
+                          </v-list-item>
+
+                          <v-list-item
+                            v-if="record.status === 'Awaiting for connection'"
+                            @click="changeRecordStatus(record, 'Unable to connect')"
+                          >
+                            <v-list-item-title>
+                              Unable to connect
+                            </v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-card>
-    <!-- <v-text-field
-      v-model="trip.name"
-      placeholder="Caribbean Cruise"
-    ></v-text-field> -->
   </v-container>
 </template>
 
@@ -64,39 +79,41 @@
 
 export default {
   name: 'Booking',
-  // props: ['weekNumber'],
+
   data: () => ({
+    panel: [],
     records: null,
     selected: null,
     status: null
   }),
-  computed: {
-    weekStartDate () {
-      return this.getWeekStartDateByWeekNumber(this.weekNumber)
-    },
-    weekEndDate () {
-      return this.getWeekEndDateByWeekNumber(this.weekNumber)
-    }
-  },
+
   methods: {
     getData (data) {
       console.log('============ BOOKING REQUESTS: =============\n', data)
       // this.records = data.filter(record => record.status === 'Awaiting for connection')
       this.records = data
     },
+
+    showCustomerDetails (customer) {
+      this.$root.$emit('open-customer-info-popup', {
+        name: `${customer.firstName} ${customer.lastName}`,
+        address: `${customer.apartmentNumber}/${customer.address}`,
+        phone: customer.phoneMobile || customer.phoneWork
+      })
+    },
+
     updated (event) {
       console.log(event.data)
       this.selected.status = this.status
     },
-    showCustomerDetails (record) {
-      //
-    },
+
     changeRecordStatus (record, status) {
+      console.log(record)
       this.selected = record
       this.status = status
-      const { _id, customerId, serviceId } = record
-      this.__changeServiceDeliveryStatus(_id, { customerId, serviceId, status })
+      this.__changeServiceDeliveryStatus(Object.assign(record, { status }))
     },
+
     getIcon (status) {
       const icons = {
         Active: 'mdi-check-network-outline',
@@ -139,5 +156,8 @@ export default {
 th {
   text-align: center;
   background: #dedede;
+}
+small {
+  font-size: 12px;
 }
 </style>

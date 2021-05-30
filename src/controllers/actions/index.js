@@ -16,7 +16,11 @@ import {
 import {
   refreshResellersList,
   getResellersList,
-  getResellerDetails
+  getResellerDetails,
+  getRegistrationRequests,
+  getRegistrationRequestDetails,
+  confirmRegistrationRequest,
+  rejectRegistrationRequest
 } from './rsp'
 
 import {
@@ -33,7 +37,8 @@ import {
   getCustomers,
   postCustomer,
   putCustomer,
-  refreshCustomers
+  refreshCustomers,
+  getCustomersByPageNumber
 } from './customers'
 
 import {
@@ -57,7 +62,11 @@ import {
 import {
   getScheduleWeekData,
   getBookingRequests,
-  changeServiceDeliveryStatus
+  changeServiceDeliveryStatus,
+  getScheduleLots,
+  updateScheduleLots,
+  putRecordToJobQueue,
+  activateService
 } from './schedule'
 
 export {
@@ -75,6 +84,10 @@ export {
   refreshResellersList,
   refreshCustomers,
   refreshTickets,
+  getRegistrationRequests,
+  getRegistrationRequestDetails,
+  confirmRegistrationRequest,
+  rejectRegistrationRequest,
 
   getResellersList,
   getResellerDetails,
@@ -84,6 +97,7 @@ export {
   putCustomer,
   postCustomer,
   deleteCustomer,
+  getCustomersByPageNumber,
 
   refreshServices,
   getListOfServices,
@@ -106,5 +120,9 @@ export {
 
   getScheduleWeekData,
   getBookingRequests,
-  changeServiceDeliveryStatus
+  changeServiceDeliveryStatus,
+  getScheduleLots,
+  updateScheduleLots,
+  putRecordToJobQueue,
+  activateService
 }

@@ -32,25 +32,23 @@ export default {
     phone: '',
     dialog: false
   }),
-  // computed: {
-  //   dialog: {
-  //     get () {
-  //       return this.message
-  //     },
-  //     set (val) {
-  //       !val && this.resetMessage()
-  //     }
-  //   }
-  // },
-  mounted () {
-    this.$root.$on('open-customer-info-popup', function (data) {
-      console.log('CUSTOMER INFO POPUP\n', data)
+
+  methods: {
+    open (data) {
       const { name, address, phone } = data
       this.name = name
       this.address = address
       this.phone = phone
       this.dialog = true
-    }.bind(this))
+    }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('open-customer-info-popup', this.open)
+  },
+
+  mounted () {
+    this.$root.$on('open-customer-info-popup', this.open)
   }
 }
 </script>

@@ -11,22 +11,6 @@ import {
   sendPasswordResetCode
 } from './admin'
 
-import {
-  getWeekDay,
-  getWeekNumber,
-  getWeekStartDate,
-  getWeekEndDate,
-
-  getFormattedISODate,
-  getFormattedDate,
-
-  getNextWeekDate,
-  getPrevWeekDate,
-
-  getWeekStartDateByWeekNumber,
-  getWeekEndDateByWeekNumber
-} from 'garevna-date-functions'
-
 export {
   testDBVersion,
 
@@ -38,16 +22,5 @@ export {
   passwordReset,
   sendPasswordResetCode,
   changePassword,
-  passwordChange,
-
-  getWeekNumber,
-  getWeekDay,
-  getWeekStartDate,
-  getWeekEndDate,
-  getNextWeekDate,
-  getPrevWeekDate,
-  getFormattedISODate,
-  getFormattedDate,
-  getWeekStartDateByWeekNumber,
-  getWeekEndDateByWeekNumber
+  passwordChange
 }

@@ -8,11 +8,11 @@ export const createNewService = async function (id, data) {
 
   const service = Object.assign({}, serviceSchema, data)
 
-  self.postMessage({ status: 300, route, action, sourceData: service })
+  // self.postMessage({ status: 300, route, action, sourceData: service })
 
   const { status, result } = await post('service', service)
 
-  self.postMessage({ status: 300, route, action, result })
+  // self.postMessage({ status: 300, route, action, result })
 
   if (status !== 200) return postServiceDetailsError(status)
 

@@ -3,5 +3,6 @@ export const customers = {
   list: 'customers-list-received',
   get: 'customer-data-received',
   post: 'customer-created',
-  put: 'customer-updated'
+  put: 'customer-updated',
+  pagination: 'page-of-customers-received'
 }

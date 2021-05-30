@@ -30,6 +30,7 @@ import {
   deleteCustomerError,
   getCustomerDataError,
   getCustomersListError,
+  getCustomerServiceError,
   postNewCustomerError,
   putCustomerDataError,
   refreshCustomersListError
@@ -38,9 +39,10 @@ import {
 import {
   refreshScheduleError,
   getScheduleError,
-  updateScheduleError,
+  updateScheduleRecordError,
   updateStatusError,
-  putScheduleRecordError
+  putScheduleRecordError,
+  deleteScheduleRecordError
 } from './schedule'
 
 export {
@@ -68,6 +70,7 @@ export {
 
   deleteCustomerError,
   getCustomerDataError,
+  getCustomerServiceError,
   getCustomersListError,
   postNewCustomerError,
   putCustomerDataError,
@@ -75,7 +78,8 @@ export {
 
   refreshScheduleError,
   getScheduleError,
-  updateScheduleError,
+  updateScheduleRecordError,
   updateStatusError,
-  putScheduleRecordError
+  putScheduleRecordError,
+  deleteScheduleRecordError
 }

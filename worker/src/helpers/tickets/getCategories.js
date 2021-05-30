@@ -1,17 +1,8 @@
-import { getRecordByKey } from '../db'
-import { getCategoriesError } from '../error-handlers'
+import { ticketCategories } from '../data-handlers'
 
-export const getCategories = async function () {
-  const [route, action] = ['categories', 'get']
-
-  const { status, result } = await getRecordByKey('categories', 'ticketsCategories')
-
-  if (status !== 200) getCategoriesError(status)
-
-  return {
-    status,
-    result,
-    route,
-    action
-  }
-}
+export const getCategories = async () => ({
+  status: 200,
+  result: ticketCategories(),
+  route: 'categories',
+  action: 'get'
+})

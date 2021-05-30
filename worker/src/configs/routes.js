@@ -28,10 +28,15 @@ export const routes = {
   rsp: {
     refresh: rspController.refresh,
     list: rspController.list,
-    get: rspController.get
+    get: rspController.get,
+    registration: rspController.registrationRequests,
+    confirm: rspController.confirmRegistration,
+    reject: rspController.rejectRegistration,
+    'registration-request-details': rspController.registrationRequestDetails
   },
   customers: {
     refresh: customersController.getFromRemote,
+    pagination: customersController.refreshByPageNumber,
     list: customersController.getAllCustomers,
     get: customersController.getCustomer,
     post: customersController.createCustomer,
@@ -65,10 +70,16 @@ export const routes = {
     refresh: scheduleController.refresh,
     get: scheduleController.getFullSchedule,
     week: scheduleController.getByWeekNumber,
-    update: scheduleController.updateRecord
+    update: scheduleController.updateRecord,
+    job: scheduleController.putRecordToJobQueue,
+    activate: scheduleController.activateService
   },
   booking: {
     get: scheduleController.getBookingList,
-    update: scheduleController.updateStatus
+    update: scheduleController.updateRecord
+  },
+  lots: {
+    get: scheduleController.getLots,
+    update: scheduleController.updateLots
   }
 }

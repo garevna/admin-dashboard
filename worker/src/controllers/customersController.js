@@ -1,5 +1,6 @@
 import {
   getFromRemoteServer,
+  refreshWithPagination,
   getAllCustomers,
   getCustomer,
   createCustomer,
@@ -10,6 +11,10 @@ import {
 class CustomersController {
   async getFromRemote () {
     self.postMessage(await getFromRemoteServer())
+  }
+
+  async refreshByPageNumber (pageNumber) {
+    self.postMessage(await refreshWithPagination(pageNumber))
   }
 
   async getAllCustomers () {

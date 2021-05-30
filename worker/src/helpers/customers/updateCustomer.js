@@ -1,27 +1,21 @@
-import { getRecordByKey, putRecordByKey } from '../db'
-import { put } from '../AJAX'
-import { getCustomerDataError, putCustomerDataError } from '../error-handlers'
+import { getCustomer, putCustomer } from './'
 
-export const updateCustomer = async function (id, data) {
+export const updateCustomer = async function (customerId, data) {
   const [route, action] = ['customers', 'update']
 
-  const { status: customerStatus, result: customer } = await getRecordByKey('customers', id)
+  let response = await getCustomer('customers', customerId)
 
-  if (customerStatus !== 200) return getCustomerDataError(customerStatus)
+  if (response.status !== 200) return response
 
-  const response = Object.assign({}, customer, data)
+  const customer = Object.assign({}, response.result, data)
 
-  if ((await putRecordByKey('customers', id, response)).status !== 200) return putCustomerDataError(400)
+  response = await putCustomer(customerId, customer)
 
-  const { status, result } = await put(`customer/${id}`, response)
-
-  if (status !== 200) return putCustomerDataError(status)
-
-  return {
-    status,
+  return response.status !== 200 ? response : {
+    status: response.status,
     route,
     action,
-    result,
+    result: customer,
     message: true,
     messageType: 'Customer details',
     messageText: 'Customer details were succesfully updated'

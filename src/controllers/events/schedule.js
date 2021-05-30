@@ -1,7 +1,9 @@
 export const schedule = {
   refresh: 'schedule-refreshed',
   get: 'schedule-week-data-received',
-  put: 'schedule-week-data-updated'
+  put: 'schedule-week-data-updated',
+  job: 'moved-to-job-queue',
+  activate: 'service-activated'
 }
 
 export const booking = {

@@ -1,100 +1,41 @@
 <template>
   <v-card flat class="transparent mx-auto py-5">
-    <v-row justify="center">
-      <v-col cols="12" md="4" v-if="categories">
-        <v-select
-          :items="categories"
-          v-model="category"
-          label="Ticket category"
-          outlined
-          dense
-          color="#900"
-          style="width: 270px"
-        ></v-select>
-      </v-col>
+    <v-card-text>
+        Ticket category: <b>{{ category }}</b>
+    </v-card-text>
 
-      <v-col cols="12" md="4">
-        <v-select
-          :items="severities"
-          v-model="severity"
-          label="Severity"
-          outlined
-          dense
-          color="#900"
-          style="width: 270px"
-        ></v-select>
-      </v-col>
+    <v-card-text>
+      Severity: <b>{{ severity }}</b>
+    </v-card-text>
 
-      <v-col cols="12" md="4">
-        <v-select
-          :items="priorities"
-          v-model="priority"
-          label="Priority"
-          outlined
-          dense
-          color="#900"
-          style="width: 270px"
-        ></v-select>
-      </v-col>
+    <v-card-text>
+        Priority: <b>{{ priority }}</b>
+    </v-card-text>
 
-    </v-row>
+    <v-card-text>
+      Subject: <b>{{ subject }}</b>
+    </v-card-text>
 
-    <v-row>
-      <v-col cols="3" class="text-right">
-        <p>Subject</p>
-      </v-col>
-      <v-col cols="9">
-        <v-text-field
-          v-model="subject"
-          label="Subject"
-          outlined
-          hide-details
-        />
-      </v-col>
-    </v-row>
+    <v-card-text v-if="category === 'Customer issue' || category === 'Service issue'">
+      Customer: <b>{{ customer }}</b>
+    </v-card-text>
 
-    <v-row v-if="category === 'Customer issue' || category === 'Service issue'">
-      <v-col cols="3" class="text-right">
-        <p>Customer</p>
-      </v-col>
-      <v-col cols="9" v-if="customersList">
-        <v-select
-          :items="customersList"
-          v-model="customer"
-          outlined
-          chips
-        />
-      </v-col>
-    </v-row>
+    <v-card-text>
+      Details <b>{{ details }}</b>
+    </v-card-text>
 
-    <v-row>
-      <v-textarea
-        v-model="details"
-        label="Details"
-        outlined
-      />
-    </v-row>
-
-    <v-row>
-      <v-col cols="12" md="6" class="text-right">
-        <p><small>Contact number of the responsible person</small></p>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-text-field
-          v-model="contactPhone"
-          label="Phone"
-          outlined
-          dense
-          persistent-hint
-          hint="* For urgent matters only"
-        />
-      </v-col>
-    </v-row>
+    <v-card-text v-if="contactPhone">
+      Contact number of the responsible person <b>{{ contactPhone }}</b>
+    </v-card-text>
 
     <v-row class="mt-12">
-      <v-btn outlined color="primary" @click="$emit('update:edit', false)">Back to tickets list</v-btn>
+      <v-btn outlined small class="mr-4" color="primary" @click="$emit('update:edit', false)">
+        Back to tickets list
+      </v-btn>
       <v-spacer />
-      <v-btn outlined color="primary" @click="save">Update/save details</v-btn>
+      <v-btn outlined small color="primary" @click="save">
+        Update/save details
+      </v-btn>
     </v-row>
   </v-card>
 </template>

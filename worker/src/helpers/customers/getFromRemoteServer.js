@@ -1,26 +1,22 @@
 import { get } from '../AJAX'
-import { /* clearStore, */ putRecordByKey } from '../db'
+import { clearStore, putRecordByKey } from '../db'
 import { refreshCustomersListError } from '../error-handlers'
 
 import { getResellersList } from '../rsp'
 
-import { getAllCustomers } from './'
-
 export const getFromRemoteServer = async function () {
   const [route, action] = ['customers', 'refresh']
 
-  const { status: rspStatus, result: resellers } = await getResellersList()
+  const { status, result: resellers } = await getResellersList()
 
-  // self.postMessage({ status: 300, route, action, result: { route: 'rsp', action: 'list', status: rspStatus, result: resellers } })
+  if (status !== 200) return refreshCustomersListError(status)
 
-  if (rspStatus !== 200) return refreshCustomersListError(rspStatus)
-
-  // clearStore('customers')
+  clearStore('customers')
 
   for (const rsp of resellers) {
     if (rsp.userInfo.role !== 'RSP') continue
     const { status, result } = await get(`customer/admin/${rsp._id}`)
-    // self.postMessage({ status: 300, rsp: rsp._id, customers: { status, result } })
+
     if (status !== 200 || !result) {
       self.postMessage(refreshCustomersListError(status))
       continue
@@ -32,7 +28,5 @@ export const getFromRemoteServer = async function () {
     }
   }
 
-  const { result: getResult } = await getAllCustomers()
-
-  return { status: 200, route, action, result: getResult }
+  return { status: 200, route, action }
 }

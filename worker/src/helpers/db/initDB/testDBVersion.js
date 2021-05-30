@@ -9,17 +9,17 @@ export const testDBVersion = () => new Promise((resolve) => Object.assign(indexe
   onupgradeneeded: (event) => {
     const { result: db, transaction } = event.target
 
-    self.postMessage({ status: 300, message: 'TEST DB VERSION: upgrade needed event ', version: db.version })
+    // self.postMessage({ status: 300, message: 'TEST DB VERSION: upgrade needed event ', version: db.version })
 
     upgradeDB(db, transaction)
 
-    self.postMessage({ status: 300, message: 'TEST DB VERSION: upgraded ', version: db.version })
+    // self.postMessage({ status: 300, message: 'TEST DB VERSION: upgraded ', version: db.version })
 
     resolve({ status: 200 })
   },
 
   onsuccess: event => {
-    self.postMessage({ status: 300, message: 'TEST DB VERSION: success event ', version: dbVersionHandler() })
+    // self.postMessage({ status: 300, message: 'TEST DB VERSION: success event ', version: dbVersionHandler() })
 
     const { result: db } = event.target
 

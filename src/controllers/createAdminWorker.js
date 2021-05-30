@@ -16,6 +16,11 @@ export function createAdminWorker () {
   window[Symbol.for('vue.prototype')].__worker = window[Symbol.for('admin.worker')]
 
   window[Symbol.for('admin.worker')].onmessage = function (event) {
+    if (!event.data) {
+      event.stopImmediatePropagation()
+      return console.warn('Message event error: event.data undefined')
+    }
+    // console.log('ADMIN WORKER: EVENT\n', event)
     if (event.data.status === 300) {
       event.stopImmediatePropagation()
       return console.log('WORKER DEBUGGING MESSAGE:\n', event.data)
@@ -41,7 +46,9 @@ export function createAdminWorker () {
     if (status === 200) {
       window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
       console.log('ROUTE: ', route, ' ACTION: ', action)
-      console.log(adminWorkerEvents)
+      if (!adminWorkerEvents[route] || !adminWorkerEvents[route][action]) {
+        return console.log(event.data)
+      }
       const eventName = adminWorkerEvents[route][action]
       console.log(eventName)
       if (eventName) {

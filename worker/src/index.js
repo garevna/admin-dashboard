@@ -2,6 +2,26 @@ import { routes } from './configs'
 
 import { testDBVersion } from './helpers'
 
+import {
+  getWeekNumber,
+  getWeekStartDate,
+  getWeekEndDate,
+
+  getWeekStartDateByWeekNumber,
+  getWeekEndDateByWeekNumber,
+  getWeekDatesByWeekNumber
+} from 'garevna-date-functions'
+
+Object.assign(self, {
+  getWeekNumber,
+  getWeekStartDate,
+  getWeekEndDate,
+
+  getWeekStartDateByWeekNumber,
+  getWeekEndDateByWeekNumber,
+  getWeekDatesByWeekNumber
+})
+
 testDBVersion()
 
 self.initialized = false

@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" max-width="480px" class="pa-4">
     <v-card flat>
-      <v-toolbar dark dense color="buttons">
+      <v-toolbar dark dense color="#900">
         <v-icon class="mr-4"> $error </v-icon>
         <v-toolbar-title> Error </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -21,7 +21,7 @@
 
 <script>
 
-import { errorMessageHandler } from '@/controllers/data-handlers'
+// import { errorMessageHandler } from '@/controllers/data-handlers'
 
 export default {
   name: 'ErrorMessage',
@@ -45,20 +45,26 @@ export default {
       this.error = false
       this.errorType = ''
       this.errorMessage = ''
-    }
-  },
-  mounted () {
-    this.$root.$on('open-error-popup', function (data) {
-      const { errorType, errorMessage } = errorMessageHandler()
-      if (errorType === data.errorType && errorMessage === data.errorMessage) return this.resetError()
-      errorMessageHandler({
-        errorType: data.errorType,
-        errorMessage: data.errorMessage
-      })
+    },
+    open (data) {
+      // const { errorType, errorMessage } = errorMessageHandler()
+      // if (errorType === data.errorType && errorMessage === data.errorMessage) return this.resetError()
+      // errorMessageHandler({
+      //   errorType: data.errorType,
+      //   errorMessage: data.errorMessage
+      // })
       this.error = true
       this.errorType = data.errorType
       this.errorMessage = data.errorMessage
-    }.bind(this))
+    }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('open-error-popup', this.open)
+  },
+
+  mounted () {
+    this.$root.$on('open-error-popup', this.open)
   }
 }
 </script>

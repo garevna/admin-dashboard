@@ -34,6 +34,16 @@ const routes = [
         component: () => import(/* webpackChunkName: 'rsp-list' */ '@/components/rsp/ListOfResellers.vue')
       },
       {
+        path: '/leads-request',
+        name: 'leads-request',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'leads-request') next(false)
+          next()
+        },
+        component: () => import(/* webpackChunkName: 'leads-request' */ '@/components/rsp/RegistrationRequests.vue')
+      },
+      {
         path: '/services-list',
         name: 'services-list',
         beforeEnter (to, from, next) {
@@ -63,6 +73,16 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'service-details' */ '@/components/services/ServiceDetails.vue'),
         props: true
+      },
+      {
+        path: '/customers',
+        name: 'customers',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'customers') next(false)
+          next()
+        },
+        component: () => import(/* webpackChunkName: 'customers-list' */ '@/components/customers/CustomersList.vue')
       },
       {
         path: '/footprint',
@@ -114,6 +134,11 @@ const routes = [
         path: '/schedule',
         name: 'schedule',
         component: () => import(/* webpackChunkName: 'schedule' */ '@/components/schedule/InstallationSchedule.vue')
+      },
+      {
+        path: '/tickets',
+        name: 'tickets',
+        component: () => import(/* webpackChunkName: 'tickets' */ '@/components/tickets/Tickets.vue')
       },
       {
         path: '/ticket-categories',

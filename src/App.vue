@@ -51,6 +51,7 @@
     <error-message />
     <simple-message />
     <customer-info />
+    <confirmation-popup />
   </v-app>
 </template>
 
@@ -84,34 +85,51 @@ export default {
     }
   },
   methods: {
-    // errorHandler (event) {
-    //   const { errorType, errorMessage } = event.data
-    //   this.$root.$emit('open-error-popup', { errorType, errorMessage })
-    // },
-    // messageHandler (event) {
-    //   const { messageType, messageText } = event.data
-    //   this.$root.$emit('open-message-popup', { messageType, messageText })
-    // }
-  },
-  mounted () {
-    this.$root.$on('app-is-ready', function (event) {
-      this.ready = true
-    }.bind(this))
+    errorHandler (event) {
+      const { errorType, errorMessage } = event.data
+      this.$root.$emit('open-error-popup', { errorType, errorMessage })
+    },
 
-    this.$root.$on('db-refreshing', function (event) {
+    messageHandler (event) {
+      const { messageType, messageText } = event.data
+      this.$root.$emit('open-message-popup', { messageType, messageText })
+    },
+
+    setReady () {
+      this.ready = true
+    },
+
+    dataRefreshing () {
       this.snackbar = true
       this.message = 'Refreshing the data'
-    }.bind(this))
+    },
 
-    this.$root.$on('db-refreshing-complete', function (event) {
+    dataRefreshed () {
       this.snackbar = false
       this.message = 'Refreshing the data complete'
-    }.bind(this))
+    },
 
-    this.$root.$on('progress-event', function (progress) {
+    progressEventCallback (progress) {
       this.progress = progress
-    }.bind(this))
+    }
   },
+
+  beforeDestroy () {
+    this.$root.$off('page-of-customers-received', this.pageOfCustomersReceived)
+
+    this.$root.$off('app-is-ready', this.setReady)
+    this.$root.$off('db-refreshing', this.dataRefreshing)
+    this.$root.$off('db-refreshing-complete', this.dataRefreshed)
+    this.$root.$off('progress-event', this.progressEventCallback)
+  },
+
+  mounted () {
+    this.$root.$on('app-is-ready', this.setReady)
+    this.$root.$on('db-refreshing', this.dataRefreshing)
+    this.$root.$on('db-refreshing-complete', this.dataRefreshed)
+    this.$root.$on('progress-event', this.progressEventCallback)
+  },
+
   errorCaptured (err, instance, info) {
     console.warn('ERROR:\n', err, info, instance.$options._componentTag)
     return false

@@ -21,7 +21,7 @@
 
 <script>
 
-import { messageHandler } from '@/controllers/data-handlers'
+// import { messageHandler } from '@/controllers/data-handlers'
 
 export default {
   name: 'MessagePopup',
@@ -45,20 +45,26 @@ export default {
       this.message = false
       this.messageType = ''
       this.messageText = ''
-    }
-  },
-  mounted () {
-    this.$root.$on('open-message-popup', function (data) {
-      const { messageType, messageText } = messageHandler()
-      if (messageType === data.messageType && messageText === data.messageText) return this.resetMessage()
-      messageHandler({
-        messageType: data.messageType,
-        messageText: data.messageText
-      })
+    },
+    open (data) {
+      // const { messageType, messageText } = messageHandler()
+      // if (messageType === data.messageType && messageText === data.messageText) return this.resetMessage()
+      // messageHandler({
+      //   messageType: data.messageType,
+      //   messageText: data.messageText
+      // })
       this.message = true
       this.messageType = data.messageType
       this.messageText = data.messageText
-    }.bind(this))
+    }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('open-message-popup', this.open)
+  },
+
+  mounted () {
+    this.$root.$on('open-message-popup', this.open)
   }
 }
 </script>

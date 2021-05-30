@@ -1,0 +1,29 @@
+import { put } from '../AJAX'
+import { getScheduleLots, getInstallationSchedule } from './'
+
+export const updateScheduleLots = async function () {
+  let { settings } = (await getScheduleLots()).result
+  if (!settings) settings = [3, 3, 3, 3, 3, 3, 3]
+
+  const currentWeek = self.getWeekNumber(new Date())
+  const lots = { settings }
+
+  const response = await getInstallationSchedule()
+
+  if (response.status !== 200) return response
+
+  const schedule = response.result
+
+  for (const weekNumber of [currentWeek, currentWeek + 1, currentWeek + 2, currentWeek + 3]) {
+    const dates = self.getWeekDatesByWeekNumber(weekNumber)
+    dates.forEach((date, index) => {
+      lots[date] = { am: true, pm: true }
+      if (schedule[weekNumber] && schedule[weekNumber][date]) {
+        lots[date].am = schedule[weekNumber][date].am.length < settings[index]
+        lots[date].pm = schedule[weekNumber][date].pm.length < settings[index]
+      }
+    })
+  }
+
+  return Object.assign(await put('slot', lots), { route: 'lots', action: 'put' })
+}

@@ -1,12 +1,13 @@
 import {
   refreshSchedule,
+  getBooking,
   getSchedule,
-  // getScheduleByWeekNumber,
-  updateSchedule
-  // updateStatus
+  getScheduleLots,
+  updateScheduleRecord,
+  updateScheduleLots,
+  moveRecordToJobQueue,
+  setRecordStatusActive
 } from '../helpers/schedule'
-
-import { getBooking } from '../helpers/db/schedule'
 
 class ScheduleController {
   async refresh () {
@@ -21,13 +22,29 @@ class ScheduleController {
     self.postMessage(await getSchedule())
   }
 
+  async getLots () {
+    self.postMessage(await getScheduleLots())
+  }
+
+  async updateLots (data) {
+    self.postMessage(await updateScheduleLots(data))
+  }
+
   // async getByWeekNumber (request) {
   //   const { key: weekNumber } = request
   //   self.postMessage(await getScheduleByWeekNumber(weekNumber))
   // }
 
-  async updateRecord (id, data) {
-    self.postMessage(await updateSchedule(id, data))
+  async updateRecord (record) {
+    self.postMessage(await updateScheduleRecord(record))
+  }
+
+  async putRecordToJobQueue (record) {
+    self.postMessage(await moveRecordToJobQueue(record))
+  }
+
+  async activateService (data) {
+    self.postMessage(await setRecordStatusActive(data.request))
   }
 }
 

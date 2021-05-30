@@ -1,11 +1,31 @@
 import { refreshSchedule } from './refreshSchedule'
-// import { getScheduleByWeekNumber } from './getScheduleByWeekNumber'
-import { updateSchedule } from './updateSchedule'
+import { getInstallationSchedule } from './getInstallationSchedule'
+
+import { getScheduleLots } from './getScheduleLots'
+import { updateScheduleLots } from './updateScheduleLots'
+
+import { updateScheduleRecord } from './updateScheduleRecord'
+import { removeScheduleRecord } from './removeScheduleRecord'
+
+import { getBooking } from './getBooking'
 import { getSchedule } from './getSchedule'
+
+import { moveRecordToJobQueue } from './moveRecordToJobQueue'
+import { setRecordStatusActive } from './setRecordStatusActive'
 
 export {
   refreshSchedule,
-  // getScheduleByWeekNumber,
+  getBooking,
+  getInstallationSchedule,
+
+  getScheduleLots,
+  updateScheduleLots,
+
   getSchedule,
-  updateSchedule
+
+  updateScheduleRecord,
+  removeScheduleRecord,
+
+  moveRecordToJobQueue,
+  setRecordStatusActive
 }

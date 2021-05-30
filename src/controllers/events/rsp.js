@@ -2,5 +2,6 @@ export const rsp = {
   refresh: 'rsp-data-refreshed',
   list: 'rsp-list-received',
   get: 'rsp-details-received',
-  put: 'rsp-details-updated'
+  put: 'rsp-details-updated',
+  registration: 'registration-requests-received'
 }

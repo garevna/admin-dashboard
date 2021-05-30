@@ -1,7 +1,7 @@
 export const mainDashboard = [
   {
     title: 'RSP',
-    icon: 'mdi-',
+    icon: 'mdi-account',
     children: [
       {
         title: 'RSP list',
@@ -11,16 +11,16 @@ export const mainDashboard = [
           change: ['Account_manager', 'SuperAdmin'],
           read: ['View_only']
         }
-      },
-      {
-        title: 'New RSP',
-        route: 'create-rsp',
-        icon: 'mdi-account-plus',
-        access: {
-          change: ['Account_manager', 'SuperAdmin'],
-          read: ['View_only']
-        }
       }
+      // {
+      //   title: 'New RSP',
+      //   route: 'leads-request',
+      //   icon: 'mdi-account-plus',
+      //   access: {
+      //     change: ['Account_manager', 'SuperAdmin'],
+      //     read: ['View_only']
+      //   }
+      // }
     ]
   },
   {
@@ -34,25 +34,40 @@ export const mainDashboard = [
           change: ['Account_manager', 'SuperAdmin'],
           read: ['View_only']
         }
-      },
-      {
-        title: 'Add new service',
-        route: 'create-new-service',
-        icon: 'mdi-text-box-plus-outline',
-        access: {
-          change: ['Account_manager', 'SuperAdmin'],
-          read: []
-        }
       }
+      // {
+      //   title: 'Add new service',
+      //   route: 'create-new-service',
+      //   icon: 'mdi-text-box-plus-outline',
+      //   access: {
+      //     change: ['Account_manager', 'SuperAdmin'],
+      //     read: []
+      //   }
+      // }
     ]
   },
   {
     title: 'Customers',
-    route: 'customers',
-    access: {
-      change: ['Account_manager', 'SuperAdmin'],
-      read: ['View_only']
-    }
+    children: [
+      {
+        title: 'Customers list',
+        route: 'customers',
+        icon: 'mdi-ballot-outline',
+        access: {
+          change: ['Account_manager', 'SuperAdmin'],
+          read: ['View_only']
+        }
+      }
+      // {
+      //   title: 'Customer details',
+      //   route: 'customer-detals',
+      //   icon: 'mdi-text-box-plus-outline',
+      //   access: {
+      //     change: ['Account_manager', 'SuperAdmin'],
+      //     read: []
+      //   }
+      // }
+    ]
   },
   {
     title: 'Footprint',
@@ -130,7 +145,7 @@ export const mainDashboard = [
     children: [
       {
         title: 'Tickets list',
-        route: 'tickets-list',
+        route: 'tickets',
         icon: 'mdi-ballot-outline',
         access: {
           change: ['Account_manager', 'SuperAdmin'],
