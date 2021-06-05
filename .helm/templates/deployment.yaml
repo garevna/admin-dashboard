@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.image.name }}
+  labels:
+    app: {{ .Values.image.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.image.name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxSurge: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.image.name }}
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry
+      containers:
+        - name: {{ .Values.image.name }}
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 25
+            periodSeconds: 2
+            successThreshold: 1
+            tcpSocket:
+              port: {{ .Values.image.port }}
+            timeoutSeconds: 2
+          ports:
+          - containerPort: {{ .Values.image.port }}
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 25
+            periodSeconds: 2
+            successThreshold: 2
+            tcpSocket:
+              port: {{ .Values.image.port }}
+            timeoutSeconds: 2
+          volumeMounts:
+          {{- range .Values.volumes }}
+            - mountPath: {{ .mountPath }}
+              name: {{ .name }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.image.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.image.resources | nindent 12 }}
+      {{- with .Values.image.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.image.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.image.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.image.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.image.name }}
+spec:
+  ports:
+    - name: http
+      port: {{ .Values.image.port }}
+      protocol: TCP
+      targetPort: {{ .Values.image.port }}
+  selector:
+    app: {{ .Values.image.name }}
+  type: ClusterIP
