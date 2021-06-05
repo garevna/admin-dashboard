@@ -3,7 +3,7 @@ variables:
 
 stages:
   - build
-  - staging
+  - production
 
 include:
   - local: .gitlab/ci/build.gitlab-ci.yml
