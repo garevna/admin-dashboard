@@ -22,6 +22,11 @@ spec:
         - name: gitlab-registry
       containers:
         - name: {{ .Values.image.name }}
+          env:
+          - name: NODE_ENV
+            value: production
+          - name: PORT
+            value: "8080"
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
