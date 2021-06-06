@@ -38,7 +38,7 @@ import {
   postCustomer,
   putCustomer,
   refreshCustomers,
-  getCustomersByPageNumber
+  refreshCustomersWithPagination
 } from './customers'
 
 import {
@@ -97,7 +97,7 @@ export {
   putCustomer,
   postCustomer,
   deleteCustomer,
-  getCustomersByPageNumber,
+  refreshCustomersWithPagination,
 
   refreshServices,
   getListOfServices,

@@ -4,7 +4,7 @@ import { getCustomers } from './getCustomers'
 import { postCustomer } from './postCustomer'
 import { putCustomer } from './putCustomer'
 import { refreshCustomers } from './refreshCustomers'
-import { getCustomersByPageNumber } from './getCustomersByPageNumber'
+import { refreshCustomersWithPagination } from './refreshCustomersWithPagination'
 
 export {
   deleteCustomer,
@@ -13,5 +13,5 @@ export {
   postCustomer,
   putCustomer,
   refreshCustomers,
-  getCustomersByPageNumber
+  refreshCustomersWithPagination
 }

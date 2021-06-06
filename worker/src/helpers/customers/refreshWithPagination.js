@@ -1,40 +1,40 @@
-// import { get } from '../AJAX'
-// import { /* clearStore, */ putRecordByKey } from '../db'
-// import { refreshCustomersListError } from '../error-handlers'
+import { get } from '../AJAX'
+import { /* clearStore, */ putRecordByKey } from '../db'
+import { refreshCustomersListError, refreshUsersError } from '../error-handlers'
 
-// import { getResellersList } from '../rsp'
+import { getResellersList } from '../rsp'
 
 // import { getAllCustomers } from './'
 
-export const refreshWithPagination = async function ({ pageNumber }) {
-  // const [route, action] = ['customers', 'pagination']
-  //
-  // const skip = pageNumber * 5
-  //
-  // const response = await getResellersList()
-  //
-  // // self.postMessage({ status: 300, message: 'PAGINATION', page: pageNumber, result: response })
-  //
-  // if (response.status !== 200) return refreshCustomersListError(response.status)
-  //
-  // // clearStore('customers')
-  //
-  // for (const rsp of response.result) {
-  //   if (rsp.userInfo.role !== 'RSP') continue
-  //   const { status, result } = await get(`customer?skip=${skip}&limit=5`)
-  //   // self.postMessage({ status: 300, rsp: rsp._id, customers: { status, result } })
-  //   if (status !== 200 || !result) {
-  //     self.postMessage(refreshCustomersListError(status))
-  //     continue
-  //   }
-  //   for (const customer of result) {
-  //     const { _id } = customer
-  //     const { status } = await putRecordByKey('customers', _id, customer)
-  //     if (status !== 200) refreshCustomersListError(status)
-  //   }
-  // }
-  //
-  // const { result } = await getAllCustomers()
-  //
-  // return { status: 200, route, action, result }
+export const refreshWithPagination = async function () {
+  const [route, action] = ['customers', 'pagination']
+
+  const response = await getResellersList()
+
+  if (response.status !== 200) return refreshUsersError(response.status)
+
+  for (const rsp of response.result) {
+    self.postMessage({ status: 300, message: 'RSP', id: rsp._id })
+    let currentPage = 0
+    let done = false
+    while (!done) {
+      const { status, result } = await get(`customer/admin/${rsp._id}?skip=${currentPage++ * 30}&limit=30`)
+      self.postMessage({ status: 300, currentPage, result })
+      if (status !== 200) return refreshCustomersListError(status)
+
+      done = result.length < 30
+
+      // self.postMessage({ status: 300, route, action, response: { status, result } })
+
+      for (const customer of result) {
+        const { _id } = customer
+        const { status } = await putRecordByKey('customers', _id, customer)
+        if (status !== 200) return refreshCustomersListError(status)
+      }
+    }
+  }
+
+  // clearStore('customers')
+
+  return { status: 200, route, action, result: 'OK' }
 }

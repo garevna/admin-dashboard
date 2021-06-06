@@ -87,10 +87,11 @@ export default {
     // this.$root.$on('page-of-customers-received', this.pageOfCustomersReceived)
     // this.__getCustomersByPageNumber(1)
 
-    this.__updateScheduleLots()
+    // this.__updateScheduleLots()
 
     if (!roleHandler()) this.$router.push({ name: 'home' })
-    this.__refreshServices()
+    this.__refreshCustomersWithPagination()
+    // this.__refreshServices()
   }
 }
 </script>
