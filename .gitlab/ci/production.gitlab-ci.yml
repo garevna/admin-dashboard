@@ -1,0 +1,11 @@
+deploy:
+  stage: production
+  image: dtzar/helm-kubectl
+  before_script:
+    - sed -i "s~<VERSION>~${CI_COMMIT_SHA}~g" .helm/Chart.yaml
+  script:
+    - helm upgrade dgtek-admin-dash .helm --namespace dgtek-admin-dash --install
+  environment:
+    name: production
+  only:
+    - master

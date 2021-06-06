@@ -1,0 +1,10 @@
+variables:
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - build
+  - production
+
+include:
+  - local: .gitlab/ci/build.gitlab-ci.yml
+  - local: .gitlab/ci/production.gitlab-ci.yml

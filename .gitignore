@@ -3,7 +3,6 @@ node_modules
 /dist
 ___toBeRemoved
 
-.env*
 !.env.example
 
 # local env files
