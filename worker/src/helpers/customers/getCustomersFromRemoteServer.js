@@ -1,13 +1,12 @@
 import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
-import { refreshCustomersListError } from '../error-handlers'
 
-import { getResellersList } from '../rsp'
+const { refreshCustomersListError } = require('../error-handlers').default
 
-export const getFromRemoteServer = async function () {
+export const getCustomersFromRemoteServer = async function () {
   const [route, action] = ['customers', 'refresh']
 
-  const { status, result: resellers } = await getResellersList()
+  const { status, result: resellers } = await self.getResellersList()
 
   if (status !== 200) return refreshCustomersListError(status)
 

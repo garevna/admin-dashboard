@@ -1,14 +1,13 @@
 import { put } from '../AJAX'
-import { getScheduleLots, getInstallationSchedule } from './'
 
 export const updateScheduleLots = async function () {
-  let { settings } = (await getScheduleLots()).result
+  let { settings } = (await self.getScheduleLots()).result
   if (!settings) settings = [3, 3, 3, 3, 3, 3, 3]
 
   const currentWeek = self.getWeekNumber(new Date())
   const lots = { settings }
 
-  const response = await getInstallationSchedule()
+  const response = await self.getInstallationSchedule()
 
   if (response.status !== 200) return response
 

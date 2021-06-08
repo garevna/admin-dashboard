@@ -1,6 +1,7 @@
 import { putRecordByKey } from '../db'
-import { putCustomerDataError } from '../error-handlers'
 import { put } from '../AJAX'
+
+const { putCustomerDataError } = require('../error-handlers').default
 
 export const putCustomer = async function (customerId, customerDetails) {
   const [route, action] = ['customers', 'put']

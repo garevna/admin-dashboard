@@ -1,5 +1,6 @@
 import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
-import { resetOffline, codeError } from '../errors'
+
+const { resetOffline, codeError } = require('../errors').default
 
 export const sendPasswordResetCode = async (code) => {
   if (!navigator.onLine) return resetOffline()

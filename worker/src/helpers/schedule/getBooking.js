@@ -1,8 +1,8 @@
 // import { get } from '../AJAX'
 import { getAllSchedule } from '../db/schedule'
 
-import { getServiceDetails } from '../services'
-import { getCustomer } from '../customers'
+// import { getServiceDetails } from '../services'
+// import { getCustomer } from '../customers'
 
 const available = ['Awaiting for connection', 'Awaiting for scheduling', 'Not connected', 'Unable to connect']
 // const available = ['Awaiting for confirmation', 'Awaiting confirmation', 'In job queue']
@@ -23,11 +23,11 @@ export const getBooking = async function () {
   const result = {}
 
   for (const record of records) {
-    const response = await getServiceDetails(record.serviceId)
+    const response = await self.getServiceDetails(record.serviceId)
     if (response.status !== 200) self.postMessage(response)
     else record.serviceName = response.result.serviceName
 
-    const customer = await getCustomer(record.customerId)
+    const customer = await self.getCustomer(record.customerId)
     if (customer.status !== 200) self.postMessage(customer)
     else record.customer = customer.result
 

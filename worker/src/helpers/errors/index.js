@@ -1,24 +1,18 @@
-import { authOffline } from './authOffline'
-import { authError } from './authError'
+const modules = {}
 
-import { registrationOffline } from './registrationOffline'
-import { registrationError } from './registrationError'
+const context = require.context('./', false)
 
-import { resetOffline } from './resetOffline'
-import { encryptError } from './encryptError'
-import { resetError } from './resetError'
-import { codeError } from './codeError'
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
 
-import { invalidRequest } from './invalidRequest'
+modulesNames = Array.from(new Set(modulesNames))
 
-export {
-  authOffline,
-  authError,
-  registrationOffline,
-  registrationError,
-  resetOffline,
-  encryptError,
-  resetError,
-  codeError,
-  invalidRequest
-}
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

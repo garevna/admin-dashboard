@@ -1,22 +1,18 @@
-import { authController } from './authController'
-import { cryptoController } from './cryptoController'
-import { rspController } from './rspController'
-import { customersController } from './customersController'
-import { servicesController } from './servicesController'
-import { ticketsController } from './ticketsController'
-import { adminController } from './adminController'
+const modules = {}
 
-// import { bookingController } from './bookingController'
-import { scheduleController } from './scheduleController'
+const context = require.context('./', false)
 
-export {
-  authController,
-  cryptoController,
-  rspController,
-  customersController,
-  servicesController,
-  ticketsController,
-  adminController,
-  // bookingController,
-  scheduleController
-}
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
+
+modulesNames = Array.from(new Set(modulesNames))
+
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

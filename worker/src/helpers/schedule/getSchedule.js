@@ -1,11 +1,7 @@
 import { getAllSchedule } from '../db/schedule'
 
-import { getServiceDetails } from '../services'
-import { getCustomer } from '../customers'
+const { refreshScheduleError } = require('../error-handlers').default
 
-import { refreshSchedule } from './'
-
-// const notAvailable = ['Awaiting for connection', 'Awaiting for scheduling', 'Not connected']
 const available = ['Awaiting for confirmation', 'Awaiting confirmation', 'In job queue']
 
 export const getSchedule = async function () {
@@ -14,8 +10,8 @@ export const getSchedule = async function () {
   let response = await getAllSchedule()
 
   if (response.status !== 200) {
-    const refresh = await refreshSchedule()
-    if (response.status !== 200) return refresh
+    const refresh = await self.refreshSchedule()
+    if (response.status !== 200) return refreshScheduleError(status)
     response = refresh.result
   }
 
@@ -27,11 +23,11 @@ export const getSchedule = async function () {
     .map(number => ({ [number]: self.getWeekDatesByWeekNumber(number).reduce((accum, date) => Object.assign(accum, { [date]: { am: [], pm: [], afterhours: [] } }), {}) })))
 
   for (const record of records) {
-    const response = await getServiceDetails(record.serviceId)
+    const response = await self.getServiceDetails(record.serviceId)
     if (response.status !== 200) self.postMessage(response)
     else record.serviceName = response.result.serviceName
 
-    const customer = await getCustomer(record.customerId)
+    const customer = await self.getCustomer(record.customerId)
     if (customer.status !== 200) self.postMessage(customer)
     else record.customer = customer.result
 

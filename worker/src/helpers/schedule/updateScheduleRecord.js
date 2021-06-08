@@ -1,10 +1,8 @@
 import { putScheduleRecord } from '../db/schedule'
 import { put } from '../AJAX'
 
-import { updateCustomerServiceStatus } from '../customers'
-
-import { invalidRequest } from '../errors'
-import { updateScheduleRecordError } from '../error-handlers'
+const { invalidRequest } = require('../errors').default
+const { updateScheduleRecordError } = require('../error-handlers').default
 
 export async function updateScheduleRecord (request) {
   const [route, action] = ['schedule', 'update']
@@ -29,7 +27,7 @@ export async function updateScheduleRecord (request) {
 
   if ((await put(`scheduling/${_id}`, data)).status !== 200) return updateScheduleRecordError(500, route, action, true)
 
-  if ((await updateCustomerServiceStatus(data)).status !== 200) return updateScheduleRecordError(500, route, action, true)
+  if ((await self.updateCustomerServiceStatus(data)).status !== 200) return updateScheduleRecordError(500, route, action, true)
 
   if ((await putScheduleRecord(Object.assign(data, { _id }))).status !== 200) return updateScheduleRecordError(500, route, action, false)
 

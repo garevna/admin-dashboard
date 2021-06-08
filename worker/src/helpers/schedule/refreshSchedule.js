@@ -1,7 +1,8 @@
 import { get } from '../AJAX'
 import { clearStore } from '../db'
 import { putScheduleRecord } from '../db/schedule'
-import { refreshScheduleError, putScheduleRecordError } from '../error-handlers'
+
+const { refreshScheduleError, putScheduleRecordError } = require('../error-handlers').default
 
 export const refreshSchedule = async function () {
   const [route, action] = ['schedule', 'refresh']

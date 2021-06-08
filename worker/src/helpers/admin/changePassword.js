@@ -1,8 +1,9 @@
 import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
-import { resetOffline, encryptError, resetError } from '../errors'
 import { encrypt, hash } from '../crypto'
 
 const type = 'Change password'
+
+const { resetOffline, encryptError, resetError } = require('../errors').default
 
 export const changePassword = async (password) => {
   if (!navigator.onLine) return resetOffline()

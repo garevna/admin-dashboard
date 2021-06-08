@@ -5,15 +5,11 @@ export const getInstallationSchedule = async function () {
 
   const response = await getAllSchedule()
 
-  // self.postMessage({ status: 300, route, action, title: 'RESPONSE', result: response })
-
   if (response.status !== 200) return response
 
   const result = {}
 
   const schedule = response.result.filter(item => item.serviceStatus === 'In job queue')
-
-  // self.postMessage({ status: 300, route, action, title: 'FILTERED', schedule })
 
   for (const record of schedule) {
     if (!record.installation || !record.installation.date || !record.installation.period) continue
@@ -25,8 +21,6 @@ export const getInstallationSchedule = async function () {
     if (!result[weekNumber][date][period]) result[weekNumber][date][period] = []
     result[weekNumber][date][period].push(record)
   }
-
-  // self.postMessage({ status: 300, route, action, title: 'INSTALLATION SCHEDULE:\n', result })
 
   return { status: 200, route, action, result }
 }

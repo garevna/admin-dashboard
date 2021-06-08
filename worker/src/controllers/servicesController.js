@@ -1,30 +1,22 @@
-import {
-  refreshServicesList,
-  getServicesListFromLocalDb,
-  getServiceDetails,
-  createNewService,
-  updateService
-} from '../helpers/services'
-
 class ServicesController {
   async refresh (request) {
-    self.postMessage(await refreshServicesList())
+    self.postMessage(await self.refreshServicesList())
   }
 
   async list (request) {
-    self.postMessage(await getServicesListFromLocalDb())
+    self.postMessage(await self.getServicesListFromLocalDb())
   }
 
   async get (request) {
-    self.postMessage(await getServiceDetails(request.key))
+    self.postMessage(await self.getServiceDetails(request.key))
   }
 
   async post (request) {
-    self.postMessage(await createNewService(request.data))
+    self.postMessage(await self.createNewService(request.data))
   }
 
   async put (request) {
-    self.postMessage(await updateService(request.key, request.data))
+    self.postMessage(await self.updateService(request.key, request.data))
   }
 }
 

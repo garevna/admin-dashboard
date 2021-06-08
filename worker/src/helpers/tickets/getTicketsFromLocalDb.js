@@ -1,7 +1,7 @@
 import { getAllRecords } from '../db'
-import { getTicketsListError } from '../error-handlers'
+const { getTicketsListError } = require('../error-handlers').default
 
-export const getFromLocalDb = async function () {
+export const getTicketsFromLocalDb = async function () {
   const [route, action] = ['tickets', 'list']
 
   const { status, result } = await getAllRecords('tickets')

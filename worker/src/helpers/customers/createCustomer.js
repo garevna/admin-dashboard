@@ -1,5 +1,5 @@
 import { post } from '../AJAX'
-import { postNewCustomerError } from '../error-handlers'
+const { postNewCustomerError } = require('../error-handlers').default
 
 export const createCustomer = async function (data) {
   const [route, action] = ['customers', 'post']

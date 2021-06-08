@@ -1,40 +1,30 @@
-import {
-  getFromRemoteServer,
-  refreshWithPagination,
-  getAllCustomers,
-  getCustomer,
-  createCustomer,
-  updateCustomer,
-  deleteCustomer
-} from '../helpers/customers'
-
 class CustomersController {
   async getFromRemote () {
-    self.postMessage(await getFromRemoteServer())
+    self.postMessage(await self.getCustomersFromRemoteServer())
   }
 
   async refreshByPageNumber (pageNumber) {
-    self.postMessage(await refreshWithPagination(pageNumber))
+    self.postMessage(await self.refreshWithPagination(pageNumber))
   }
 
   async getAllCustomers () {
-    self.postMessage(await getAllCustomers())
+    self.postMessage(await self.getAllCustomers())
   }
 
   async getCustomer (request) {
-    self.postMessage(await getCustomer(request.key))
+    self.postMessage(await self.getCustomer(request.key))
   }
 
   async deleteCustomer (request) {
-    self.postMessage(await deleteCustomer(request.key))
+    self.postMessage(await self.deleteCustomer(request.key))
   }
 
   async updateCustomer (request) {
-    self.postMessage(await updateCustomer(request.key, request.data))
+    self.postMessage(await self.updateCustomer(request.key, request.data))
   }
 
   async createCustomer (request) {
-    self.postMessage(await createCustomer(request.data))
+    self.postMessage(await self.createCustomer(request.data))
   }
 }
 

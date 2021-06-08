@@ -1,19 +1,23 @@
-// import { init } from './init'
 import { init, hash, encrypt, decrypt } from './crypto'
+
+import rsp from './rsp'
+import customers from './customers'
+import services from './services'
+import tickets from './tickets'
+import schedule from './schedule'
 
 import { testDBVersion } from './db'
 
-import {
+const {
   auth,
   changePassword,
   passwordChange,
   passwordReset,
   sendPasswordResetCode
-} from './admin'
+} = require('./admin').default
 
-export {
+const result = Object.assign({}, rsp, customers, services, tickets, schedule, {
   testDBVersion,
-
   init,
   hash,
   encrypt,
@@ -23,4 +27,22 @@ export {
   sendPasswordResetCode,
   changePassword,
   passwordChange
-}
+})
+
+Object.keys(result).forEach((key) => { self[key] = result[key] })
+
+export default result
+
+// export {
+//   testDBVersion,
+//
+//   init,
+//   hash,
+//   encrypt,
+//   decrypt,
+//   auth,
+//   passwordReset,
+//   sendPasswordResetCode,
+//   changePassword,
+//   passwordChange
+// }

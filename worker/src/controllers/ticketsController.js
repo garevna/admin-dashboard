@@ -1,40 +1,30 @@
-import {
-  getFromRemoteServer,
-  getCategories,
-  putCategories,
-  getFromLocalDb,
-  getTicketData,
-  putTicketData,
-  postNewTicket
-} from '../helpers/tickets'
-
 class TicketsController {
   async refresh (request) {
-    self.postMessage(await getFromRemoteServer(request))
+    self.postMessage(await self.getTicketsFromRemoteServer(request))
   }
 
   async getCategories () {
-    self.postMessage(await getCategories())
+    self.postMessage(await self.getCategories())
   }
 
   async putCategories (data) {
-    self.postMessage(await putCategories(data))
+    self.postMessage(await self.putCategories(data))
   }
 
   async list () {
-    self.postMessage(await getFromLocalDb())
+    self.postMessage(await self.getTicketsFromLocalDb())
   }
 
   async get (request) {
-    self.postMessage(await getTicketData(request.id))
+    self.postMessage(await self.getTicketData(request.key))
   }
 
   async put (request) {
-    self.postMessage(await putTicketData(request.id, request.data))
+    self.postMessage(await self.putTicketData(request.id, request.data))
   }
 
   async post (request) {
-    self.postMessage(await postNewTicket(request))
+    self.postMessage(await self.postNewTicket(request))
   }
 }
 

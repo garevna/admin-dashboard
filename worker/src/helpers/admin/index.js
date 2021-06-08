@@ -1,13 +1,18 @@
-import { auth } from './auth'
-import { changePassword } from './changePassword'
-import { passwordChange } from './passwordChange'
-import { passwordReset } from './passwordReset'
-import { sendPasswordResetCode } from './sendPasswordResetCode'
+const modules = {}
 
-export {
-  auth,
-  changePassword,
-  passwordChange,
-  passwordReset,
-  sendPasswordResetCode
-}
+const context = require.context('./', false)
+
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
+
+modulesNames = Array.from(new Set(modulesNames))
+
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

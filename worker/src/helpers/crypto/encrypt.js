@@ -27,11 +27,7 @@ export const encrypt = (data) => {
     }
   }
 
-  // self.postMessage({ status: 300, route: 'rsp', action: 'encrypt', data })
-
   const result = crypto.AES.encrypt(data, secretHandler()).toString()
-
-  // self.postMessage({ status: 300, route: 'rsp', action: 'encrypt', result })
 
   return result ? { status: 200, action, result } : { status: 500, action, result: encryptError }
 }

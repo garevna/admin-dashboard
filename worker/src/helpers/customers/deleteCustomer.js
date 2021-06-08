@@ -1,6 +1,6 @@
 import { deleteRecordByKey } from '../db'
 import { remove } from '../AJAX'
-import { deleteCustomerError } from '../error-handlers'
+const { deleteCustomerError } = require('../error-handlers').default
 
 export const deleteCustomer = async function (id) {
   const [route, action] = ['customers', 'delete']

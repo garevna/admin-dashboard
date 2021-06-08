@@ -6,7 +6,7 @@ const {
   servicesController,
   ticketsController,
   scheduleController
-} = require('../controllers')
+} = require('../controllers').default
 
 export const routes = {
   '*': {

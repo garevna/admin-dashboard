@@ -1,13 +1,18 @@
-import { refreshUsersError } from './refreshUsersError'
-import { putUserRecordError } from './putUserRecordError'
-import { updateUserDetailsError } from './updateUserDetailsError'
-import { getUsersError } from './getUsersError'
-import { getUserDetailsError } from './getUserDetailsError'
+const modules = {}
 
-export {
-  refreshUsersError,
-  putUserRecordError,
-  updateUserDetailsError,
-  getUsersError,
-  getUserDetailsError
-}
+const context = require.context('./', false)
+
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
+
+modulesNames = Array.from(new Set(modulesNames))
+
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

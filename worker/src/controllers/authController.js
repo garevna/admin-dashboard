@@ -1,10 +1,10 @@
-import {
+const {
   init,
   auth,
   passwordReset,
   sendPasswordResetCode,
   changePassword
-} from '../helpers'
+} = require('../helpers').default
 
 class AuthController {
   init (request) {
@@ -12,7 +12,6 @@ class AuthController {
   }
 
   async auth (request) {
-    // self.postMessage({ status: 300, login: request.login, password: request.password })
     self.postMessage(await auth(request.login, request.password))
   }
 

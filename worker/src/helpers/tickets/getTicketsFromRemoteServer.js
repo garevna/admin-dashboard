@@ -1,10 +1,10 @@
 import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
-import { refreshTicketsListError } from '../error-handlers'
-
 import { ticketCategories } from '../data-handlers'
 
-export const getFromRemoteServer = async function () {
+const { refreshTicketsListError } = require('../error-handlers').default
+
+export const getTicketsFromRemoteServer = async function () {
   const [route, action] = ['tickets', 'refresh']
 
   const { status, result } = await get('ticket')

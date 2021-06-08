@@ -1,10 +1,10 @@
 import { openDB } from '../db/openDB'
-import { getServicesListFromLocalDb } from '../services'
 
 export const getAllCustomers = async function () {
   const [route, action] = ['customers', 'list']
 
-  let response = await getServicesListFromLocalDb()
+  let response = await self.getServicesListFromLocalDb()
+
   if (response.status !== 200) return Object.assign(response, { route, action })
 
   const servicesList = response.result

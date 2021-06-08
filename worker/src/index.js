@@ -1,7 +1,5 @@
 import { routes } from './configs'
 
-import { testDBVersion } from './helpers'
-
 import {
   getWeekNumber,
   getWeekStartDate,
@@ -21,6 +19,8 @@ Object.assign(self, {
   getWeekEndDateByWeekNumber,
   getWeekDatesByWeekNumber
 })
+
+const { testDBVersion } = require('./helpers').default
 
 testDBVersion()
 

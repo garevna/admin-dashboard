@@ -1,8 +1,7 @@
 import { openDB } from '../openDB'
-
-import { getScheduleError } from '../../error-handlers'
-
 import { getAllData } from './getAllData'
+
+const { getScheduleError } = require('../../error-handlers').default
 
 export const getAllSchedule = async () => {
   const [route, action] = ['schedule', 'all']

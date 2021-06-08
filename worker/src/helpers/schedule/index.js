@@ -1,31 +1,18 @@
-import { refreshSchedule } from './refreshSchedule'
-import { getInstallationSchedule } from './getInstallationSchedule'
+const modules = {}
 
-import { getScheduleLots } from './getScheduleLots'
-import { updateScheduleLots } from './updateScheduleLots'
+const context = require.context('./', false)
 
-import { updateScheduleRecord } from './updateScheduleRecord'
-import { removeScheduleRecord } from './removeScheduleRecord'
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
 
-import { getBooking } from './getBooking'
-import { getSchedule } from './getSchedule'
+modulesNames = Array.from(new Set(modulesNames))
 
-import { moveRecordToJobQueue } from './moveRecordToJobQueue'
-import { setRecordStatusActive } from './setRecordStatusActive'
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
 
-export {
-  refreshSchedule,
-  getBooking,
-  getInstallationSchedule,
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
 
-  getScheduleLots,
-  updateScheduleLots,
-
-  getSchedule,
-
-  updateScheduleRecord,
-  removeScheduleRecord,
-
-  moveRecordToJobQueue,
-  setRecordStatusActive
-}
+export default result

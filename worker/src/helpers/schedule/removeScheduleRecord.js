@@ -1,8 +1,8 @@
 import { deleteScheduleRecord } from '../db/schedule'
 import { remove } from '../AJAX'
 
-import { invalidRequest } from '../errors'
-import { deleteScheduleRecordError } from '../error-handlers'
+const { invalidRequest } = require('../errors').default
+const { deleteScheduleRecordError } = require('../error-handlers').default
 
 export async function removeScheduleRecord (id) {
   const [route, action] = ['schedule', 'delete']

@@ -1,13 +1,18 @@
-import { refreshServicesListError } from './refreshServicesListError'
-import { getServicesListError } from './getServicesListError'
-import { getServiceDetailsError } from './getServiceDetailsError'
-import { putServiceDetailsError } from './putServiceDetailsError'
-import { postServiceDetailsError } from './postServiceDetailsError'
+const modules = {}
 
-export {
-  refreshServicesListError,
-  getServicesListError,
-  getServiceDetailsError,
-  putServiceDetailsError,
-  postServiceDetailsError
-}
+const context = require.context('./', false)
+
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
+
+modulesNames = Array.from(new Set(modulesNames))
+
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

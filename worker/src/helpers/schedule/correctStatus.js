@@ -1,5 +1,6 @@
-import { updateCustomerServiceStatus } from '../customers'
 import { put } from '../AJAX'
+
+// const { updateCustomerServiceStatus } = require('../helpers')
 
 export const correctStatus = async (record) => {
   const { customerId, serviceId, status: serviceStatus, lots } = record
@@ -8,7 +9,7 @@ export const correctStatus = async (record) => {
 
   if ((serviceStatus === 'Awaiting confirmation' || serviceStatus === 'Awaiting for confirmation') && !lots.length) {
     record.status = 'Awaiting for scheduling'
-    if ((await updateCustomerServiceStatus({ customerId, serviceId, status: 'Awaiting for scheduling' })).status !== 200) {
+    if ((await self.updateCustomerServiceStatus({ customerId, serviceId, status: 'Awaiting for scheduling' })).status !== 200) {
       self.postMessage({ status: 300, title: 'ERROR UPDATING CUSTOMER SERVICE STATUS', record })
     }
     if ((await put(`scheduling/${record._id}`, record)).status !== 200) {
