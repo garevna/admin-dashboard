@@ -1,4 +1,4 @@
-import * as actions from './actions'
+import actions from './actions'
 
 export const createController = function () {
   window[Symbol.for('vue.prototype')].$dispatchProgressEvent = function (value) {
@@ -10,7 +10,9 @@ export const createController = function () {
     window[Symbol.for('admin.worker')].postMessage(message)
   }
 
-  Object.keys(actions).forEach(key => Object.assign(window[Symbol.for('vue.prototype')], {
-    [`__${key}`]: actions[key]
-  }))
+  for (const key in actions) {
+    Object.assign(window[Symbol.for('vue.prototype')], {
+      [`__${key}`]: actions[key]
+    })
+  }
 }

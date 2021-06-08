@@ -68,9 +68,7 @@
     <v-row v-else>
       <TicketDetails
         :ticket.sync="selectedTicket"
-        :categories="categories"
         :edit.sync="edit"
-        :newTicket="newTicket"
       />
     </v-row>
   </v-card>
@@ -120,6 +118,7 @@ export default {
       this.categories = data
     },
     getTickets (data) {
+      console.log(data)
       const getDate = date => date.indexOf('-') !== -1 ? date : new Date(date - 0).toISOString().slice(0, 10)
 
       this.tickets = data.map(ticket => Object.assign({}, ticket, {
@@ -129,29 +128,26 @@ export default {
 
       this.ready = true
     },
-    createNewTicket () {
-      const { ticketSchema } = require('@/configs/ticketSchema')
-      this.selectedTicket = ticketSchema
-      this.selectedTicket.created = new Date().toISOString().slice(0, 10)
-      this.selectedTicket.modified = new Date().toISOString().slice(0, 10)
-      this.edit = true
-      this.newTicket = true
-    },
     editItem (item) {
-      this.selectedTicket = item
+      this.__getTicketById(item._id)
+    },
+    showTicketDetails (data) {
+      console.log(data)
+      this.selectedTicket = data
       this.edit = true
-      this.newTicket = false
     }
   },
 
   beforeDestroy () {
     this.$root.$off('categories-received', this.getCategories)
     this.$root.$off('tickets-list-received', this.getTickets)
+    this.$root.$off('ticket-data-received', this.showTicketDetails)
   },
 
   beforeMount () {
     this.$root.$on('categories-received', this.getCategories)
     this.$root.$on('tickets-list-received', this.getTickets)
+    this.$root.$on('ticket-data-received', this.showTicketDetails)
     this.__getCategories()
     this.__getTickets()
   }

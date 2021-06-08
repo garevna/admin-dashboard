@@ -1,40 +1,42 @@
 <template>
   <v-container>
-    <v-row justify="end" class="my-5">
-      <h5><small>Services list</small></h5>
-    </v-row>
+    <v-card flat class="transparent mx-auto" max-width="1200">
+      <v-card-title class="my-5">
+        <h5><small>Services list</small></h5>
+      </v-card-title>
 
-    <v-row class="my-5 mx-2 mr-12">
-      <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          dense
-          outlined
-          hide-details
-          style="display: inline-block; width: 280px"
-     ></v-text-field>
+      <v-row class="my-5 mx-2 mr-12">
+        <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            dense
+            outlined
+            hide-details
+            style="display: inline-block; width: 280px"
+       ></v-text-field>
 
-     <v-spacer />
+       <v-spacer />
 
-     <v-btn text @click="createNewService">
-       <v-icon>mdi-plus</v-icon>
-       Create new service
-     </v-btn>
-   </v-row>
+       <v-btn text @click="createNewService">
+         <v-icon>mdi-plus</v-icon>
+         Create new service
+       </v-btn>
+     </v-row>
 
-    <v-data-table
-        :headers="headers"
-        :items="items"
-        :search="search"
-    >
-      <template v-slot:item.actions="{ item }">
-        <v-btn outlined @click="editItem(item)" dark class="primary">Edit</v-btn>
-      </template>
-    </v-data-table>
+      <v-data-table
+          :headers="headers"
+          :items="items"
+          :search="search"
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-btn outlined @click="editItem(item)" dark class="primary">Edit</v-btn>
+        </template>
+      </v-data-table>
 
-    <span class="ml-12"><small>Total selected services: {{ selectedServicesNumber }}</small></span>
+      <span class="ml-12"><small>Total selected services: {{ selectedServicesNumber }}</small></span>
+    </v-card>
   </v-container>
 </template>
 

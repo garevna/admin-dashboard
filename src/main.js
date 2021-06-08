@@ -8,7 +8,7 @@ import Message from '@/components/popups/message.vue'
 import CustomerInfo from '@/components/popups/CustomerInfo.vue'
 import Confirmation from '@/components/popups/Confirmation.vue'
 
-import { init } from '@/controllers/actions'
+import { init } from '@/controllers/actions/init'
 
 import { createController } from './controllers/createController'
 

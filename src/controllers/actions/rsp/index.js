@@ -1,18 +1,18 @@
-import { getResellersList } from './getResellersList'
-import { refreshResellersList } from './refreshResellersList'
-import { getResellerDetails } from './getResellerDetails'
+const modules = {}
 
-import { getRegistrationRequests } from './getRegistrationRequests'
-import { getRegistrationRequestDetails } from './getRegistrationRequestDetails'
-import { confirmRegistrationRequest } from './confirmRegistrationRequest'
-import { rejectRegistrationRequest } from './rejectRegistrationRequest'
+const context = require.context('./', false)
 
-export {
-  getResellersList,
-  refreshResellersList,
-  getResellerDetails,
-  getRegistrationRequests,
-  getRegistrationRequestDetails,
-  confirmRegistrationRequest,
-  rejectRegistrationRequest
-}
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
+
+modulesNames = Array.from(new Set(modulesNames))
+
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

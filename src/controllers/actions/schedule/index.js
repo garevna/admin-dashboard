@@ -1,18 +1,18 @@
-import { getBookingRequests } from './getBookingRequests'
-import { getScheduleWeekData } from './getScheduleWeekData'
-import { changeServiceDeliveryStatus } from './changeServiceDeliveryStatus'
-import { getScheduleLots } from './getScheduleLots'
-import { updateScheduleLots } from './updateScheduleLots'
+const modules = {}
 
-import { putRecordToJobQueue } from './putRecordToJobQueue'
-import { activateService } from './activateService'
+const context = require.context('./', false)
 
-export {
-  getBookingRequests,
-  getScheduleWeekData,
-  changeServiceDeliveryStatus,
-  getScheduleLots,
-  updateScheduleLots,
-  putRecordToJobQueue,
-  activateService
-}
+let modulesNames = context.keys()
+  .filter(key => key !== './' && key !== './index' && key !== './index.js')
+  .map(key => key.split('.js').join(''))
+
+modulesNames = Array.from(new Set(modulesNames))
+
+modulesNames.forEach((moduleName) => {
+  const name = moduleName.split('./').join('')
+  modules[name] = context(moduleName)
+})
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

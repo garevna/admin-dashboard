@@ -1,31 +1,77 @@
 <template>
-  <v-card flat class="transparent mx-auto py-5">
+  <v-card flat class="transparent mx-auto py-5" width="600">
     <v-card-text>
-        Ticket category: <b>{{ category }}</b>
+      <table>
+        <thead>
+          <tr>
+            <td>Ticket category</td>
+            <td>Severity</td>
+            <td>Priority</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>{{ ticket.category }}</b></td>
+            <td><b>{{ ticket.severity }}</b></td>
+            <td><b>{{ ticket.priority }}</b></td>
+          </tr>
+        </tbody>
+      </table>
+        <!-- Ticket category: <b>{{ ticket.category }}</b>
+        Severity: <b>{{ ticket.severity }}</b>
+        Priority: <b>{{ ticket.priority }}</b> -->
+    </v-card-text>
+
+    <hr />
+
+    <!-- <v-card-text>
+      Severity: <b>{{ ticket.severity }}</b>
+    </v-card-text> -->
+
+    <!-- <v-card-text>
+        Priority: <b>{{ ticket.priority }}</b>
+    </v-card-text> -->
+
+    <v-card-text>
+      Subject: <b>{{ ticket.subject }}</b>
+    </v-card-text>
+
+    <hr />
+
+    <v-card-text>
+      RSP: <b>{{ ticket.resellerName }}</b>
+    </v-card-text>
+
+    <v-card-text v-if="ticket.category === 'Customer issue' || ticket.category === 'Service issue'">
+      Customer: <b>{{ ticket.customer.uniqueCode }}</b>
+      <p><small>{{ ticket.customer.apartmentNumber }}/{{ ticket.customer.address }}</small></p>
     </v-card-text>
 
     <v-card-text>
-      Severity: <b>{{ severity }}</b>
+      Details
+      <v-icon> mdi-message-arrow-right </v-icon> <b>{{ ticket.details }}</b>
+    </v-card-text>
+
+    <v-card-text v-if="dialog">
+      <!-- <v-icon> mdi-message-arrow-right </v-icon>
+      <b> {{ new Date(ticket.created - 0).toISOString().slice(0, 10) }} </b>
+      <b>{{ ticket.details }}</b> -->
+      <p v-for="message of dialog" :key="message.date">
+        <v-icon v-if="message.source === 'admin'"> mdi-message-arrow-left </v-icon>
+        <v-icon v-else> mdi-message-arrow-right </v-icon>
+        <small>
+          {{ new Date(message.date).toISOString().slice(0, 10) }}
+          {{ message.message }}
+        </small>
+      </p>
+    </v-card-text>
+
+    <v-card-text v-if="ticket.contactPhone">
+      Contact number of the responsible person <b>{{ ticket.contactPhone }}</b>
     </v-card-text>
 
     <v-card-text>
-        Priority: <b>{{ priority }}</b>
-    </v-card-text>
-
-    <v-card-text>
-      Subject: <b>{{ subject }}</b>
-    </v-card-text>
-
-    <v-card-text v-if="category === 'Customer issue' || category === 'Service issue'">
-      Customer: <b>{{ customer }}</b>
-    </v-card-text>
-
-    <v-card-text>
-      Details <b>{{ details }}</b>
-    </v-card-text>
-
-    <v-card-text v-if="contactPhone">
-      Contact number of the responsible person <b>{{ contactPhone }}</b>
+      <v-textarea label="Response" v-model="response" outlined />
     </v-card-text>
 
     <v-row class="mt-12">
@@ -33,7 +79,7 @@
         Back to tickets list
       </v-btn>
       <v-spacer />
-      <v-btn outlined small color="primary" @click="save">
+      <v-btn outlined small color="primary" @click="updateTicket" v-if="response">
         Update/save details
       </v-btn>
     </v-row>
@@ -44,111 +90,44 @@
 
 export default {
   name: 'EditTicket',
-  props: ['ticket', 'categories', 'newTicket', 'edit'],
+  props: ['ticket', 'categories', 'edit'],
   data: () => ({
-    severities: ['Low', 'Medium', 'Hight'],
-    priorities: ['Low', 'Medium', 'Hight'],
-    customersList: null,
-    customersIds: null,
-    customer: null
+    response: ''
+    // severities: ['Low', 'Medium', 'Hight'],
+    // priorities: ['Low', 'Medium', 'Hight']
   }),
   computed: {
-    category: {
-      get () {
-        return this.ticket.category
-      },
-      set (val) {
-        this.update('category', val)
-      }
-    },
-    severity: {
-      get () {
-        return this.ticket.severity
-      },
-      set (val) {
-        this.update('severity', val)
-      }
-    },
-    priority: {
-      get () {
-        return this.ticket.priority
-      },
-      set (val) {
-        this.update('priority', val)
-      }
-    },
-    subject: {
-      get () {
-        return this.ticket.subject
-      },
-      set (val) {
-        this.update('subject', val)
-      }
-    },
-    details: {
-      get () {
-        return this.ticket.details
-      },
-      set (val) {
-        this.update('details', val)
-      }
-    },
-    customerId: {
-      get () {
-        return this.ticket.customerId
-      },
-      set (val) {
-        this.update('customerId', val)
-      }
-    },
-    contactPhone: {
-      get () {
-        return this.ticket.contactPhone
-      },
-      set (val) {
-        this.update('contactPhone', val)
-      }
-    }
-  },
-  watch: {
-    customer (val) {
-      if (!this.customersList) return
-      const index = this.customersList.findIndex(item => item === val)
-      if (index === -1) return
-      this.customerId = this.customersIds[index]
+    dialog () {
+      return this.ticket.files.filter(item => item.type === 'dialog')
     }
   },
   methods: {
-    fillCustomerList (data) {
-      this.customersList = data.result.map(customer => `${customer.apartmentNumber}/${customer.address}`)
-      this.customersIds = data.result.map(customer => customer._id)
-      const index = this.customersIds.findIndex(item => item === this.ticket.customerId)
-      this.customer = index !== -1 ? this.customersList[index] : null
-    },
-    postNewTicket () {
-      this.__postNewTicket(this.ticket)
-    },
     updateTicket () {
-      this.update('modified', new Date().toISOString().slice(0, 10))
-      this.__saveTicketData(this.ticket._id, this.ticket)
-    },
-    save () {
-      this.newTicket ? this.postNewTicket() : this.updateTicket()
-    },
-    callback (data) {
-      this.customerName = `${data.apartmentNumber}/${data.address} (${data.firstName} ${data.lastName})`
-    },
-    update (prop, value) {
-      this.$emit('update:ticket', Object.assign({}, this.ticket, { [prop]: value }))
+      this.$emit('update:ticket', Object.assign({}, this.ticket, { modified: new Date().toISOString().slice(0, 10) }))
+      this.__saveTicketData(this.ticket._id, { modified: Date.now(), response: this.response })
     }
-  },
-  mounted () {
-    this.$root.$on('customers-list-received', this.fillCustomerList)
-    this.__getCustomers()
-    // this.$root.$on('customer-data-received', this.callback)
-    // if (this.newTicket) {
-    //   this.ticket = ticketSchema
-    // }
   }
 }
 </script>
+
+<style>
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  /* border: solid 1px #ddd; */
+  /* border-radius: 4px; */
+  padding: 8px 16px;
+  text-align: center;
+}
+
+b {
+  border: solid 1px #ddd;
+  border-radius: 4px;
+  padding: 8px 16px;
+  text-align: center;
+  margin-left: 8px;
+}
+
+</style>

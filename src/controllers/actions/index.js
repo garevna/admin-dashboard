@@ -1,10 +1,4 @@
-import { init } from './init'
-
-import {
-  loginHandler,
-  passwordHandler,
-  codeHandler
-} from '../data-handlers'
+// import { init } from './init'
 
 import {
   auth,
@@ -13,43 +7,11 @@ import {
   sendPasswordResetCode
 } from './admin'
 
-import {
-  refreshResellersList,
-  getResellersList,
-  getResellerDetails,
-  getRegistrationRequests,
-  getRegistrationRequestDetails,
-  confirmRegistrationRequest,
-  rejectRegistrationRequest
-} from './rsp'
-
-import {
-  refreshServices,
-  getListOfServices,
-  getServiceDetails,
-  createNewService,
-  updateServiceDetails
-} from './services'
-
-import {
-  deleteCustomer,
-  getCustomerData,
-  getCustomers,
-  postCustomer,
-  putCustomer,
-  refreshCustomers,
-  refreshCustomersWithPagination
-} from './customers'
-
-import {
-  getCategories,
-  putCategories,
-  getTicketById,
-  getTickets,
-  postNewTicket,
-  refreshTickets,
-  saveTicketData
-} from './tickets'
+import rsp from './rsp'
+import services from './services'
+import customers from './customers'
+import tickets from './tickets'
+import schedule from './schedule'
 
 import {
   getBuildingByAddress,
@@ -59,70 +21,38 @@ import {
   putBuildingDetails
 } from './map.worker'
 
-import {
-  getScheduleWeekData,
-  getBookingRequests,
-  changeServiceDeliveryStatus,
-  getScheduleLots,
-  updateScheduleLots,
-  putRecordToJobQueue,
-  activateService
-} from './schedule'
-
-export {
-  init,
-
-  loginHandler,
-  passwordHandler,
-  codeHandler,
-
+const result = Object.assign({}, rsp, services, customers, tickets, schedule, {
+  // init,
   auth,
   changePassword,
   resetPassword,
   sendPasswordResetCode,
-
-  refreshResellersList,
-  refreshCustomers,
-  refreshTickets,
-  getRegistrationRequests,
-  getRegistrationRequestDetails,
-  confirmRegistrationRequest,
-  rejectRegistrationRequest,
-
-  getResellersList,
-  getResellerDetails,
-
-  getCustomers,
-  getCustomerData,
-  putCustomer,
-  postCustomer,
-  deleteCustomer,
-  refreshCustomersWithPagination,
-
-  refreshServices,
-  getListOfServices,
-  getServiceDetails,
-  createNewService,
-  updateServiceDetails,
-
-  getTickets,
-  getCategories,
-  putCategories,
-  getTicketById,
-  postNewTicket,
-  saveTicketData,
-
   getBuildingByAddress,
   getBuildingById,
   getBuildingsByStatus,
   postBuildingDetails,
-  putBuildingDetails,
+  putBuildingDetails
+})
 
-  getScheduleWeekData,
-  getBookingRequests,
-  changeServiceDeliveryStatus,
-  getScheduleLots,
-  updateScheduleLots,
-  putRecordToJobQueue,
-  activateService
-}
+export default result
+
+// export {
+//   init,
+//
+//   rsp,
+//   customers,
+//   services,
+//   tickets,
+//   schedule,
+//
+//   auth,
+//   changePassword,
+//   resetPassword,
+//   sendPasswordResetCode,
+//
+//   getBuildingByAddress,
+//   getBuildingById,
+//   getBuildingsByStatus,
+//   postBuildingDetails,
+//   putBuildingDetails
+// }
