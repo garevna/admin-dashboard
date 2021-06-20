@@ -1,8 +1,13 @@
 <template>
   <v-container style="margin-bottom: 320px">
-    <!-- <v-row justify="end" class="my-5">
-      <h5><small>Service details</small></h5>
-    </v-row> -->
+    <v-card flat class="transparent mx-auto" max-width="700">
+      <v-row justify="center" align="center">
+          <v-spacer />
+          <v-btn icon @click="$router.push({ name: 'services-list' })">
+            <v-icon large>mdi-close</v-icon>
+          </v-btn>
+        </v-row>
+    </v-card>
     <fieldset class="mt-4 pa-8 mb-12 mx-auto" style="max-width: 800px; border: solid 1px #bbb; box-shadow: 0 0 3px #0007">
       <legend class="ml-4" style="background: #fbfbfb; border-radius: 8px; border: solid 1px #bbb; padding: 4px 8px">
         <h5><small>Service details</small></h5>
@@ -12,12 +17,12 @@
           <tbody>
             <tr style="vertical-align: baseline">
               <td width="160" class="d-none d-md-flex">
-                Residential/commercial
+                Type (residential/commercial)
               </td>
               <td width="*">
                 <SwitchValues
                   label="Residential/commercial"
-                  :value.sync="service.type"
+                  :value.sync="service.serviceType.value"
                   :states="['residential', 'commercial']"
                   hide-details
                   class="mb-8"
@@ -25,12 +30,12 @@
               </td>
             </tr>
             <tr v-for="(prop, propName) in service" :key="propName">
-              <td class="d-none d-md-flex" v-if="propName !== 'type'">
+              <td class="d-none d-md-flex" v-if="propName !== 'serviceType'">
                 {{ prop.title }}
               </td>
-              <td v-if="propName !== 'type'">
+              <td>
                 <v-text-field
-                  v-if="textField(prop)"
+                  v-if="propName !== 'serviceType' && textField(prop)"
                   v-model="prop.value"
                   :label="prop.title"
                   :rules="[prop.required ? rules.required : (value) => true, rule(prop)]"
@@ -48,9 +53,6 @@
               </td>
                 <td colspan="2" class="text-right">
                 <v-spacer />
-                <!-- <v-btn outlined color="buttons" class="mr-2" @click="assignNewService">
-                  Assign new service
-                </v-btn> -->
                 <v-btn dark class="buttons" @click="saveServiceDetails">
                   Update/save details
                 </v-btn>
@@ -74,12 +76,23 @@ export default {
   components: {
     SwitchValues
   },
+
   props: ['serviceId'],
+
   data: () => ({
     service: null,
     rules: rules,
     ready: false
   }),
+
+  watch: {
+    'service.serviceType': {
+      handler (value) {
+        console.log(value)
+      }
+    }
+  },
+
   methods: {
     rowHeight (item) {
       return item.type === 'textarea' ? 160 : 60
@@ -97,19 +110,23 @@ export default {
       }
       this.ready = true
     },
+
     saveServiceDetails () {
+      console.log(this.service)
       for (const prop in this.service) {
+        console.log(prop, this.service[prop])
+        // if (prop === 'serviceType') continue
         this.service[prop] = this.service[prop].value
       }
-      console.log(this.service)
       if (this.serviceId) {
         this.__updateServiceDetails(this.serviceId, this.service)
       } else {
         this.__createNewService(this.service)
       }
     },
+
     showResult (data) {
-      console.log(data)
+      this.$router.push({ name: 'services-list' })
     }
   },
   beforeDestroy () {
@@ -118,6 +135,7 @@ export default {
     this.$root.$off('new-service-created', this.getData)
   },
   mounted () {
+    this.$vuetify.goTo(0)
     this.service = JSON.parse(JSON.stringify(serviceSchema))
     if (this.serviceId) {
       this.$root.$on('service-data-received', this.getData)

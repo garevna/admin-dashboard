@@ -13,21 +13,22 @@
 
 export default {
   name: 'SwitchValues',
+
   props: ['label', 'value', 'states'],
-  // data: () => ({
-  //   switchValue: false
-  // }),
+
   computed: {
     localValue: {
       get () {
-        return this.value
+        return this.value === this.states[1]
       },
       set (val) {
-        this.$emit('update:value', val)
+        console.log(val)
+        this.$emit('update:value', this.states[Number(val)])
       }
     }
   },
   mounted () {
+    console.log(this.value)
     console.log(this.states)
   }
 }

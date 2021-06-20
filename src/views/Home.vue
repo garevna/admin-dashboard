@@ -19,7 +19,7 @@ export default {
   }),
   watch: {
     success (val) {
-      if (val) {
+      if (val && this.$route.name !== 'dash') {
         this.$router.push({ name: 'dash' })
       }
     }

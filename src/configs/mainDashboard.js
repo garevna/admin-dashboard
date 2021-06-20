@@ -1,6 +1,7 @@
 export const mainDashboard = [
   {
     title: 'RSP',
+    refresh: 'rsp',
     icon: 'mdi-account',
     children: [
       {
@@ -25,6 +26,7 @@ export const mainDashboard = [
   },
   {
     title: 'Services',
+    refresh: 'services',
     children: [
       {
         title: 'Service list',
@@ -35,19 +37,12 @@ export const mainDashboard = [
           read: ['View_only']
         }
       }
-      // {
-      //   title: 'Add new service',
-      //   route: 'create-new-service',
-      //   icon: 'mdi-text-box-plus-outline',
-      //   access: {
-      //     change: ['Account_manager', 'SuperAdmin'],
-      //     read: []
-      //   }
-      // }
     ]
   },
   {
     title: 'Customers',
+    callbackName: '__refreshCustomersWithPagination',
+    refresh: 'customers',
     children: [
       {
         title: 'Customers list',
@@ -58,19 +53,12 @@ export const mainDashboard = [
           read: ['View_only']
         }
       }
-      // {
-      //   title: 'Customer details',
-      //   route: 'customer-detals',
-      //   icon: 'mdi-text-box-plus-outline',
-      //   access: {
-      //     change: ['Account_manager', 'SuperAdmin'],
-      //     read: []
-      //   }
-      // }
     ]
   },
   {
     title: 'Footprint',
+    callback: '__refreshCustomersWithPagination',
+    refresh: 'footprint',
     icon: 'mdi-map',
     access: {
       change: ['SuperAdmin', 'Map_editor'],
@@ -109,6 +97,8 @@ export const mainDashboard = [
   {
     title: 'Scheduling',
     component: 'Scheduling',
+    callbackName: '__refreshSchedule',
+    refresh: 'schedule',
     icon: 'mdi-calendar-month',
     children: [
       {
@@ -142,6 +132,8 @@ export const mainDashboard = [
   {
     title: 'Tickets',
     icon: 'mdi-inbox-multiple',
+    callbackName: '__refreshTickets',
+    refresh: 'tickets',
     children: [
       {
         title: 'Tickets list',
@@ -161,19 +153,11 @@ export const mainDashboard = [
           read: ['View_only']
         }
       }
-      // {
-      //   title: 'Create new ticket',
-      //   route: 'ticket-categories',
-      //   icon: 'mdi-ballot-outline',
-      //   access: {
-      //     change: ['Account_manager', 'SuperAdmin'],
-      //     read: ['View_only']
-      //   }
-      // }
     ]
   },
   {
     title: 'Documents',
+    refresh: 'documents',
     component: 'Documents',
     icon: 'mdi-file-document-multiple',
     access: {
@@ -183,6 +167,7 @@ export const mainDashboard = [
   },
   {
     title: 'Settings',
+    refresh: 'settings',
     component: 'Settings',
     icon: 'mdi-cog',
     access: {

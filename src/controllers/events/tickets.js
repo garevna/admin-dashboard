@@ -1,5 +1,5 @@
 export const tickets = {
-  refresh: 'tickets-list-refreshed',
+  refresh: 'tickets-refreshed',
   categories: 'categories-received',
   list: 'tickets-list-received',
   get: 'ticket-data-received',

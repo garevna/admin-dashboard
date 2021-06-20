@@ -65,6 +65,7 @@ const homeImage = require('@/assets/images/Webb-Bridge-Melbourne-Drawing-effect.
 
 export default {
   name: 'App',
+
   data: () => ({
     ready: false,
     signIn: false,
@@ -73,6 +74,7 @@ export default {
     message: 'Welcome to DGtek Admin provisioning portal',
     timeout: 8000
   }),
+
   computed: {
     color () {
       return this.authError || this.registeredError || this.error ? '#900' : '#09b'
@@ -84,6 +86,7 @@ export default {
       return this.$route.name === 'home' ? homeImage : servicesImage
     }
   },
+
   methods: {
     errorHandler (event) {
       const { errorType, errorMessage } = event.data
@@ -128,6 +131,8 @@ export default {
     this.$root.$on('db-refreshing', this.dataRefreshing)
     this.$root.$on('db-refreshing-complete', this.dataRefreshed)
     this.$root.$on('progress-event', this.progressEventCallback)
+
+    window.scroll({ top: 0, left: 0, behavior: 'smooth' })
   },
 
   errorCaptured (err, instance, info) {

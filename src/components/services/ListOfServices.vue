@@ -29,10 +29,11 @@
           :headers="headers"
           :items="items"
           :search="search"
+          @click:row="editItem"
       >
-        <template v-slot:item.actions="{ item }">
+        <!-- <template v-slot:item.actions="{ item }">
           <v-btn outlined @click="editItem(item)" dark class="primary">Edit</v-btn>
-        </template>
+        </template> -->
       </v-data-table>
 
       <span class="ml-12"><small>Total selected services: {{ selectedServicesNumber }}</small></span>
@@ -55,13 +56,14 @@ export default {
         sortable: true,
         value: 'serviceName'
       },
+      { text: 'Type', value: 'serviceType' },
       { text: 'Service code', value: 'serviceCode' },
-      { text: 'Service type', value: 'productType' },
+      { text: 'Product type', value: 'productType' },
       { text: 'Contract term (months)', value: 'contractTerm' },
       { text: 'MRC ($)', value: 'subscriptionFee' },
       { text: 'Connection fee', value: 'connectionFee' },
-      { text: 'Trial (months)', value: 'freeTrial' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Trial (months)', value: 'freeTrial' }
+      // { text: 'Actions', value: 'actions', sortable: false }
     ]
   }),
   computed: {
@@ -85,6 +87,7 @@ export default {
     this.$root.$off('services-list-received', this.getData)
   },
   mounted () {
+    this.$vuetify.goTo(0)
     this.$root.$on('services-list-received', this.getData)
     this.__getListOfServices()
   }

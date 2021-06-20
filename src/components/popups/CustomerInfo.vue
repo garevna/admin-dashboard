@@ -18,6 +18,8 @@
       <v-card-text class="text-center">
         <p>Phone: <b>{{ phone }}</b></p>
       </v-card-text>
+
+      <v-btn @click="dialog = false">OK</v-btn>
     </v-card>
   </v-dialog>
 </template>

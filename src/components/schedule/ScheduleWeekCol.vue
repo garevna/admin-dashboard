@@ -65,9 +65,9 @@ export default {
   methods: {
     showCustomerDetails (record) {
       this.$root.$emit('open-customer-info-popup', {
-        name: `${record.customer.firstName} ${record.customer.lastName}`,
-        address: `${record.customer.apartmentNumber}/${record.customer.address}`,
-        phone: record.customer.phoneMobile || record.customer.phoneWork
+        name: record.customer.name,
+        address: record.customer.address,
+        phone: record.customer.phone
       })
     },
 
@@ -96,19 +96,18 @@ export default {
 
     activate (record) {
       if (record.status !== 'In job queue') return
-      console.log(record)
       this.__activateService(record)
     },
 
     reject (record) {
-      // if (record.status === 'In job queue') return
+      if (record.status === 'In job queue') return
       // const lot = record.lots.find(item => item.date !== this.date)
-      //
-      // this.__updateScheduleRecordStatus(Object.assign({}, record, {
-      //   status: 'Awaiting for scheduling',
-      //   modified: Date.now(),
-      //   lots: []
-      // }))
+
+      this.__updateScheduleRecordStatus(Object.assign({}, record, {
+        status: 'Awaiting for scheduling',
+        modified: Date.now(),
+        lots: []
+      }))
     },
 
     getIcon (status) {
@@ -134,13 +133,18 @@ export default {
       }
       return { icon: icons[status], color: colors[status] }
     }
-  },
-
-  mounted () {
-    console.log(this.records)
   }
 }
 </script>
+
+<style>
+.v-expansion-panel::before {
+  box-shadow: none !important;
+}
+.theme--light.v-expansion-panels .v-expansion-panel {
+  background: transparent !important;
+}
+</style>
 
 <style scoped>
 table, th {

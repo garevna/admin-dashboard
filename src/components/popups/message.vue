@@ -15,13 +15,15 @@
       <v-card-text class="text-center">
         <p>{{ messageText }}</p>
       </v-card-text>
+
+      <v-card-text class="text-center">
+        <v-btn outlined @click="dialog = false" class="my-4">OK</v-btn>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-
-// import { messageHandler } from '@/controllers/data-handlers'
 
 export default {
   name: 'MessagePopup',

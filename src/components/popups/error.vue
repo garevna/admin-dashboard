@@ -15,6 +15,8 @@
       <v-card-text class="text-center">
         <p>{{ errorMessage || 'Unknown Error' }}</p>
       </v-card-text>
+
+      <v-btn @click="dialog = false">OK</v-btn>
     </v-card>
   </v-dialog>
 </template>

@@ -24,7 +24,7 @@
         >
           <template v-slot:activator>
             <v-list-item-content>
-              <v-list-item-title>
+              <v-list-item-title v-if="refreshed[item.refresh]">
                 <v-icon small>{{ item.icon }}</v-icon> <small> {{ item.title }} </small>
               </v-list-item-title>
             </v-list-item-content>
@@ -67,12 +67,22 @@ export default {
     //
   },
   data: () => ({
-    items: mainDashboard
+    items: mainDashboard,
+    refreshed: {
+      rsp: false,
+      footprint: true,
+      customers: false,
+      tickets: false,
+      services: false,
+      schedule: false,
+      documents: true,
+      settings: true
+    }
   }),
   methods: {
-    // pageOfCustomersReceived (data) {
-    //   console.log('CUSTOMERS: PAGE 1 RECEIVED\n', data)
-    // },
+    setRefreshed (event) {
+      this.refreshed[event.split('-refreshed')[0]] = true
+    },
     jumpTo (item) {
       if (this.$route.name === item.route) return
       item.route && this.$router.push({ name: item.route })
@@ -80,18 +90,30 @@ export default {
   },
 
   beforeDestroy () {
-    // this.$root.$off('page-of-customers-received', this.pageOfCustomersReceived)
+    [
+      'rsp-refreshed',
+      'customers-refreshed',
+      'tickets-refreshed',
+      'services-refreshed',
+      'schedule-refreshed'
+    ].forEach((event) => {
+      console.log('Remove event listener for: ', event)
+      this.$root.$off(event, this.setRefreshed)
+    })
   },
 
   mounted () {
-    // this.$root.$on('page-of-customers-received', this.pageOfCustomersReceived)
-    // this.__getCustomersByPageNumber(1)
-
-    // this.__updateScheduleLots()
+    [
+      'rsp-refreshed',
+      'customers-refreshed',
+      'tickets-refreshed',
+      'services-refreshed',
+      'schedule-refreshed'
+    ].forEach((event) => {
+      this.$root.$on(event, this.setRefreshed)
+    })
 
     if (!roleHandler()) this.$router.push({ name: 'home' })
-    this.__refreshCustomersWithPagination()
-    // this.__refreshServices()
   }
 }
 </script>

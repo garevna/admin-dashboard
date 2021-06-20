@@ -104,7 +104,8 @@ export default {
   methods: {
     updateTicket () {
       this.$emit('update:ticket', Object.assign({}, this.ticket, { modified: new Date().toISOString().slice(0, 10) }))
-      this.__saveTicketData(this.ticket._id, { modified: Date.now(), response: this.response })
+      console.log(this.ticket._id)
+      this.__saveTicketData(this.ticket._id, this.response)
     }
   }
 }

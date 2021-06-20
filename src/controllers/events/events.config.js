@@ -7,26 +7,26 @@ export const events = {
     change: 'password-change'
   },
   rsp: {
-    refresh: 'client-data-refreshed',
+    refresh: 'rsp-refreshed',
     get: 'client-data-received',
     put: 'client-data-updated'
   },
   customers: {
-    refresh: 'customers-list-refreshed',
+    refresh: 'customers-refreshed',
     list: 'customers-list-received',
     get: 'customer-data-received',
     post: 'customer-created',
     put: 'customer-updated'
   },
   services: {
-    refresh: 'services-list-refreshed',
+    refresh: 'services-refreshed',
     list: 'services-list-received',
     get: 'service-data-received',
     put: 'service-data-updated',
     post: 'new-service-created'
   },
   tickets: {
-    refresh: 'tickets-list-refreshed',
+    refresh: 'tickets-refreshed',
     categories: 'categories-received',
     list: 'tickets-list-received',
     get: 'ticket-data-received',
@@ -34,7 +34,7 @@ export const events = {
     put: 'ticket-updated'
   },
   booking: {
-    get: 'booking-rquests-received'
+    get: 'booking-requests-received'
   },
   schedule: {
     refresh: 'schedule-refreshed',

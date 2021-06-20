@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel>
     <v-expansion-panel-header>
-      Week <b class="ml-2">{{ weekNumber }}</b>
+      Week <strong class="ml-2">{{ weekNumber }}</strong>
       <p>
         <small>
           from <b class="week-date mx-2">{{ weekStartDate }}</b>
@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr v-for="(row, date) of weekData" :key="date">
-            <td><small><b>{{ getDayName(date) }}</b></small></td>
+            <td><small><strong>{{ getDayName(date) }}</strong></small></td>
             <td><small>{{ date }}</small></td>
             <td>
               <ScheduleWeekCol
@@ -78,6 +78,10 @@ export default {
     getDayName (date) {
       return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(date).getDay()]
     }
+  },
+
+  mounted () {
+    this.$vuetify.goTo(0)
   }
 }
 </script>

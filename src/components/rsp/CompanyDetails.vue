@@ -46,6 +46,7 @@ export default {
   methods: {
     getData (data) {
       const details = data.company ? data : data.result ? data.result : {}
+      console.log(this.schema)
       for (const step in details) {
         if (step === 'activeSesions') continue
         for (const prop in details[step]) {
@@ -83,6 +84,7 @@ export default {
   //   }
   // },
   mounted () {
+    this.$vuetify.goTo(0)
     this.__getClientData()
     this.$root.$on('client-data-received', this.getData)
   }

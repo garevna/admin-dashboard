@@ -1,8 +1,14 @@
 <template>
   <v-container>
     <v-card flat class="transparent mx-auto" max-width="900">
-      <v-expansion-panels v-model="panel" multiple>
-        <v-expansion-panel v-for="(requests, date) in records" :key="date">
+      <v-row justify="end">
+        <v-btn text @click="refresh" class="mr-12 mb-5">
+          <v-icon>mdi-refresh</v-icon>
+          Refresh
+        </v-btn>
+      </v-row>
+      <v-expansion-panels v-model="panel" multiple v-if="ready">
+        <v-expansion-panel v-for="(bookingRecords, date) in booking" :key="date">
           <v-expansion-panel-header>
             <b>{{ date }}</b>
           </v-expansion-panel-header>
@@ -13,11 +19,12 @@
                   <th>Customer unique code</th>
                   <th>Service name</th>
                   <th>Status</th>
+                  <!-- <th>dev</th> -->
                 </tr>
               </thead>
 
               <tbody>
-                <tr v-for="record of requests" :key="record._id">
+                <tr v-for="record of bookingRecords" :key="record._id">
                   <td>
                     <v-btn text @click="showCustomerDetails(record.customer)">
                       <v-icon small>mdi-account</v-icon>
@@ -65,6 +72,11 @@
                         </v-list>
                       </v-menu>
                   </td>
+                  <!-- <td>
+                    <v-btn text @click="showInfo(record)">
+                    .
+                    </v-btn>
+                  </td> -->
                 </tr>
               </tbody>
             </table>
@@ -82,33 +94,38 @@ export default {
 
   data: () => ({
     panel: [],
-    records: null,
+    booking: null,
     selected: null,
-    status: null
+    status: null,
+    ready: false
   }),
 
   methods: {
     getData (data) {
-      console.log('============ BOOKING REQUESTS: =============\n', data)
-      // this.records = data.filter(record => record.status === 'Awaiting for connection')
       this.records = data
+      this.booking = {}
+      const dates = data.map(record => new Date(record.modified).toISOString().slice(0, 10)).sort()
+      this.booking = Object.assign({}, ...dates.map(date => ({ [date]: [] })))
+      data.forEach(record => {
+        const date = new Date(record.modified).toISOString().slice(0, 10)
+        this.booking[date].push(record)
+      })
+      this.ready = true
     },
 
     showCustomerDetails (customer) {
       this.$root.$emit('open-customer-info-popup', {
-        name: `${customer.firstName} ${customer.lastName}`,
-        address: `${customer.apartmentNumber}/${customer.address}`,
-        phone: customer.phoneMobile || customer.phoneWork
+        name: customer.name,
+        address: customer.address,
+        phone: customer.phone
       })
     },
 
     updated (event) {
-      console.log(event.data)
       this.selected.status = this.status
     },
 
     changeRecordStatus (record, status) {
-      console.log(record)
       this.selected = record
       this.status = status
       this.__changeServiceDeliveryStatus(Object.assign(record, { status }))
@@ -136,26 +153,64 @@ export default {
         'Not connected': '#f00'
       }
       return { icon: icons[status], color: colors[status] }
+    },
+    showInfo (item) {
+      console.log(item)
+    },
+
+    refresh () {
+      this.ready = false
+      this.__refreshSchedule()
+    },
+
+    scheduleRefreshed (event) {
+      this.getData(event.result.booking)
     }
   },
 
   beforeMount () {
     this.$root.$on('service-delivery-status-updated', this.updated)
     this.$root.$on('booking-requests-received', this.getData)
-    this.__getBookingRequests(this.weekNumber)
+    this.$root.$on('schedule-data-refreshed', this.scheduleRefreshed)
+    this.__getBookingRequests()
   },
 
   beforeDestroy () {
     this.$root.$off('booking-requests-received', this.getData)
     this.$root.$off('service-delivery-status-updated', this.updated)
+    this.$root.$off('schedule-data-refreshed', this.scheduleRefreshed)
+  },
+
+  mounted () {
+    this.$vuetify.goTo(0)
   }
 }
 </script>
 
 <style scoped>
+.theme--light.v-expansion-panels .v-expansion-panel {
+  background: transparent !important;
+}
+.theme--light.v-expansion-panels .v-expansion-panel:not(:first-child)::after {
+  border: 0 !important;
+}
+.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-panels--tile) > .v-expansion-panel--next-active {
+  background: transparent!important;
+}
+.v-expansion-panel::before {
+  box-shadow: none!important;
+}
+table {
+  border-collapse: collapse;
+}
 th {
   text-align: center;
   background: #dedede;
+}
+td {
+  border: solid 1px #ddd;
+  padding: 4px 8px;
+  vertical-align: middle;
 }
 small {
   font-size: 12px;

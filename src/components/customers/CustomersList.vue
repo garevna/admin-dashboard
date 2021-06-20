@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="scroll-y">
     <v-row v-if="!edit" justify="center">
       <v-card flat class="transparent pb-12 px-12" v-if="ready">
         <!-- <v-card-title>
@@ -195,6 +195,15 @@ export default {
         .filter(customer => !this.plan || (customer.servicePlan === this.plan))
     }
   },
+
+  watch: {
+    edit (newVal, oldVal) {
+      if (oldVal && !newVal) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+      }
+    }
+  },
+
   methods: {
     getIcon (status) {
       const icons = {
@@ -273,6 +282,7 @@ export default {
   },
 
   mounted () {
+    this.$vuetify.goTo(0)
     console.log(this.ready, this.edit)
 
     this.$root.$on('customers-list-received', this.getData)

@@ -70,6 +70,13 @@
         :ticket.sync="selectedTicket"
         :edit.sync="edit"
       />
+      <!-- <v-card-text>
+        Answer
+        <v-textarea v-model="answer" />
+        <v-btn @click="updateTicket()">
+          Update
+        </v-btn>
+      </v-card-text> -->
     </v-row>
   </v-card>
 </template>
@@ -103,7 +110,8 @@ export default {
       { text: 'Severity', value: 'severity' },
       { text: 'Status', value: 'status' },
       { text: 'Actions', value: 'actions', sortable: false }
-    ]
+    ],
+    answer: ''
   }),
   computed: {
     filteredItems () {
@@ -114,11 +122,9 @@ export default {
   },
   methods: {
     getCategories (data) {
-      console.log(data)
       this.categories = data
     },
     getTickets (data) {
-      console.log(data)
       const getDate = date => date.indexOf('-') !== -1 ? date : new Date(date - 0).toISOString().slice(0, 10)
 
       this.tickets = data.map(ticket => Object.assign({}, ticket, {
@@ -132,7 +138,6 @@ export default {
       this.__getTicketById(item._id)
     },
     showTicketDetails (data) {
-      console.log(data)
       this.selectedTicket = data
       this.edit = true
     }

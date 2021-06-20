@@ -1,5 +1,5 @@
 export const services = {
-  refresh: 'services-list-refreshed',
+  refresh: 'services-refreshed',
   list: 'services-list-received',
   get: 'service-data-received',
   put: 'service-data-updated',

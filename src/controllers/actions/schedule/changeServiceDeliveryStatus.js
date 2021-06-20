@@ -1,9 +1,7 @@
-export const changeServiceDeliveryStatus = function (customerId, serviceId, status) {
+export const changeServiceDeliveryStatus = function (data) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
     route: 'booking',
     action: 'update',
-    customerId,
-    serviceId,
-    status
+    data
   })
 }
