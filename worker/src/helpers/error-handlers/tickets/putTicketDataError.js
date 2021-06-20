@@ -4,7 +4,7 @@ export const putTicketDataError = function (status) {
     action: 'put',
     route: 'tickets',
     error: true,
-    errorType: 'Ticket details',
-    errorMessage: 'Failed to save ticket details'
+    errorType: 'Ticket',
+    errorMessage: 'Failed to save response'
   }
 }

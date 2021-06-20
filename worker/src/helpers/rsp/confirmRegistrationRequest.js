@@ -8,7 +8,7 @@ export const confirmRegistrationRequest = async ({ id }) => {
 
   if (stat !== 200) return getUserDetailsError(stat)
 
-  self.postMessage({ status: 300, response: { status: stat, result: request } })
+  // self.postMessage({ status: 300, response: { status: stat, result: request } })
 
   request.userInfo.approved = true
 

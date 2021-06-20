@@ -20,7 +20,7 @@ class TicketsController {
   }
 
   async put (request) {
-    self.postMessage(await self.putTicketData(request.id, request.data))
+    self.postMessage(await self.putTicketData(request.key, request.response))
   }
 
   async post (request) {

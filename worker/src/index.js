@@ -2,8 +2,7 @@ import { routes } from './configs'
 
 import {
   getWeekNumber,
-  getWeekStartDate,
-  getWeekEndDate,
+  getWeekDay,
 
   getWeekStartDateByWeekNumber,
   getWeekEndDateByWeekNumber,
@@ -12,8 +11,7 @@ import {
 
 Object.assign(self, {
   getWeekNumber,
-  getWeekStartDate,
-  getWeekEndDate,
+  getWeekDay,
 
   getWeekStartDateByWeekNumber,
   getWeekEndDateByWeekNumber,

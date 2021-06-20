@@ -8,6 +8,8 @@ const {
 export const getTicketData = async function (key) {
   const [route, action] = ['tickets', 'get']
 
+  // self.postMessage({ status: 300, route, action, key })
+
   const { status, result: ticket } = await getRecordByKey(route, key)
 
   if (status !== 200) return getTicketDataError(status)

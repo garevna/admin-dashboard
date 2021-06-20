@@ -20,11 +20,13 @@ class ScheduleController {
   }
 
   async updateRecord (record) {
-    self.postMessage(await self.updateScheduleRecord(record))
+    // self.postMessage(await self.updateScheduleRecord(record))
+    // self.postMessage({ status: 300, message: 'Update schedule record', record })
+    self.postMessage(await self.updateCustomerServiceStatus(record))
   }
 
-  async putRecordToJobQueue (record) {
-    self.postMessage(await self.moveRecordToJobQueue(record))
+  async putRecordToJobQueue (data) {
+    self.postMessage(await self.moveRecordToJobQueue(data.request))
   }
 
   async activateService (data) {

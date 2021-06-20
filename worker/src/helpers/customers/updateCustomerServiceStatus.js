@@ -1,11 +1,11 @@
 const { getCustomerServiceError } = require('../error-handlers').default
 
 export const updateCustomerServiceStatus = async function (request) {
-  const { customerId, serviceId, status, lots, installation } = request
+  const { customerId, serviceId, status, lots, installation } = request.data
 
   const response = await self.getCustomer(customerId)
 
-  if (response.status !== 200) return response
+  if (response.status !== 200) return Object.assign(response, { errorMessage: 'Customer not found' })
 
   const customer = response.result
 
