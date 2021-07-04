@@ -39,8 +39,46 @@ export default {
       this.weeks = data
       this.ready = true
     },
-    updateInstallationSchedule (data) {
-      this.weeks = data
+
+    moveRecordToJobQueue (data) {
+      const { customerId, serviceId, lots, installation } = data
+
+      lots.forEach((lot) => {
+        const weekNumber = this.getWeekNumber(lot.date)
+        const records = this.weeks[weekNumber][lot.date][lot.period]
+        const index = records.findIndex(record => record.customerId === customerId && record.serviceId === serviceId)
+        if (lot.date === installation.date) {
+          this.weeks[weekNumber][lot.date][lot.period][index].status = 'In job queue'
+        } else {
+          this.weeks[weekNumber][lot.date][lot.period].splice(index, 1)
+        }
+      })
+
+      // Object.keys(this.weeks).forEach((weekNumber) => {
+      //   Object.keys(this.weeks[weekNumber]).forEach((date) => {
+      //     Object.keys(this.weeks[weekNumber][date]).forEach((period) => {
+      //       const records = this.weeks[weekNumber][date][period]
+      //       const index = records.findIndex(record => record.customerId === customerId && record.serviceId === serviceId)
+      //       if (index !== -1) {
+      //         if (installation.date === date && installation.period === period) {
+      //           this.weeks[weekNumber][date][period][index].status = 'In job queue'
+      //         } else {
+      //           this.weeks[weekNumber][date][period].splice(index, 1)
+      //         }
+      //       }
+      //     })
+      //   })
+      // })
+    },
+
+    activateRecord (data) {
+      const { week, date, period, customerId, serviceId } = data
+
+      const records = this.weeks[week][date][period]
+
+      const index = records.findIndex(record => record.customerId === customerId && record.serviceId === serviceId)
+
+      if (index !== -1) this.weeks[week][date][period].splice(index, 1)
     },
 
     refresh () {
@@ -56,16 +94,22 @@ export default {
   beforeMount () {
     this.$root.$on('schedule-week-data-received', this.getScheduleData)
     this.__getScheduleWeekData(this.weekNumber)
-    this.$root.$on('moved-to-job-queue', this.updateInstallationSchedule)
-    this.$root.$on('service-activated', this.updateInstallationSchedule)
+    // this.$root.$on('moved-to-job-queue', this.updateInstallationSchedule)
+    // this.$root.$on('service-activated', this.scheduleRefreshed)
     this.$root.$on('schedule-data-refreshed', this.scheduleRefreshed)
+
+    this.$root.$on('move-record-to-job-queue', this.moveRecordToJobQueue)
+    this.$root.$on('activate-record', this.activateRecord)
   },
 
   beforeDestroy () {
     this.$root.$off('schedule-week-data-received', this.getScheduleData)
-    this.$root.$off('moved-to-job-queue', this.updateInstallationSchedule)
-    this.$root.$off('service-activated', this.updateInstallationSchedule)
+    // this.$root.$off('moved-to-job-queue', this.updateInstallationSchedule)
+    // this.$root.$off('service-activated', this.updateInstallationSchedule)
     this.$root.$off('schedule-data-refreshed', this.scheduleRefreshed)
+
+    this.$root.$off('move-record-to-job-queue', this.moveRecordToJobQueue)
+    this.$root.$off('activate-record', this.activateRecord)
   },
 
   mounted () {

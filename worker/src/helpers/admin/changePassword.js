@@ -3,14 +3,12 @@ import { encrypt, hash } from '../crypto'
 
 const type = 'Change password'
 
-const { resetOffline, encryptError, resetError } = require('../errors').default
-
 export const changePassword = async (password) => {
-  if (!navigator.onLine) return resetOffline()
+  // if (!navigator.onLine) return resetOffline()
 
   const { result: hashPassword } = hash(password)
   const { status, result } = encrypt(JSON.stringify({ password: hashPassword }))
-  if (status !== 200) return encryptError()
+  if (status !== 200) return self.errorMessage('encryptError')
 
   const response = await fetch(`${hostHandler()}/pass/change`, {
     method: 'POST',
@@ -22,7 +20,7 @@ export const changePassword = async (password) => {
     body: JSON.stringify({ newPass: result })
   })
 
-  if (status !== 200) return resetError(response.status)
+  if (status !== 200) return self.errorMessage('resetError')
 
   return {
     status: response.status,

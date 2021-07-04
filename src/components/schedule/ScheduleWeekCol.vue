@@ -10,6 +10,8 @@
         {{ record.customer.uniqueCode }}
       </v-btn>
 
+      <p class="text-center"><sub><small>{{ record.serviceName }}</small></sub></p>
+
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn text small v-bind="attrs" v-on="on">
@@ -60,8 +62,11 @@
 
 export default {
   name: 'ScheduleWeekCol',
+
   props: ['date', 'period', 'records'],
+
   data: () => ({}),
+
   methods: {
     showCustomerDetails (record) {
       this.$root.$emit('open-customer-info-popup', {
@@ -72,36 +77,46 @@ export default {
     },
 
     confirm (record) {
-      console.log('CONFIRMATION:\n', record)
       if (record.status === 'In job queue') return
-      const lot = record.lots.find(item => item.date === this.date)
 
-      const { _id, resellerId, customerId, serviceId, lots } = record
+      const { customerId, serviceId, lots } = record
+
+      const lot = lots.find(item => item.date === this.date)
+
+      const installation = {
+        date: this.date,
+        period: this.period,
+        message: lot.message || ''
+      }
 
       this.__putRecordToJobQueue(Object.assign({}, {
-        _id,
-        resellerId,
         customerId,
         serviceId,
         lots,
         status: 'In job queue',
         modified: Date.now(),
-        installation: {
-          date: this.date,
-          period: this.period,
-          message: lot.message || ''
-        }
+        installation
       }))
+
+      this.$root.$emit('move-record-to-job-queue', { customerId, serviceId, lots, installation })
     },
 
     activate (record) {
       if (record.status !== 'In job queue') return
+
       this.__activateService(record)
+
+      this.$root.$emit('activate-record', {
+        week: this.getWeekNumber(this.date),
+        date: this.date,
+        period: this.period,
+        customerId: record.customerId,
+        serviceId: record.serviceId
+      })
     },
 
     reject (record) {
       if (record.status === 'In job queue') return
-      // const lot = record.lots.find(item => item.date !== this.date)
 
       this.__updateScheduleRecordStatus(Object.assign({}, record, {
         status: 'Awaiting for scheduling',

@@ -2,16 +2,14 @@ import { hostHandler, apiKeyHandler } from '../env'
 
 import { encrypt } from '../crypto'
 
-const { resetOffline, resetError, encryptError } = require('../errors').default
-
 export const passwordReset = async (login) => {
   const action = 'reset'
 
-  if (!navigator.onLine) return resetOffline()
+  // if (!navigator.onLine) return resetOffline()
 
   const { status, result: cryptoLogin } = encrypt(JSON.stringify({ login }))
 
-  if (status !== 200) return encryptError()
+  if (status !== 200) return self.errorMessage('encryptError')
 
   const response = await fetch(`${hostHandler()}/pass/reset`, {
     method: 'POST',
@@ -24,7 +22,7 @@ export const passwordReset = async (login) => {
 
   const result = await response.json()
 
-  if (response.status !== 200) return resetError(response.status)
+  if (response.status !== 200) return self.errorMessage('resetError')
 
   return {
     status: response.status,

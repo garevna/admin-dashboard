@@ -12,6 +12,7 @@ import {
 } from './initDB'
 
 // import { putBooking } from './putBooking'
+import { iterateCustomers } from './customers'
 
 import { clearStore } from './clearStore'
 import { putRecordByKey } from './putRecordByKey'
@@ -39,5 +40,6 @@ export {
   // putScheduleRecord,
   getRecordByKey,
   deleteRecordByKey,
-  getAllRecords
+  getAllRecords,
+  iterateCustomers
 }

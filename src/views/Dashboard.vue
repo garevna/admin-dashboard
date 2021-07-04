@@ -81,7 +81,8 @@ export default {
   }),
   methods: {
     setRefreshed (event) {
-      this.refreshed[event.split('-refreshed')[0]] = true
+      console.log(event)
+      this.refreshed[event] = true
     },
     jumpTo (item) {
       if (this.$route.name === item.route) return
@@ -97,7 +98,6 @@ export default {
       'services-refreshed',
       'schedule-refreshed'
     ].forEach((event) => {
-      console.log('Remove event listener for: ', event)
       this.$root.$off(event, this.setRefreshed)
     })
   },

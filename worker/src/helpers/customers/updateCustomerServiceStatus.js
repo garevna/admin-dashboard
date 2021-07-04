@@ -1,7 +1,5 @@
-const { getCustomerServiceError } = require('../error-handlers').default
-
 export const updateCustomerServiceStatus = async function (request) {
-  const { customerId, serviceId, status, lots, installation } = request.data
+  const { customerId, serviceId, status, lots, installation } = request.data ? request.data : request
 
   const response = await self.getCustomer(customerId)
 
@@ -11,7 +9,7 @@ export const updateCustomerServiceStatus = async function (request) {
 
   const index = customer.services.findIndex(service => service.id === serviceId)
 
-  if (index === -1) return getCustomerServiceError(status)
+  if (index === -1) return self.errorMessage('getCustomerServiceError')
 
   Object.assign(customer.services[index], {
     modified: Date.now(),

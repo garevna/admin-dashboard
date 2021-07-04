@@ -1,8 +1,6 @@
 import { post } from '../AJAX'
 import { serviceSchema } from '../../configs'
 
-const { postServiceDetailsError } = require('../error-handlers').default
-
 export const createNewService = async function (id, data) {
   const [route, action] = ['services', 'post']
 
@@ -10,7 +8,7 @@ export const createNewService = async function (id, data) {
 
   const { status, result } = await post('service', service)
 
-  if (status !== 200) return postServiceDetailsError(status)
+  if (status !== 200) return self.errorMessage('postServiceDetailsError')
 
   self.refreshServicesList()
 

@@ -1,18 +1,16 @@
 import { encrypt, /* decrypt, */ hash } from '../crypto'
 import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
 
-const { authOffline, authError } = require('../errors').default
-
 export const auth = async (login, password) => {
-  if (!navigator.onLine) return authOffline()
+  if (!navigator.onLine) self.errorMessage('authOffline')
 
   const { status: hashStatus, result: hashResult } = hash(password)
 
-  if (hashStatus !== 200) return authError(hashStatus)
+  if (hashStatus !== 200) return self.errorMessage('authError')
 
   const { status, result: encryptResult } = await encrypt(JSON.stringify({ login, password: hashResult }))
 
-  if (status !== 200) return authError(status)
+  if (status !== 200) return self.errorMessage('authError')
 
   credentialsHandler(encryptResult)
 
@@ -27,7 +25,7 @@ export const auth = async (login, password) => {
 
   const result = await response.json()
 
-  if (response.status !== 200) return authError(response.status, login)
+  if (response.status !== 200) return self.errorMessage('authError')
 
   return {
     status: 200,

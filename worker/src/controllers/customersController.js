@@ -1,14 +1,23 @@
 class CustomersController {
-  async getFromRemote () {
-    self.postMessage(await self.getCustomersFromRemoteServer())
-  }
+  // async getFromRemote () {
+  //   self.postMessage(await self.getCustomersFromRemoteServer())
+  // }
 
-  async refreshByPageNumber (pageNumber) {
-    self.postMessage(await self.refreshWithPagination(pageNumber))
+  async refresh () {
+    self.postMessage(await self.refreshWithPagination())
+    self.postMessage(await self.refreshSchedule())
   }
 
   async getAllCustomers () {
     self.postMessage(await self.getAllCustomers())
+  }
+
+  async getCustomersByResellerId (request) {
+    self.postMessage(await self.getCustomersByResellerId(request.resellerId))
+  }
+
+  async getCustomersByPageNumber (pageNumber) {
+    self.postMessage(await self.getCustomersByPageNumber(pageNumber))
   }
 
   async getCustomer (request) {

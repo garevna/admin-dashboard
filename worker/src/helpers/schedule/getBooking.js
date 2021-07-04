@@ -1,7 +1,5 @@
 import { getAllSchedule } from '../db/schedule'
 
-// const available = ['Awaiting for connection', 'Awaiting for scheduling', 'Not connected', 'Unable to connect']
-
 export const getBooking = async function () {
   const [route, action] = ['booking', 'get']
 

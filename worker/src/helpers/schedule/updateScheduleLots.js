@@ -7,7 +7,7 @@ export const updateScheduleLots = async function () {
   const currentWeek = self.getWeekNumber(new Date())
   const lots = { settings }
 
-  const response = await self.getInstallationSchedule()
+  const response = await self.buildSchedule()
 
   if (response.status !== 200) return response
 

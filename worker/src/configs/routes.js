@@ -12,10 +12,10 @@ export const routes = {
   '*': {
     refresh: () => {
       rspController.refresh()
-      customersController.getFromRemote()
+      customersController.refresh()
       servicesController.refresh()
       ticketsController.refresh()
-      scheduleController.refresh()
+      // scheduleController.refresh()
     }
   },
   admin: {
@@ -32,7 +32,8 @@ export const routes = {
     registration: rspController.registrationRequests,
     confirm: rspController.confirmRegistration,
     reject: rspController.rejectRegistration,
-    'registration-request-details': rspController.registrationRequestDetails
+    'registration-request-details': rspController.registrationRequestDetails,
+    customers: customersController.getCustomersByResellerId
   },
   customers: {
     refresh: customersController.getFromRemote,

@@ -1,24 +1,22 @@
 import { getRecordByKey, putRecordByKey } from '../db'
 import { put } from '../AJAX'
 
-const { getServiceDetailsError, putServiceDetailsError } = require('../error-handlers').default
-
 export const updateService = async function (id, data) {
   const [route, action] = ['services', 'put']
 
   const { status: getStatus, result: getResult } = await getRecordByKey('services', id)
 
-  if (getStatus !== 200) return getServiceDetailsError(getStatus)
+  if (getStatus !== 200) return self.errorMessage('getServiceDetailsError')
 
   const response = Object.assign({}, getResult, data)
 
   const { status: putStatus } = await putRecordByKey('services', id, response)
 
-  if (putStatus !== 200) return putServiceDetailsError(putStatus)
+  if (putStatus !== 200) return self.errorMessage('putServiceDetailsError')
 
   const { status, result } = await put(`service/${id}`, response)
 
-  if (status !== 200) return putServiceDetailsError(status)
+  if (status !== 200) return self.errorMessage('putServiceDetailsError')
 
   return {
     status,

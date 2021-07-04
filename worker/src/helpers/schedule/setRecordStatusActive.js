@@ -1,9 +1,24 @@
+import { removeScheduleRecord } from '../db/schedule'
+
 export const setRecordStatusActive = async (request) => {
-  await Promise.all([
-    self.removeScheduleRecord(request._id),
+  const { customerId, serviceId } = request
+
+  // self.postDebugMessage({ method: 'setRecordStatusActive', request })
+  const result = await Promise.all([
+    removeScheduleRecord(customerId, serviceId),
     self.updateScheduleLots(),
     self.updateCustomerServiceStatus(Object.assign(request, { status: 'Active' }))
   ])
 
-  return { status: 200, route: 'schedule', action: 'job', result: (await self.getSchedule()).result }
+  self.postDebugMessage({ method: 'setRecordStatusActive', result })
+
+  // return await self.buildSchedule()
+  return {
+    status: 200,
+    route: 'schedule',
+    action: 'activate',
+    message: true,
+    messageType: 'Installation schedule',
+    messageText: 'Service has been activated'
+  }
 }

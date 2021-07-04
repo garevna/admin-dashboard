@@ -1,9 +1,7 @@
 import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
 
-const { resetOffline, codeError } = require('../errors').default
-
 export const sendPasswordResetCode = async (code) => {
-  if (!navigator.onLine) return resetOffline()
+  // if (!navigator.onLine) return resetOffline()
 
   const response = await fetch(`${hostHandler()}/pass/approve`, {
     method: 'POST',
@@ -14,7 +12,7 @@ export const sendPasswordResetCode = async (code) => {
     body: JSON.stringify({ code })
   })
 
-  if (response.status !== 200) codeError(response.status)
+  if (response.status !== 200) self.errorMessage('codeError')
 
   const result = await response.json()
 

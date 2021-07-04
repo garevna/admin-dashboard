@@ -32,17 +32,3 @@ const result = Object.assign({}, rsp, customers, services, tickets, schedule, {
 Object.keys(result).forEach((key) => { self[key] = result[key] })
 
 export default result
-
-// export {
-//   testDBVersion,
-//
-//   init,
-//   hash,
-//   encrypt,
-//   decrypt,
-//   auth,
-//   passwordReset,
-//   sendPasswordResetCode,
-//   changePassword,
-//   passwordChange
-// }

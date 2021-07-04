@@ -1,12 +1,11 @@
 import { post } from '../AJAX'
-const { postNewCustomerError } = require('../error-handlers').default
 
 export const createCustomer = async function (data) {
   const [route, action] = ['customers', 'post']
 
   const { status, result } = await post('customer', data)
 
-  if (status !== 200) return postNewCustomerError(status)
+  if (status !== 200) return self.errorMessage('postNewCustomerError')
 
   return {
     status,

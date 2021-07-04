@@ -1,15 +1,13 @@
 import { remove } from '../AJAX'
-import { deleteRecordByKey } from '../db'
-
-const { rejectRequestError } = require('../error-handlers').default
 
 export const rejectRegistrationRequest = async ({ id }) => {
-  const { status } = await deleteRecordByKey('rsp', id)
-
-  if (status !== 200) return rejectRequestError(status)
-
   const response = await remove(`user/${id}`)
-  if (response.status !== 200) return rejectRequestError(status)
+
+  self.postDebugMessage({ action: 'delete', result: response })
+
+  if (response.status !== 200) return self.errorMessage('rejectRequestError')
+
+  await self.getResellersFromRemoteServer()
 
   return await self.getRegistrationRequests()
 }

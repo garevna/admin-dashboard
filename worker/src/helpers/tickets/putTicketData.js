@@ -1,12 +1,10 @@
 import { put } from '../AJAX'
 import { getRecordByKey, putRecordByKey } from '../db'
 
-const { getTicketDataError, putTicketDataError } = require('../error-handlers').default
-
 export const putTicketData = async function (_id, message) {
   const { status: getStatus, result: ticket } = await getRecordByKey('tickets', _id)
 
-  if (getStatus !== 200) return getTicketDataError(getStatus)
+  if (getStatus !== 200) return self.errorMessage('getTicketDataError')
 
   if (!ticket.history) ticket.history = []
 
@@ -18,11 +16,11 @@ export const putTicketData = async function (_id, message) {
 
   const { status, result } = await put(`ticket/${_id}`, ticket)
 
-  if (status !== 200) return Object.assign(putTicketDataError(status), result)
+  if (status !== 200) return Object.assign(self.errorMessage('putTicketDataError'), result)
 
   const { status: localStatus } = await putRecordByKey('tickets', _id, ticket)
 
-  if (localStatus !== 200) return putTicketDataError(status)
+  if (localStatus !== 200) return self.errorMessage('putTicketDataError')
 
   return { status, route: 'tickets', action: 'put', key: _id, result }
 }

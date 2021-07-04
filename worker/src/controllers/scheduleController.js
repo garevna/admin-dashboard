@@ -8,7 +8,7 @@ class ScheduleController {
   }
 
   async getFullSchedule () {
-    self.postMessage(await self.getSchedule())
+    self.postMessage(await self.buildSchedule())
   }
 
   async getLots () {
@@ -20,12 +20,12 @@ class ScheduleController {
   }
 
   async updateRecord (record) {
-    // self.postMessage(await self.updateScheduleRecord(record))
-    // self.postMessage({ status: 300, message: 'Update schedule record', record })
+    // self.postDebugMessage({ message: 'Update schedule record', record })
     self.postMessage(await self.updateCustomerServiceStatus(record))
   }
 
   async putRecordToJobQueue (data) {
+    // self.postDebugMessage({ message: 'Controller', method: 'putRecordToJobQueue', data })
     self.postMessage(await self.moveRecordToJobQueue(data.request))
   }
 

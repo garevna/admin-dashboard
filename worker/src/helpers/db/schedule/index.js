@@ -1,9 +1,9 @@
 import { getAllSchedule } from './getAllSchedule'
 import { putScheduleRecord } from './putScheduleRecord'
-import { deleteScheduleRecord } from './deleteScheduleRecord'
+import { removeScheduleRecord } from './removeScheduleRecord'
 
 export {
   getAllSchedule,
   putScheduleRecord,
-  deleteScheduleRecord
+  removeScheduleRecord
 }

@@ -2,7 +2,7 @@
   <v-container class="scroll-y">
     <v-row v-if="!edit" justify="center">
       <v-card flat class="transparent pb-12 px-12" v-if="ready">
-        <!-- <v-card-title>
+        <v-card-title>
           <table>
             <tbody>
               <tr>
@@ -20,9 +20,9 @@
                 </td>
                 <td>
                   <v-select
-                    :items="speeds"
-                    v-model="speed"
-                    label="Service speed"
+                    :items="types"
+                    v-model="type"
+                    label="Service type"
                     outlined
                     clearable
                     dense
@@ -32,32 +32,20 @@
                 </td>
                 <td>
                   <v-select
-                    :items="plans"
-                    v-model="plan"
-                    label="Plan"
+                    :items="services"
+                    v-model="serviceName"
+                    label="Services"
                     outlined
                     clearable
                     dense
                     color="primary"
-                    style="width: 120px"
-                  ></v-select>
-                </td>
-                <td>
-                  <v-select
-                    :items="postalCodes"
-                    v-model="postCode"
-                    label="Post code"
-                    outlined
-                    clearable
-                    dense
-                    color="primary"
-                    style="width: 140px"
+                    style="width: 240px"
                   ></v-select>
                 </td>
               </tr>
             </tbody>
           </table>
-        </v-card-title> -->
+        </v-card-title>
 
         <v-data-table
           ref="customersList"
@@ -66,23 +54,51 @@
           :search="search"
           :page.sync="page"
           :height="tableHeight"
+          @click:row="editItem"
           fixed-header
+          :items-per-page="10"
+          single-expand
+          :expanded.sync="expanded"
+          show-expand
         >
-          <template v-slot:item.serviceStatus="{ item }">
-            <v-icon :color="getIcon(item.serviceStatus).color" small class="mr-1">
-              {{ getIcon(item.serviceStatus).icon }}
-            </v-icon>
-            <span @click="editItem(item)" style="cursor: pointer">
-              {{ item.serviceStatus }}
-            </span>
-          </template>
+          <!-- <template v-slot:footer>
+            <td :colspan="headers.length" class="pa-4">
+              <span class="ml-12"><small>Total selected customers: {{ selectedCustomersNumber }}</small></span>
+            </td>
+          </template> -->
 
-          <template v-slot:item.actions="{ item }">
-            <v-btn outlined @click="editItem(item)" dark class="primary">Edit</v-btn>
+          <template v-slot:expanded-item="{ headers, item }">
+            <td :colspan="headers.length" v-if="item.services.length" class="pa-4">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Service type</th>
+                    <th>Service name</th>
+                    <th>Service status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(service, index) of item.services" :key="index">
+                    <td style="border: solid 1px #ddd; padding: 0 8px">
+                      <small>{{ service.type }}</small>
+                    </td>
+                    <td style="border: solid 1px #ddd; padding: 0 8px">
+                      <small>{{ service.name }}</small>
+                    </td>
+                    <td style="border: solid 1px #ddd; padding: 0 8px">
+                      <v-icon :color="getIcon(service.status).color" small class="mr-1">
+                        {{ getIcon(service.status).icon }}
+                      </v-icon>
+                      <small>{{ service.status }}</small>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
           </template>
         </v-data-table>
 
-        <div style="margin-top: -48px">
+        <div style="margin-top: -36px">
           <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
@@ -93,7 +109,6 @@
             hide-details
             style="display: inline-block; width: 280px"
           ></v-text-field>
-
           <span class="ml-12"><small>Total selected customers: {{ selectedCustomersNumber }}</small></span>
         </div>
       </v-card>
@@ -112,12 +127,13 @@
 import {
   customerHandler,
   estimatesHandler,
-  // serviceHandler,
   customersListPageNumberHandler
 } from '@/helpers/data-handlers'
 
 export default {
   name: 'CustomersList',
+
+  props: ['details'],
 
   components: {
     CustomerDetails: () => import('@/components/customers/CustomerDetails.vue')
@@ -131,68 +147,49 @@ export default {
     search: '',
     page: customersListPageNumberHandler(),
     status: null,
-    speed: null,
-    plan: null,
-    postCode: null,
+    type: null,
+    serviceName: '',
+
+    expanded: [],
 
     statuses: ['Active', 'Awaiting for connection', 'Awaiting for confirmation', 'Awaiting for scheduling', 'In job queue', 'Unable to connect', 'Not connected'],
-    speeds: ['50/50', '150/150', '250/250', '500/500', '1000/1000'],
+    types: ['residential', 'commercial'],
     headers: [
-      {
-        text: 'Customer name',
-        align: 'start',
-        sortable: false,
-        value: 'name'
-      },
       { text: 'Unique code', value: 'uniqueCode' },
       { text: 'Address', value: 'address' },
-      { text: 'Services', value: 'services' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Customer name', align: 'start', sortable: false, value: 'name' },
+      { text: 'Services', value: 'data-table-expand' }
     ]
   }),
 
   computed: {
     tableHeight () {
-      return window.innerHeight - 360
+      return window.innerHeight - 400
     },
     customers () {
       if (!this.data) return
-
-      const getServicesText = function (services) {
-        let result = ''
-        for (const service of services) {
-          result += `${service.name}: ${service.status}\n`
-        }
-        return result
-      }
 
       return this.data.map(customer => ({
         name: customer.name,
         uniqueCode: customer.uniqueCode,
         postCode: customer.postCode,
         address: customer.address,
-        services: getServicesText(customer.services),
+        services: customer.services,
         id: customer._id
       }))
     },
-    postalCodes () {
-      const set = new Set(this.customers.map(customer => customer.postCode))
-      return Array.from(set)
-    },
-    // plans () {
-    //   const set = new Set(this.customers.map(customer => customer.servicePlan).filter(item => item))
-    //   return Array.from(set)
-    // },
     selectedCustomersNumber () {
       return this.filteredItems.length
     },
+    services () {
+      return Array.from(new Set(this.customers.flatMap(customer => customer.services.map(service => service.name))))
+    },
     filteredItems () {
-      if (!this.status && !this.speed && !this.postCode && !this.plan) return this.customers
+      if (!this.status && !this.type && !this.serviceName) return this.customers
       return this.customers
-        .filter(customer => !this.status || (customer.serviceStatus === this.status))
-        .filter(customer => !this.speed || (customer.serviceSpeed === this.speed))
-        .filter(customer => !this.postCode || (customer.postCode === this.postCode))
-        .filter(customer => !this.plan || (customer.servicePlan === this.plan))
+        .filter(customer => !this.status || (customer.services.filter(service => service.status === this.status).length))
+        .filter(customer => !this.type || (customer.services.filter(service => service.type === this.type)).length)
+        .filter(customer => !this.serviceName || (customer.services.filter(service => service.name === this.serviceName)).length)
     }
   },
 
@@ -201,6 +198,9 @@ export default {
       if (oldVal && !newVal) {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
       }
+    },
+    filteredItems (value) {
+      console.log('CHANGED:\n', value)
     }
   },
 
@@ -217,12 +217,12 @@ export default {
         'Not connected': 'mdi-alert'
       }
       const colors = {
-        Active: '#999',
-        'Awaiting for connection': '#999',
-        'Awaiting for confirmation': '#999',
-        'Awaiting confirmation': '#999',
-        'Awaiting for scheduling': 'primary',
-        'In job queue': '#999',
+        Active: '#090',
+        'Awaiting for connection': 'primary',
+        'Awaiting for confirmation': 'primary',
+        'Awaiting confirmation': 'primary',
+        'Awaiting for scheduling': '#999',
+        'In job queue': 'primary',
         'Unable to connect': '#777',
         'Not connected': '#f00'
       }
@@ -232,6 +232,7 @@ export default {
       console.log(data)
       this.data = Array.isArray(data) ? data : Array.isArray(data.result) ? data.result : []
       this.ready = true
+      console.log(this.services)
     },
 
     getEstimates (data) {
@@ -244,53 +245,34 @@ export default {
       customerHandler(item.id)
       this.edit = true
     }
-
-    // updateCustomerServices (data) {
-    //   const {
-    //     _id,
-    //     services,
-    //     serviceSpeed,
-    //     serviceStatus,
-    //     servicePlan,
-    //     serviceTerm
-    //   } = data
-    //
-    //   const index = this.customers.findIndex(customer => customer.id === _id)
-    //   if (index === -1) return
-    //   this.customers.splice(index, 1, Object.assign(this.customers[index], {
-    //     services,
-    //     serviceSpeed,
-    //     serviceStatus,
-    //     servicePlan,
-    //     serviceTerm
-    //   }))
-    // }
   },
 
   beforeDestroy () {
     this.$root.$off('customers-list-received', this.getData)
-    this.$root.$off('buildings-data-list', this.getEstimates)
-    // this.$root.$off('customer-services-updated', this.updateCustomerServices)
   },
 
   created () {
     // this.$root.$on('buildings-data-list', this.getEstimates)
-    // this.__getBuildingsByStatus('lit')
-    // this.__getBuildingsByStatus('footprint')
-    // this.__getBuildingsByStatus('build')
-    // this.__getBuildingsByStatus('soon')
   },
 
   mounted () {
     this.$vuetify.goTo(0)
-    console.log(this.ready, this.edit)
 
     this.$root.$on('customers-list-received', this.getData)
-    // this.$root.$on('customer-services-updated', this.updateCustomerServices)
-    this.__getCustomers()
+    console.log(this.details)
+    !this.details ? this.__getCustomers() : this.__getCustomersByResellerId(this.details._id)
   }
 }
 </script>
 
-<style scoped>
+<style>
+.theme--light.v-data-table {
+  background: #fbfbfb;
+}
+.theme--light.v-data-table.v-data-table--fixed-header thead th {
+  background: #f5f5f5;
+}
+.v-data-footer__select {
+  display: none;
+}
 </style>

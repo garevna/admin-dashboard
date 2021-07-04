@@ -1,8 +1,6 @@
 import { openDB } from '../openDB'
 import { getAllData } from './getAllData'
 
-const { getScheduleError } = require('../../error-handlers').default
-
 export const getAllSchedule = async () => {
   const [route, action] = ['schedule', 'all']
 
@@ -10,5 +8,5 @@ export const getAllSchedule = async () => {
 
   const { status, result } = await getAllData(db)
 
-  return status !== 200 ? getScheduleError(status) : { status, route, action, result }
+  return status !== 200 ? self.errorMessage('getScheduleError') : { status, route, action, result }
 }

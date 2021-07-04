@@ -19,7 +19,7 @@ export const put = async (path, data) => {
 
   const result = await response.json()
 
-  if (response.status !== 200) self.postMessage({ status: 300, action: 'PUT', url: `${hostHandler()}/${path}`, response: { status: response.status, result } })
+  if (response.status !== 200) self.postDebugMessage({ action: 'PUT', url: `${hostHandler()}/${path}`, response: { status: response.status, result } })
 
   return { status: response.status, result }
 }

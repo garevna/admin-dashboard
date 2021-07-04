@@ -1,13 +1,11 @@
 import { adminWorkerEvents } from './events'
 import { adminWorkerErrors } from './errors'
-import { initCallback, startRefreshing, refreshCallback } from './callbacks'
+import { initCallback, startRefreshing, refreshCallback, showDebugMessage } from './callbacks'
 
 export function createAdminWorker () {
   const path = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_PUBLIC_PATH_PRODUCTION : ''
 
   window[Symbol.for('admin.worker')] = new Worker(`${path}admin.worker.js`)
-
-  // window[Symbol.for('admin.worker')].addEventListener('message', initCallback)
 
   window[Symbol.for('admin.worker')].onerror = function (error) {
     console.warn('Admin worker Error\n', error)
@@ -18,13 +16,10 @@ export function createAdminWorker () {
   window[Symbol.for('admin.worker')].onmessage = function (event) {
     if (!event.data) {
       event.stopImmediatePropagation()
-      return console.warn('Message event error: event.data undefined')
+      return console.warn('Worker message event error: event data not defined')
     }
-    // console.log('ADMIN WORKER: EVENT\n', event)
-    if (event.data.status === 300) {
-      event.stopImmediatePropagation()
-      return console.log('WORKER DEBUGGING MESSAGE:\n', event.data)
-    }
+
+    if (event.data.status === 300) return showDebugMessage(event.data)
 
     if (event.data.action === 'init') {
       event.stopImmediatePropagation()
@@ -36,10 +31,7 @@ export function createAdminWorker () {
       startRefreshing(event)
     }
 
-    if (event.data.action === 'refresh') {
-      // event.stopImmediatePropagation()
-      return refreshCallback(event)
-    }
+    if (event.data.action === 'refresh') return refreshCallback(event)
 
     const { route, action, status, result } = event.data
 
@@ -47,10 +39,10 @@ export function createAdminWorker () {
       window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
       // console.log('ROUTE: ', route, ' ACTION: ', action)
       if (!adminWorkerEvents[route] || !adminWorkerEvents[route][action]) {
-        return console.log(event.data)
+        return /* console.log(event.data) */
       }
       const eventName = adminWorkerEvents[route][action]
-      console.log(eventName)
+      // console.log(eventName)
       if (eventName) {
         window[Symbol.for('vue.instance')].$root.$emit(eventName, result)
       }
@@ -63,9 +55,10 @@ export function createAdminWorker () {
         })
       }
     } else {
+      event.stopImmediatePropagation()
+      window[Symbol.for('vue.prototype')].$dispatchProgressEvent(false)
       // console.warn('ADMIN WORKER ON MESSAGE - ERROR STATUS RECEIVED', status, route, action, event.data)
-      const { errorType = event.data.route, errorMessage = 'Unknown error' } = event.data.error
-        ? event.data : adminWorkerErrors[route][action]
+      const { errorType = event.data.route, errorMessage = 'Unknown error' } = event.data.error ? event.data : adminWorkerErrors[route][action]
 
       window[Symbol.for('vue.instance')].$root.$emit('open-error-popup', {
         errorType,

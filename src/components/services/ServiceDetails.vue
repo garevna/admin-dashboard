@@ -104,7 +104,6 @@ export default {
       return this.rules[item.type]
     },
     getData (data) {
-      console.log(data)
       for (const prop in this.service) {
         this.service[prop].value = data[prop]
       }
@@ -112,10 +111,7 @@ export default {
     },
 
     saveServiceDetails () {
-      console.log(this.service)
       for (const prop in this.service) {
-        console.log(prop, this.service[prop])
-        // if (prop === 'serviceType') continue
         this.service[prop] = this.service[prop].value
       }
       if (this.serviceId) {

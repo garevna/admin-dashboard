@@ -10,7 +10,6 @@ export const putRecordByKey = async (storeName, recordKey, payload) => new Promi
       }
 
       const store = db.transaction([storeName], 'readwrite').objectStore(storeName)
-      // self.postMessage({ status: 300, store: storeName, key: recordKey, keyPath: store.keyPath })
 
       Object.assign(store.put(payload), {
         onsuccess: event => resolve({ status: 200, result: event.target.result }),

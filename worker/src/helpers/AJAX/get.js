@@ -17,8 +17,6 @@ export const get = async function (path) {
 
   const result = await response.json()
 
-  // self.postMessage({ status: 300, route: path, action: 'GET', result: { status: response.status, result } })
-
   if (response.status !== 200 || !result) {
     return {
       status: response.status,

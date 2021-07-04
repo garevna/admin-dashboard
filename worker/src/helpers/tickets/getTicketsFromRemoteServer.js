@@ -2,14 +2,12 @@ import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
 import { ticketCategories } from '../data-handlers'
 
-const { refreshTicketsListError } = require('../error-handlers').default
-
 export const getTicketsFromRemoteServer = async function () {
   const [route, action] = ['tickets', 'refresh']
 
   const { status, result } = await get('ticket')
 
-  if (status !== 200) return refreshTicketsListError(status)
+  if (status !== 200) return self.errorMessage('refreshTicketsListError')
 
   const { ticketCategories: categories, tickets } = result
 
@@ -19,7 +17,7 @@ export const getTicketsFromRemoteServer = async function () {
 
   for (const record of tickets) {
     const { status: localDBStatus } = await putRecordByKey('tickets', record._id, record)
-    if (localDBStatus !== 200) self.postMessage(refreshTicketsListError(localDBStatus))
+    if (localDBStatus !== 200) self.postMessage(self.errorMessage('refreshTicketsListError'))
   }
 
   return { status, route, action, result }

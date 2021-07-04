@@ -34,6 +34,7 @@
           :items="filteredItems"
           :search="search"
           class="transparent"
+          @click:row="editItem"
         >
 
           <template v-slot:top>
@@ -59,9 +60,9 @@
             </v-row>
           </template>
 
-          <template v-slot:item.actions="{ item }">
+          <!-- <template v-slot:item.actions="{ item }">
             <v-btn outlined @click="editItem(item)" dark class="primary">Details</v-btn>
-          </template>
+          </template> -->
         </v-data-table>
       <!-- </v-col> -->
     </v-row>
@@ -108,8 +109,7 @@ export default {
       { text: 'Category', value: 'category' },
       { text: 'Priority', value: 'priority' },
       { text: 'Severity', value: 'severity' },
-      { text: 'Status', value: 'status' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Status', value: 'status' }
     ],
     answer: ''
   }),

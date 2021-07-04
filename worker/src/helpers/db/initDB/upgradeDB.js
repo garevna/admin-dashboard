@@ -1,32 +1,18 @@
-import { storeNames /*, mainKeys */, dbKeys } from '../db-configs'
+import { storeNames, dbKeys } from '../db-configs'
 
 export function upgradeDB (db, transaction) {
   for (const storeName of storeNames) {
-    if (!db.objectStoreNames.contains(storeName)) {
-      let store
-      if (storeName === 'categories') {
-        store = db.createObjectStore(storeName, { keyPath: 'index', autoIncrement: true })
-      } else {
-        store = db.createObjectStore(storeName, { keyPath: '_id', unique: true })
-      }
+    db.deleteObjectStore(storeName)
+    // self.postDebugMessage({ deleted: storeName })
 
-      if (dbKeys[storeName]) {
-        dbKeys[storeName].forEach(key => {
-          store.createIndex(key, key, { multiEntry: true })
-        })
-      }
-    } else {
-      const store = transaction.objectStore(storeName)
+    const store = storeName === 'categories' ? db.createObjectStore(storeName)
+      : storeName === 'schedule' ? db.createObjectStore(storeName, { keyPath: 'index', autoIncrement: true })
+        : db.createObjectStore(storeName, { keyPath: '_id', unique: true })
 
-      const keys = Array.from(store.indexNames)
-
-      if (!dbKeys[storeName]) continue
-
-      for (const key of dbKeys[storeName]) {
-        if (!keys.includes(key)) {
-          store.createIndex(key, key)
-        }
-      }
+    if (dbKeys[storeName]) {
+      dbKeys[storeName].forEach(key => {
+        store.createIndex(key, key, { multiEntry: true })
+      })
     }
   }
 }

@@ -18,6 +18,8 @@ const adminWorkerEvents = {
   booking
 }
 
+// console.log('EVENTS:\n', adminWorkerEvents)
+
 export {
   adminWorkerEvents,
   mapWorkerEvents

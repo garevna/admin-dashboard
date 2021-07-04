@@ -1,6 +1,6 @@
 <template>
-  <v-dialog v-model="dialog" max-width="480px" class="pa-4">
-    <v-card flat>
+  <v-dialog v-model="dialog" max-width="480" class="pa-4">
+    <v-card flat height="360">
       <v-toolbar dark dense color="#999">
         <v-icon class="mr-4"> mdi-account-box </v-icon>
         <v-toolbar-title> Customer details </v-toolbar-title>
@@ -18,8 +18,9 @@
       <v-card-text class="text-center">
         <p>Phone: <b>{{ phone }}</b></p>
       </v-card-text>
-
-      <v-btn @click="dialog = false">OK</v-btn>
+      <v-row justify="center" style="width: 100%">
+        <v-btn outlined color="primary" @click="dialog = false">OK</v-btn>
+      </v-row>
     </v-card>
   </v-dialog>
 </template>

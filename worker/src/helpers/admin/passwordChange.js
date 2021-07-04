@@ -2,18 +2,16 @@ import { hash, encrypt } from '../crypto'
 import { loginHandler, passwordHandler, credentialsHandler } from '../env'
 import { post } from '../AJAX'
 
-const { credentialsError } = require('../error-handlers').default
-
 export const passwordChange = async function (request) {
   const { login, newPass, userPhone } = request.data
 
-  if (!login || !newPass || !userPhone) return credentialsError(422)
+  if (!login || !newPass || !userPhone) return self.errorMessage('credentialsError')
 
   const { result: newPasswordHash } = hash(newPass)
 
   const { status: encryptStatus, result: cryptoPassword } = await encrypt(JSON.stringify({ password: newPasswordHash }))
 
-  if (encryptStatus !== 200) return credentialsError(encryptStatus)
+  if (encryptStatus !== 200) return self.errorMessage('credentialsError')
 
   const { status } = post('pass/change', {
     newPass: cryptoPassword,
@@ -21,7 +19,7 @@ export const passwordChange = async function (request) {
     userPhone
   })
 
-  if (status !== 200) return credentialsError(status)
+  if (status !== 200) return self.errorMessage('credentialsError')
 
   loginHandler(login)
   passwordHandler(newPasswordHash)
@@ -31,7 +29,7 @@ export const passwordChange = async function (request) {
     password: passwordHandler()
   }))
 
-  if (cryptoStatus !== 200) return credentialsError(cryptoStatus)
+  if (cryptoStatus !== 200) return self.errorMessage('credentialsError')
 
   credentialsHandler(credentials)
 
