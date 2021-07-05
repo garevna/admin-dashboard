@@ -71,14 +71,14 @@ export default {
   },
   methods: {
     getData (data) {
-      console.log(data)
+      // console.log(data)
       this.items = data
     },
     createNewService () {
       this.$router.push({ name: 'create-new-service' })
     },
     editItem (item) {
-      console.log(item._id)
+      // console.log(item._id)
       this.selectedServiceId = item.id
       this.$router.push({ name: 'service-details', params: { serviceId: item._id } })
     }

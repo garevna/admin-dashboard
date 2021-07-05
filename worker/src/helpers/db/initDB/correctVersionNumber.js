@@ -11,7 +11,6 @@ export function correctVersionNumber (db) {
     const store = db.transaction([storeName], 'readwrite').objectStore(storeName)
 
     const keys = Array.from(store.indexNames)
-    // self.postDebugMessage({ storeName, keys, dbKeys: dbKeys[storeName] })
 
     if (!dbKeys[storeName]) continue
 

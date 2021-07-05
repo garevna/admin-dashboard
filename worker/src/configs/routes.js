@@ -12,10 +12,9 @@ export const routes = {
   '*': {
     refresh: () => {
       rspController.refresh()
-      customersController.refresh()
       servicesController.refresh()
       ticketsController.refresh()
-      // scheduleController.refresh()
+      customersController.refresh()
     }
   },
   admin: {

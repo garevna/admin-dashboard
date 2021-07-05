@@ -61,7 +61,7 @@ export default {
 
   methods: {
     getData (data) {
-      console.log('RSP LIST:\n', data)
+      // console.log('RSP LIST:\n', data)
       this.resellers = data
       this.ready = true
     },
@@ -72,7 +72,7 @@ export default {
   },
 
   beforeMount () {
-    console.log(this.__getResellersList)
+    // console.log(this.__getResellersList)
     this.$root.$on('rsp-list-received', this.getData)
     this.__getResellersList()
   },

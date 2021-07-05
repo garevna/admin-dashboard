@@ -1,5 +1,3 @@
-// import { getCustomer, putCustomer } from './'
-
 export const updateCustomer = async function (customerId, data) {
   const [route, action] = ['customers', 'update']
 

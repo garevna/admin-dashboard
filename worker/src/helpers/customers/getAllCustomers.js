@@ -29,7 +29,7 @@ export const getAllCustomers = async function () {
           resellerId,
           name: `${firstName} ${lastName}`,
           uniqueCode,
-          address: `${apartmentNumber} / ${address}`,
+          address: `${apartmentNumber}/${address}`,
           services: []
         }
         for (const service of services) {

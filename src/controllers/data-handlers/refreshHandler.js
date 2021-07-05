@@ -1,9 +1,9 @@
 export const refreshHandler = (function () {
   const refreshed = {
     rsp: false,
-    customers: false,
     services: false,
     tickets: false,
+    customers: false,
     schedule: false
   }
   return function (route, value) {

@@ -25,7 +25,7 @@ export const serviceSchema = {
     value: 0
   },
   serviceType: {
-    title: 'Type residential/commercial',
+    title: 'Type (residential/commercial)',
     type: 'switcher',
     available: ['residential', 'commercial'],
     value: 'residential'

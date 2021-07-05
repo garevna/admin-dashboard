@@ -200,7 +200,7 @@ export default {
       }
     },
     filteredItems (value) {
-      console.log('CHANGED:\n', value)
+      // console.log('CHANGED:\n', value)
     }
   },
 
@@ -229,10 +229,10 @@ export default {
       return { icon: icons[status], color: colors[status] }
     },
     async getData (data) {
-      console.log(data)
+      // console.log(data)
       this.data = Array.isArray(data) ? data : Array.isArray(data.result) ? data.result : []
       this.ready = true
-      console.log(this.services)
+      // console.log(this.services)
     },
 
     getEstimates (data) {

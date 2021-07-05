@@ -27,5 +27,10 @@ export const mapWorkerErrors = {
   put: (type = 'Building details') => ({
     type,
     message: 'Data was not updated.'
+  }),
+
+  search: (buildingStatus) => ({
+    type: buildingStatus,
+    message: 'This building was not found in DB'
   })
 }

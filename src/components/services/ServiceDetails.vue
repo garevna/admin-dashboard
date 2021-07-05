@@ -1,9 +1,15 @@
 <template>
   <v-container style="margin-bottom: 320px">
     <v-card flat class="transparent mx-auto" max-width="700">
-      <v-row justify="center" align="center">
+      <v-row justify="right" align="center" style="margin-bottom: -60px; margin-right:-67px;">
           <v-spacer />
-          <v-btn icon @click="$router.push({ name: 'services-list' })">
+          <v-btn
+            @click="$router.push({ name: 'services-list' })"
+            icon
+            color="#aaa"
+            class="pl-2"
+            style="background: #fbfbfb; border-radius: 50%; box-shadow: 0 0 4px #0007"
+          >
             <v-icon large>mdi-close</v-icon>
           </v-btn>
         </v-row>
@@ -15,11 +21,11 @@
       <v-card flat class="transparent mt-0" v-if="ready">
         <table width="100%">
           <tbody>
-            <tr style="vertical-align: baseline">
-              <td width="160" class="d-none d-md-flex">
-                Type (residential/commercial)
+            <tr v-for="(prop, propName) in service" :key="propName">
+              <td class="d-none d-md-flex">
+                <p class="right-title"><small>{{ prop.title }}</small></p>
               </td>
-              <td width="*">
+              <td v-if="prop.type === 'switcher'">
                 <SwitchValues
                   label="Residential/commercial"
                   :value.sync="service.serviceType.value"
@@ -28,14 +34,8 @@
                   class="mb-8"
                 />
               </td>
-            </tr>
-            <tr v-for="(prop, propName) in service" :key="propName">
-              <td class="d-none d-md-flex" v-if="propName !== 'serviceType'">
-                {{ prop.title }}
-              </td>
-              <td>
+              <td v-if="propName !== 'serviceType' && textField(prop)">
                 <v-text-field
-                  v-if="propName !== 'serviceType' && textField(prop)"
                   v-model="prop.value"
                   :label="prop.title"
                   :rules="[prop.required ? rules.required : (value) => true, rule(prop)]"
@@ -45,11 +45,19 @@
                   hide-details
                 />
               </td>
+              <td v-if="prop.type === 'checkbox'" class="td-checkbox">
+                <v-checkbox
+                  v-model="prop.value"
+                  :label="prop.title"
+                  dense
+                  hide-details
+                />
+              </td>
             </tr>
             <tr style="height: 48px;"></tr>
             <tr style="margin-top: 48px!important">
               <td class="d-none d-md-flex">
-                <!-- <v-btn outlined text color="buttons" @click="$emit('update:dialog', false)">Exit</v-btn> -->
+                <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
               </td>
                 <td colspan="2" class="text-right">
                 <v-spacer />
@@ -88,7 +96,7 @@ export default {
   watch: {
     'service.serviceType': {
       handler (value) {
-        console.log(value)
+        // console.log(value)
       }
     }
   },
@@ -145,3 +153,18 @@ export default {
   }
 }
 </script>
+
+<style>
+.right-title {
+  width: 100%;
+  text-align: right;
+  margin-right: 16px;
+}
+tr {
+  vertical-align: super;
+}
+td {
+  height: 32px !important;
+  text-align: right!important;
+}
+</style>

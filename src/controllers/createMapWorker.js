@@ -1,6 +1,8 @@
 import { mapWorkerEvents } from './events'
 import { mapWorkerErrors } from './errors'
 
+console.log(mapWorkerErrors)
+
 export function createMapWorker () {
   const path = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_PUBLIC_PATH_PRODUCTION : ''
 
@@ -27,6 +29,7 @@ export function createMapWorker () {
       window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
       window[Symbol.for('vue.instance')].$root.$emit(eventName, event.data)
     } else {
+      console.log('action: ', action)
       const { type: errorType, message: errorMessage } = mapWorkerErrors[action]()
       window[Symbol.for('vue.instance')].$root.$emit('open-error-popup', {
         errorType,
