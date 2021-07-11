@@ -1,34 +1,6 @@
 <template>
   <v-card flat class="transparent pb-12 px-12" v-if="ready" min-width="900" max-width="1440">
     <v-row align="start" justify="center" v-if="!edit">
-      <!-- <v-col cols="12" md="4" lg="3" xl="2" class="text-center mt-4">
-        <fieldset class="field-set">
-          <legend>
-            Ticket category
-          </legend>
-          <v-list dense class="transparent mb-12">
-            <v-list-item-group
-              v-model="category"
-              color="primary"
-              class="transparent"
-              active-class="border"
-            >
-              <v-list-item
-                v-for="(item, i) in categories"
-                :key="i"
-              >
-                <v-list-item-content @click="category = item">
-                  <v-list-item-title v-text="item"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-          <v-btn text dark class="primary mt-4 mx-auto" outlined @click="createNewTicket">Create a ticket</v-btn>
-        </fieldset>
-      </v-col> -->
-
-      <!-- <v-col cols="12" md="9" lg="8" xl="6"> -->
-
         <v-data-table
           :headers="headers"
           :items="filteredItems"
@@ -45,7 +17,28 @@
                 v-model="category"
                 outlined
                 dense
+                style="max-width: 180px"
               ></v-select>
+
+              <v-select
+                :items="severities"
+                label="Severity"
+                v-model="severity"
+                outlined
+                dense
+                clearable
+                style="max-width: 160px"
+              ></v-select>
+
+              <v-select
+                :items="priorities"
+                label="Priority"
+                v-model="priority"
+                outlined
+                dense
+                style="max-width: 160px"
+              ></v-select>
+
               <v-spacer></v-spacer>
               <v-text-field
                 v-model="search"
@@ -98,6 +91,7 @@ export default {
     search: null,
     category: null,
     categories: null,
+    dates: [],
     headers: [
       {
         text: 'Subject',
@@ -111,13 +105,19 @@ export default {
       { text: 'Severity', value: 'severity' },
       { text: 'Status', value: 'status' }
     ],
-    answer: ''
+    answer: '',
+    severities: ['Low', 'Medium', 'Hight'],
+    priorities: ['Low', 'Medium', 'Hight'],
+    severity: null,
+    priority: null
   }),
   computed: {
     filteredItems () {
-      if (!this.category || this.category === '...') return this.tickets
+      if (!(this.category || this.severity || this.priority) || this.category === '...') return this.tickets
       return this.tickets
         .filter(ticket => !this.category || (ticket.category === this.category))
+        .filter(ticket => !this.severity || (ticket.severity === this.severity))
+        .filter(ticket => !this.priority || (ticket.priority === this.priority))
     }
   },
   methods: {

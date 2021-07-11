@@ -2,13 +2,13 @@
   <v-container class="homefone" v-if="ready">
     <v-card flat class="transparent pa-5 mx-auto mb-12" max-width="960" outlined>
       <v-row justify="center">
-        <CompanyDetailsStep :data.sync="schema" step="company" title="Company details" />
-        <CompanyDetailsStep :data.sync="schema" step="general" title="General information" />
-        <CompanyDetailsStep :data.sync="schema" step="technic" title="Technical information" />
+        <CompanyDetailsStep :data.sync="schema" step="company" title="Company details" :approved="details.approved" />
+        <CompanyDetailsStep :data.sync="schema" step="general" title="General information" :approved="details.approved" />
+        <CompanyDetailsStep :data.sync="schema" step="technic" title="Technical information" :approved="details.approved" />
       </v-row>
-      <v-row justify="end" class="mt-12 mr-12">
+      <v-row justify="end" class="mt-12 mr-12" v-if="details.approved">
         <v-btn dark class="primary mr-12" @click="requestUpdates">
-          request update
+          request for updates
         </v-btn>
       </v-row>
     </v-card>
@@ -50,7 +50,24 @@ export default {
       this.ready = true
     },
     requestUpdates () {
-      console.log(this.schema)
+      // console.log(this.schema)
+      let message = 'Update please the next data in company details:'
+      for (const section in this.schema) {
+        Object.keys(this.schema[section])
+          .filter(key => this.schema[section][key].selected)
+          .map(key => this.schema[section][key].title)
+          .forEach(item => {
+            message += `\n• ${item}`
+          })
+      }
+      console.log(message)
+      console.log(this.details)
+      const request = {
+        resellerId: this.details._id,
+        subject: 'Update company details',
+        content: message
+      }
+      this.__sendMessage(request)
     },
     saveData () {
       const result = {}

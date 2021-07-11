@@ -45,6 +45,11 @@
               </tr>
             </tbody>
           </table>
+          <v-spacer />
+          <v-btn text @click="refresh" class="mr-12 mb-5">
+            <v-icon>mdi-refresh</v-icon>
+            Refresh
+          </v-btn>
         </v-card-title>
 
         <v-data-table
@@ -198,9 +203,6 @@ export default {
       if (oldVal && !newVal) {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
       }
-    },
-    filteredItems (value) {
-      // console.log('CHANGED:\n', value)
     }
   },
 
@@ -229,10 +231,9 @@ export default {
       return { icon: icons[status], color: colors[status] }
     },
     async getData (data) {
-      // console.log(data)
+      console.log(data)
       this.data = Array.isArray(data) ? data : Array.isArray(data.result) ? data.result : []
       this.ready = true
-      // console.log(this.services)
     },
 
     getEstimates (data) {
@@ -244,22 +245,24 @@ export default {
       this.selectedCustomerId = item.id
       customerHandler(item.id)
       this.edit = true
+    },
+
+    refresh () {
+      this.ready = false
+      this.__refreshCustomers()
     }
   },
 
   beforeDestroy () {
     this.$root.$off('customers-list-received', this.getData)
-  },
-
-  created () {
-    // this.$root.$on('buildings-data-list', this.getEstimates)
+    this.$root.$off('customers-refreshed', this.getData)
   },
 
   mounted () {
     this.$vuetify.goTo(0)
 
     this.$root.$on('customers-list-received', this.getData)
-    console.log(this.details)
+    this.$root.$on('customers-refreshed', this.getData)
     !this.details ? this.__getCustomers() : this.__getCustomersByResellerId(this.details._id)
   }
 }

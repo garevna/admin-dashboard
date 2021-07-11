@@ -1,6 +1,15 @@
 <template>
   <v-container>
     <v-card flat class="transparent pb-12 px-12" v-if="ready && !details">
+      <v-card-title>
+        <strong>DGtek partners list</strong>
+        <v-spacer />
+        <v-btn text @click="refresh" class="mr-12 mb-5">
+          <v-icon>mdi-refresh</v-icon>
+          Refresh
+        </v-btn>
+      </v-card-title>
+
       <v-data-table
         :headers="headers"
         :items="resellers"
@@ -61,10 +70,15 @@ export default {
 
   methods: {
     getData (data) {
-      // console.log('RSP LIST:\n', data)
+      console.log('RSP LIST:\n', data)
       this.resellers = data
       this.ready = true
     },
+
+    refresh () {
+      this.__refreshPartnersList()
+    },
+
     showDetails (rsp) {
       this.rspDetails = rsp
       this.details = true

@@ -89,6 +89,11 @@ export const rejectRequestError = {
 
 /* CUSTOMERS */
 
+export const countCustomersDataError = {
+  errorType: 'Customers',
+  errorMessage: 'Failed to read the customers from local DB'
+}
+
 export const getCustomerDataError = {
   errorType: 'Customer details',
   errorMessage: 'Failed to get customer details'
@@ -186,6 +191,11 @@ export const putServiceDetailsError = {
 export const refreshServicesListError = {
   errorType: 'Services',
   errorMessage: 'Failed to get services from remote server'
+}
+
+export const getSLAListError = {
+  errorType: 'Services',
+  errorMessage: 'Failed to read SLA list from remote server'
 }
 
 /* TICKETS */

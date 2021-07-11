@@ -24,18 +24,30 @@ export const routes = {
     code: authController.sendPasswordResetCode,
     change: authController.changePassword
   },
+
   rsp: {
     refresh: rspController.refresh,
     list: rspController.list,
     get: rspController.get,
+
+    'refresh-partners-list': rspController.refreshPartnersList,
+
     registration: rspController.registrationRequests,
-    confirm: rspController.confirmRegistration,
     reject: rspController.rejectRegistration,
+    'refresh-registration-requests': rspController.refreshRegistration,
     'registration-request-details': rspController.registrationRequestDetails,
-    customers: customersController.getCustomersByResellerId
+    'confirm-registration-request': rspController.confirmRegistration,
+
+    customers: customersController.getCustomersByResellerId,
+
+    'get-messages': rspController.getMessagesByResellerId,
+    'send-message': rspController.sendMessage,
+    'delete-message': rspController.deleteMessage,
+    'get-unique-code-list': rspController.getUniqueCodeList
   },
+
   customers: {
-    refresh: customersController.getFromRemote,
+    refresh: customersController.refresh,
     pagination: customersController.refreshByPageNumber,
     list: customersController.getAllCustomers,
     get: customersController.getCustomer,
@@ -43,6 +55,7 @@ export const routes = {
     delete: customersController.deleteCustomer,
     put: customersController.updateCustomer
   },
+
   crypto: {
     init: cryptoController.init,
     encrypt: cryptoController.encrypt,
@@ -54,6 +67,12 @@ export const routes = {
     get: servicesController.get,
     post: servicesController.post,
     put: servicesController.put
+  },
+  sla: {
+    list: servicesController.getSLAList,
+    get: servicesController.getSLAContent,
+    post: servicesController.uploadSLA,
+    put: servicesController.updateSLA
   },
   tickets: {
     refresh: ticketsController.refresh,

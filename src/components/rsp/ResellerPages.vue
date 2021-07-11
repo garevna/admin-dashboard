@@ -48,6 +48,14 @@
         >
           RSP Ticket list
         </v-btn>
+
+        <v-btn
+          class="mx-1"
+          :class="{ active: messageStep, tab: !messageStep }"
+          @click="step = 5"
+        >
+          Messages
+        </v-btn>
       </v-stepper-header>
     </v-row>
   </v-container>
@@ -59,6 +67,7 @@ import CompanyDetails from '@/components/rsp/CompanyDetails.vue'
 import ResellerServices from '@/components/rsp/ResellerServices.vue'
 import CustomersList from '@/components/customers/CustomersList.vue'
 import ResellerTickets from '@/components/rsp/ResellerTickets.vue'
+import ResellerMessages from '@/components/rsp/ResellerMessages.vue'
 
 export default {
   name: 'ResellerPages',
@@ -66,7 +75,8 @@ export default {
     CompanyDetails,
     ResellerServices,
     CustomersList,
-    ResellerTickets
+    ResellerTickets,
+    ResellerMessages
   },
 
   props: {
@@ -80,12 +90,13 @@ export default {
   data: () => ({
     ready: false,
     step: 1,
-    steps: ['RSP details', 'RSP Service list', 'RSP Customer list', 'RSP Ticket list'],
+    steps: ['RSP details', 'RSP Service list', 'RSP Customer list', 'RSP Ticket list', 'Messages'],
     pages: [
       CompanyDetails,
       ResellerServices,
       CustomersList,
-      ResellerTickets
+      ResellerTickets,
+      ResellerMessages
     ],
     currentComponent: CompanyDetails
   }),
@@ -102,6 +113,9 @@ export default {
     },
     ticketStep () {
       return this.step === 4
+    },
+    messageStep () {
+      return this.step === 5
     }
   },
   watch: {
@@ -126,6 +140,10 @@ export default {
     goToTicketsList (data) {
       this.step = 4
       this.currentComponent = ResellerTickets
+    },
+    goToMessages (data) {
+      this.step = 5
+      this.currentComponent = ResellerMessages
     }
   },
 

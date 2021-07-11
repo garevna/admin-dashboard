@@ -81,7 +81,6 @@ export default {
   }),
   methods: {
     setRefreshed (event) {
-      console.log(event)
       this.refreshed[event] = true
     },
     jumpTo (item) {

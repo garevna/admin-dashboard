@@ -7,7 +7,7 @@ export const getRegistrationRequests = async () => {
 
   if (response.status !== 200) return self.errorMessage('getRegistrationRequestsError')
 
-  const requests = response.result.filter(rsp => !rsp.userInfo.approved)
+  const requests = response.result.filter(rsp => !rsp.approved)
 
   return { status: 200, route, action, result: requests }
 }

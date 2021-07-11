@@ -87,7 +87,7 @@ export const serviceSchema = {
   },
   serviceSLA: {
     title: 'Service SLA',
-    type: 'simple-text',
+    type: 'sla',
     value: ''
   },
   promo: {

@@ -1,6 +1,8 @@
 import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
 
+import { uniqueCodes, uniqueCodeList } from '../data-handlers'
+
 export const getResellersFromRemoteServer = async function () {
   const [route, action] = ['rsp', 'refresh']
 
@@ -9,12 +11,19 @@ export const getResellersFromRemoteServer = async function () {
   if (status !== 200) return self.errorMessage('refreshUsersError')
 
   clearStore('rsp')
+  uniqueCodes([])
 
-  for (const user of result) {
-    if (user.userInfo.role !== 'RSP') continue
-    delete user.activeSesions
-    if ((await putRecordByKey('rsp', user._id, user)).status !== 200) return self.errorMessage('putUserRecordError')
+  const partners = result.filter(user => user.role === 'RSP')
+
+  for (const rsp of partners) {
+    if (rsp.approved) {
+      uniqueCodeList(rsp._id, rsp.uniqueCode)
+      uniqueCodes(rsp.uniqueCode)
+    }
+    if ((await putRecordByKey('rsp', rsp._id, rsp)).status !== 200) return self.errorMessage('putUserRecordError')
   }
 
-  return { status: 200, route, action, result }
+  self.postDebugMessage({ uniqueCodes: uniqueCodes() })
+
+  return { status: 200, route, action, result: partners }
 }

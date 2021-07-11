@@ -21,11 +21,11 @@ export const iterateCustomers = async function () {
       const cursor = event.target.result
       if (cursor) {
         const customer = cursor.value
-        const data = await Promise.all(customer.services.map(service => getRecord(serviceStore, service.id)))
-        const records = self.createScheduleRecordsForCustomer(customer, data)
-        await Promise.all(records.map(record => putRecord(scheduleStore, record)))
-        // const response = await Promise.all(records.map(record => putRecord(scheduleStore, record)))
-        // self.postDebugMessage(response)
+        if (Array.isArray(customer.services) && customer.services.length > 0) {
+          const data = await Promise.all(customer.services.map(service => getRecord(serviceStore, service.id)))
+          const records = self.createScheduleRecordsForCustomer(customer, data)
+          await Promise.all(records.map(record => putRecord(scheduleStore, record)))
+        }
         cursor.continue()
       } else {
         resolve({ status: 200, route, action })

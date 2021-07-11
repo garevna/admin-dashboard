@@ -1,5 +1,10 @@
 <template>
-  <v-card flat class="transparent mx-auto py-5" width="600">
+  <v-card flat class="transparent mx-auto py-5" width="800">
+    <v-toolbar class="transparent">
+      RSP: <b>{{ ticket.resellerName }}</b>
+      <v-spacer />
+      Subject: <b>{{ ticket.subject }}</b>
+    </v-toolbar>
     <v-card-text>
       <table>
         <thead>
@@ -17,61 +22,39 @@
           </tr>
         </tbody>
       </table>
-        <!-- Ticket category: <b>{{ ticket.category }}</b>
-        Severity: <b>{{ ticket.severity }}</b>
-        Priority: <b>{{ ticket.priority }}</b> -->
-    </v-card-text>
-
-    <hr />
-
-    <!-- <v-card-text>
-      Severity: <b>{{ ticket.severity }}</b>
-    </v-card-text> -->
-
-    <!-- <v-card-text>
-        Priority: <b>{{ ticket.priority }}</b>
-    </v-card-text> -->
-
-    <v-card-text>
-      Subject: <b>{{ ticket.subject }}</b>
-    </v-card-text>
-
-    <hr />
-
-    <v-card-text>
-      RSP: <b>{{ ticket.resellerName }}</b>
     </v-card-text>
 
     <v-card-text v-if="ticket.category === 'Customer issue' || ticket.category === 'Service issue'">
       Customer: <b>{{ ticket.customer.uniqueCode }}</b>
-      <p><small>{{ ticket.customer.apartmentNumber }}/{{ ticket.customer.address }}</small></p>
+      <b><small>{{ ticket.customer.apartmentNumber }}/{{ ticket.customer.address }}</small></b>
     </v-card-text>
 
-    <v-card-text>
-      Details
-      <v-icon> mdi-message-arrow-right </v-icon> <b>{{ ticket.details }}</b>
-    </v-card-text>
+    <fieldset class="mt-5 pt-8 px-4">
+      <legend class="transparent mx-4"><strong>Details</strong></legend>
+      <v-card-text>
+        <v-icon> mdi-message-arrow-right </v-icon>
+        <sup>{{ new Date(ticket.created - 0).toISOString().slice(0, 10) }}</sup>
+        <b>{{ ticket.details }}</b>
+      </v-card-text>
 
-    <v-card-text v-if="dialog">
-      <!-- <v-icon> mdi-message-arrow-right </v-icon>
-      <b> {{ new Date(ticket.created - 0).toISOString().slice(0, 10) }} </b>
-      <b>{{ ticket.details }}</b> -->
-      <p v-for="message of dialog" :key="message.date">
-        <v-icon v-if="message.source === 'admin'"> mdi-message-arrow-left </v-icon>
-        <v-icon v-else> mdi-message-arrow-right </v-icon>
-        <small>
-          {{ new Date(message.date).toISOString().slice(0, 10) }}
-          {{ message.message }}
-        </small>
-      </p>
-    </v-card-text>
+      <v-card-text v-if="dialog">
+        <p v-for="message of dialog" :key="message.date">
+          <v-icon v-if="message.source === 'admin'"> mdi-message-arrow-left </v-icon>
+          <v-icon v-else> mdi-message-arrow-right </v-icon>
+          <small>
+            <sup>{{ new Date(message.date).toISOString().slice(0, 10) }}</sup>
+            <b>{{ message.message }}</b>
+          </small>
+        </p>
+      </v-card-text>
+
+      <v-card-text>
+        <v-textarea label="Response" v-model="response" outlined />
+      </v-card-text>
+    </fieldset>
 
     <v-card-text v-if="ticket.contactPhone">
       Contact number of the responsible person <b>{{ ticket.contactPhone }}</b>
-    </v-card-text>
-
-    <v-card-text>
-      <v-textarea label="Response" v-model="response" outlined />
     </v-card-text>
 
     <v-row class="mt-12">
@@ -79,7 +62,7 @@
         Back to tickets list
       </v-btn>
       <v-spacer />
-      <v-btn outlined small color="primary" @click="updateTicket" v-if="response">
+      <v-btn dark small color="primary" @click="updateTicket" v-if="response">
         Update/save details
       </v-btn>
     </v-row>
@@ -93,12 +76,10 @@ export default {
   props: ['ticket', 'categories', 'edit'],
   data: () => ({
     response: ''
-    // severities: ['Low', 'Medium', 'Hight'],
-    // priorities: ['Low', 'Medium', 'Hight']
   }),
   computed: {
     dialog () {
-      return this.ticket.files.filter(item => item.type === 'dialog')
+      return this.ticket.history
     }
   },
   methods: {
@@ -129,6 +110,10 @@ b {
   padding: 8px 16px;
   text-align: center;
   margin-left: 8px;
+}
+
+fieldset {
+  border: solid 1px #ccc;
 }
 
 </style>

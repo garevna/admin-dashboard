@@ -1,10 +1,11 @@
 class CustomersController {
   // async getFromRemote () {
-  //   self.postMessage(await self.getCustomersFromRemoteServer())
+  //   self.postMessage(await self.getCustomersFromRemote())
   // }
 
   async refresh () {
     self.postDebugMessage({ message: 'Customers refresh starts' })
+    self.getCustomersFromRemote()
     self.postMessage(await self.refreshWithPagination())
     self.postMessage(await self.refreshSchedule())
   }

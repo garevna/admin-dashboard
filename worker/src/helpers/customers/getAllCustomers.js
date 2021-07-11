@@ -1,5 +1,7 @@
 import { openDB } from '../db/openDB'
 
+import { uniqueCodeList } from '../data-handlers'
+
 export const getAllCustomers = async function () {
   const [route, action] = ['customers', 'list']
 
@@ -28,20 +30,23 @@ export const getAllCustomers = async function () {
           _id,
           resellerId,
           name: `${firstName} ${lastName}`,
-          uniqueCode,
+          uniqueCode: `${uniqueCodeList(resellerId)}${uniqueCode.slice(2)}`,
           address: `${apartmentNumber}/${address}`,
           services: []
         }
-        for (const service of services) {
-          const index = servicesList.findIndex(serv => serv._id === service.id)
-          if (index === -1) continue
-          item.services.push({
-            type: servicesList[index].serviceType,
-            name: servicesList[index].serviceName,
-            status: service.status,
-            modified: service.modified
-          })
+        if (Array.isArray(services)) {
+          for (const service of services) {
+            const index = servicesList.findIndex(serv => serv._id === service.id)
+            if (index === -1) continue
+            item.services.push({
+              type: servicesList[index].serviceType,
+              name: servicesList[index].serviceName,
+              status: service.status,
+              modified: service.modified
+            })
+          }
         }
+
         result.push(item)
         cursor.continue()
       } else {

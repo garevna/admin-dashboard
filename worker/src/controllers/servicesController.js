@@ -16,7 +16,25 @@ class ServicesController {
   }
 
   async put (request) {
-    self.postMessage(await self.updateService(request.key, request.data))
+    self.postMessage(await self.updateService(request))
+  }
+
+  async uploadSLA (request) {
+    self.postDebugMessage({ request })
+    self.postMessage(await self.uploadSLA(request.title, request.file))
+  }
+
+  async updateSLA (request) {
+    self.postDebugMessage({ method: 'updateSLA', request })
+    self.postMessage(await self.updateSLA(request.record))
+  }
+
+  async getSLAList () {
+    self.postMessage(await self.getSLAList())
+  }
+
+  async getSLAContent (request) {
+    self.postMessage(await self.getSLAContent(request.key))
   }
 }
 

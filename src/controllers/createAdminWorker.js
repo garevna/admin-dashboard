@@ -57,7 +57,7 @@ export function createAdminWorker () {
     } else {
       event.stopImmediatePropagation()
       window[Symbol.for('vue.prototype')].$dispatchProgressEvent(false)
-      // console.warn('ADMIN WORKER ON MESSAGE - ERROR STATUS RECEIVED', status, route, action, event.data)
+      console.warn('ADMIN WORKER ON MESSAGE - ERROR STATUS RECEIVED', status, route, action, event.data)
       const { errorType = event.data.route, errorMessage = 'Unknown error' } = event.data.error ? event.data : adminWorkerErrors[route][action]
 
       window[Symbol.for('vue.instance')].$root.$emit('open-error-popup', {

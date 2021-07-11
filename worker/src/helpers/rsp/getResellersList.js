@@ -7,5 +7,5 @@ export const getResellersList = async () => {
 
   if (status !== 200) return self.errorMessage('getResellersListError')
 
-  return { status, route, action, result: result.filter(rsp => rsp.userInfo.approved) }
+  return { status, route, action, result: result.filter(rsp => rsp.approved) }
 }

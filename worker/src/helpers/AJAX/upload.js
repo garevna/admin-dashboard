@@ -1,17 +1,22 @@
-// import { hosthandler } from '../env'
-// import { getRecordByKey } from '../indexedDB'
-//
-// export async function upload (target, formData) {
-//   const { status, result: token } = await getRecordByKey('pineapple', 'common', 'token')
-//   if (status !== 200) return { status: 403, result: 'Unauthorized user. Access denied' }
-//   if (!navigator.onLine) return { status: 0, result: 'Offline mode: Operation failed. Try later' }
-//
-//   const response = await fetch(hosthandler(), {
-//     method: 'POST',
-//     headers: {
-//       Authorization: token
-//     },
-//     body: formData
-//   })
-//   return { status: response.status, result: await response.text() }
-// }
+import { readLocalFile, uploadFile } from './'
+
+import { uploads, invalidRoute, invalidFileType, uploadFailed } from '../../configs'
+
+const testSubroute = subroute => Object.keys(uploads.building).includes(subroute)
+
+export const upload = async ({ file, recordId, route, subroute }) => {
+  if (Object.keys(uploads).indexOf(route) === -1) return invalidRoute
+  if (route === 'building' && !testSubroute(subroute)) return invalidRoute
+
+  const descriptor = route === 'building' ? uploads.building[subroute] : uploads[route]
+
+  if (file.type.indexOf(descriptor.type) === -1) return invalidFileType
+
+  const loaded = await readLocalFile(file)
+
+  if (loaded.status !== 200) return loaded
+
+  const response = await uploadFile[route](loaded.result, recordId, subroute)
+
+  return response.status !== 200 ? Object.assign(response, uploadFailed) : response
+}

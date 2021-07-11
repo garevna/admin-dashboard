@@ -21,6 +21,8 @@ import { getRecordByKey } from './getRecordByKey'
 import { getAllRecords } from './getAllRecords'
 import { deleteRecordByKey } from './deleteRecordByKey'
 
+import { countRecords } from './countRecords'
+
 export {
   dbName,
   storeNames,
@@ -33,12 +35,10 @@ export {
   upgradeNeededEventHandler,
   upgradeDB,
 
-  // putBooking,
-
   clearStore,
   putRecordByKey,
-  // putScheduleRecord,
   getRecordByKey,
+  countRecords,
   deleteRecordByKey,
   getAllRecords,
   iterateCustomers

@@ -6,7 +6,7 @@
           <td colspan="2" style="padding: 0 16px">
             <h5><small>{{ title }}</small></h5>
           </td>
-          <td width="120" style="padding: 0 16px">
+          <td width="120" style="padding: 0 16px" v-if="approved">
             <h6>Update needed</h6>
           </td>
         </tr>
@@ -24,7 +24,7 @@
               <small style="user-select: text !important">{{ item.value || '...' }}</small>
             </div>
           </td>
-          <td>
+          <td v-if="approved">
             <v-checkbox
               v-model="item.selected"
               hide-details
@@ -45,7 +45,8 @@ export default {
   props: {
     data: Object,
     step: String,
-    title: String
+    title: String,
+    approved: Boolean
   },
 
   data: () => ({

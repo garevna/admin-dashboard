@@ -1,13 +1,13 @@
 <template>
-  <v-card flat class="transparent mx-auto mb-12 pt-8" max-width="1008" min-width="1008" v-if="dialog">
+  <v-card flat class="transparent mx-auto mb-12 pt-8" width="900" v-if="dialog">
     <v-row justify="end">
-      <v-btn icon @click="$emit('update:dialog', false)">
+      <v-btn icon @click="$emit('update:dialog', false)" class="close-button">
         <v-icon large>mdi-close</v-icon>
       </v-btn>
     </v-row>
 
-    <v-row justify="center" v-if="ready">
-      <Fieldset legend="Customer details">
+    <v-row justify="center" v-if="ready" style="margin-top: -42px">
+      <Fieldset legend="Customer details" style="width: 900px">
         <EditCustomerDetails :initialCustomer.sync="customer" />
       </Fieldset>
 
@@ -70,6 +70,13 @@ export default {
 </script>
 
 <style scoped>
+.close-button {
+  margin-right: -4px;
+  background: #fbfbfb;
+  border: solid 1px #999;
+  padding-left: 8px;
+}
+
 .border {
   border: 1px solid #881F1A;
   background: #fff!important;

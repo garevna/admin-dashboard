@@ -24,5 +24,5 @@ export const get = async function (path) {
     }
   }
 
-  return { status: 200, result: result.data }
+  return { status: 200, result: result.data, page: result.page, pages: result.pages }
 }
