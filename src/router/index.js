@@ -112,7 +112,7 @@ const routes = [
           if (from.name === 'buildings') next(false)
           next()
         },
-        component: () => import(/* webpackChunkName: 'buildings' */ '@/components/footprint/BuildingsList.vue')
+        component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
       },
       {
         path: '/:buildingId',
@@ -122,7 +122,7 @@ const routes = [
           if (from.name === 'building-details') next(false)
           next()
         },
-        component: () => import(/* webpackChunkName: 'buildings' */ '@/components/footprint/EditBuildingDetails.vue'),
+        component: () => import(/* webpackChunkName: 'building-pages' */ '@/components/footprint/BuildingPages.vue'),
         props: true
       },
       {

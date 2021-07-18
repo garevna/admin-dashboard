@@ -15,6 +15,8 @@ import { patterns } from './patterns'
 import { validateABN } from './validateABN'
 import { rules } from './rules'
 
+import pdf404 from './pdf404'
+
 export {
   mainDashboard,
   dgtekMapEvents,
@@ -31,5 +33,7 @@ export {
   ticketCategories,
   patterns,
   validateABN,
-  rules
+  rules,
+
+  pdf404
 }

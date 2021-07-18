@@ -3,9 +3,11 @@
     flat
     class="transparent mx-auto text-center"
     width="320"
+    style="display: inline-block !important"
   >
-    <h3>{{ title }}</h3>
+    <h5><small>{{ title }}</small></h5>
       <v-time-picker
+        format="ampm"
         v-model="localTime"
         :min="minValue"
         :max="maxValue"
@@ -19,7 +21,9 @@
 
 export default {
   name: 'TimePicker',
+
   props: ['title', 'time', 'min', 'max'],
+
   computed: {
     localTime: {
       get () {
@@ -40,6 +44,15 @@ export default {
 </script>
 
 <style>
+
+.theme--light.v-card {
+  background-color: #FBFBFB;
+}
+
+.v-picker__body > div {
+  background: #fbfbfb !important;
+}
+
 .v-picker__title {
   height: 48px;
   width: 120px;
@@ -51,7 +64,6 @@ export default {
 .v-time-picker-title {
   justify-content: center;
   color: #900;
-  font-
 }
 
 .theme--light.v-time-picker-clock {
@@ -60,7 +72,7 @@ export default {
 }
 
 .v-time-picker-title__time .v-picker__title__btn, .v-time-picker-title__time span {
-  font-size: 24px!important;
+  font-size: 16px!important;
   height: 32px!important;
 }
 

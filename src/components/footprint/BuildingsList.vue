@@ -6,6 +6,7 @@
       :search="search"
       :page.sync="page"
       class="transparent"
+      @click:row="edit($event)"
     >
       <template v-slot:top>
         <v-toolbar flat class="transparent">
@@ -28,6 +29,7 @@
             color="primary"
             icon
             class="mb-2"
+            @click="createBuilding"
           >
             <v-icon color="primary">mdi-plus</v-icon>
             New building
@@ -35,11 +37,11 @@
         </v-toolbar>
       </template>
 
-      <template v-slot:item.actions="{ item }">
+      <!-- <template v-slot:item.actions="{ item }">
         <v-btn color="primary" class="mb-2" @click="edit(item)">
           Edit
         </v-btn>
-      </template>
+      </template> -->
     </v-data-table>
 
     <v-text-field
@@ -123,10 +125,14 @@ export default {
 
       this.ready = true
     },
+
     edit (item) {
-      console.log(item)
       const buildingId = item.id
       this.$router.push({ name: 'building-details', params: { buildingId } })
+    },
+
+    createBuilding () {
+      this.$router.push({ name: 'footprint' })
     }
   },
   beforeDestroy () {

@@ -12,5 +12,6 @@ export const sla = {
   put: 'sla-data-updated',
   update: 'sla-data-updated',
   post: 'new-sla-created',
-  upload: 'sla-file-uploaded'
+  upload: 'sla-file-uploaded',
+  read: 'local-file-content-loaded'
 }

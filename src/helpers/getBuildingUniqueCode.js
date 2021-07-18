@@ -9,5 +9,5 @@ function removeVowels (string) {
 export const getBuildingUniqueCode = function (addressComponents) {
   if (!addressComponents) return ''
   const { number, postCode, street, streetType } = addressComponents
-  return `XX.${postCode}.${removeVowels(street)}.${streetType}.${number}`
+  return `${postCode}.${removeVowels(street)}.${streetType}.${number}`
 }

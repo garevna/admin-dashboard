@@ -18,7 +18,8 @@ import {
   getBuildingById,
   getBuildingsByStatus,
   postBuildingDetails,
-  putBuildingDetails
+  putBuildingDetails,
+  patchBuildingDetails
 } from './map.worker'
 
 const result = Object.assign({}, rsp, services, customers, tickets, schedule, {
@@ -31,28 +32,8 @@ const result = Object.assign({}, rsp, services, customers, tickets, schedule, {
   getBuildingById,
   getBuildingsByStatus,
   postBuildingDetails,
-  putBuildingDetails
+  putBuildingDetails,
+  patchBuildingDetails
 })
 
 export default result
-
-// export {
-//   init,
-//
-//   rsp,
-//   customers,
-//   services,
-//   tickets,
-//   schedule,
-//
-//   auth,
-//   changePassword,
-//   resetPassword,
-//   sendPasswordResetCode,
-//
-//   getBuildingByAddress,
-//   getBuildingById,
-//   getBuildingsByStatus,
-//   postBuildingDetails,
-//   putBuildingDetails
-// }

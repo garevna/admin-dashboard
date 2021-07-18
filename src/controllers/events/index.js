@@ -7,6 +7,8 @@ import { rsp } from './rsp'
 import { mapWorkerEvents } from './map-worker-events'
 import { schedule, booking } from './schedule'
 
+import { building } from './building'
+
 const adminWorkerEvents = {
   admin,
   customers,
@@ -16,7 +18,8 @@ const adminWorkerEvents = {
   sla,
   rsp,
   schedule,
-  booking
+  booking,
+  building
 }
 
 // console.log('EVENTS:\n', adminWorkerEvents)

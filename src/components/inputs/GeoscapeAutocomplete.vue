@@ -31,7 +31,6 @@ export default {
   props: ['buildingAddressData'],
 
   data: () => ({
-    // address: '',
     addressId: '',
     addressData: {},
     variants: [],
@@ -39,11 +38,7 @@ export default {
     search: null,
     color: 'transparent'
   }),
-  // computed: {
-  //   addresses () {
-  //     return this.variants.map(item => item.address)
-  //   }
-  // },
+
   watch: {
     addressId: {
       immediate: true,
@@ -56,10 +51,12 @@ export default {
       val && val !== this.select && this.getVariants(val)
     }
   },
+
   methods: {
     notSubmited () {
       this.color = '#9004'
     },
+
     async submit () {
       console.log(this.addressId)
       if (!this.addressId) return
@@ -69,6 +66,7 @@ export default {
       console.log(this.addressData)
       this.$emit('update:buildingAddressData', this.addressData)
     },
+
     async getVariants (val) {
       if (val.length < 4) return
       this.loading = true

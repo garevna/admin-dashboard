@@ -2,14 +2,24 @@
   <v-container class="homefone" v-if="opened">
     <v-stepper v-model="step" class="homefone" style="box-shadow: none;">
       <v-stepper-items flat class="page-content transparent mx-auto mt-6 mb-12">
-        <transition name="current-component">
-          <component
-            :is="currentComponent"
-            :details="resellerDetails"
-          />
-        </transition>
+          <v-toolbar flat class="transparent" style="border: solid 1px red">
+            <v-toolbar-title>
+              <b>{{ resellerDetails.company.name }}</b>
+            </v-toolbar-title>
+            <v-spacer />
+            <v-btn icon @click="$emit('update:opened', false)">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <v-divider class="mb-5" />
+          <transition name="current-component">
+            <component
+              :is="currentComponent"
+              :details="resellerDetails"
+            />
+          </transition>
       </v-stepper-items>
-    </v-stepper>
+      </v-stepper>
 
     <v-row justify="center" class="homefone py-12 mx-0 px-0">
       <v-stepper-header

@@ -66,26 +66,26 @@ export default {
       // { text: 'Actions', value: 'actions', sortable: false }
     ]
   }),
-  computed: {
-    //
-  },
+
   methods: {
     getData (data) {
-      // console.log(data)
       this.items = data
     },
+
     createNewService () {
       this.$router.push({ name: 'create-new-service' })
     },
+
     editItem (item) {
-      // console.log(item._id)
       this.selectedServiceId = item.id
       this.$router.push({ name: 'service-details', params: { serviceId: item._id } })
     }
   },
+
   beforeDestroy () {
     this.$root.$off('services-list-received', this.getData)
   },
+
   mounted () {
     this.$vuetify.goTo(0)
     this.$root.$on('services-list-received', this.getData)

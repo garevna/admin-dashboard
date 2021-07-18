@@ -67,49 +67,57 @@
                         label="Service SLA"
                         outlined
                         dense
-                        append-outer-icon="mdi-open-in-new"
-                        @click:append-outer="showPDF"
                       ></v-combobox>
-                      <!-- <v-btn icon v-if="selectedId" @click="showPDF">
-                        <v-icon>mdi-open-in-new</v-icon>
-                      </v-btn> -->
                     </td>
-                    <td width="240">
-                      <v-file-input
-                        label="Upload new service SLA"
-                        chips
-                        style="width: 0px"
-                        prepend-icon="mdi-file-pdf"
-                        @change="uploadSLA($event)"
-                        :disabled="disabled"
-                        class="ml-2"
-                      ></v-file-input>
+
+                    <td width="180">
+                      <v-btn outlined dense color="primary" :disabled="!selectedId" @click="dialog = true">
+                        <v-icon small>mdi-open-in-new</v-icon>
+                        <small>Update selected</small>
+                      </v-btn>
+                    </td>
+
+                    <td width="180">
+                      <v-btn outlined dense color="primary" @click="dialog = true">
+                        <v-icon small>mdi-open-in-new</v-icon>
+                        <small>Upload new SLA</small>
+                      </v-btn>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
-            <tr style="height: 48px;"></tr>
-            <tr style="margin-top: 48px!important">
-              <td class="d-none d-md-flex">
-                <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
-              </td>
-                <td colspan="2" class="text-right">
-                <v-spacer />
-                <v-btn dark class="buttons" @click="saveServiceDetails">
-                  Update/save details
-                </v-btn>
-              </td>
-            </tr>
           </tbody>
         </table>
+
+        <v-row justify="end" class="mt-8 mb-12">
+          <v-btn dark class="buttons" @click="saveServiceDetails">
+            Update/save details
+          </v-btn>
+        </v-row>
+
+        <v-row justify="center" class="mt-12">
+          <p><b>Partners</b></p>
+        </v-row>
+        <v-row justify="center">
+          <Partners :servicePartners.sync="partnersList" />
+        </v-row>
+
+        <v-row justify="end" class="mt-2 mr-12">
+          <v-btn text dark class="primary" @click="saveServicePartners">
+            UPDATE PARTNERS
+          </v-btn>
+        </v-row>
+
+        <v-row justify="start" class="my-8">
+          <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
+        </v-row>
       </v-card>
     </fieldset>
 
     <ViewPDF
-      v-if="selectedId"
       :dialog.sync="dialog"
-      :id="selectedId"
+      :id.sync="selectedId"
       :title.sync="serviceSLA"
     />
   </v-container>
@@ -121,10 +129,13 @@ import { serviceSchema, rules } from '@/configs'
 import { SwitchValues } from '@/components/inputs'
 import { testTextField } from '@/helpers'
 
+import Partners from '@/components/services/Partners.vue'
+
 export default {
   name: 'ServiceDetails',
   components: {
     SwitchValues,
+    Partners,
     ViewPDF: () => import('@/components/inputs/ViewPDF.vue')
   },
 
@@ -132,6 +143,7 @@ export default {
 
   data: () => ({
     service: null,
+    partnersList: [],
     serviceSLA: '',
     selectedId: null,
     dialog: false,
@@ -144,7 +156,6 @@ export default {
   watch: {
     serviceSLA (value) {
       const selected = this.listOfSLA.find(item => item.title === value)
-      console.log(value, selected)
 
       this.disabled = Boolean(value) && Boolean(selected)
 
@@ -153,9 +164,17 @@ export default {
     service: {
       deep: true,
       handler (data) {
-        console.log('Service details changed\n', data.serviceSLA.value)
-
         this.selectedId = data.serviceSLA.value
+      }
+    },
+    partnersList: {
+      deep: true,
+      immediate: true,
+      handler (data) {
+        if (data) {
+          console.log('SERVICE PARTNERS LIST CHANGED')
+          data.forEach(item => console.log(item))
+        }
       }
     }
   },
@@ -178,7 +197,11 @@ export default {
     },
 
     getData (data) {
+      console.log(data)
+      // this.service.partners.value = data.partnerNames
+      this.partnersList = data.partners
       for (const prop in this.service) {
+        if (prop === 'partners') continue
         this.service[prop].value = data[prop]
       }
 
@@ -187,33 +210,37 @@ export default {
 
     getSLAList (data) {
       for (const item of data) this.listOfSLA.push(item)
-      console.log('SERVICE SLA VALUE: ', this.service.serviceSLA.value)
       const selected = this.listOfSLA.find(item => item._id === this.service.serviceSLA.value)
       this.serviceSLA = selected ? selected.title : ''
-      this.service.serviceSLA.title = selected.title
-      console.log('SERVICE SLA TITLE: ', selected)
+      this.service.serviceSLA.title = selected ? selected.title : ''
     },
 
-    uploadSLA (file) {
-      this.$root.$on('sla-file-uploaded', this.setNewSLA)
-      this.__uploadSLA(this.serviceSLA, file)
-    },
+    // uploadSLA (file) {
+    //   this.$root.$on('sla-file-uploaded', this.setNewSLA)
+    //   this.__uploadSLA(this.serviceSLA, file)
+    // },
 
-    setNewSLA (id) {
-      console.log('ID OF UPLOADED: ', id)
-      this.$root.$off('sla-file-uploaded', this.setNewSLA)
-      this.service.serviceSLA.value = id
-    },
+    // setNewSLA (id) {
+    //   console.log('ID OF UPLOADED: ', id)
+    //   this.$root.$off('sla-file-uploaded', this.setNewSLA)
+    //   this.service.serviceSLA.value = id
+    // },
 
     saveServiceDetails () {
       for (const prop in this.service) {
         this.service[prop] = this.service[prop].value
       }
+      this.service.partners = this.partnersList || []
+
       if (this.serviceId) {
         this.__updateServiceDetails(this.serviceId, this.service)
       } else {
         this.__createNewService(this.service)
       }
+    },
+
+    saveServicePartners () {
+      this.__patchServiceDetails(this.serviceId, { partners: this.partnersList })
     },
 
     showResult (data) {
@@ -230,6 +257,7 @@ export default {
   mounted () {
     this.service = JSON.parse(JSON.stringify(serviceSchema))
     this.$root.$on('sla-list-received', this.getSLAList)
+
     this.__getSLAList()
 
     if (this.serviceId) {
@@ -260,5 +288,11 @@ tr {
 td {
   height: 32px !important;
   text-align: right!important;
+}
+.partners-col {
+  border: solid 1px #aaa;
+  border-radius: 4px;
+  padding: 8px 16px;
+  text-align: left;
 }
 </style>

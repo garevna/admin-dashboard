@@ -1,5 +1,5 @@
 <template>
-  <v-app class="transparent">
+  <v-app class="transparent" style="max-height: 100vh; overflow-y: auto;">
     <v-app-bar app flat height="80" class="homefone">
       <v-card flat class="transparent text-left mt-4 ml-0" height="50">
         <v-img :src="require('@/assets/dgtek-logo.svg')" width="70" class="mr-8" />
@@ -143,9 +143,13 @@ export default {
 </script>
 
 <style>
+html {
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}
 body {
   overflow: hidden;
-  margin-bottom: 88px;
+  /* margin-bottom: 88px; */
   background: #fbfbfb;
 }
 * {

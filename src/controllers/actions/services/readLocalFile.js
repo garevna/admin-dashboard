@@ -1,7 +1,7 @@
-export const updateSLA = function (record) {
+export const readLocalFile = function (file) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
     route: 'sla',
-    action: 'update',
-    record
+    action: 'read',
+    file
   })
 }

@@ -99,7 +99,9 @@ export default {
     buildingType: null,
     sections: ['management', 'owner']
   }),
+
   computed: {},
+
   watch: {
     buildingData: {
       deep: true,
@@ -188,7 +190,7 @@ export default {
     this.$root.$on('buildings-data-saved', this.sendMessage)
     this.$root.$on('new-building-created', this.getNewBuildingId)
 
-    if (this.buildingId) return this.__getBuildingById(this.buildingId)
+    if (this.buildingId) this.__getBuildingById(this.buildingId)
     else this.getBuildingDetails(this.buildingData)
   }
 }

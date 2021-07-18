@@ -26,9 +26,11 @@
           :height="480"
         />
 
-        <v-btn text dark class="primary" @click="saveResellerServices">
-          SAVE UPDATES
-        </v-btn>
+        <v-row justify="end" class="mt-8">
+          <v-btn text dark class="primary" @click="saveResellerServices">
+            SAVE UPDATES
+          </v-btn>
+        </v-row>
       </v-col>
     </v-row>
     <v-row justify="end">
@@ -45,7 +47,7 @@ export default {
     ShortList: () => import('@/components/inputs/ShortList.vue')
   },
 
-  props: ['resellerId'],
+  props: ['details'],
 
   data: () => ({
     services: [],
@@ -56,34 +58,39 @@ export default {
 
   watch: {
     selectedService (value) {
-      console.log('SELECTED SERVICE: ', value)
       if (value) this.deselectedService = null
     },
     deselectedService (value) {
-      console.log('DESELECTED SERVICE: ', value)
       if (value) this.selectedService = null
     }
   },
 
   methods: {
+    mapServices (data) {
+      return data.map(service => ({ id: service._id, text: service.serviceName, partners: service.partners || [] }))
+    },
     getData (data) {
-      this.services = data.map(service => ({ id: service._id, text: service.serviceName }))
+      this.services = this.mapServices(data)
+      this.resellerServices = this.mapServices(data.filter(service => service.partners.find(partner => partner === this.details._id)))
     },
+
     selectService () {
-      console.log('SELECTED:', this.selectedService)
       this.deselectedService = null
-      const selected = this.selectedService
-      this.resellerServices.push(this.services.find(item => item.id === selected))
+      this.resellerServices.push(this.services.find(item => item.id === this.selectedService))
     },
+
     deselectService () {
-      console.log(this.deselectedService)
       const index = this.resellerServices.findIndex(item => item.id === this.deselectedService)
-      console.log(index)
       index !== -1 && this.resellerServices.splice(index, 1)
     },
 
     saveResellerServices () {
-      //
+      for (const service of this.resellerServices) {
+        if (!service.partners.find(partnerId => partnerId === this.details._id)) {
+          service.partners.push(this.details._id)
+          this.__patchServiceDetails(service.id, { partners: service.partners })
+        }
+      }
     }
   },
 

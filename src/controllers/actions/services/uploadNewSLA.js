@@ -1,8 +1,7 @@
-export const uploadSLA = function (id, title, file) {
+export const uploadNewSLA = function (title, file) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
     route: 'sla',
-    action: 'upload',
-    id,
+    action: 'post',
     title,
     file
   })

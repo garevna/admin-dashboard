@@ -94,10 +94,10 @@ export const serviceSchema = {
     title: 'Promo',
     type: 'simple-text',
     value: ''
-  },
-  partners: {
-    title: 'Partners',
-    type: 'array',
-    value: []
   }
+  // partners: {
+  //   title: 'Partners',
+  //   type: 'array',
+  //   value: []
+  // }
 }

@@ -22,69 +22,34 @@
 
         </v-card-text>
 
-        <v-card-text text-center v-if="address">
-          <!-- <v-btn v-if="address" outlined color="buttons" class="mx-2" @click="newCustomer" :disabled="newCustomerDisabled">
-            Add new customer
+        <v-card-text text-center v-if="showButtons">
+          <v-btn v-if="!buildingId" outlined color="buttons" class="mx-2" @click="createNewBuilding">
+            Add new building
           </v-btn>
 
-          <v-btn outlined color="buttons" class="mx-2" @click="selectCustomer">
-            Select existing customer
-          </v-btn> -->
-
-          <!-- <v-btn v-if="address" outlined color="buttons" class="mx-2" @click="$router.push({ name: '', params: { buildingId:  } })">
-            Edit building details
-          </v-btn> -->
-
+          <v-btn v-if="buildingId" outlined color="buttons" class="mx-2" @click="editSelectedBuilding">
+            Edit selected building details
+          </v-btn>
         </v-card-text>
       </v-card>
 
       <v-row justify="center">
         <v-col cols="12" md="6" lg="5" xl="4">
           <v-card flat class="transparent">
-            <v-card-title>
-              <h5>On-net buildings</h5>
-            </v-card-title>
-            <v-combobox
-              v-model="litAddress"
-              :items="litBuildings"
-              label="On-net buildings"
-              outlined
-              dense
-              :loading="litLoading"
-            ></v-combobox>
-            <v-list dense max-height="360" class="transparent" style="overflow-y: auto; margin-top: -24px">
-              <v-list-item
-                v-for="(item, index) of litBuildings"
-                :key="index"
-                @click="clickListItem('on-net', item)"
-              >
-                {{ item }}
-              </v-list-item>
-            </v-list>
+            <ShortList
+              title="On-net buildings"
+              :list="litBuildings"
+              :selected.sync="litBuildingId"
+            />
           </v-card>
         </v-col>
         <v-col cols="12" md="6" lg="5" xl="4">
           <v-card flat class="transparent">
-            <v-card-title>
-              <h5>Upcoming buildings</h5>
-            </v-card-title>
-            <v-combobox
-              v-model="footprintAddress"
-              :items="footprintBuildings"
-              label="Upcoming buildings"
-              outlined
-              dense
-              :loading="footprintLoading"
-            ></v-combobox>
-            <v-list dense max-height="360" class="transparent" style="overflow-y: auto; margin-top: -24px; user-select: ">
-              <v-list-item
-                v-for="(item, index) of footprintBuildings"
-                :key="index"
-                @click="clickListItem('footprint', item)"
-              >
-                {{ item }}
-              </v-list-item>
-            </v-list>
+            <ShortList
+              title="Upcoming buildings"
+              :list="footprintBuildings"
+              :selected.sync="footprintBuildingId"
+            />
           </v-card>
         </v-col>
       </v-row>
@@ -102,63 +67,131 @@ import { normalizeAddress } from '@/helpers'
 
 const { management, owner } = newBuilding
 
+const events = {
+  'on-net': ['LIT'],
+  footprint: ['Footprint', 'ServiceAvailable'],
+  'construction commenced': ['BuildCommenced', 'UnderConstruction'],
+  'coming soon': ['ComingSoon'],
+  'not available': ['other']
+}
+
+const statuses = {
+  'on-net': 'LIT',
+  footprint: 'Footprint',
+  'construction commenced': 'BuildCommenced',
+  'coming soon': 'ComingSoon',
+  'not available': 'other'
+}
+
+events.getEventName = function (status) {
+  for (const key in this) {
+    if (this[key].includes(status)) return key
+  }
+}
+
 export default {
   name: 'CheckAddress',
+
+  components: {
+    ShortList: () => import('@/components/inputs/ShortList.vue')
+  },
+
   data: () => ({
-    initialAddressData: {},
     map: null,
+
     events: dgtekMapEvents,
     buildingStatusConfig: buildingStatusConfig,
     buildingId: '',
     address: '',
+    buildingDetails: {},
+
     eventName: '',
-    litAddress: '',
-    footprintAddress: '',
     status: '',
     terms: '',
+
     scrollOptions: {
       duration: 500,
       offset: 0,
       easing: 'easeInOutCubic'
     },
+
+    showButtons: false,
+
     litBuildings: [],
-    footprintBuildings: [],
+    litBuildingId: null,
+    litAddress: '',
     litLoading: true,
+
+    footprintBuildings: [],
+    footprintBuildingId: null,
+    footprintAddress: '',
     footprintLoading: true
   }),
+
   watch: {
-    initialAddressData: {
+    buildingDetails: {
       deep: true,
       handler (val) {
-        console.log('INITIAL ADDRESS DATA:\n', val)
+        console.log('BUILDING DETAILS:\n', val)
       }
     },
-    litAddress (value) {
-      this.address = value
-      this.refresh('on-net')
+
+    buildingId (value) {
+      console.log('BUILDING ID: ', value)
+      if (!value) {
+        this.footprintBuildingId = null
+        this.litBuildingId = null
+      }
     },
-    footprintAddress (value) {
-      this.address = value
-      this.refresh('footprint')
+
+    litBuildingId (value) {
+      if (value) {
+        this.buildingId = value
+        this.address = this.litBuildings.find(building => building.id === value).text
+        this.footprintBuildingId = null
+        this.refresh('on-net')
+        this.showButtons = true
+      }
+    },
+
+    footprintBuildingId (value) {
+      if (value) {
+        this.buildingId = value
+        this.address = this.footprintBuildings.find(building => building.id === value).text
+        this.litBuildingId = null
+        this.refresh('footprint')
+        this.showButtons = true
+      }
     }
   },
+
   methods: {
     getBuildings (response) {
       console.log('RESPONSE:\n', response)
-      this[`${response.store}Buildings`] = response.result.map(item => item.address)
+      this[`${response.store}Buildings`] = response.result.map(item => ({ text: item.address, id: item.id }))
       this[`${response.store}Loading`] = false
     },
+
+    createNewBuilding () {
+      console.log(this.buildingDetails)
+    },
+
+    editSelectedBuilding () {
+      console.log(this.buildingDetails)
+    },
+
     getBuildingDetails (response) {
       console.log('BUILDING DETAILS:\n', response)
-      const eventType = Object.keys(this.buildingStatusConfig)
-        .find(item => buildingStatusConfig[item].status === response.result.status)
 
-      console.log('EVENT TYPE: ', eventType, this.eventName)
+      const { status } = response.result
 
-      console.log(Object.keys(this.buildingStatusConfig))
-      console.log(response.result.status)
-      Object.keys(this.buildingStatusConfig)
-        .forEach(item => console.log(buildingStatusConfig[item]))
+      // const eventType = Object.keys(this.buildingStatusConfig)
+      //   .find(item => buildingStatusConfig[item].status === status)
+
+      console.log(events)
+
+      const eventType = events.getEventName(status)
+      console.log('EVENT TYPE: ', eventType)
 
       this.setInitialAddressData(eventType, response.result)
       const { title } = this.buildingStatusConfig[eventType || this.eventName]
@@ -166,33 +199,29 @@ export default {
       this.terms = response.result.estimatedServiceDeliveryTime
       this.$vuetify.goTo('#searchAddressResults', this.scrollOptions)
     },
+
     setInitialAddressData (eventType, data) {
       console.log('setInitialAddressData:\n', eventType, data)
 
-      if (eventType) {
-        this.eventName = eventType
-      }
+      if (eventType) this.eventName = eventType
 
-      this.buildingId = data.buildingId
-      this.address = normalizeAddress(data.address)
+      this.buildingId = data.buildingId || this.buildingId
+      this.address = data.address
 
-      // const buildingStatus = data.status === 'UnderConstruction' || 'BuildCommenced' ? 'BuildCommenced'
-      //   : data.status === 'ServiceAvailable' ? 'Footprint'
-      //     : data.status === 'NotAvailable' ? 'Other' : data.status
+      // const buildingStatus = buildingStatusConfig[this.eventName].buildingStatus
+      // console.log(this.eventName, buildingStatus)
 
-      const buildingStatus = buildingStatusConfig[this.eventName].buildingStatus
-      console.log(this.eventName, buildingStatus)
-
-      this.initialAddressData = {
+      this.buildingDetails = {
         eventType: this.eventName,
         buildingId: data.buildingId,
         buildingAddress: normalizeAddress(data.address),
         buildingAddressComponents: data.addressComponents,
-        buildingStatus,
+        buildingStatus: statuses[this.eventName],
         buildingManagement: data.management || management,
         buildingOwner: data.owner || owner
       }
     },
+
     displayBuildingStatus (event) {
       const { title, terms } = this.buildingStatusConfig[event.type]
       this.status = title
@@ -200,12 +229,17 @@ export default {
       this.setInitialAddressData(event.type, event.data)
       this.$vuetify.goTo('#searchAddressResults', this.scrollOptions)
     },
+
     catchEvent (event) {
       console.group('Event handler')
       console.log('Event type: ', event.type)
       console.log('Event data:\n', event.data)
 
       this.eventName = event.type
+      this.showButtons = true
+      this.buildingId = event.data.buildingId
+
+      // console.log('*** BUILDING ID: ', this.buildingId)
 
       if (Object.keys(this.buildingStatusConfig).indexOf(event.type) !== -1) {
         console.log('EVENT AVAILABLE', event.type, normalizeAddress(event.data.address))
@@ -219,23 +253,26 @@ export default {
       if (event.type === 'buildings-address-list') {
         if (event.data.store === 'lit') {
           this.litLoading = false
-          this.litBuildings = event.data.result
+          this.litBuildings = event.data.result.map(item => ({ text: item.address, id: item.id }))
         }
         if (event.data.store === 'footprint') {
           this.footprintLoading = false
-          this.footprintBuildings = event.data.result
+          this.footprintBuildings = event.data.result.map(item => ({ text: item.address, id: item.id }))
         }
       }
       console.groupEnd('Event handler')
     },
-    refresh (address, type) {
-      this.__getBuildingByAddress(normalizeAddress(address))
+
+    refresh () {
+      this.__getBuildingById(this.buildingId)
     },
+
     clickListItem (eventName, address) {
       this.eventName = eventName
       this.__getBuildingByAddress(normalizeAddress(address))
     }
   },
+
   beforeDestroy () {
     this.$root.$off('buildings-data-list', this.getBuildings)
     this.$root.$off('building-details', this.getBuildingDetails)
@@ -262,5 +299,8 @@ export default {
 <style>
 .v-list-item--link {
   user-select: text!important;
+}
+.v-list-item--dense, .v-list--dense .v-list-item {
+  min-height: 28px!important;
 }
 </style>
