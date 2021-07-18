@@ -1,6 +1,7 @@
 const {
   authController,
   cryptoController,
+  buildingController,
   rspController,
   customersController,
   servicesController,
@@ -25,9 +26,14 @@ export const routes = {
     change: authController.changePassword
   },
 
+  building: {
+    patch: buildingController.patch
+  },
+
   rsp: {
     refresh: rspController.refresh,
     list: rspController.list,
+    short: rspController.short,
     get: rspController.get,
 
     'refresh-partners-list': rspController.refreshPartnersList,
@@ -61,19 +67,26 @@ export const routes = {
     encrypt: cryptoController.encrypt,
     decrypt: cryptoController.decrypt
   },
+
   services: {
     refresh: servicesController.refresh,
     list: servicesController.list,
     get: servicesController.get,
     post: servicesController.post,
-    put: servicesController.put
+    put: servicesController.put,
+    patch: servicesController.patch
   },
+
   sla: {
     list: servicesController.getSLAList,
     get: servicesController.getSLAContent,
-    post: servicesController.uploadSLA,
-    put: servicesController.updateSLA
+    put: servicesController.updateSLA,
+    update: servicesController.updateSLA,
+    upload: servicesController.uploadSLA,
+    post: servicesController.uploadNewSLA,
+    read: servicesController.readLocalFile
   },
+
   tickets: {
     refresh: ticketsController.refresh,
     list: ticketsController.list,

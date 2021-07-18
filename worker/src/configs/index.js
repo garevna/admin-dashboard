@@ -9,6 +9,8 @@ import {
   uploadFailed
 } from './uploadErrors'
 
+import pdf404 from './pdf404'
+
 export {
   routes,
   emptyData,
@@ -19,5 +21,7 @@ export {
   uploads,
   invalidRoute,
   invalidFileType,
-  uploadFailed
+  uploadFailed,
+
+  pdf404
 }

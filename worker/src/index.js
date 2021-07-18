@@ -42,7 +42,7 @@ self.initialized = false
 self.serviceStatus = serviceStatus
 
 self.onmessage = (event) => {
-  // if (!navigator.onLine) return self.postMessage(self.errorMessage('offline'))
+  if (!navigator.onLine) return self.postMessage(self.errorMessage('offline'))
   const { route, action, ...data } = event.data
 
   if (!routes[route][action] || typeof routes[route][action] !== 'function') {

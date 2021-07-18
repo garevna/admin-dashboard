@@ -6,6 +6,8 @@ import services from './services'
 import tickets from './tickets'
 import schedule from './schedule'
 
+import { patchBuildingDetails } from './building'
+
 import { testDBVersion } from './db'
 
 const {
@@ -26,7 +28,9 @@ const result = Object.assign({}, rsp, customers, services, tickets, schedule, {
   passwordReset,
   sendPasswordResetCode,
   changePassword,
-  passwordChange
+  passwordChange,
+
+  patchBuildingDetails
 })
 
 Object.keys(result).forEach((key) => { self[key] = result[key] })

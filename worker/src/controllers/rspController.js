@@ -13,6 +13,10 @@ class ResellersController {
     self.postMessage(await self.getResellersList())
   }
 
+  async short () {
+    self.postMessage(await self.getResellersShortList())
+  }
+
   async get (id) {
     self.postMessage(await self.getResellerDetails(id))
   }

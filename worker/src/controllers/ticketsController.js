@@ -7,8 +7,8 @@ class TicketsController {
     self.postMessage(await self.getCategories())
   }
 
-  async putCategories (data) {
-    self.postMessage(await self.putCategories(data))
+  async putCategories (request) {
+    self.postMessage(await self.putCategories(request.data))
   }
 
   async list () {

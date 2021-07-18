@@ -1,3 +1,5 @@
+import { readLocalFile } from '../helpers/AJAX'
+
 class ServicesController {
   async refresh (request) {
     self.postMessage(await self.refreshServicesList())
@@ -16,12 +18,28 @@ class ServicesController {
   }
 
   async put (request) {
-    self.postMessage(await self.updateService(request))
+    self.postMessage(await self.updateService(request.key, request.data))
+  }
+
+  async patch (request) {
+    self.postMessage(await self.patchService(request.key, request.data))
+  }
+
+  async readLocalFile (request) {
+    self.postMessage(Object.assign(await readLocalFile(request.file), {
+      route: 'sla',
+      action: 'read'
+    }))
   }
 
   async uploadSLA (request) {
     self.postDebugMessage({ request })
-    self.postMessage(await self.uploadSLA(request.title, request.file))
+    self.postMessage(await self.uploadSLA(request.id, request.title, request.file))
+  }
+
+  async uploadNewSLA (request) {
+    self.postDebugMessage({ request })
+    self.postMessage(await self.uploadNewSLA(request.title, request.file))
   }
 
   async updateSLA (request) {
