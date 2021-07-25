@@ -3256,10 +3256,10 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
-dgtek-map@^1.2.9:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/dgtek-map/-/dgtek-map-1.2.9.tgz#96c430740b2bd576178fa151ef34f0d2c134470f"
-  integrity sha512-SjPSvkP+hC5TFA3Y71r6uhMDpDmidUitt/E5IolGSCX/FTn6BCR5JJWzra3yNtO3KLLQelkgEiyLDvNn5JGOlg==
+dgtek-map@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/dgtek-map/-/dgtek-map-1.4.7.tgz#8a6889628eeae4fed98fde5640ea710d1d8f2c10"
+  integrity sha512-DY+pnIjpctfhIcFwrHs3NQGgUnvnDHfqcS2neCH0lDtoH4ED+WouJyng/fi0mc4cDz9Z22sVBjPmObnkqEagEg==
 
 dgtek-styles@^0.0.8:
   version "0.0.8"
@@ -9043,10 +9043,10 @@ vuetify-loader@^1.3.0:
     file-loader "^4.0.0"
     loader-utils "^1.2.0"
 
-vuetify@^2.4.9:
-  version "2.4.9"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.4.9.tgz#c4ccf4cf3dc81d426da78913c32d47ab33ede38f"
-  integrity sha512-IS+ZKCk4+RhN8PW9mw6dLSGy0hnFZ0YwOg0Ga+sr9bngbSOI6nw0p+Y/U00vRw8DPScqUmK5cSrI8RhiaTpXow==
+vuetify@^2.5.7:
+  version "2.5.7"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.5.7.tgz#0c7cfa143bffa6a14ef3ca5cfd8f2135713f4360"
+  integrity sha512-3Hn7X6FFtQetc6qy8GcMDKbZRKbiBMDBsYuUjDS4EdpDvHBDTMySpzBWqBNuPjPHRaT3XSrQfoYN84vGDg87Ug==
 
 watchpack-chokidar2@^2.0.1:
   version "2.0.1"
