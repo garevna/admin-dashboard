@@ -1,8 +1,7 @@
-export const saveTicketData = (key, response) => {
+export const saveTicketData = (ticket) => {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
     route: 'tickets',
     action: 'put',
-    key,
-    response
+    ticket
   })
 }

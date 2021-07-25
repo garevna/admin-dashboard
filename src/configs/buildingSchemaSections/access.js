@@ -22,6 +22,9 @@ export const access = {
   installationAccessTimes: {
     title: 'Installation access times',
     type: 'access-times',
-    value: '00:00 - 00:00'
+    value: {
+      from: '8:00',
+      to: '18:00'
+    }
   }
 }

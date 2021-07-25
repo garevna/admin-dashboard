@@ -61,7 +61,7 @@ const routes = [
           if (from.name === 'create-new-service') next(false)
           next()
         },
-        component: () => import(/* webpackChunkName: 'create-service' */ '@/components/services/ServiceDetails.vue')
+        component: () => import(/* webpackChunkName: 'service-details' */ '@/components/services/ServiceDetails.vue')
       },
       {
         path: '/:serviceId',
@@ -138,12 +138,27 @@ const routes = [
       {
         path: '/tickets',
         name: 'tickets',
-        component: () => import(/* webpackChunkName: 'tickets' */ '@/components/tickets/Tickets.vue')
+        component: () => import(/* webpackChunkName: 'tickets' */ '@/components/tickets/Tickets.vue'),
+        children: [
+          {
+            path: '/:section',
+            name: 'tickets',
+            component: () => import(/* webpackChunkName: 'tickets' */ '@/components/tickets/Tickets.vue'),
+            props: true
+          }
+        ]
       },
       {
-        path: '/ticket-categories',
-        name: 'ticket-categories',
-        component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
+        path: 'settings',
+        name: 'settings',
+        component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue'),
+        children: [
+          {
+            path: '/ticket-categories',
+            name: 'ticket-categories',
+            component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
+          }
+        ]
       }
     ]
   }

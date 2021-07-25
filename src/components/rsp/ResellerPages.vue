@@ -2,7 +2,7 @@
   <v-container class="homefone" v-if="opened">
     <v-stepper v-model="step" class="homefone" style="box-shadow: none;">
       <v-stepper-items flat class="page-content transparent mx-auto mt-6 mb-12">
-          <v-toolbar flat class="transparent" style="border: solid 1px red">
+          <v-toolbar flat class="transparent mx-auto" style="width: 900px">
             <v-toolbar-title>
               <b>{{ resellerDetails.company.name }}</b>
             </v-toolbar-title>
@@ -11,7 +11,9 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
-          <v-divider class="mb-5" />
+
+          <v-divider class="mb-12 mx-auto" style="max-width: 900px" />
+
           <transition name="current-component">
             <component
               :is="currentComponent"
@@ -19,7 +21,7 @@
             />
           </transition>
       </v-stepper-items>
-      </v-stepper>
+    </v-stepper>
 
     <v-row justify="center" class="homefone py-12 mx-0 px-0">
       <v-stepper-header
@@ -159,6 +161,7 @@ export default {
 
   mounted () {
     this.$vuetify.goTo(0)
+    console.log(this.resellerDetails)
   }
 }
 </script>

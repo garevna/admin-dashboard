@@ -19,9 +19,9 @@ export const mapWorkerErrors = {
     message: 'Error reading the data from local DB'
   }),
 
-  post: (type = 'Add new building') => ({
+  post: (type = 'Add new building', message = 'New building was not created') => ({
     type,
-    message: 'New building was not created'
+    message
   }),
 
   put: (type = 'Building details') => ({

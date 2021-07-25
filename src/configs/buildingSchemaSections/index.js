@@ -3,17 +3,21 @@ import { management } from './management'
 import { owner } from './owner'
 import { concierge } from './concierge'
 
-// import { access } from './access'
-// import { level } from './level'
+import { levelSchema, equipmentNames } from './level'
 
+import { infrastructureSchema, infrastructureFields, infrastructureTitles } from './infrastructure'
+
+// import { access } from './access'
 // import { marketing } from './marketing'
 
 export {
   corporation,
   management,
   owner,
-  concierge
-  // access,
-  // level,
-  // marketing
+  concierge,
+  levelSchema,
+  equipmentNames,
+  infrastructureSchema,
+  infrastructureFields,
+  infrastructureTitles
 }

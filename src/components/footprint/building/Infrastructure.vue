@@ -1,9 +1,151 @@
 <template>
-  <v-card flat class="transparent mx-auto" max-width="960">
-    <v-toolbar flat class="transparent">
-      <v-toolbar-title>
-        <h5><small> Infrastructure </small></h5>
-      </v-toolbar-title>
-    </v-toolbar>
-  </v-card>
+  <v-container class="width-900 mb-12">
+    <v-row justify="center" align="center" class="outlined-row mt-0">
+      <v-col cols="4">
+        <span class="mr-4">Number of dwellings</span>
+        <v-text-field v-model="numberOfDwellings" outlined dense hide-details style="display: inline-block; width: 100px" />
+      </v-col>
+      <v-col cols="5">
+        <v-checkbox
+          v-model="customerInstallApprovalRequired"
+          label="Customer install approval required"
+          class="mx-8"
+        />
+      </v-col>
+      <v-col cols="3">
+        <v-checkbox
+          v-model="inductionRequired"
+          label="Induction required"
+        />
+      </v-col>
+    </v-row>
+
+    <v-row justify="center" class="my-12">
+      <table width="600" class="mx-auto">
+        <tbody>
+          <tr>
+            <td width="140">
+              Infrastructure type
+            </td>
+            <td width="400">
+              <v-text-field
+                v-model="infrastructure.type"
+                label="Infrastructure type"
+                outlined
+                dense
+                hide-details
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </v-row>
+
+    <v-row justify="center" class="my-12">
+      <table width="600" class="mx-auto">
+        <thead>
+          <tr>
+            <th style="text-align: left">Equipment</th>
+            <th>Planned</th>
+            <th>Installed</th>
+            <th>Exist</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) of infrastructureFields" :key="index">
+            <td> {{ infrastructureTitles[index] }} </td>
+            <td>
+              <v-checkbox
+                v-model="infrastructure[item].planned"
+                hide-details
+                class="checkbox-no-label mx-auto"
+              />
+            </td>
+            <td>
+              <v-checkbox
+                v-model="infrastructure[item].installed"
+                hide-details
+                class="checkbox-no-label mx-auto"
+              />
+            </td>
+            <td>
+              <v-checkbox
+                v-if="Object.keys(infrastructure[item]).includes('exist')"
+                v-model="infrastructure[item].exist"
+                hide-details
+                class="checkbox-no-label mx-auto"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </v-row>
+
+    <v-row justify="end">
+      <v-btn dark color="primary" @click="updateInfrastructure" class="mt-8">
+        Save updates
+      </v-btn>
+    </v-row>
+  </v-container>
 </template>
+
+<script>
+
+import { infrastructureSchema, infrastructureFields, infrastructureTitles } from '@/configs/buildingSchemaSections'
+
+export default {
+  name: 'Infrasructure',
+
+  props: ['buildingData'],
+
+  data: () => ({
+    numberOfDwellings: '',
+    customerInstallApprovalRequired: false,
+    inductionRequired: false,
+    infrastructure: JSON.parse(JSON.stringify(infrastructureSchema)),
+    infrastructureFields,
+    infrastructureTitles
+  }),
+
+  methods: {
+    updateInfrastructure () {
+      this.__patchBuildingDetails(this.buildingData._id, {
+        numberOfDwellings: this.numberOfDwellings,
+        customerInstallApprovalRequired: this.customerInstallApprovalRequired,
+        inductionRequired: this.inductionRequired,
+        infrastructure: this.infrastructure
+      })
+    }
+  },
+
+  mounted () {
+    this.numberOfDwellings = this.buildingData.numberOfDwellings
+    this.customerInstallApprovalRequired = this.buildingData.customerInstallApprovalRequired
+    this.inductionRequired = this.buildingData.inductionRequired
+    this.infrastructure = Object.assign(this.infrastructure, this.buildingData.infrastructure)
+  }
+}
+</script>
+
+<style scoped>
+tr, td {
+  height: 24px !important;
+  vertical-align: super;
+}
+
+.outlined-row {
+  border: solid 1px #ddd !important;
+  border-radius: 4px !important;
+  margin: 0;
+  padding: 16px;
+  background: #f5f5f5;
+}
+
+.width-900 {
+  max-width: 900px !important;
+}
+
+.checkbox-no-label {
+  width: 40px !important;
+}
+</style>

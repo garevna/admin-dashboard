@@ -33,7 +33,7 @@
         </v-card-text>
       </v-card>
 
-      <v-row justify="center">
+      <v-row justify="center" ref="list">
         <v-col cols="12" md="6" lg="5" xl="4">
           <v-card flat class="transparent">
             <ShortList
@@ -62,25 +62,23 @@
 /* eslint-disable no-new */
 
 import DgtekMap from 'dgtek-map'
-import { dgtekMapEvents, buildingStatusConfig, newBuilding } from '@/configs'
+import { dgtekMapEvents, buildingStatusConfig } from '@/configs'
 import { normalizeAddress } from '@/helpers'
-
-const { management, owner } = newBuilding
 
 const events = {
   'on-net': ['LIT'],
   footprint: ['Footprint', 'ServiceAvailable'],
-  'construction commenced': ['BuildCommenced', 'UnderConstruction'],
+  'construction-commenced': ['BuildCommenced', 'UnderConstruction'],
   'coming soon': ['ComingSoon'],
   'not available': ['other']
 }
 
-const statuses = {
+const statusConfig = {
   'on-net': 'LIT',
   footprint: 'Footprint',
-  'construction commenced': 'BuildCommenced',
-  'coming soon': 'ComingSoon',
-  'not available': 'other'
+  'construction-commenced': 'UnderConstruction',
+  'coming-soon': 'ComingSoon',
+  'not-available': 'other'
 }
 
 events.getEventName = function (status) {
@@ -167,17 +165,32 @@ export default {
 
   methods: {
     getBuildings (response) {
-      console.log('RESPONSE:\n', response)
       this[`${response.store}Buildings`] = response.result.map(item => ({ text: item.address, id: item.id }))
       this[`${response.store}Loading`] = false
     },
 
     createNewBuilding () {
-      console.log(this.buildingDetails)
+      console.log('CREATE NEW BUILDING\n', this.buildingDetails)
+      const {
+        buildingAddress: address,
+        buildingAddressComponents: addressComponents,
+        buildingStatus: status
+      } = this.buildingDetails
+
+      this.__postBuildingDetails({ address, addressComponents, status })
+    },
+
+    gotoBuildingEditor (data) {
+      console.log(data)
+      const buildingId = typeof data !== 'string' ? data.result : data
+      console.log(buildingId)
+      this.$router.push({ name: 'building-details', params: { buildingId } })
     },
 
     editSelectedBuilding () {
-      console.log(this.buildingDetails)
+      console.log('SELECTED BUILDING ID: ', this.buildingId)
+      this.gotoBuildingEditor(this.buildingId)
+      // console.log(this.buildingDetails)
     },
 
     getBuildingDetails (response) {
@@ -197,7 +210,7 @@ export default {
       const { title } = this.buildingStatusConfig[eventType || this.eventName]
       this.status = title
       this.terms = response.result.estimatedServiceDeliveryTime
-      this.$vuetify.goTo('#searchAddressResults', this.scrollOptions)
+      // this.$vuetify.$goTo(this.$refs.list, this.scrollOptions)
     },
 
     setInitialAddressData (eventType, data) {
@@ -214,11 +227,9 @@ export default {
       this.buildingDetails = {
         eventType: this.eventName,
         buildingId: data.buildingId,
-        buildingAddress: normalizeAddress(data.address),
+        buildingAddress: data.address,
         buildingAddressComponents: data.addressComponents,
-        buildingStatus: statuses[this.eventName],
-        buildingManagement: data.management || management,
-        buildingOwner: data.owner || owner
+        buildingStatus: statusConfig[this.eventName]
       }
     },
 
@@ -227,7 +238,9 @@ export default {
       this.status = title
       this.terms = terms
       this.setInitialAddressData(event.type, event.data)
-      this.$vuetify.goTo('#searchAddressResults', this.scrollOptions)
+      // this.$vuetify.goTo(document.querySelector('#searchAddressResults'), this.scrollOptions)
+      console.log(this.$refs.list)
+      this.$vuetify.goTo('#searchAddressResults', Object.assign(this.scrollOptions, { offset: -500 }))
     },
 
     catchEvent (event) {
@@ -243,12 +256,12 @@ export default {
 
       if (Object.keys(this.buildingStatusConfig).indexOf(event.type) !== -1) {
         console.log('EVENT AVAILABLE', event.type, normalizeAddress(event.data.address))
-        console.log(this.buildingStatusConfig[event.type])
+        console.log(this.buildingStatusConfig[event.type].buildingStatus)
 
         this.displayBuildingStatus(event)
 
         console.log('Status: ', this.status, ' Terms: ', this.terms)
-        this.$vuetify.goTo('#searchAddressResults', this.scrollOptions)
+        // this.$vuetify.goTo('#searchAddressResults', this.scrollOptions)
       }
       if (event.type === 'buildings-address-list') {
         if (event.data.store === 'lit') {
@@ -269,15 +282,18 @@ export default {
 
     clickListItem (eventName, address) {
       this.eventName = eventName
-      this.__getBuildingByAddress(normalizeAddress(address))
+      this.__getBuildingByAddress(address)
     }
   },
 
   beforeDestroy () {
     this.$root.$off('buildings-data-list', this.getBuildings)
     this.$root.$off('building-details', this.getBuildingDetails)
+    this.$root.$off('new-building-created', this.gotoBuildingEditor)
   },
+
   mounted () {
+    console.log('buildingStatusConfig:\n', buildingStatusConfig)
     const container = document.getElementById('container-for-map')
     this.events.forEach(eventName => container.addEventListener(eventName, this.catchEvent))
 
@@ -292,6 +308,8 @@ export default {
 
     this.$root.$on('buildings-data-list', this.getBuildings)
     this.$root.$on('building-details', this.getBuildingDetails)
+
+    this.$root.$on('new-building-created', this.gotoBuildingEditor)
   }
 }
 </script>

@@ -43,7 +43,6 @@ export default {
     addressId: {
       immediate: true,
       handler (val) {
-        console.log(val)
         this.address = val
       }
     },
@@ -58,12 +57,9 @@ export default {
     },
 
     async submit () {
-      console.log(this.addressId)
       if (!this.addressId) return
       this.color = 'transparent'
       await this.getAddressDetails()
-      // this.$emit('update:value', this.addressId)
-      console.log(this.addressData)
       this.$emit('update:buildingAddressData', this.addressData)
     },
 

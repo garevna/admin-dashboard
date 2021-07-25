@@ -4,6 +4,7 @@
       app
       permanent
       left
+      style="z-index: 15"
     >
       <template v-slot:prepend>
         <v-list-item>
@@ -34,7 +35,7 @@
             v-for="child in item.children"
             :key="child.title"
             class="clickable"
-            :disabled="$route.name === child.route"
+            :disabled="$route.name !== 'tickets' ? $route.name === child.route : false"
             @click="jumpTo(child)"
           >
             <v-list-item-content>
@@ -79,13 +80,23 @@ export default {
       settings: true
     }
   }),
+
   methods: {
     setRefreshed (event) {
       this.refreshed[event] = true
     },
     jumpTo (item) {
-      if (this.$route.name === item.route) return
-      item.route && this.$router.push({ name: item.route })
+      console.log('ROUTE: ', item.route)
+      console.log('PATH: ', item.path)
+      console.log('PARAMS: ', item.params)
+      if (item.route === 'tickets') {
+        console.log(this.$route.path)
+        if (item.path.indexOf(this.$route.path) !== -1) return
+        this.$router.push({ name: item.route, params: item.params })
+      } else {
+        if (this.$route.name === item.route) return
+        item.route && this.$router.push({ name: item.route })
+      }
     }
   },
 

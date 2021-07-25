@@ -10,6 +10,8 @@ import { validateABN } from './validateABN'
 import { readFile } from './readFile'
 import { getBuildingUniqueCode } from './getBuildingUniqueCode'
 
+import { getGeneralBuildingData } from './getGeneralBuildingData'
+
 import { convertBuildingStatus } from './convertBuildingStatus'
 
 export {
@@ -21,5 +23,6 @@ export {
   validateABN,
   readFile,
   getBuildingUniqueCode,
+  getGeneralBuildingData,
   convertBuildingStatus
 }

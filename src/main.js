@@ -28,3 +28,16 @@ window[Symbol.for('vue.instance')] = new Vue({
 createController()
 
 init()
+
+/* eslint-disable no-extend-native */
+
+String.prototype.toKebab = function () {
+  return this.split(' ').join('-').split('')
+    .map((char, index) => char.charCodeAt(0) < 91 && char.charCodeAt(0) > 64 ? `${index ? '-' : ''}${char.toLowerCase()}` : char)
+    .join('').split('--').join('-')
+}
+
+String.prototype.fromKebab = function () {
+  const string = this.split('-').join(' ')
+  return `${string[0].toUpperCase()}${string.slice(1)}`
+}

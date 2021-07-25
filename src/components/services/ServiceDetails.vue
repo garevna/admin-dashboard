@@ -1,8 +1,24 @@
 <template>
-  <v-container style="margin-bottom: 180px">
-    <v-card flat class="transparent mx-auto" max-width="960">
-      <v-row justify="end" align="center" style="margin-bottom: -60px; margin-right:-20px;">
-          <v-spacer />
+  <v-container style="margin-bottom: 180px; max-width: 960px">
+    <!-- <v-card flat class="transparent mx-auto" max-width="960"> -->
+      <v-toolbar flat class="transparent mx-auto">
+        <v-toolbar-title>
+          <h5><small>Service details</small></h5>
+        </v-toolbar-title>
+        <v-spacer />
+        <v-btn
+          @click="$router.push({ name: 'services-list' })"
+          icon
+          color="#aaa"
+          class="pl-2"
+        >
+          <v-icon large>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
+
+      <v-divider class="mt-2 mb-10" />
+      <!-- <v-row justify="end" align="center" style="margin-bottom: -60px; margin-right:-20px;"> -->
+          <!-- <v-spacer />
           <v-btn
             @click="$router.push({ name: 'services-list' })"
             icon
@@ -11,13 +27,13 @@
             style="background: #fbfbfb; border-radius: 50%; box-shadow: 0 0 4px #0007"
           >
             <v-icon large>mdi-close</v-icon>
-          </v-btn>
-        </v-row>
-    </v-card>
-    <fieldset class="mt-4 pa-8 mb-12 mx-auto" style="max-width: 960px; border: solid 1px #bbb; box-shadow: 0 0 3px #0007">
+          </v-btn> -->
+        <!-- </v-row> -->
+    <!-- </v-card> -->
+    <!-- <fieldset class="mt-4 pa-8 mb-12 mx-auto" style="max-width: 960px; border: solid 1px #bbb; box-shadow: 0 0 3px #0007">
       <legend class="ml-4" style="background: #fbfbfb; border-radius: 4px; border: solid 1px #bbb; padding: 4px 8px">
         <h5><small>Service details</small></h5>
-      </legend>
+      </legend> -->
       <v-card flat class="transparent mt-0" v-if="ready">
         <table width="100%">
           <tbody>
@@ -113,7 +129,7 @@
           <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
         </v-row>
       </v-card>
-    </fieldset>
+    <!-- </fieldset> -->
 
     <ViewPDF
       :dialog.sync="dialog"
@@ -215,19 +231,9 @@ export default {
       this.service.serviceSLA.title = selected ? selected.title : ''
     },
 
-    // uploadSLA (file) {
-    //   this.$root.$on('sla-file-uploaded', this.setNewSLA)
-    //   this.__uploadSLA(this.serviceSLA, file)
-    // },
-
-    // setNewSLA (id) {
-    //   console.log('ID OF UPLOADED: ', id)
-    //   this.$root.$off('sla-file-uploaded', this.setNewSLA)
-    //   this.service.serviceSLA.value = id
-    // },
-
     saveServiceDetails () {
       for (const prop in this.service) {
+        console.log(prop, this.service[prop].value)
         this.service[prop] = this.service[prop].value
       }
       this.service.partners = this.partnersList || []
@@ -244,7 +250,7 @@ export default {
     },
 
     showResult (data) {
-      this.$router.push({ name: 'services-list' })
+      this.$route.name !== 'services-list' && this.$router.push({ name: 'services-list' })
     }
   },
   beforeDestroy () {

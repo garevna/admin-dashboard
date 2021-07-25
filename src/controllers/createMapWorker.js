@@ -24,11 +24,12 @@ export function createMapWorker () {
 
     if (status === 200) {
       const eventName = mapWorkerEvents[action]
+      console.log(eventName)
       window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
-      window[Symbol.for('vue.instance')].$root.$emit(eventName, event.data)
+      eventName && window[Symbol.for('vue.instance')].$root.$emit(eventName, event.data)
     } else {
-      console.log('action: ', action)
-      if (action === 'search') return
+      console.log(event.data)
+      if (action === 'init' || action === 'search') return
       const { type: errorType, message: errorMessage } = mapWorkerErrors[action]()
       window[Symbol.for('vue.instance')].$root.$emit('open-error-popup', {
         errorType,

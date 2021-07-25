@@ -1,71 +1,37 @@
-export const level = {
-  name: {
-    title: 'Level name or number',
-    type: 'simple-text',
-    value: ''
-  },
+export const levelSchema = {
+  name: '',
+  ownerOfExistingCAC: '',
   planned: {
-    router: {
-      title: 'Router',
-      type: 'checkbox',
-      value: false
-    },
-    splicingBox: {
-      title: 'Splicing Box',
-      type: 'checkbox',
-      value: false
-    },
-    splitter: {
-      title: 'Splitter',
-      type: 'checkbox',
-      value: false
-    },
-    oftu: {
-      title: 'OFTU',
-      type: 'checkbox',
-      value: false
-    },
-    rack: {
-      title: 'Rack',
-      type: 'checkbox',
-      value: false
-    },
-    customerAccessCabling: {
-      title: 'Customer access cabling',
-      type: 'checkbox',
-      value: false
-    }
+    router: false,
+    splicingBox: false,
+    splitter: false,
+    oftu: false,
+    rack: false,
+    gPOinRisers: false,
+    customerAccessCabling: false
   },
   installed: {
-    router: {
-      title: 'Router',
-      type: 'checkbox',
-      value: false
-    },
-    splicingBox: {
-      title: 'Splicing Box',
-      type: 'checkbox',
-      value: false
-    },
-    splitter: {
-      title: 'Splitter',
-      type: 'checkbox',
-      value: false
-    },
-    oftu: {
-      title: 'OFTU',
-      type: 'checkbox',
-      value: false
-    },
-    rack: {
-      title: 'Rack',
-      type: 'checkbox',
-      value: false
-    },
-    customerAccessCabling: {
-      title: 'Customer access cabling',
-      type: 'checkbox',
-      value: false
-    }
+    router: false,
+    splicingBox: false,
+    splitter: false,
+    oftu: false,
+    rack: false,
+    gPOinRisers: false,
+    customerAccessCabling: false
+  },
+  details: {
+    router: '',
+    splicingBox: '',
+    splitter: '',
+    oftu: '',
+    rack: '',
+    gPOinRisers: '',
+    customerAccessCabling: ''
+  },
+  exist: {
+    gPOinRisers: false,
+    customerAccessCabling: false
   }
 }
+
+export const equipmentNames = ['router', 'splicingBox', 'splitter', 'oftu', 'gPOinRisers', 'uPSinRisers', 'customerAccessCabling', 'rack']

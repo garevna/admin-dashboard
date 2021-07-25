@@ -1,7 +1,27 @@
 <template>
   <v-container class="homefone">
     <v-stepper v-model="step" class="homefone" style="box-shadow: none;">
+      <v-divider class="mb-5" />
       <v-stepper-items flat class="page-content transparent mx-auto mt-6 mb-12">
+        <v-card flat class="transparent mx-auto" max-width="900" v-if="ready">
+          <v-toolbar flat class="transparent">
+            <v-toolbar-title>
+              <h5>
+                <b class="outlined mr-4">
+                  {{ buildingData.buildingUniqueCode }}
+                </b>
+                <small>{{ buildingData.address }}</small>
+              </h5>
+            </v-toolbar-title>
+            <v-spacer />
+            <v-btn icon @click="exit">
+              <v-icon large>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar>
+        </v-card>
+
+        <v-divider class="mx-auto mb-12" style="max-width: 900px" />
+
         <transition name="current-component" v-if="ready">
           <component
             :is="currentComponent"
@@ -156,6 +176,16 @@ export default {
   },
 
   methods: {
+    showMessage () {
+      this.$root.$emit('open-message-popup', {
+        messageType: this.buildingData.address,
+        messageText: 'Building details updated'
+      })
+    },
+    exit () {
+      this.$route.name !== 'buildings' && this.$router.push({ name: 'buildings' })
+    },
+
     getData (data) {
       this.buildingData = data.result
       this.ready = true
@@ -192,10 +222,15 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('building-details', this.getData)
+    this.$root.$off('building-details-updated', this.showMessage)
+    this.$root.$off('new-building-created', this.getNewBuildingId)
   },
 
   mounted () {
     this.$root.$on('building-details', this.getData)
+    this.$root.$on('building-details-updated', this.showMessage)
+    this.$root.$on('new-building-created', this.getNewBuildingId)
+
     this.__getBuildingById(this.buildingId)
     this.$vuetify.goTo(0)
   }
