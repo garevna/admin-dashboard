@@ -56,6 +56,8 @@ export const routes = {
     refresh: customersController.refresh,
     pagination: customersController.refreshByPageNumber,
     list: customersController.getAllCustomers,
+    'short-list': customersController.getShortListOfCustomers,
+    'filtered-short-list': customersController.getFilteredShortListOfCustomers,
     get: customersController.getCustomer,
     post: customersController.createCustomer,
     delete: customersController.deleteCustomer,
@@ -90,14 +92,16 @@ export const routes = {
   tickets: {
     refresh: ticketsController.refresh,
     list: ticketsController.list,
+    rsp: ticketsController.listForPartner,
     get: ticketsController.get,
-    post: ticketsController.post,
     put: ticketsController.put
   },
+
   categories: {
     get: ticketsController.getCategories,
     put: ticketsController.putCategories
   },
+
   schedule: {
     refresh: scheduleController.refresh,
     get: scheduleController.getFullSchedule,
@@ -106,10 +110,12 @@ export const routes = {
     job: scheduleController.putRecordToJobQueue,
     activate: scheduleController.activateService
   },
+
   booking: {
     get: scheduleController.getBookingList,
     update: scheduleController.updateRecord
   },
+
   lots: {
     get: scheduleController.getLots,
     update: scheduleController.updateLots

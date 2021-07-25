@@ -14,6 +14,14 @@ class CustomersController {
     self.postMessage(await self.getAllCustomers())
   }
 
+  async getShortListOfCustomers () {
+    self.postMessage(await self.getShortListOfCustomers())
+  }
+
+  async getFilteredShortListOfCustomers (request) {
+    self.postMessage(await self.getFilteredShortListOfCustomers(request.filter))
+  }
+
   async getCustomersByResellerId (request) {
     self.postMessage(await self.getCustomersByResellerId(request.resellerId))
   }

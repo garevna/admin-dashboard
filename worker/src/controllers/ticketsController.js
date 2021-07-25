@@ -11,8 +11,12 @@ class TicketsController {
     self.postMessage(await self.putCategories(request.data))
   }
 
-  async list () {
-    self.postMessage(await self.getTicketsFromLocalDb())
+  async list (request) {
+    self.postMessage(await self.getTicketsFromLocalDb(request.category))
+  }
+
+  async listForPartner (request) {
+    self.postMessage(await self.getTicketsByRSP(request.resellerId))
   }
 
   async get (request) {
@@ -20,11 +24,7 @@ class TicketsController {
   }
 
   async put (request) {
-    self.postMessage(await self.putTicketData(request.key, request.response))
-  }
-
-  async post (request) {
-    self.postMessage(await self.postNewTicket(request))
+    self.postMessage(await self.putTicketData(request.ticket))
   }
 }
 
