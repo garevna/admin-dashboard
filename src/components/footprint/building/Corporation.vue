@@ -97,8 +97,9 @@ export default {
   },
 
   mounted () {
+    if (!this.buildingData.corporation) this.buildingData.corporation = { headOfficeAddress: '...' }
     for (const propName in this.corporation) {
-      this.corporation[propName].value = this.buildingData.corporation ? this.buildingData.corporation[propName] : ''
+      this.corporation[propName].value = this.buildingData.corporation ? this.buildingData.corporation[propName] || '' : ''
     }
   }
 }
