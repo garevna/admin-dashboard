@@ -49,13 +49,12 @@ export default {
 
   watch: {
     selected (value) {
-      console.log('SELECTED: ', value)
+      //
     }
   },
 
   methods: {
     getData (data) {
-      console.log('MESSAGES:\n', data)
       this.messages = data.map(item => Object.assign(item, {
         created: new Date(item.created).toISOString().slice(0, 10),
         modified: new Date(item.modified).toISOString().slice(0, 10)
@@ -72,10 +71,6 @@ export default {
   beforeMount () {
     this.$root.$on('messages-received', this.getData)
     this.__getMessages(this.details._id)
-  },
-
-  mounted () {
-    console.log('RESELLER DETAILS\n', this.details)
   },
 
   beforeDestroy () {

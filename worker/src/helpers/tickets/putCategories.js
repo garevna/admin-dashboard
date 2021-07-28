@@ -14,12 +14,8 @@ const ticketCategoriesError = {
 }
 
 export const putCategories = async (data) => {
-  self.postDebugMessage({ categories: data })
-
   const { status, result } = await put('dictionary/ticket-categories', data)
   const response = { status, route: 'categories', action: 'put', result }
-
-  self.postDebugMessage({ result })
 
   status === 200 && ticketCategories(data)
 

@@ -22,14 +22,9 @@ export default {
         return this.value === this.states[1]
       },
       set (val) {
-        // console.log(val)
         this.$emit('update:value', this.states[Number(val)])
       }
     }
-  },
-  mounted () {
-    // console.log(this.value)
-    // console.log(this.states)
   }
 }
 

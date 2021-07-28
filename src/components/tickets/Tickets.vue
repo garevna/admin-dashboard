@@ -150,17 +150,12 @@ export default {
       deep: true,
       immediate: true,
       handler (data) {
-        console.log('ROUTE CHANGED:', data.params.section.fromKebab())
         this.section = data.params.section.fromKebab()
         this.__getTickets(data.params.section.fromKebab())
         this.customer = null
         this.severity = null
         this.priority = null
       }
-    },
-
-    customer (val) {
-      console.log('CUSTOMER SELECTED: ', val)
     }
   },
 
@@ -208,11 +203,6 @@ export default {
     this.$root.$on('ticket-data-received', this.showTicketDetails)
 
     this.$root.$on('customers-filtered-short-list-received', this.getCustomersList)
-  },
-
-  mounted () {
-    console.log('CATEGORY: ', this.$route.path)
-    console.log('SECTION: ', this.section)
   }
 }
 </script>

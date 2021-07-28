@@ -1,7 +1,5 @@
 # dgtek-admin-dash
 
-[**demo**](https://vue-command.github.io/dgtek-admin-dash/)
-
 ### [Controller Description](https://github.com/garevna/dgtek-admin-dash/wiki/Controller-common-description)
 
 #### Project setup

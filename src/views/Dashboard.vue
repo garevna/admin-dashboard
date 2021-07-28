@@ -71,7 +71,7 @@ export default {
     items: mainDashboard,
     refreshed: {
       rsp: false,
-      footprint: true,
+      footprint: window[Symbol.for('map.worker')].ready,
       customers: false,
       tickets: false,
       services: false,
@@ -85,12 +85,9 @@ export default {
     setRefreshed (event) {
       this.refreshed[event] = true
     },
+
     jumpTo (item) {
-      console.log('ROUTE: ', item.route)
-      console.log('PATH: ', item.path)
-      console.log('PARAMS: ', item.params)
       if (item.route === 'tickets') {
-        console.log(this.$route.path)
         if (item.path.indexOf(this.$route.path) !== -1) return
         this.$router.push({ name: item.route, params: item.params })
       } else {
@@ -102,6 +99,7 @@ export default {
 
   beforeDestroy () {
     [
+      'footprint-refreshed',
       'rsp-refreshed',
       'customers-refreshed',
       'tickets-refreshed',
@@ -114,6 +112,7 @@ export default {
 
   mounted () {
     [
+      'footprint-refreshed',
       'rsp-refreshed',
       'customers-refreshed',
       'tickets-refreshed',

@@ -161,7 +161,6 @@ export default {
 
   mounted () {
     this.$vuetify.goTo(0)
-    console.log(this.resellerDetails)
   }
 }
 </script>

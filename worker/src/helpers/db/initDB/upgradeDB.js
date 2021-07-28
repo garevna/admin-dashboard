@@ -3,7 +3,6 @@ import { storeNames, dbKeys } from '../db-configs'
 export function upgradeDB (db, transaction) {
   const objectStoreNames = Array.from(db.objectStoreNames)
   for (const storeName of storeNames) {
-    self.postDebugMessage({ storeNames, stores: JSON.stringify(db.objectStoreNames) })
     if (objectStoreNames.includes(storeName)) db.deleteObjectStore(storeName)
 
     const store = storeName === 'categories' ? db.createObjectStore(storeName)

@@ -203,7 +203,6 @@ export default {
       }
     },
     getCustomerData (data) {
-      console.log(data)
       this.customer = data.result
       this.createSchema()
 

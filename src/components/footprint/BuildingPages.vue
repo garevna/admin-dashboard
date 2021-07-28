@@ -26,6 +26,7 @@
           <component
             :is="currentComponent"
             :buildingData="buildingData"
+            class="mb-8"
           />
         </transition>
       </v-stepper-items>
@@ -47,7 +48,7 @@
 
         <v-btn
           class="mx-1"
-          :class="{ active: accessStep, tab: !accessStep }"
+          :class="{ active: corporationStep, tab: !corporationStep }"
           @click="step = 2"
         >
           {{ steps[1] }}
@@ -55,23 +56,23 @@
 
         <v-btn
           class="mx-1"
-          :class="{ active: levelStep, tab: !levelStep }"
+          :class="{ active: accessStep, tab: !accessStep }"
           @click="step = 3"
         >
-            {{ steps[2] }}
+          {{ steps[2] }}
+        </v-btn>
+
+        <v-btn
+          class="mx-1"
+          :class="{ active: levelStep, tab: !levelStep }"
+          @click="step = 4"
+        >
+            {{ steps[3] }}
           </v-btn>
 
         <v-btn
           class="mx-1"
           :class="{ active: infrastructureStep, tab: !infrastructureStep }"
-          @click="step = 4"
-        >
-          {{ steps[3] }}
-        </v-btn>
-
-        <v-btn
-          class="mx-1"
-          :class="{ active: stakeholderStep, tab: !stakeholderStep }"
           @click="step = 5"
         >
           {{ steps[4] }}
@@ -79,7 +80,7 @@
 
         <v-btn
           class="mx-1"
-          :class="{ active: filesStep, tab: !filesStep }"
+          :class="{ active: stakeholderStep, tab: !stakeholderStep }"
           @click="step = 6"
         >
           {{ steps[5] }}
@@ -87,10 +88,18 @@
 
         <v-btn
           class="mx-1"
-          :class="{ active: otherStep, tab: !otherStep }"
+          :class="{ active: filesStep, tab: !filesStep }"
           @click="step = 7"
         >
           {{ steps[6] }}
+        </v-btn>
+
+        <v-btn
+          class="mx-1"
+          :class="{ active: otherStep, tab: !otherStep }"
+          @click="step = 8"
+        >
+          {{ steps[7] }}
         </v-btn>
       </v-stepper-header>
     </v-row>
@@ -100,6 +109,7 @@
 <script>
 
 import GeneralInfo from '@/components/footprint/building/GeneralInfo.vue'
+import Corporation from '@/components/footprint/building/Corporation.vue'
 import Access from '@/components/footprint/building/Access.vue'
 import Levels from '@/components/footprint/building/Levels.vue'
 import Infrastructure from '@/components/footprint/building/Infrastructure.vue'
@@ -107,11 +117,14 @@ import Stakeholdes from '@/components/footprint/building/Stakeholdes.vue'
 import Files from '@/components/footprint/building/Files.vue'
 import Other from '@/components/footprint/building/Other.vue'
 
+import { buildingStatusHandler /*, buildingsListPageNumberHandler */ } from '@/controllers/data-handlers'
+
 export default {
   name: 'BuildingPages',
 
   components: {
     GeneralInfo,
+    Corporation,
     Access,
     Levels,
     Infrastructure,
@@ -131,9 +144,10 @@ export default {
   data: () => ({
     ready: false,
     step: 1,
-    steps: ['General info', 'Access', 'Levels', 'Infrastructure', 'Stakeholdes', 'Files', 'Other'],
+    steps: ['General', 'Corporation', 'Access', 'Levels', 'Infrastructure', 'Stakeholdes', 'Files', 'Other'],
     pages: [
       GeneralInfo,
+      Corporation,
       Access,
       Levels,
       Infrastructure,
@@ -149,23 +163,26 @@ export default {
     buildingStep () {
       return this.step === 1
     },
-    accessStep () {
+    corporationStep () {
       return this.step === 2
     },
-    levelStep () {
+    accessStep () {
       return this.step === 3
     },
-    infrastructureStep () {
+    levelStep () {
       return this.step === 4
     },
-    stakeholderStep () {
+    infrastructureStep () {
       return this.step === 5
     },
-    filesStep () {
+    stakeholderStep () {
       return this.step === 6
     },
-    otherStep () {
+    filesStep () {
       return this.step === 7
+    },
+    otherStep () {
+      return this.step === 8
     }
   },
 
@@ -183,6 +200,7 @@ export default {
       })
     },
     exit () {
+      buildingStatusHandler(this.buildingData.status)
       this.$route.name !== 'buildings' && this.$router.push({ name: 'buildings' })
     },
 
@@ -194,28 +212,32 @@ export default {
       this.step = 1
       this.currentComponent = GeneralInfo
     },
-    goToAccess () {
+    goToCorporation () {
       this.step = 2
+      this.currentComponent = Corporation
+    },
+    goToAccess () {
+      this.step = 3
       this.currentComponent = Access
     },
     goToLevels () {
-      this.step = 3
+      this.step = 4
       this.currentComponent = Levels
     },
     goToInfrastructure (data) {
-      this.step = 4
+      this.step = 5
       this.currentComponent = Infrastructure
     },
     goToStakeholders (data) {
-      this.step = 5
+      this.step = 6
       this.currentComponent = Stakeholdes
     },
     goToFiles (data) {
-      this.step = 6
+      this.step = 7
       this.currentComponent = Files
     },
     goToOther (data) {
-      this.step = 7
+      this.step = 8
       this.currentComponent = Other
     }
   },

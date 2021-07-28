@@ -34,7 +34,6 @@
         <GeoscapeAutocomplete
           v-if="prop.type === 'address' && editAddress"
           :buildingAddressData.sync="prop.value"
-          style="margin-top: -4px!important; margin-bottom: 8px!important;"
         />
       </v-col>
     </v-row>

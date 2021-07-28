@@ -33,17 +33,14 @@ class ServicesController {
   }
 
   async uploadSLA (request) {
-    self.postDebugMessage({ request })
     self.postMessage(await self.uploadSLA(request.id, request.title, request.file))
   }
 
   async uploadNewSLA (request) {
-    self.postDebugMessage({ request })
     self.postMessage(await self.uploadNewSLA(request.title, request.file))
   }
 
   async updateSLA (request) {
-    self.postDebugMessage({ method: 'updateSLA', request })
     self.postMessage(await self.updateSLA(request.record))
   }
 

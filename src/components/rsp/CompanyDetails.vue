@@ -50,7 +50,6 @@ export default {
       this.ready = true
     },
     requestUpdates () {
-      // console.log(this.schema)
       let message = 'Update please the next data in company details:'
       for (const section in this.schema) {
         Object.keys(this.schema[section])
@@ -60,8 +59,7 @@ export default {
             message += `\n• ${item}`
           })
       }
-      console.log(message)
-      console.log(this.details)
+
       const request = {
         resellerId: this.details._id,
         subject: 'Update company details',

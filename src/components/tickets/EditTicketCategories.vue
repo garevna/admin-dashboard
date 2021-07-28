@@ -55,7 +55,7 @@ export default {
       this.ready = Array.isArray(this.items)
     },
     showAnswer (response) {
-      console.log('UPDATE CATEGORIES RESPONSE:\n', response)
+      //
     },
     removeItem (index) {
       this.items.splice(index, 1)

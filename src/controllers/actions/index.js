@@ -19,7 +19,8 @@ import {
   getBuildingsByStatus,
   postBuildingDetails,
   putBuildingDetails,
-  patchBuildingDetails
+  patchBuildingDetails,
+  refreshBuildings
 } from './map.worker'
 
 const result = Object.assign({}, rsp, services, customers, tickets, schedule, {
@@ -33,7 +34,8 @@ const result = Object.assign({}, rsp, services, customers, tickets, schedule, {
   getBuildingsByStatus,
   postBuildingDetails,
   putBuildingDetails,
-  patchBuildingDetails
+  patchBuildingDetails,
+  refreshBuildings
 })
 
 export default result

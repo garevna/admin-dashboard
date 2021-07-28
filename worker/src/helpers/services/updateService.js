@@ -13,7 +13,6 @@ const message = {
 }
 
 export const updateService = async function (id, data) {
-  self.postDebugMessage({ id, data })
   const { status: getStatus, result: getResult } = await getRecordByKey('services', id)
 
   if (getStatus !== 200) return self.errorMessage('getServiceDetailsError')

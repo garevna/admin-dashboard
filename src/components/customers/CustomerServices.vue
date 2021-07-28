@@ -140,7 +140,6 @@ export default {
     selected: {
       deep: true,
       handler (service) {
-        console.log('SERVICE DATA UPDATED:\n', service)
         const index = this.schema.findIndex(item => item.serviceId === service.serviceId)
         this.schema.splice(index, 1, Object.assign({}, this.schema[index], {
           serviceStatus: service.serviceStatus,
@@ -172,7 +171,6 @@ export default {
     },
 
     getServiceDetails (data) {
-      console.log('SERVICE DETAILS RECEIVED')
       const { serviceName, _id: serviceId } = data
 
       const service = this.services.find(item => item.id === serviceId)

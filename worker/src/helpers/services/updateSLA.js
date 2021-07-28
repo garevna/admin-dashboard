@@ -12,8 +12,6 @@ const invalidRequest = {
 }
 
 export const updateSLA = async (record) => {
-  self.postDebugMessage(record)
-
   if (!record.id || !record.title || !record.content) return invalidRequest
 
   const success = {
@@ -29,8 +27,6 @@ export const updateSLA = async (record) => {
   }
 
   const response = await put(`sla/${record._id}`, record)
-
-  self.postDebugMessage({ response })
 
   return response.status !== 200 ? Object.assign(response, updateSLAFailed)
     : Object.assign(success, { status: 200, result: response.result.data, route, action })

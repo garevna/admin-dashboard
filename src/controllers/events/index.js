@@ -22,8 +22,6 @@ const adminWorkerEvents = {
   building
 }
 
-// console.log('EVENTS:\n', adminWorkerEvents)
-
 export {
   adminWorkerEvents,
   mapWorkerEvents

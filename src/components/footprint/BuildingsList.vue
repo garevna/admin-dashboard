@@ -8,6 +8,19 @@
       class="transparent"
       @click:row="edit($event)"
     >
+      <template v-slot:footer.prepend>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          dense
+          outlined
+          hide-details
+          style="display: inline-block; width: 240px"
+        ></v-text-field>
+      </template>
+
       <template v-slot:top>
         <v-toolbar flat class="transparent">
           <v-toolbar-title>
@@ -21,13 +34,23 @@
               dense
               color="#900"
               class="mt-4"
-              style="width: 240px"
+              style="width: 300px"
+              :menu-props="{ bottom: true, offsetY: true }"
             ></v-select>
           </v-toolbar-title>
-          <v-spacer></v-spacer>
+
+          <v-spacer />
+
+          <v-btn text class="mb-2" @click="refresh">
+            <v-icon>mdi-refresh</v-icon>
+            Refresh
+          </v-btn>
+
+          <v-spacer />
+
           <v-btn
+            text
             color="primary"
-            icon
             class="mb-2"
             @click="createBuilding"
           >
@@ -36,24 +59,7 @@
           </v-btn>
         </v-toolbar>
       </template>
-
-      <!-- <template v-slot:item.actions="{ item }">
-        <v-btn color="primary" class="mb-2" @click="edit(item)">
-          Edit
-        </v-btn>
-      </template> -->
     </v-data-table>
-
-    <v-text-field
-      v-model="search"
-      append-icon="mdi-magnify"
-      label="Search"
-      single-line
-      dense
-      outlined
-      hide-details
-      style="display: inline-block; width: 280px"
-    ></v-text-field>
 
     <span class="ml-12"><small>Total selected buildings: {{ selectedBuildingsNumber }}</small></span>
   </v-container>
@@ -67,6 +73,7 @@ import { footprintOptions } from '@/configs'
 
 export default {
   name: 'BuildingsList',
+
   data: () => ({
     ready: false,
     buildings: [],
@@ -74,7 +81,7 @@ export default {
     page: buildingsListPageNumberHandler(),
     available: footprintOptions,
     selectedBuildingId: undefined,
-    selectedBuildingsNumber: null,
+    // selectedBuildingsNumber: null,
     headers: [
       {
         text: 'Building address',
@@ -84,7 +91,7 @@ export default {
       },
       { text: 'Building unique code', value: 'buildingUniqueCode' },
       { text: 'Footprint', value: 'status' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Estimated service delivery time', value: 'estimatedServiceDeliveryTime' }
     ]
   }),
 
@@ -102,7 +109,9 @@ export default {
     },
     filteredItems () {
       return this.ready ? this.buildings.filter(building => !this.postCode || (building.addressComponents.postCode === this.postCode)) : []
-      // this.selectedBuildingsNumber = result.length
+    },
+    selectedBuildingsNumber () {
+      return this.filteredItems.length
     }
   },
 
@@ -114,16 +123,27 @@ export default {
 
   methods: {
     getBuildings (data) {
-      console.log(data)
       const { result } = data
       this.buildings = result.map(building => ({
         address: building.address,
         buildingUniqueCode: getBuildingUniqueCode(building.addressComponents),
         status: result.buildingStatus,
+        estimatedServiceDeliveryTime: building.estimatedServiceDeliveryTime,
         id: building.id
       }))
 
       this.ready = true
+    },
+
+    refresh () {
+      this.ready = false
+      this.buildings = []
+      this.__refreshBuildings()
+    },
+
+    getRefreshedBuildings () {
+      this.status = buildingStatusHandler()
+      this.__getBuildingsByStatus(buildingStatusHandler())
     },
 
     edit (item) {
@@ -139,11 +159,23 @@ export default {
     this.$root.$off('buildings-data-received', this.getBuildings)
     this.$root.$off('buildings-list-received', this.getBuildings)
   },
+
   mounted () {
     this.page = buildingsListPageNumberHandler()
+
+    this.$root.$on('buildings-refreshed', this.getRefreshedBuildings)
     this.$root.$on('buildings-address-list', this.getBuildings)
     this.$root.$on('buildings-data-list', this.getBuildings)
-    this.__getBuildingsByStatus(buildingStatusHandler() || 'lit')
+
+    if (!buildingStatusHandler()) buildingStatusHandler('lit')
+
+    this.__getBuildingsByStatus(buildingStatusHandler())
   }
 }
 </script>
+
+<style>
+.v-application--is-ltr .v-data-footer__select {
+  visibility: hidden;
+}
+</style>

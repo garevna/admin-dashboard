@@ -35,20 +35,17 @@ export function createAdminWorker () {
 
     const { route, action, status, result } = event.data
 
+    window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
+
     if (status === 200) {
-      window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
-      // console.log('ROUTE: ', route, ' ACTION: ', action)
-      if (!adminWorkerEvents[route] || !adminWorkerEvents[route][action]) {
-        return /* console.log(event.data) */
-      }
+      if (!adminWorkerEvents[route] || !adminWorkerEvents[route][action]) return
+
       const eventName = adminWorkerEvents[route][action]
-      // console.log(eventName)
       if (eventName) {
         window[Symbol.for('vue.instance')].$root.$emit(eventName, result)
       }
 
       if (event.data.message) {
-        // console.log('ADMIN WORKER ON MESSAGE - MESSAGE RECEIVED')
         window[Symbol.for('vue.instance')].$root.$emit('open-message-popup', {
           messageType: event.data.messageType || event.data.route.toUpperCase(),
           messageText: event.data.messageText || 'Success'
@@ -56,7 +53,6 @@ export function createAdminWorker () {
       }
     } else {
       event.stopImmediatePropagation()
-      window[Symbol.for('vue.prototype')].$dispatchProgressEvent(false)
       console.warn('ADMIN WORKER ON MESSAGE - ERROR STATUS RECEIVED', status, route, action, event.data)
       const { errorType = event.data.route, errorMessage = 'Unknown error' } = event.data.error ? event.data : adminWorkerErrors[route][action]
 

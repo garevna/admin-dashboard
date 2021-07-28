@@ -35,7 +35,6 @@ class ResellersController {
 
   async confirmRegistration (request) {
     const { id, uniqueCode } = request.data
-    self.postDebugMessage({ id, uniqueCode })
     self.postMessage(await self.confirmRegistrationRequest(id, uniqueCode))
   }
 
@@ -44,17 +43,14 @@ class ResellersController {
   }
 
   async sendMessage (request) {
-    self.postDebugMessage({ message: request.message })
     self.postMessage(await self.sendMessage(request.message))
   }
 
   async getMessagesByResellerId (request) {
-    self.postDebugMessage({ resellerId: request.resellerId })
     self.postMessage(await self.getMessages(request.resellerId))
   }
 
   async deleteMessage (messageId) {
-    self.postDebugMessage({ messageId })
     self.postMessage(await self.deleteMessage(messageId))
   }
 

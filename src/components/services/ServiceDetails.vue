@@ -187,10 +187,7 @@ export default {
       deep: true,
       immediate: true,
       handler (data) {
-        if (data) {
-          console.log('SERVICE PARTNERS LIST CHANGED')
-          data.forEach(item => console.log(item))
-        }
+        if (data) data.forEach(item => console.log(item))
       }
     }
   },
@@ -213,8 +210,6 @@ export default {
     },
 
     getData (data) {
-      console.log(data)
-      // this.service.partners.value = data.partnerNames
       this.partnersList = data.partners
       for (const prop in this.service) {
         if (prop === 'partners') continue
@@ -233,7 +228,6 @@ export default {
 
     saveServiceDetails () {
       for (const prop in this.service) {
-        console.log(prop, this.service[prop].value)
         this.service[prop] = this.service[prop].value
       }
       this.service.partners = this.partnersList || []

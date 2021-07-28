@@ -2,8 +2,6 @@ import { patch } from '../AJAX'
 import { putRecordByKey } from '../db'
 
 export const putTicketData = async function (ticket) {
-  self.postDebugMessage({ ticket })
-
   const { status, result } = await patch(`ticket/${ticket._id}`, { history: ticket.history })
 
   if (status !== 200) return Object.assign(self.errorMessage('putTicketDataError'), result)

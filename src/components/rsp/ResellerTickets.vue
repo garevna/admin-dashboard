@@ -168,15 +168,7 @@ export default {
     this.$root.$on('rsp-tickets-list-received', this.getTickets)
     this.$root.$on('ticket-data-received', this.showTicketDetails)
     this.__getCategories()
-    console.log(this.details._id)
-    console.log(this.__getTicketsOfPartner)
     this.__getTicketsOfPartner(this.details._id)
-
-    console.log('BEFORE MOUNT!!!')
-  },
-
-  mounted () {
-    console.log('MOUNTED!!!')
   }
 }
 </script>

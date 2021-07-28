@@ -126,7 +126,6 @@ export default {
         source: 'admin',
         message: this.response
       })
-      console.log(this.ticket._id, this.ticket)
 
       this.__saveTicketData(this.ticket)
 

@@ -21,22 +21,25 @@
       <v-row justify="center" class="outlined-row mt-0">
         <table style="width: 480px">
           <tr>
-            <td width="240">Footprint</td>
+            <td width="320">Footprint</td>
             <td width="240">Estimated service delivery time</td>
           </tr>
           <tr>
             <td width="180">
               <v-select
                 :items="footprintOptions"
-                v-model="status"
+                item-text="text"
+                item-value="value"
+                v-model="buildingData.status"
                 outlined
                 dense
                 hide-details
+                :menu-props="{ bottom: true, offsetY: true }"
               />
             </td>
             <td width="180">
               <v-text-field
-                v-model="generalBuildingData.estimatedServiceDeliveryTime"
+                v-model="buildingData.estimatedServiceDeliveryTime"
                 outlined
                 dense
                 hide-details
@@ -62,7 +65,7 @@
           <v-expansion-panel
             class="local-expansion-panel transparent"
             dense
-            v-for="section of ['Corporation', 'Marketing', 'Concierge']"
+            v-for="section of ['Marketing', 'Concierge']"
             :key="section"
           >
             <v-expansion-panel-header>
@@ -87,10 +90,8 @@
 
 <script>
 
-// import { rules } from '@/configs'
-import { /* testTextField, */ convertBuildingStatus, getBuildingUniqueCode, getGeneralBuildingData } from '@/helpers'
+import { convertBuildingStatus, getBuildingUniqueCode, getGeneralBuildingData } from '@/helpers'
 
-import Corporation from '@/components/footprint/building/Corporation.vue'
 import Marketing from '@/components/footprint/building/Marketing.vue'
 import Concierge from '@/components/footprint/building/Concierge.vue'
 
@@ -98,7 +99,6 @@ export default {
   name: 'GeneralInfo',
 
   components: {
-    Corporation,
     Marketing,
     Concierge,
     GeoscapeAutocomplete: () => import('@/components/inputs/GeoscapeAutocomplete.vue')
@@ -109,12 +109,16 @@ export default {
   data: () => ({
     ready: false,
     generalBuildingData: null,
-    footprintOptions: ['LIT', 'Footprint', 'BuildCommenced', 'ComingSoon', 'Other'].map(item => convertBuildingStatus(item)),
+    footprintOptions: [
+      { text: 'On-net', value: 'LIT' },
+      { text: 'Footprint', value: 'Footprint' },
+      { text: 'Construction commenced', value: 'BuildCommenced' },
+      { text: 'Coming soon', value: 'ComingSoon' },
+      { text: 'N/A', value: 'Other' }
+    ],
     buildingDetails: {},
     address: '',
     addressComponents: {},
-    // buildingUniqueCode: '',
-    // rules: rules,
     buildingType: null,
     value: null,
     panel: null
@@ -126,53 +130,32 @@ export default {
     },
     status: {
       get () {
-        console.log(this.buildingData.status, convertBuildingStatus(this.buildingData.status))
         return convertBuildingStatus(this.buildingData.status)
       },
       set (value) {
-        console.log(value, convertBuildingStatus(value))
         Object.assign(this.buildingData.status, { status: convertBuildingStatus(value) })
       }
     },
     buildingAddressDetails: {
       get () {
-        const { address, addressComponents, coordinates, relatedBuildingIds, status } = this.buildingData
-        return { address, addressComponents, coordinates, relatedBuildingIds, status }
+        const { address, addressComponents, coordinates, status } = this.buildingData
+        return { address, addressComponents, coordinates, status }
       }
     }
   },
 
   methods: {
-    getNewBuildingId (data) {
-      console.log('NEW BUILDING CREATED EVENT:\n', data)
-      // this.$emit('update:buildingId', data)
-    },
-
     saveBuildingDetails () {
-      const result = getGeneralBuildingData(this.buildingData)
-
       this.$root.$emit('progress-event', true)
-
-      console.log(this.buildingData)
-
-      console.log(result)
-
-      // if (this.buildingId) {
-      //   this.__patchBuildingDetails(this.buildingId, result)
-      // } else {
-      //   this.__postBuildingDetails(result)
-      // }
+      const { address, addressComponents, coordinates, status, estimatedServiceDeliveryTime } = this.buildingData
+      this.__patchBuildingDetails(this.buildingData._id, { address, addressComponents, coordinates, status, estimatedServiceDeliveryTime })
     },
 
     sendMessage (event) {
-      console.log('SAVE EVENT:\n', event)
-      console.log('ROUTE: ', this.$route.name)
-      console.log('ADDRESS: ', this.generalBuildingData.address)
       this.$root.$emit('open-message-popup', {
         messageType: this.generalBuildingData.address,
         messageText: 'Building details updated'
       })
-      // this.$router.push({ name: 'buildings' })
     },
 
     exit () {

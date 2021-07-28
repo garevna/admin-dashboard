@@ -23,7 +23,5 @@ export const getResellersFromRemoteServer = async function () {
     if ((await putRecordByKey('rsp', rsp._id, rsp)).status !== 200) return self.errorMessage('putUserRecordError')
   }
 
-  self.postDebugMessage({ uniqueCodes: uniqueCodes() })
-
   return { status: 200, route, action, result: partners }
 }

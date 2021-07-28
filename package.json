@@ -1,6 +1,6 @@
 {
   "name": "dgtek-admin-dash",
-  "version": "1.1.0",
+  "version": "4.0.0",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
     "worker": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
@@ -10,7 +10,7 @@
     "dgtek-map": "yarn add dgtek-map && mv node_modules/dgtek-map/dist/map.worker.js public"
   },
   "dependencies": {
-    "dgtek-map": "^1.4.7",
+    "dgtek-map": "^1.7.0",
     "dgtek-styles": "^0.0.8",
     "garevna-date-functions": "^1.1.5",
     "vue": "2.6.11",

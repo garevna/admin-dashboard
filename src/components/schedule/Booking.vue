@@ -155,7 +155,7 @@ export default {
       return { icon: icons[status], color: colors[status] }
     },
     showInfo (item) {
-      console.log(item)
+      //
     },
 
     refresh () {

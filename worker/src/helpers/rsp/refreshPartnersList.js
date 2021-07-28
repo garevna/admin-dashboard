@@ -3,7 +3,7 @@ import { uniqueCodeList, uniqueCodes } from '../data-handlers'
 export const refreshPartnersList = async () => {
   const response = await self.getResellersFromRemoteServer()
   if (response.status !== 200) return response
-  self.postDebugMessage({ partners: response.result })
+
   uniqueCodes([])
   response.result.forEach(partner => {
     uniqueCodeList(partner._id, partner.uniqueCode)

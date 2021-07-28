@@ -43,9 +43,7 @@ export default {
     selected (val) {
       if (!val) {
         this.selectedItem = null
-        return
       }
-      if (this.disabled && this.disabled.find(item => item.id === val)) console.log('NEEDS TO RESET SELECTED')
     }
   },
 

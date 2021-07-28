@@ -78,7 +78,6 @@ export default {
     id: {
       immediate: true,
       handler (val) {
-        console.log('ID CHANGED: ', val)
         if (val) {
           this.ready = false
           this.__getSLAContent(val)
@@ -88,7 +87,7 @@ export default {
             title: '',
             content: pdf404
           }
-          console.log(this.record)
+
           this.ready = true
         }
       }
@@ -97,13 +96,11 @@ export default {
 
   methods: {
     getContent (data) {
-      console.log('sla-content-received\n', data)
       this.record = data
       this.ready = true
     },
 
     getLocalFileContent (data) {
-      console.log('local-file-content-loaded\n', data)
       this.record.content = data || pdf404
       this.ready = true
     },
@@ -114,30 +111,18 @@ export default {
     },
 
     showFileContent (data) {
-      console.log('local-file-content-loaded')
-      console.log('RECORD:\n', this.record)
-      console.log(data)
-      // this.record.content = data
       this.ready = true
     },
 
-    // setNewSLA (id) {
-    //   this.$root.$off('sla-file-uploaded', this.setNewSLA)
-    //   this.service.serviceSLA.value = id
-    // },
-
     saveChanges () {
-      console.log('RECORD:\n', this.record)
       if (this.record.id) {
         this.__updateSLA(this.record)
       } else {
-        console.log('FILE:\n', this.file)
         this.__uploadNewSLA(this.record.title, this.file)
       }
     },
 
     updateId (data) {
-      console.log('new-sla-created\n', data)
       this.record.id = data
       this.$emit('update:id', data)
       this.$emit('update:title', this.record.title)
@@ -145,13 +130,11 @@ export default {
     },
 
     close (response) {
-      console.log('sla-data-updated')
       this.$emit('update:title', this.record.title)
       this.$emit('update:dialog', false)
     },
 
     uploadSLA (file) {
-      console.log(this.record.title, file)
       this.__uploadSLA(this.record.title, file)
     }
   },

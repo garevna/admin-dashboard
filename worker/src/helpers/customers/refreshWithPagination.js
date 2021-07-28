@@ -12,7 +12,6 @@ export const refreshWithPagination = async function () {
   while (!done) {
     const { status, result, page, pages } = await get(`customer?changed=true&page=${currentPage++}&per_page=${perPage}`)
     if (status !== 200) return self.errorMessage('refreshCustomersListError')
-    self.postDebugMessage({ page, pages, currentPage, refreshed: result })
     done = page >= pages
 
     for (const customer of result) {

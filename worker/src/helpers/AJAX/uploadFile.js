@@ -5,7 +5,6 @@ export const uploadFile = {
 
   ticket: async (ticketId, data) => {
     const { files } = (await get('ticket', ticketId)).result
-    self.postDebugMessage({ files })
     files.push(data)
     return await patch(`ticket/${ticketId}`, files)
   },

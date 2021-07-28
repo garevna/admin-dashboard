@@ -9,8 +9,6 @@ export const createScheduleRecordsForCustomer = (customer, services) => {
 
   const result = []
 
-  // self.postDebugMessage({ services, records })
-
   for (const record of records) {
     const { id, status, modified, lots, installation } = record
 

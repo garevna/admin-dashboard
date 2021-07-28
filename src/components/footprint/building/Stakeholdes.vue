@@ -1,16 +1,6 @@
 <template>
   <v-card flat class="transparent mx-auto mb-12" max-width="600">
-    <v-toolbar flat class="transparent">
-      <v-toolbar-title>
-        {{ address }}
-      </v-toolbar-title>
-      <v-spacer />
-      <v-btn icon @click="exit">
-        <v-icon large>mdi-close</v-icon>
-      </v-btn>
-    </v-toolbar>
     <v-container v-for="sectionName of ['management', 'owner']" :key="sectionName">
-      <v-divider class="my-4" />
       <h5 style="text-transform: uppercase"><small>{{ sectionName }}</small></h5>
       <v-row justify="center" v-for="(prop, propName) in schema[sectionName]" :key="propName" class="my-0">
         <v-col cols="4" col-lg="3" col-xl="2" class="d-none d-md-flex" justify="end">
@@ -38,6 +28,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
+      <v-divider class="my-4" />
     </v-container>
     <v-row justify="end" class="mt-12">
       <v-btn dark color="primary" @click="saveDetails">
@@ -82,12 +73,10 @@ export default {
       const result = { manament: {}, owner: {} }
 
       for (const section of this.sections) {
-        for (const propName in this.schema[section]) {
-          result[section][propName] = this.schema[section][propName].value
-        }
+        result[section] = Object.assign({}, ...Object.keys(this.schema[section]).map(key => ({ [key]: this.schema[section][key].value })))
       }
-      console.log({ management: result.management, owner: result.owner })
-      // this.__patchBuildingDetails({ management: result.management, owner: result.owner })
+
+      this.__patchBuildingDetails(this.buildingData._id, { management: result.management, owner: result.owner })
     }
   },
 
@@ -95,7 +84,7 @@ export default {
     this.address = this.buildingData.address
     for (const section of this.sections) {
       for (const propName in this.schema[section]) {
-        this.schema[section][propName].value = this.buildingData[section][propName] || ''
+        this.schema[section][propName].value = this.buildingData[section] ? this.buildingData[section][propName] || '' : ''
       }
     }
   }

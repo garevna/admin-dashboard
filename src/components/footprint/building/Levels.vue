@@ -129,7 +129,11 @@ export default {
     },
 
     updateDetails () {
-      this.__patchBuildingDetails(this.buildingId, { levels: this.levels })
+      this.__patchBuildingDetails(this.buildingId, {
+        avgFloorHeight: this.buildingData.avgFloorHeight,
+        numberOfLevels: this.buildingData.numberOfLevels,
+        levels: this.levels
+      })
     }
   },
 

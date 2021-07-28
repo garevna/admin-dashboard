@@ -148,11 +148,9 @@ export default {
     getUniqueCodeList (data) {
       this.uniqueCodeList = data
       uniqueCodeList = data
-      console.log(uniqueCodeList)
     },
 
     getData (data) {
-      console.log(data)
       this.requests = data
       this.ready = true
     },
@@ -174,7 +172,6 @@ export default {
     },
 
     partnerCreated (data) {
-      console.log('PARTNER CREATED', data)
       this.$nextTick(() => this.refresh())
     },
 
