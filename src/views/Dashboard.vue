@@ -128,6 +128,15 @@ export default {
 </script>
 
 <style>
+
+.theme--light.v-time-picker-clock {
+  background: transparent;
+}
+
+.v-application--is-ltr .v-data-footer__select {
+  visibility: hidden;
+}
+
 .clickable {
   cursor: pointer;
 }

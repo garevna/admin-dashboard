@@ -107,13 +107,13 @@
             </td> -->
               <td colspan="2" class="text-right">
               <v-spacer />
-              <v-btn dark class="buttons" @click="saveCustomerDetails" v-if="!saveDisabled">
+              <v-btn dark class="buttons" @click="saveCustomerDetails">
                 Update/save details
               </v-btn>
-              <v-card-text class="text--buttons" v-if="saveDisabled" style="color: #900">
+              <!-- <v-card-text class="text--buttons" v-if="saveDisabled" style="color: #900">
                 <v-icon color="primary">mdi-alert</v-icon>
                 You should save building details
-              </v-card-text>
+              </v-card-text> -->
             </td>
           </tr>
         </tbody>
@@ -131,13 +131,16 @@ const { customerDetails, commercial } = customerSchema
 
 export default {
   name: 'EditCustomerDetails',
+
   components: {
     SwitchValues
   },
+
   props: {
     dialog: Boolean,
     initialCustomer: Object
   },
+
   data: () => ({
     customer: null,
     customerDetailsSchema: customerDetails,
@@ -147,10 +150,8 @@ export default {
     buildings: [],
     customerType: null
   }),
+
   computed: {
-    saveDisabled () {
-      return !this.customer || !this.customer.buildingId
-    },
     buildingId: {
       get () {
         return this.customer.buildingId
@@ -160,6 +161,7 @@ export default {
       }
     }
   },
+
   watch: {
     customerType: {
       handler (newVal, oldVal) {
@@ -175,6 +177,7 @@ export default {
       this.customer.uniqueCode = code
       this.customerDetailsSchema.uniqueCode.value = code
     },
+
     update (propName, propValue) {
       this.customer[propName] = propValue
     },
@@ -182,15 +185,19 @@ export default {
     updateBuildingId () {
       this.__getBuildingByAddress(this.customer.address)
     },
+
     rowHeight (item) {
       return item.type === 'textarea' ? 160 : 60
     },
+
     textField (item) {
       return testTextField(item.type)
     },
+
     rule (item) {
       return this.rules[item.type]
     },
+
     createSchema () {
       if (this.customer.commercial && Object.keys(this.customer.commercial).length > 0) {
         this.customerType = true
@@ -202,22 +209,27 @@ export default {
         this.customerDetailsSchema[prop].value = this.customer[prop]
       }
     },
+
     getCustomerData (data) {
       this.customer = data.result
       this.createSchema()
 
       const { buildingId } = data.result
+
       if (buildingId) {
         this.__getBuildingById(buildingId)
       }
     },
+
     getBuildings (data) {
       this.buildings.push(...data)
     },
+
     saveCustomerDetails () {
       if (!this.customerType) this.customer.commercial = {}
-      this.customer._id ? this.__putCustomer(this.customer._id, this.customer) : this.__postCustomer(this.customer)
+      this.__putCustomer(this.customer._id, this.customer)
     },
+
     close () {
       this.$parent.$emit('update:initialCustomer', this.customer)
     }

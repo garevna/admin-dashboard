@@ -66,11 +66,19 @@
           :expanded.sync="expanded"
           show-expand
         >
-          <!-- <template v-slot:footer>
-            <td :colspan="headers.length" class="pa-4">
-              <span class="ml-12"><small>Total selected customers: {{ selectedCustomersNumber }}</small></span>
-            </td>
-          </template> -->
+          <template v-slot:footer.prepend>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              dense
+              outlined
+              hide-details
+              style="display: inline-block; width: 280px"
+            ></v-text-field>
+            <span class="ml-12">Total selected customers: {{ selectedCustomersNumber }}</span>
+          </template>
 
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length" v-if="item.services.length" class="pa-4">
@@ -102,22 +110,9 @@
             </td>
           </template>
         </v-data-table>
-
-        <div style="margin-top: -36px">
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            dense
-            outlined
-            hide-details
-            style="display: inline-block; width: 280px"
-          ></v-text-field>
-          <span class="ml-12"><small>Total selected customers: {{ selectedCustomersNumber }}</small></span>
-        </div>
       </v-card>
     </v-row>
+
     <v-row v-else justify="center">
       <CustomerDetails
         :dialog.sync="edit"
@@ -171,6 +166,7 @@ export default {
     tableHeight () {
       return window.innerHeight - 400
     },
+
     customers () {
       if (!this.data) return
 
@@ -183,12 +179,15 @@ export default {
         id: customer._id
       }))
     },
+
     selectedCustomersNumber () {
       return this.filteredItems.length
     },
+
     services () {
       return Array.from(new Set(this.customers.flatMap(customer => customer.services.map(service => service.name))))
     },
+
     filteredItems () {
       if (!this.status && !this.type && !this.serviceName) return this.customers
       return this.customers
@@ -230,9 +229,14 @@ export default {
       }
       return { icon: icons[status], color: colors[status] }
     },
+
     async getData (data) {
       this.data = Array.isArray(data) ? data : Array.isArray(data.result) ? data.result : []
       this.ready = true
+    },
+
+    async refreshed (data) {
+      !this.details ? this.__getCustomers() : this.__getCustomersByResellerId(this.details._id)
     },
 
     getEstimates (data) {
@@ -261,7 +265,7 @@ export default {
     this.$vuetify.goTo(0)
 
     this.$root.$on('customers-list-received', this.getData)
-    this.$root.$on('customers-refreshed', this.getData)
+    this.$root.$on('customers-refreshed', this.refreshed)
     !this.details ? this.__getCustomers() : this.__getCustomersByResellerId(this.details._id)
   }
 }
@@ -274,7 +278,7 @@ export default {
 .theme--light.v-data-table.v-data-table--fixed-header thead th {
   background: #f5f5f5;
 }
-.v-data-footer__select {
-  display: none;
-}
+/* .v-data-footer__select {
+  visibility: hidden;
+} */
 </style>

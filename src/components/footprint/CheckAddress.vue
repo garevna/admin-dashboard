@@ -287,9 +287,9 @@ export default {
 
 <style>
 
-.v-application--is-ltr .v-data-footer__select {
+/* .v-application--is-ltr .v-data-footer__select {
   visibility: hidden;
-}
+} */
 
 .v-list-item--link {
   user-select: text!important;
