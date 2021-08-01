@@ -107,6 +107,8 @@ export const routes = {
     get: scheduleController.getFullSchedule,
     week: scheduleController.getByWeekNumber,
     update: scheduleController.updateRecord,
+    settings: scheduleController.getScheduleSettings,
+    config: scheduleController.updateScheduleSettings,
     job: scheduleController.putRecordToJobQueue,
     activate: scheduleController.activateService
   },

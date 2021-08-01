@@ -5,6 +5,8 @@ import Home from '@/views/Home.vue'
 import { roleHandler } from '@/controllers/data-handlers'
 // import { mainDashboard } from '@/configs'
 
+const { isNavigationFailure, NavigationFailureType } = VueRouter
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -149,17 +151,32 @@ const routes = [
         ]
       },
       {
-        path: 'settings',
-        name: 'settings',
-        component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue'),
-        children: [
-          {
-            path: '/ticket-categories',
-            name: 'ticket-categories',
-            component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
-          }
-        ]
+        path: '/ticket-categories',
+        name: 'ticket-categories',
+        component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
+      },
+      {
+        path: '/schedule-settings',
+        name: 'schedule-settings',
+        component: () => import(/* webpackChunkName: 'schedule-settings' */ '@/components/schedule/ScheduleSettings.vue')
       }
+      // {
+      //   path: 'settings',
+      //   name: 'settings',
+      //   // component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue'),
+      //   children: [
+      //     {
+      //       path: '/ticket-categories',
+      //       name: 'ticket-categories',
+      //       component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
+      //     },
+      //     {
+      //       path: '/schedule-settings',
+      //       name: 'schedule-settings',
+      //       component: () => import(/* webpackChunkName: 'schedule-settings' */ '@/components/schedule/ScheduleSettings.vue')
+      //     }
+      //   ]
+      // }
     ]
   }
 ]
@@ -167,7 +184,9 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  isNavigationFailure,
+  NavigationFailureType
 })
 
 export default router

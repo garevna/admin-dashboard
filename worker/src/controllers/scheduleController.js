@@ -15,8 +15,16 @@ class ScheduleController {
     self.postMessage(await self.getScheduleLots())
   }
 
-  async updateLots (data) {
-    self.postMessage(await self.updateScheduleLots(data))
+  async updateLots () {
+    self.postMessage(await self.updateScheduleLots())
+  }
+
+  async getScheduleSettings () {
+    self.postMessage(await self.getScheduleSettings())
+  }
+
+  async updateScheduleSettings (record) {
+    self.postMessage(await self.updateScheduleSettings(record.settings))
   }
 
   async updateRecord (record) {

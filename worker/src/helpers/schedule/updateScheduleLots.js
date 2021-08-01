@@ -1,8 +1,11 @@
 import { put } from '../AJAX'
 
+import { scheduleSettings } from '../data-handlers'
+
 export const updateScheduleLots = async function () {
-  let { settings } = (await self.getScheduleLots()).result
-  if (!settings) settings = [3, 3, 3, 3, 3, 3, 3]
+  const { settings } = (await self.getScheduleLots()).result
+
+  scheduleSettings(settings)
 
   const currentWeek = self.getWeekNumber(new Date())
   const lots = { settings }

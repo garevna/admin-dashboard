@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="480" class="pa-4">
+  <v-dialog v-model="dialog" max-width="540" class="pa-4">
     <v-card flat height="360">
       <v-toolbar dark dense color="#999">
         <v-icon class="mr-4"> mdi-account-box </v-icon>

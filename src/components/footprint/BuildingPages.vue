@@ -201,7 +201,7 @@ export default {
     },
     exit () {
       buildingStatusHandler(this.buildingData.status)
-      this.$route.name !== 'buildings' && this.$router.push({ name: 'buildings' })
+      this.$route.name !== 'buildings' && this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
     },
 
     getData (data) {

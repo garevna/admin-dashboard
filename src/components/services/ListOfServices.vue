@@ -73,7 +73,10 @@ export default {
     },
 
     createNewService () {
-      this.$router.push({ name: 'create-new-service' })
+      this.$router.push({ name: 'create-new-service' }).catch(failure => {
+        console.log(this.$router.options)
+        console.log(failure)
+      })
     },
 
     editItem (item) {

@@ -67,7 +67,7 @@ export default {
       return this.rules[item.type]
     },
     exit () {
-      this.$router.push({ name: 'buildings' })
+      this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
     },
     saveDetails () {
       const result = { manament: {}, owner: {} }

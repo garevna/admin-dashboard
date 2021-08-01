@@ -5,16 +5,16 @@
         <ShortList
           title="List of services"
           :list="services"
-          :selected.sync="selectedService"
+          :selected.sync="selectedServiceId"
           :height="480"
           :disabled="resellerServices"
         />
       </v-col>
       <v-col style="height: 75vh; vertical-align: middle; max-width: 140px; padding-top: 25vh">
-        <v-btn text v-if="selectedService" @click="selectService" style="width: 100%; text-align: center;">
+        <v-btn text v-if="selectedServiceId" @click="selectService" style="width: 100%; text-align: center;">
           Add <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
-        <v-btn text v-if="deselectedService" @click="deselectService" style="width: 100%; text-align: center;">
+        <v-btn text v-if="deselectedServiceId" @click="deselectService" style="width: 100%; text-align: center;">
           <v-icon>mdi-chevron-left</v-icon> Remove
         </v-btn>
       </v-col>
@@ -22,7 +22,7 @@
         <ShortList
           title="RSP services"
           :list="resellerServices"
-          :selected.sync="deselectedService"
+          :selected.sync="deselectedServiceId"
           :height="480"
         />
 
@@ -52,44 +52,68 @@ export default {
   data: () => ({
     services: [],
     resellerServices: [],
-    selectedService: null,
-    deselectedService: null
+    selectedServiceId: null,
+    deselectedServiceId: null
   }),
 
-  watch: {
-    selectedService (value) {
-      if (value) this.deselectedService = null
+  computed: {
+    selectedService () {
+      return this.services.find(service => service.id === this.selectedServiceId)
     },
-    deselectedService (value) {
-      if (value) this.selectedService = null
+
+    deselectedService () {
+      return this.services.find(service => service.id === this.deselectedServiceId)
+    },
+
+    deselectedServiceIndex () {
+      return this.resellerServices.findIndex(service => service.id === this.deselectedServiceId)
+    },
+
+    partnerIndex () {
+      return this.deselectedService ? this.deselectedService.partners.findIndex(partner => partner === this.details._id) : -1
     }
   },
 
+  watch: {
+    selectedServiceId (value) { if (value) this.deselectedServiceId = null },
+
+    deselectedServiceId (value) { if (value) this.selectedServiceId = null }
+  },
+
   methods: {
+    getSelectedServiceIndex (serviceId) {
+      return this.services.findIndex(service => service.id === serviceId)
+    },
+
+    getDeselectedServiceIndex (serviceId) {
+      return this.resellerServices.findIndex(service => service.id === serviceId)
+    },
+
     mapServices (data) {
       return data.map(service => ({ id: service._id, text: service.serviceName, partners: service.partners || [] }))
     },
+
     getData (data) {
       this.services = this.mapServices(data)
       this.resellerServices = this.mapServices(data.filter(service => service.partners.find(partner => partner === this.details._id)))
     },
 
     selectService () {
-      this.deselectedService = null
-      this.resellerServices.push(this.services.find(item => item.id === this.selectedService))
+      this.deselectedServiceId = null
+      this.resellerServices.push(this.selectedService)
+      this.selectedService.partners.push(this.details._id)
     },
 
     deselectService () {
-      const index = this.resellerServices.findIndex(item => item.id === this.deselectedService)
-      index !== -1 && this.resellerServices.splice(index, 1)
+      this.selectedServiceId = null
+      this.deselectedService.partners.splice(this.partnerIndex, 1)
+      this.resellerServices.splice(this.deselectedServiceIndex, 1)
+      this.deselectedServiceId = null
     },
 
     saveResellerServices () {
-      for (const service of this.resellerServices) {
-        if (!service.partners.find(partnerId => partnerId === this.details._id)) {
-          service.partners.push(this.details._id)
-          this.__patchServiceDetails(service.id, { partners: service.partners })
-        }
+      for (const service of this.services) {
+        this.__patchServiceDetails(service.id, { partners: service.partners })
       }
     }
   },

@@ -2,6 +2,8 @@ export const schedule = {
   refresh: 'schedule-refreshed',
   get: 'schedule-week-data-received',
   put: 'schedule-week-data-updated',
+  settings: 'schedule-settings-received',
+  config: 'schedule-settings-updated',
   job: 'moved-to-job-queue',
   activate: 'service-activated'
 }

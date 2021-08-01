@@ -148,11 +148,11 @@ export default {
 
     edit (item) {
       const buildingId = item.id
-      this.$router.push({ name: 'building-details', params: { buildingId } })
+      this.$router.push({ name: 'building-details', params: { buildingId } }).catch(failure => console.warn('Router failure:\n', failure))
     },
 
     createBuilding () {
-      this.$router.push({ name: 'footprint' })
+      this.$router.push({ name: 'footprint' }).catch(failure => console.warn('Router failure:\n', failure))
     }
   },
   beforeDestroy () {
@@ -173,9 +173,3 @@ export default {
   }
 }
 </script>
-
-<style>
-/* .v-application--is-ltr .v-data-footer__select {
-  visibility: hidden;
-} */
-</style>

@@ -159,7 +159,7 @@ export default {
     },
 
     exit () {
-      this.$router.push({ name: 'buildings' })
+      this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
     }
   },
 

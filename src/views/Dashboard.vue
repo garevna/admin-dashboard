@@ -89,10 +89,10 @@ export default {
     jumpTo (item) {
       if (item.route === 'tickets') {
         if (item.path.indexOf(this.$route.path) !== -1) return
-        this.$router.push({ name: item.route, params: item.params })
+        this.$router.push({ name: item.route, params: item.params }).catch(failure => console.warn('Router failure:\n', failure))
       } else {
         if (this.$route.name === item.route) return
-        item.route && this.$router.push({ name: item.route })
+        item.route && this.$router.push({ name: item.route }).catch(failure => console.warn('Router failure:\n', failure))
       }
     }
   },
@@ -122,7 +122,7 @@ export default {
       this.$root.$on(event, this.setRefreshed)
     })
 
-    if (!roleHandler()) this.$router.push({ name: 'home' })
+    if (!roleHandler()) this.$router.push({ name: 'home' }).catch(failure => console.warn('Router failure:\n', failure))
   }
 }
 </script>

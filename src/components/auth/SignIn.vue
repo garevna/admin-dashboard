@@ -97,7 +97,7 @@ export default {
     },
     showResult (event) {
       roleHandler(event.data.role)
-      this.$router.push({ name: 'dash' })
+      this.$router.push({ name: 'dash' }).catch(failure => console.warn('Router failure:\n', failure))
     },
     async signIn () {
       this.$root.$on('auth-success', this.showResult)

@@ -1,9 +1,13 @@
 <template>
   <v-card flat class="transparent mx-auto py-5" width="800">
-    <v-toolbar flat style="background: #eee">
+    <v-toolbar flat style="background: #efefef">
       RSP: <b>{{ ticket.resellerName }}</b>
       <v-spacer />
       Subject: <b>{{ ticket.subject }}</b>
+      <v-spacer />
+      <v-btn icon @click="$emit('update:edit', false)">
+        <v-icon large>mdi-close</v-icon>
+      </v-btn>
     </v-toolbar>
     <v-row justify="end" class="mr-4">
       <table class="mt-5">

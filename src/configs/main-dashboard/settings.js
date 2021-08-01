@@ -16,6 +16,15 @@ export const settings = {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
       }
+    },
+    {
+      title: 'Config schedule',
+      route: 'schedule-settings',
+      icon: 'mdi-ballot-outline',
+      access: {
+        change: ['Account_manager', 'SuperAdmin'],
+        read: ['View_only']
+      }
     }
   ]
 }

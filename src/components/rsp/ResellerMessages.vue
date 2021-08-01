@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row align="start" justify="center">
+    <v-row align="start" justify="center" class="mb-12">
       <v-data-table
         :headers="headers"
         :items="messages"

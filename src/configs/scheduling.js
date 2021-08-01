@@ -1,9 +1,3 @@
-// import {
-//   getWeekNumber,
-//   getWeekStartDate,
-//   getWeekEndDate
-// } from 'garevna-date-functions'
-
 export const scheduling = {
   request: '',
   resellerId: '',

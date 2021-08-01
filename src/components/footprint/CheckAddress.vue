@@ -79,7 +79,7 @@ const statusConfig = {
   footprint: 'Footprint',
   'construction-commenced': 'BuildCommenced',
   'coming-soon': 'ComingSoon',
-  'not-available': 'other'
+  'not-available': 'Other'
 }
 
 events.getEventName = function (status) {
@@ -184,6 +184,7 @@ export default {
       const buildingId = typeof data !== 'string' ? data.result : data
       buildingStatusHandler(data.status)
       this.$router.push({ name: 'building-details', params: { buildingId } })
+        .catch(failure => console.warn('Router failure:\n', failure))
     },
 
     editSelectedBuilding () {

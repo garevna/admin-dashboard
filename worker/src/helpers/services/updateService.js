@@ -1,16 +1,7 @@
 import { getRecordByKey, putRecordByKey } from '../db'
 import { put } from '../AJAX'
 
-const [route, action] = ['services', 'put']
-
-const message = {
-  status: 200,
-  route,
-  action,
-  message: true,
-  messageType: 'Service details',
-  messageText: 'Service details were succesfully updated'
-}
+import { updatedMessage } from './updatedMessage'
 
 export const updateService = async function (id, data) {
   const { status: getStatus, result: getResult } = await getRecordByKey('services', id)
@@ -27,5 +18,5 @@ export const updateService = async function (id, data) {
 
   if (status !== 200) return self.errorMessage('putServiceDetailsError')
 
-  return status !== 200 ? self.errorMessage('putServiceDetailsError') : Object.assign(result, message)
+  return status !== 200 ? self.errorMessage('putServiceDetailsError') : Object.assign(result, updatedMessage)
 }
