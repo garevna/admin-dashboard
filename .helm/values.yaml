@@ -4,7 +4,7 @@ slug: dgtek-admin-dash
 ingress:
   rateLimit: 1200
 
-uploadSize: 1M
+uploadSize: 200M
 
 image:
   repository: registry.gitlab.com/dgtek.net/portal/dgtek-admin-dash
