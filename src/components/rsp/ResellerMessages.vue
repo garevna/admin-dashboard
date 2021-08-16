@@ -12,7 +12,12 @@
       >
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length">
-            <p>
+            <div v-if="item.type === 'update-company-details'" class="pa-3">
+              <li v-for="option of item.fields" :key="option.field">
+                {{ option.title }}
+              </li>
+            </div>
+            <p v-else>
               <small v-html="item.content.split('\n').join('<br>')"></small>
             </p>
           </td>
@@ -43,15 +48,10 @@ export default {
       { text: 'Created', value: 'created' },
       { text: 'Modified', value: 'modified' },
       { text: 'Subject', value: 'subject' },
+      { text: 'Prompt', value: 'prompt' },
       { text: 'Content', value: 'data-table-expand' }
     ]
   }),
-
-  watch: {
-    selected (value) {
-      //
-    }
-  },
 
   methods: {
     getData (data) {
@@ -61,10 +61,9 @@ export default {
       }))
     },
     deleteMessage (message) {
-      console.log(message._id)
-      // const index = this.messages.findIndex(item => item._id === this.selected._id)
-      // console.log(index)
-      // index !== -1 && this.messages.splice(index, 1)
+      this.__deleteMessage(message._id)
+      const index = this.messages.findIndex(item => item._id === message._id)
+      index !== -1 && this.messages.splice(index, 1)
     }
   },
 

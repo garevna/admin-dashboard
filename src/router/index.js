@@ -159,24 +159,20 @@ const routes = [
         path: '/schedule-settings',
         name: 'schedule-settings',
         component: () => import(/* webpackChunkName: 'schedule-settings' */ '@/components/schedule/ScheduleSettings.vue')
+      },
+      {
+        path: '/documents',
+        name: 'documents',
+        component: () => import(/* webpackChunkName: 'documents' */ '@/components/documents/Documents.vue'),
+        children: [
+          {
+            path: '/documents-list',
+            name: 'documents-list',
+            component: () => import(/* webpackChunkName: 'documents' */ '@/components/documents/Documents.vue')
+            // props: true
+          }
+        ]
       }
-      // {
-      //   path: 'settings',
-      //   name: 'settings',
-      //   // component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue'),
-      //   children: [
-      //     {
-      //       path: '/ticket-categories',
-      //       name: 'ticket-categories',
-      //       component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
-      //     },
-      //     {
-      //       path: '/schedule-settings',
-      //       name: 'schedule-settings',
-      //       component: () => import(/* webpackChunkName: 'schedule-settings' */ '@/components/schedule/ScheduleSettings.vue')
-      //     }
-      //   ]
-      // }
     ]
   }
 ]

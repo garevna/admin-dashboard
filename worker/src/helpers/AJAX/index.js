@@ -2,6 +2,7 @@
 import { get } from './get'
 import { remove } from './remove'
 import { post } from './post'
+// import { postDocument } from './postDocument'
 import { put } from './put'
 import { patch } from './patch'
 import { readLocalFile } from './readLocalFile'
@@ -12,6 +13,7 @@ export {
   // getCredentials,
   get,
   post,
+  // postDocument,
   put,
   patch,
   remove,

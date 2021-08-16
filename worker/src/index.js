@@ -23,10 +23,12 @@ self.postDebugMessage = function (message) {
   self.postMessage(Object.assign(message, { status: 300 }))
 }
 
-self.errorMessage = function (errorName) {
-  const { errorType, errorMessage } = require('./errors')[errorName]
+self.errorMessage = function (errorName, status = 500, action = '') {
+  const { route = '', errorType, errorMessage } = require('./errors')[errorName]
   return {
-    status: 500,
+    status,
+    route,
+    action,
     error: true,
     errorType,
     errorMessage

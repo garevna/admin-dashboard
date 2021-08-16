@@ -64,9 +64,7 @@ import { mainDashboard } from '@/configs'
 
 export default {
   name: 'Dashboard',
-  components: {
-    //
-  },
+
   data: () => ({
     items: mainDashboard,
     refreshed: {
@@ -76,7 +74,7 @@ export default {
       tickets: false,
       services: false,
       schedule: false,
-      documents: true,
+      documents: false,
       settings: true
     }
   }),
@@ -104,7 +102,8 @@ export default {
       'customers-refreshed',
       'tickets-refreshed',
       'services-refreshed',
-      'schedule-refreshed'
+      'schedule-refreshed',
+      'documents-refreshed'
     ].forEach((event) => {
       this.$root.$off(event, this.setRefreshed)
     })
@@ -117,7 +116,8 @@ export default {
       'customers-refreshed',
       'tickets-refreshed',
       'services-refreshed',
-      'schedule-refreshed'
+      'schedule-refreshed',
+      'documents-refreshed'
     ].forEach((event) => {
       this.$root.$on(event, this.setRefreshed)
     })

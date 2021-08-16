@@ -22,14 +22,14 @@ export const scheduling = {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
       }
-    },
-    {
-      title: 'Calendar Settings',
-      icon: 'mdi-calendar-edit',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
     }
+    // {
+    //   title: 'Calendar Settings',
+    //   icon: 'mdi-calendar-edit',
+    //   access: {
+    //     change: ['Account_manager', 'SuperAdmin'],
+    //     read: ['View_only']
+    //   }
+    // }
   ]
 }

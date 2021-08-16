@@ -50,8 +50,8 @@ class ResellersController {
     self.postMessage(await self.getMessages(request.resellerId))
   }
 
-  async deleteMessage (messageId) {
-    self.postMessage(await self.deleteMessage(messageId))
+  async deleteMessage (request) {
+    self.postMessage(await self.deleteMessage(request.messageId))
   }
 
   getUniqueCodeList () {

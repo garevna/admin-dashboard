@@ -4,7 +4,8 @@ export const refreshHandler = (function () {
     services: false,
     tickets: false,
     customers: false,
-    schedule: false
+    schedule: false,
+    documents: false
   }
   return function (route, value) {
     if (!route) return refreshed

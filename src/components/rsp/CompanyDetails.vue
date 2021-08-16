@@ -50,22 +50,21 @@ export default {
       this.ready = true
     },
     requestUpdates () {
-      let message = 'Update please the next data in company details:'
+      const fields = []
       for (const section in this.schema) {
         Object.keys(this.schema[section])
           .filter(key => this.schema[section][key].selected)
-          .map(key => this.schema[section][key].title)
-          .forEach(item => {
-            message += `\n• ${item}`
-          })
+          .map(field => ({ title: this.schema[section][field].title, section, field }))
+          .forEach(item => fields.push(item))
       }
 
-      const request = {
+      this.__sendMessage({
+        type: 'update-company-details',
         resellerId: this.details._id,
         subject: 'Update company details',
-        content: message
-      }
-      this.__sendMessage(request)
+        propmt: 'Update please the next data in company details',
+        fields
+      })
     },
     saveData () {
       const result = {}

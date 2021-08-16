@@ -177,6 +177,11 @@ body {
   border-radius: 4px;
   padding: 4px 16px;
 }
+
+.theme--light.v-list {
+  background: #FBFBFB !important;
+}
+
 @media screen and (max-width: 600px) {
   h3 {
     font-size: 20px;

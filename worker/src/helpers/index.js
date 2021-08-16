@@ -5,6 +5,7 @@ import customers from './customers'
 import services from './services'
 import tickets from './tickets'
 import schedule from './schedule'
+import documents from './documents'
 
 import { patchBuildingDetails } from './building'
 
@@ -18,7 +19,7 @@ const {
   sendPasswordResetCode
 } = require('./admin').default
 
-const result = Object.assign({}, rsp, customers, services, tickets, schedule, {
+const result = Object.assign({}, rsp, customers, services, tickets, schedule, documents, {
   testDBVersion,
   init,
   hash,

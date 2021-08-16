@@ -12,6 +12,7 @@ import services from './services'
 import customers from './customers'
 import tickets from './tickets'
 import schedule from './schedule'
+import documents from './documents'
 
 import {
   getBuildingByAddress,
@@ -23,7 +24,7 @@ import {
   refreshBuildings
 } from './map.worker'
 
-const result = Object.assign({}, rsp, services, customers, tickets, schedule, {
+const result = Object.assign({}, rsp, services, customers, tickets, schedule, documents, {
   // init,
   auth,
   changePassword,

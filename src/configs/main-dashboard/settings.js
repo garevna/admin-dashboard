@@ -18,9 +18,9 @@ export const settings = {
       }
     },
     {
-      title: 'Config schedule',
+      title: 'Calendar Settings',
       route: 'schedule-settings',
-      icon: 'mdi-ballot-outline',
+      icon: 'mdi-calendar-edit',
       access: {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
