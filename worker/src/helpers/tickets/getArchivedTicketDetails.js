@@ -1,9 +1,9 @@
-import { getRecordByKey } from '../db'
+import { get } from '../AJAX'
 
-export const getTicketData = async function (key) {
-  const [route, action] = ['tickets', 'get']
+const [route, action] = ['tickets', 'details']
 
-  const { status, result: ticket } = await getRecordByKey(route, key)
+export const getArchivedTicketDetails = async function (key) {
+  const { status, result: ticket } = await get(`ticket/${key}`)
 
   if (status !== 200) return self.errorMessage('getTicketDataError')
 

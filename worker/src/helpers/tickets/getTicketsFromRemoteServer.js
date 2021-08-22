@@ -1,24 +1,34 @@
 import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
-import { ticketCategories } from '../data-handlers'
+// import { getShortTicketInfo } from './getShortTicketInfo'
+
+const [route, action] = ['tickets', 'refresh']
 
 export const getTicketsFromRemoteServer = async function () {
-  const [route, action] = ['tickets', 'refresh']
+  let currentPage = 1
+  const perPage = 30
 
-  const { status, result } = await get('ticket')
-
-  if (status !== 200) return self.errorMessage('refreshTicketsListError')
-
-  const { ticketCategories: categories, tickets } = result
-
-  ticketCategories(categories)
+  // const shortList = []
 
   await clearStore('tickets')
 
-  for (const record of tickets) {
-    const { status: localDBStatus } = await putRecordByKey('tickets', record._id, record)
-    if (localDBStatus !== 200) self.postMessage(self.errorMessage('refreshTicketsListError'))
-  }
+  do {
+    var { status, result } = await get(`ticket?page=${currentPage++}&per_page=${perPage}`)
 
-  return { status, route, action, result }
+    if (status !== 200) return self.errorMessage('refreshTicketsListError')
+
+    var { ticketCategories: categories, tickets, page, pages } = result
+
+    self.postDebugMessage({ categories, tickets, page, pages })
+
+    // shortList.concat(tickets.map(ticket => getShortTicketInfo(ticket)))
+
+    const promises = tickets.map(record => putRecordByKey('tickets', record._id, record))
+    const response = await Promise.all(promises)
+    if (response.filter(item => item.status !== 200).length) self.errorMessage('refreshTicketsListError')
+  } while (page < pages)
+
+  // shortList.sort((a, b) => a.created - b.created)
+
+  return { status, route, action, result: { ticketCategories: categories } }
 }

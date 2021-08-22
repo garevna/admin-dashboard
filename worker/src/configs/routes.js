@@ -78,7 +78,8 @@ export const routes = {
     get: servicesController.get,
     post: servicesController.post,
     put: servicesController.put,
-    patch: servicesController.patch
+    patch: servicesController.patch,
+    delete: servicesController.deleteService
   },
 
   sla: {
@@ -87,13 +88,17 @@ export const routes = {
     put: servicesController.updateSLA,
     update: servicesController.updateSLA,
     upload: servicesController.uploadSLA,
+    create: servicesController.createNewSLA,
     post: servicesController.uploadNewSLA,
+    remove: servicesController.removeSLA,
     read: servicesController.readLocalFile
   },
 
   tickets: {
     refresh: ticketsController.refresh,
     list: ticketsController.list,
+    archived: ticketsController.archived,
+    details: ticketsController.getArchivedTicketDetails,
     rsp: ticketsController.listForPartner,
     get: ticketsController.get,
     put: ticketsController.put

@@ -13,8 +13,16 @@ class ServicesController {
     self.postMessage(await self.getServiceDetails(request.key))
   }
 
+  async createNewSLA (request) {
+    self.postMessage(await self.createNewSLA(request.record))
+  }
+
   async post (request) {
     self.postMessage(await self.createNewService(request.data))
+  }
+
+  async deleteService (request) {
+    self.postMessage(await self.deleteService(request.key))
   }
 
   async put (request) {
@@ -42,6 +50,10 @@ class ServicesController {
 
   async updateSLA (request) {
     self.postMessage(await self.updateSLA(request.record))
+  }
+
+  async removeSLA (request) {
+    self.postMessage(await self.removeSLA(request._id))
   }
 
   async getSLAList () {

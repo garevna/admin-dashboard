@@ -27,16 +27,19 @@
 
 export default {
   name: 'Confirmation',
+
   data: () => ({
     title: '',
     message: '',
     dialog: false
   }),
+
   methods: {
     confirm () {
       this.$root.$emit('operation-confirmed', this.source)
       this.dialog = false
     },
+
     open (data) {
       this.source = data.source
       this.title = data.title || 'Confirm deletion'
@@ -44,6 +47,7 @@ export default {
       this.dialog = true
     }
   },
+
   beforeDestroy () {
     this.$root.$off('open-confirmation-popup', this.open)
   },

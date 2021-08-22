@@ -53,7 +53,6 @@
         </v-card-title>
 
         <v-data-table
-          ref="customersList"
           :headers="headers"
           :items="filteredItems"
           :search="search"

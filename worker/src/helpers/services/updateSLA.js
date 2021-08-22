@@ -1,4 +1,4 @@
-import { put } from '../AJAX'
+import { patch } from '../AJAX'
 
 const [route, action] = ['sla', 'update']
 
@@ -8,25 +8,26 @@ const invalidRequest = {
   action,
   error: true,
   errorType: 'SLA update',
-  errorMessage: 'Invalid or insufficient data in request'
+  errorMessage: 'Invalid request: insufficient data'
 }
 
 export const updateSLA = async (record) => {
-  if (!record.id || !record.title || !record.content) return invalidRequest
+  self.postDebugMessage({ record })
+  if (!record.id || (!record.title && !record.content)) return invalidRequest
 
   const success = {
     message: true,
     messageType: 'SLA update',
-    messageText: `${record.title} has been updated`
+    messageText: `${record.title || 'SLA'} has been updated`
   }
 
   const updateSLAFailed = {
     error: true,
     errorType: 'SLA update',
-    errorMessage: `Update for ${record.title} failed`
+    errorMessage: `Failed to update ${record.title || 'SLA'}`
   }
 
-  const response = await put(`sla/${record._id}`, record)
+  const response = await patch(`sla/${record.id}`, record)
 
   return response.status !== 200 ? Object.assign(response, updateSLAFailed)
     : Object.assign(success, { status: 200, result: response.result.data, route, action })

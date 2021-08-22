@@ -155,13 +155,16 @@ body {
 * {
   user-select: none;
 }
+
 .main-header {
   font-weight: 900;
   margin-top: -64px;
 }
+
 /* .main-content {
   padding-top: 64px;
 } */
+
 .field-set {
   border: solid 1px #ddd;
   padding: 32px 0;
@@ -178,8 +181,14 @@ body {
   padding: 4px 16px;
 }
 
-.theme--light.v-list {
+.v-input, .v-label {
+  font-size: 14px !important;
+}
+
+.theme--light.v-list,
+.theme--light.v-expansion-panels .v-expansion-panel {
   background: #FBFBFB !important;
+  background-color: #FBFBFB !important;
 }
 
 @media screen and (max-width: 600px) {

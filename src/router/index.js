@@ -56,6 +56,16 @@ const routes = [
         component: () => import(/* webpackChunkName: 'services-list' */ '@/components/services/ListOfServices.vue')
       },
       {
+        path: '/SLA',
+        name: 'sla',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'sla') next(false)
+          next()
+        },
+        component: () => import(/* webpackChunkName: 'sla' */ '@/components/services/ListOfSLA.vue')
+      },
+      {
         path: '/create-new-service',
         name: 'create-new-service',
         beforeEnter (to, from, next) {
@@ -149,6 +159,11 @@ const routes = [
             props: true
           }
         ]
+      },
+      {
+        path: '/tickets-archived',
+        name: 'tickets-archived',
+        component: () => import(/* webpackChunkName: 'tickets-archived' */ '@/components/tickets/TicketsArchived.vue')
       },
       {
         path: '/ticket-categories',

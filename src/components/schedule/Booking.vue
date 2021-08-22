@@ -102,14 +102,14 @@ export default {
 
   methods: {
     getData (data) {
-      this.records = data
-      this.booking = {}
-      const dates = data.map(record => new Date(record.modified).toISOString().slice(0, 10)).sort()
+      this.records = data.map(item => Object.assign(item, { modified: new Date(item.modified).toISOString().slice(0, 10) }))
+
+      const dates = Array.from(new Set(data.map(record => record.modified)))
+
       this.booking = Object.assign({}, ...dates.map(date => ({ [date]: [] })))
-      data.forEach(record => {
-        const date = new Date(record.modified).toISOString().slice(0, 10)
-        this.booking[date].push(record)
-      })
+
+      this.records.forEach(record => this.booking[record.modified].push(record))
+
       this.ready = true
     },
 

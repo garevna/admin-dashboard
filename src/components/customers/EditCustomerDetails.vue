@@ -102,18 +102,11 @@
           <tr style="height: 48px;"></tr>
 
           <tr style="margin-top: 48px!important">
-            <!-- <td class="d-none d-md-flex">
-              <v-btn outlined text color="buttons" @click="$emit('update:dialog', false)">Exit</v-btn>
-            </td> -->
               <td colspan="2" class="text-right">
               <v-spacer />
               <v-btn dark class="buttons" @click="saveCustomerDetails">
                 Update/save details
               </v-btn>
-              <!-- <v-card-text class="text--buttons" v-if="saveDisabled" style="color: #900">
-                <v-icon color="primary">mdi-alert</v-icon>
-                You should save building details
-              </v-card-text> -->
             </td>
           </tr>
         </tbody>

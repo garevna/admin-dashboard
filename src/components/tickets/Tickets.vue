@@ -17,55 +17,12 @@
         >
 
           <template v-slot:top>
-            <v-row>
-              <v-select
-                :items="customersList"
-                label="Unique code"
-                v-model="customer"
-                item-text="uniqueCode"
-                item-value="customerId"
-                outlined
-                dense
-                clearable
-                :menu-props="{ bottom: true, offsetY: true }"
-                style="max-width: 280px"
-              ></v-select>
-
-              <v-select
-                :items="customersList"
-                label="Address"
-                v-model="customer"
-                item-text="address"
-                item-value="customerId"
-                outlined
-                dense
-                clearable
-                :menu-props="{ bottom: true, offsetY: true }"
-                style="width: 480px"
-              ></v-select>
-
-              <v-select
-                :items="severities"
-                label="Severity"
-                v-model="severity"
-                outlined
-                dense
-                clearable
-                :menu-props="{ bottom: true, offsetY: true }"
-                style="max-width: 160px"
-              ></v-select>
-
-              <v-select
-                :items="priorities"
-                label="Priority"
-                v-model="priority"
-                outlined
-                clearable
-                dense
-                :menu-props="{ bottom: true, offsetY: true }"
-                style="max-width: 160px"
-              ></v-select>
-            </v-row>
+            <Filters
+              :customersList="customersList"
+              :customer.sync="customer"
+              :severity.sync="severity"
+              :priority.sync="priority"
+            />
           </template>
 
           <template v-slot:footer.prepend>
@@ -81,7 +38,6 @@
               class="transparent mt-2"
               style="max-width: 280px"
             ></v-text-field>
-            <v-spacer />
           </template>
         </v-data-table>
     </v-row>
@@ -100,10 +56,9 @@ export default {
   name: 'Tickets',
 
   components: {
-    TicketDetails: () => import('@/components/tickets/TicketDetails.vue')
+    TicketDetails: () => import('@/components/tickets/TicketDetails.vue'),
+    Filters: () => import('@/components/tickets/Filters.vue')
   },
-
-  // props: ['section'],
 
   data: () => ({
     ready: false,
@@ -116,11 +71,8 @@ export default {
     customer: null,
     dates: [],
     headers: [
-      {
-        text: 'Subject',
-        align: 'start',
-        value: 'subject'
-      },
+      { text: 'Number', align: 'start', value: 'number' },
+      { text: 'Subject', align: 'start', value: 'subject' },
       { text: 'Date (created)', value: 'created' },
       { text: 'Date (modified)', value: 'modified' },
       { text: 'Category', value: 'category' },
@@ -129,8 +81,6 @@ export default {
       { text: 'Status', value: 'status' }
     ],
     answer: '',
-    severities: ['Low', 'Medium', 'Hight'],
-    priorities: ['Low', 'Medium', 'Hight'],
     severity: null,
     priority: null
   }),

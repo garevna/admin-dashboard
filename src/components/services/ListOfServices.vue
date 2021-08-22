@@ -31,9 +31,11 @@
           :search="search"
           @click:row="editItem"
       >
-        <!-- <template v-slot:item.actions="{ item }">
-          <v-btn outlined @click="editItem(item)" dark class="primary">Edit</v-btn>
-        </template> -->
+        <template v-slot:item.actions="{ item }">
+          <v-btn text @click.stop="deleteItem(item)">
+            <v-icon samll color="primary">mdi-delete</v-icon>
+          </v-btn>
+        </template>
       </v-data-table>
 
       <span class="ml-12"><small>Total selected services: {{ selectedServicesNumber }}</small></span>
@@ -50,12 +52,8 @@ export default {
     search: '',
     selectedServicesNumber: undefined,
     headers: [
-      {
-        text: 'Service name',
-        align: 'start',
-        sortable: true,
-        value: 'serviceName'
-      },
+      { text: 'Actions', value: 'actions', sortable: false },
+      { text: 'Service name', align: 'start', sortable: true, value: 'serviceName' },
       { text: 'Type', value: 'serviceType' },
       { text: 'Service code', value: 'serviceCode' },
       { text: 'Product type', value: 'productType' },
@@ -63,7 +61,6 @@ export default {
       { text: 'MRC ($)', value: 'subscriptionFee' },
       { text: 'Connection fee', value: 'connectionFee' },
       { text: 'Trial (months)', value: 'freeTrial' }
-      // { text: 'Actions', value: 'actions', sortable: false }
     ]
   }),
 
@@ -79,6 +76,23 @@ export default {
       })
     },
 
+    deleteItem (item) {
+      this.selectedServiceId = item._id
+      this.$root.$emit('open-confirmation-popup', {
+        title: item.serviceName,
+        message: `Do you really want to delete service ${item.serviceName}?`
+      })
+    },
+
+    confirmationReceived () {
+      this.__deleteService(this.selectedServiceId)
+    },
+
+    serviceDeleted () {
+      const index = this.items.findIndex(item => item._id === this.selectedServiceId)
+      index !== -1 && this.items.splice(index, 1)
+    },
+
     editItem (item) {
       this.selectedServiceId = item.id
       this.$router.push({ name: 'service-details', params: { serviceId: item._id } })
@@ -87,11 +101,17 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('services-list-received', this.getData)
+    this.$root.$off('operation-confirmed', this.confirmationReceived)
+    this.$root.$off('service-deleted', this.serviceDeleted)
   },
 
   mounted () {
     this.$vuetify.goTo(0)
+
     this.$root.$on('services-list-received', this.getData)
+    this.$root.$on('operation-confirmed', this.confirmationReceived)
+    this.$root.$on('service-deleted', this.serviceDeleted)
+
     this.__getListOfServices()
   }
 }

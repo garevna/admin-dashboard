@@ -10,6 +10,15 @@ export const services = {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
       }
+    },
+    {
+      title: 'SLA',
+      route: 'sla',
+      icon: 'mdi-ballot-outline',
+      access: {
+        change: ['Account_manager', 'SuperAdmin'],
+        read: ['View_only']
+      }
     }
   ]
 }

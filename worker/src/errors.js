@@ -228,8 +228,26 @@ export const getServicesListError = {
 
 export const postServiceDetailsError = {
   route: 'services',
+  errorType: 'Create service',
+  errorMessage: 'Failed to save new service details to remote server'
+}
+
+export const postServiceDetailsLocalError = {
+  route: 'services',
+  errorType: 'Create service',
+  errorMessage: 'Failed to save new service details to local DB'
+}
+
+export const deleteServiceError = {
+  route: 'services',
   errorType: 'Services',
-  errorMessage: 'Failed to create new service'
+  errorMessage: 'Failed to delete service from remote server'
+}
+
+export const deleteServiceLocalError = {
+  route: 'services',
+  errorType: 'Services',
+  errorMessage: 'Failed to delete service from local DB. Try to refresh services.'
 }
 
 export const putServiceDetailsError = {

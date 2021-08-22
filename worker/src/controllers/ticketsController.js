@@ -15,12 +15,20 @@ class TicketsController {
     self.postMessage(await self.getTicketsFromLocalDb(request.category))
   }
 
+  async archived (request) {
+    self.postMessage(await self.getArchivedTicketsFromRemoteServer(request.year, request.month))
+  }
+
   async listForPartner (request) {
     self.postMessage(await self.getTicketsByRSP(request.resellerId))
   }
 
   async get (request) {
     self.postMessage(await self.getTicketData(request.key))
+  }
+
+  async getArchivedTicketDetails (request) {
+    self.postMessage(await self.getArchivedTicketDetails(request.key))
   }
 
   async put (request) {

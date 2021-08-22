@@ -10,7 +10,7 @@
         <!-- <v-toolbar-title> -->
         <small class="mr-4">SLA name</small>
         <v-text-field
-          v-model="record.title"
+          v-model="title"
           outlined
           dense
           hide-details
@@ -25,7 +25,7 @@
       </v-toolbar>
 
       <object
-        :data="record.content"
+        :data="content"
         type="application/pdf"
         width="100%"
         height="640"
@@ -45,7 +45,11 @@
             hide-details
           ></v-file-input>
           <!-- <v-spacer /> -->
-          <v-btn class="dark-primary-button" @click="saveChanges">
+          <v-btn
+            v-if="title && content && content !== pdf404"
+            class="dark-primary-button"
+            @click="saveChanges"
+          >
             <small style="color: #fff">Update / Save SLA</small>
           </v-btn>
         </v-row>
@@ -61,47 +65,73 @@ import { pdf404 } from '@/configs'
 export default {
   name: 'ViewPDF',
 
-  props: ['dialog', 'id', 'title'],
+  props: ['dialog', 'record'],
 
   data: () => ({
-    record: {
-      id: null,
-      title: '',
-      content: pdf404
-    },
+    pdf404: pdf404,
+    content: pdf404,
+    // record: {
+    //   id: null,
+    //   title: '',
+    //   content: pdf404
+    // },
     ready: false,
     disabled: false,
     file: null
   }),
 
-  watch: {
+  computed: {
     id: {
-      immediate: true,
-      handler (val) {
-        if (val) {
-          this.ready = false
-          this.__getSLAContent(val)
-        } else {
-          this.record = {
-            id: null,
-            title: '',
-            content: pdf404
-          }
-
-          this.ready = true
-        }
+      get () {
+        return this.record._id
+      },
+      set (val) {
+        this.$emit('update:record', Object.assign(this.record, { _id: val }))
+      }
+    },
+    title: {
+      get () {
+        return this.record.title
+      },
+      set (val) {
+        this.$emit('update:record', Object.assign(this.record, { title: val }))
       }
     }
   },
 
+  // watch: {
+  //   id: {
+  //     immediate: true,
+  //     handler (val) {
+  //       if (val) {
+  //         this.ready = false
+  //         this.__getSLAContent(val)
+  //       } else {
+  //         this.content = pdf404
+  //         // this.record = {
+  //         //   id: null,
+  //         //   title: '',
+  //         //   content: pdf404
+  //         // }
+  //         this.ready = true
+  //       }
+  //     }
+  //   }
+  // },
+
   methods: {
     getContent (data) {
-      this.record = data
+      const { _id, title, content } = data
+      console.log(_id, title, content)
+      // this.$emit('update:record', { _id, title, content })
+      this.content = content
+      // this.record = data
       this.ready = true
     },
 
     getLocalFileContent (data) {
-      this.record.content = data || pdf404
+      console.log(data)
+      this.content = data || pdf404
       this.ready = true
     },
 
@@ -115,27 +145,36 @@ export default {
     },
 
     saveChanges () {
-      if (this.record.id) {
-        this.__updateSLA(this.record)
+      console.log(this.id)
+      console.log(this.title)
+      console.log(this.content)
+
+      console.log()
+      if (this.id) {
+        // this.__updateSLA({ id: this.id, title: this.title, content: this.content })
       } else {
-        this.__uploadNewSLA(this.record.title, this.file)
+        // this.__uploadNewSLA(this.title, this.file)
       }
     },
 
     updateId (data) {
-      this.record.id = data
+      this.id = data
       this.$emit('update:id', data)
-      this.$emit('update:title', this.record.title)
+      this.$emit('update:title', this.title)
       this.$emit('update:dialog', false)
     },
 
     close (response) {
-      this.$emit('update:title', this.record.title)
+      this.$emit('update:title', this.title)
       this.$emit('update:dialog', false)
     },
 
     uploadSLA (file) {
-      this.__uploadSLA(this.record.title, file)
+      this.__uploadSLA(this.title, file)
+    },
+
+    setNewSLA (data) {
+      console.log(data)
     }
   },
 

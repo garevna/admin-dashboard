@@ -1,28 +1,37 @@
 <template>
   <v-container style="margin-bottom: 180px; max-width: 960px">
-      <v-toolbar flat class="transparent mx-auto">
-        <v-toolbar-title>
-          <h5><small>Service details</small></h5>
-        </v-toolbar-title>
-        <v-spacer />
-        <v-btn
-          @click="$router.push({ name: 'services-list' })"
-          icon
-          color="#aaa"
-          class="pl-2"
-        >
-          <v-icon large>mdi-close</v-icon>
+    <v-toolbar flat class="transparent mx-auto">
+      <v-toolbar-title>
+        <v-btn :disabled="tab === 'serviceDetails'" text @click="tab = 'serviceDetails'">
+          Service details
         </v-btn>
-      </v-toolbar>
+        <v-btn :disabled="tab === 'partners'" text @click="tab = 'partners'">
+          Partners
+        </v-btn>
+        <v-btn :disabled="tab === 'sla'" text @click="tab = 'sla'">
+          SLA
+        </v-btn>
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn
+        @click="$router.push({ name: 'services-list' })"
+        icon
+        color="#aaa"
+        class="pl-2"
+      >
+        <v-icon large>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
 
-      <v-divider class="mt-2 mb-10" />
+    <v-divider class="mt-2 mb-10" />
 
-      <v-card flat class="transparent mt-0" v-if="ready">
+    <v-row v-if="tab === 'serviceDetails'">
+      <v-card v-if="ready" flat class="transparent mt-0 mx-auto" min-width="700">
         <table width="100%">
           <tbody>
             <tr v-for="(prop, propName) in service" :key="propName">
               <td width="280">
-                <p class="right-title mr-4"><small>{{ propName !== 'serviceSLA' ? prop.title : 'Service SLA' }}</small></p>
+                <p class="right-title mr-4"><small>{{ prop.title }}</small></p>
               </td>
 
               <td v-if="prop.type === 'switcher'" width="*">
@@ -35,7 +44,7 @@
                 />
               </td>
 
-              <td v-if="propName !== 'serviceType' && textField(prop)">
+              <td v-if="propName !== 'serviceType' && propName !== 'serviceSLA' && textField(prop)">
                 <v-text-field
                   v-model="prop.value"
                   :label="prop.title"
@@ -55,36 +64,6 @@
                   hide-details
                 />
               </td>
-
-              <td v-if="prop.type === 'sla'">
-                <table>
-                  <tr>
-                    <td width="320">
-                      <v-combobox
-                        v-model="serviceSLA"
-                        :items="listOfSLA.map(item => item.title)"
-                        label="Service SLA"
-                        outlined
-                        dense
-                      ></v-combobox>
-                    </td>
-
-                    <td width="180">
-                      <v-btn outlined dense color="primary" :disabled="!selectedId" @click="dialog = true">
-                        <v-icon small>mdi-open-in-new</v-icon>
-                        <small>Update selected</small>
-                      </v-btn>
-                    </td>
-
-                    <td width="180">
-                      <v-btn outlined dense color="primary" @click="dialog = true">
-                        <v-icon small>mdi-open-in-new</v-icon>
-                        <small>Upload new SLA</small>
-                      </v-btn>
-                    </td>
-                  </tr>
-                </table>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -94,30 +73,33 @@
             Update/save details
           </v-btn>
         </v-row>
-
-        <v-row justify="center" class="mt-12">
-          <p><b>Partners</b></p>
-        </v-row>
-        <v-row justify="center">
-          <Partners :servicePartners.sync="partnersList" />
-        </v-row>
-
-        <v-row justify="end" class="mt-8 mr-12">
-          <v-btn text dark class="primary" @click="saveServicePartners">
-            UPDATE PARTNERS
-          </v-btn>
-        </v-row>
-
-        <v-row justify="start" class="my-8">
-          <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
-        </v-row>
       </v-card>
+    </v-row>
 
-    <ViewPDF
-      :dialog.sync="dialog"
-      :id.sync="selectedId"
-      :title.sync="serviceSLA"
-    />
+    <v-container v-if="tab === 'partners'">
+      <v-row justify="center">
+        <Partners :servicePartners.sync="partnersList" />
+      </v-row>
+
+      <v-row justify="end" class="mt-8 mr-12">
+        <v-btn text dark class="primary" @click="saveServicePartners">
+          UPDATE PARTNERS
+        </v-btn>
+      </v-row>
+    </v-container>
+
+    <v-container  v-if="tab === 'sla'">
+      <v-row justify="center">
+        <ShowPDF
+          :id.sync="selectedId"
+          :title.sync="serviceSLA"
+        />
+      </v-row>
+    </v-container>
+
+    <v-row justify="start" class="my-8">
+      <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
+    </v-row>
   </v-container>
 </template>
 
@@ -134,7 +116,7 @@ export default {
   components: {
     SwitchValues,
     Partners,
-    ViewPDF: () => import('@/components/inputs/ViewPDF.vue')
+    ShowPDF: () => import('@/components/inputs/ShowPDF.vue')
   },
 
   props: ['serviceId'],
@@ -144,21 +126,13 @@ export default {
     partnersList: [],
     serviceSLA: '',
     selectedId: null,
-    dialog: false,
-    listOfSLA: [],
-    disabled: true,
     rules: rules,
-    ready: false
+    ready: false,
+
+    tab: 'serviceDetails'
   }),
 
   watch: {
-    serviceSLA (value) {
-      const selected = this.listOfSLA.find(item => item.title === value)
-
-      this.disabled = Boolean(value) && Boolean(selected)
-
-      this.service.serviceSLA.value = selected ? selected._id : null
-    },
     service: {
       deep: true,
       handler (data) {
@@ -187,10 +161,6 @@ export default {
       return this.rules[item.type]
     },
 
-    showPDF () {
-      this.dialog = Boolean(this.selectedId)
-    },
-
     getData (data) {
       this.partnersList = data.partners
       for (const prop in this.service) {
@@ -199,13 +169,6 @@ export default {
       }
 
       this.ready = true
-    },
-
-    getSLAList (data) {
-      for (const item of data) this.listOfSLA.push(item)
-      const selected = this.listOfSLA.find(item => item._id === this.service.serviceSLA.value)
-      this.serviceSLA = selected ? selected.title : ''
-      this.service.serviceSLA.title = selected ? selected.title : ''
     },
 
     saveServiceDetails () {
@@ -237,15 +200,10 @@ export default {
 
     this.$root.$off('service-data-updated', this.showResult)
     this.$root.$off('new-service-created', this.showResult)
-
-    this.$root.$off('sla-list-received', this.getSLAList)
   },
 
   mounted () {
     this.service = JSON.parse(JSON.stringify(serviceSchema))
-    this.$root.$on('sla-list-received', this.getSLAList)
-
-    this.__getSLAList()
 
     if (this.serviceId) {
       this.$root.$on('service-data-received', this.getData)

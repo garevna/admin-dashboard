@@ -3,7 +3,8 @@ export const services = {
   list: 'services-list-received',
   get: 'service-data-received',
   put: 'service-data-updated',
-  post: 'new-service-created'
+  post: 'new-service-created',
+  delete: 'service-deleted'
 }
 
 export const sla = {
@@ -11,7 +12,9 @@ export const sla = {
   get: 'sla-content-received',
   put: 'sla-data-updated',
   update: 'sla-data-updated',
+  create: 'new-sla-created',
   post: 'new-sla-created',
   upload: 'sla-file-uploaded',
+  remove: 'sla-removed',
   read: 'local-file-content-loaded'
 }
