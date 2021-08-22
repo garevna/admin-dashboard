@@ -7,5 +7,6 @@ export const mapWorkerEvents = {
   data: 'buildings-data-list',
   post: 'new-building-created',
   put: 'building-details-updated',
-  patch: 'building-details-updated'
+  patch: 'building-details-updated',
+  delete: 'building-deleted'
 }

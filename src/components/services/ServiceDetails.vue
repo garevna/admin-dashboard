@@ -68,7 +68,9 @@
           </tbody>
         </table>
 
-        <v-row justify="end" class="mt-8 mb-12">
+        <v-row justify="start" class="mt-8 mb-12">
+          <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
+          <v-spacer />
           <v-btn dark class="buttons" @click="saveServiceDetails">
             Update/save details
           </v-btn>
@@ -81,7 +83,9 @@
         <Partners :servicePartners.sync="partnersList" />
       </v-row>
 
-      <v-row justify="end" class="mt-8 mr-12">
+      <v-row justify="start" class="mt-8 mr-12">
+        <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
+        <v-spacer />
         <v-btn text dark class="primary" @click="saveServicePartners">
           UPDATE PARTNERS
         </v-btn>
@@ -95,11 +99,15 @@
           :title.sync="serviceSLA"
         />
       </v-row>
-    </v-container>
 
-    <v-row justify="start" class="my-8">
-      <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
-    </v-row>
+      <v-row justify="start" class="mt-12 mr-12">
+        <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
+        <v-spacer />
+        <v-btn v-if="selectedId !== service.serviceSLA" text dark class="primary" @click="saveServiceSLA">
+          UPDATE SLA
+        </v-btn>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 
@@ -187,6 +195,10 @@ export default {
 
     saveServicePartners () {
       this.__patchServiceDetails(this.serviceId, { partners: this.partnersList })
+    },
+
+    saveServiceSLA () {
+      this.__patchServiceDetails(this.serviceId, { serviceSLA: this.selectedId })
     },
 
     showResult (data) {

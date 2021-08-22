@@ -4,7 +4,7 @@
       <v-toolbar flat dense class="transparent mb-4">
         <h5 v-if="!edit">
           <small>{{ record.title }}</small>
-          <v-icon @click="edit = true" class="ml-2">
+          <v-icon @click="edit = true" class="ml-2" color="primary">
             mdi-form-select
           </v-icon>
         </h5>
@@ -22,18 +22,6 @@
           @click:append-outer="save"
           @change="changeContent"
         ></v-combobox>
-
-        <v-spacer />
-
-        <v-btn outlined dense color="primary" class="mr-2" :disabled="!selected" @click="dialog = true">
-          <v-icon small>mdi-open-in-new</v-icon>
-          <small>Update selected</small>
-        </v-btn>
-
-        <v-btn outlined dense color="primary" @click="newSLA">
-          <v-icon small>mdi-open-in-new</v-icon>
-          <small>Upload new SLA</small>
-        </v-btn>
       </v-toolbar>
     </v-row>
 
@@ -46,10 +34,11 @@
       ></object>
     </v-row>
 
-    <ViewPDF
-      :dialog.sync="dialog"
-      :record.sync="record"
-    />
+    <v-row justify="end">
+      <v-btn dark color="primary" @click="saveUpdates">
+        Save updates
+      </v-btn>
+    </v-row>
   </v-container>
 </template>
 
@@ -59,10 +48,6 @@ import { pdf404 } from '@/configs'
 
 export default {
   name: 'ShowPDF',
-
-  components: {
-    ViewPDF: () => import('@/components/inputs/ViewPDF.vue')
-  },
 
   props: ['id', 'title'],
 
@@ -82,14 +67,14 @@ export default {
     file: null
   }),
 
-  watch: {
-    selected (val) {
-      if (!val) return
-      console.log(val)
-      console.log(this.selected.title)
-      console.log(this.listOfSLA)
-    }
-  },
+  // watch: {
+  //   selected (val) {
+  //     if (!val) return
+  //     console.log(val)
+  //     console.log(this.selected.title)
+  //     console.log(this.listOfSLA)
+  //   }
+  // },
 
   methods: {
     searchById (id) {
@@ -118,8 +103,6 @@ export default {
     },
 
     newSLA () {
-      // this.selected = null
-      // this.selectedTitle = 'Not defined'
       this.record = {
         _id: null,
         title: 'Not defined',
@@ -129,8 +112,6 @@ export default {
     },
 
     save () {
-      console.log(this.selected)
-      console.log(this.record._id)
       this.$emit('update:id', this.record._id)
       this.edit = !this.selected
     }

@@ -22,8 +22,6 @@ export const getArchivedTicketDetails = async function (key) {
 
   if (reseller.status !== 200) self.errorMessage('getUserDetailsError')
 
-  self.postDebugMessage({ reseller: reseller.result })
-
   const { name: resellerName } = reseller.result.company
 
   Object.assign(ticket, { resellerName })

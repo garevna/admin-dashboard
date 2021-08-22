@@ -9,6 +9,8 @@ import { patchBuildingDetails } from './patchBuildingDetails'
 
 import { refreshBuildings } from './refreshBuildings'
 
+import { deleteBuilding } from './deleteBuilding'
+
 export {
   getBuildingByAddress,
   getBuildingById,
@@ -18,5 +20,7 @@ export {
   putBuildingDetails,
   patchBuildingDetails,
 
-  refreshBuildings
+  refreshBuildings,
+
+  deleteBuilding
 }

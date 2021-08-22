@@ -59,6 +59,12 @@
           </v-btn>
         </v-toolbar>
       </template>
+
+      <template v-slot:item.actions="{ item }">
+        <v-btn text @click.stop="deleteBuilding(item)">
+          <v-icon samll color="primary">mdi-delete</v-icon>
+        </v-btn>
+      </template>
     </v-data-table>
 
     <span class="ml-12"><small>Total selected buildings: {{ selectedBuildingsNumber }}</small></span>
@@ -77,18 +83,15 @@ export default {
   data: () => ({
     ready: false,
     buildings: [],
+    toBeRemoved: null,
     search: '',
     page: buildingsListPageNumberHandler(),
     available: footprintOptions,
     selectedBuildingId: undefined,
     // selectedBuildingsNumber: null,
     headers: [
-      {
-        text: 'Building address',
-        align: 'start',
-        sortable: true,
-        value: 'address'
-      },
+      { text: '', value: 'actions', sortable: false },
+      { text: 'Building address', align: 'start', sortable: true, value: 'address' },
       { text: 'Building unique code', value: 'buildingUniqueCode' },
       { text: 'Footprint', value: 'status' },
       { text: 'Estimated service delivery time', value: 'estimatedServiceDeliveryTime' }
@@ -141,7 +144,8 @@ export default {
       this.__refreshBuildings()
     },
 
-    getRefreshedBuildings () {
+    getRefreshedBuildings (data) {
+      console.log('Refreshed!!!', data)
       this.status = buildingStatusHandler()
       this.__getBuildingsByStatus(buildingStatusHandler())
     },
@@ -153,11 +157,31 @@ export default {
 
     createBuilding () {
       this.$router.push({ name: 'footprint' }).catch(failure => console.warn('Router failure:\n', failure))
+    },
+
+    deleteBuilding (building) {
+      this.toBeRemoved = building.id
+      this.$root.$emit('open-confirmation-popup', {
+        title: building.address,
+        message: `Do you really want to delete building ${building.buildingUniqueCode}?`
+      })
+    },
+
+    confirmationReceived () {
+      this.__deleteBuilding(this.toBeRemoved)
     }
   },
   beforeDestroy () {
-    this.$root.$off('buildings-data-received', this.getBuildings)
-    this.$root.$off('buildings-list-received', this.getBuildings)
+    // this.$root.$off('buildings-data-received', this.getBuildings)
+    // this.$root.$off('buildings-list-received', this.getBuildings)
+    // this.$root.$off('buildings-data-list', this.getBuildings)
+
+    this.$root.$off('buildings-refreshed', this.getRefreshedBuildings)
+    this.$root.$off('buildings-address-list', this.getBuildings)
+    this.$root.$off('buildings-data-list', this.getBuildings)
+
+    this.$root.$off('operation-confirmed', this.confirmationReceived)
+    this.$root.$off('building-deleted', this.refresh)
   },
 
   mounted () {
@@ -166,6 +190,9 @@ export default {
     this.$root.$on('buildings-refreshed', this.getRefreshedBuildings)
     this.$root.$on('buildings-address-list', this.getBuildings)
     this.$root.$on('buildings-data-list', this.getBuildings)
+
+    this.$root.$on('operation-confirmed', this.confirmationReceived)
+    this.$root.$on('building-deleted', this.refresh)
 
     if (!buildingStatusHandler()) buildingStatusHandler('lit')
 

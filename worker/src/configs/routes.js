@@ -29,7 +29,8 @@ export const routes = {
   },
 
   building: {
-    patch: buildingController.patch
+    patch: buildingController.patch,
+    delete: buildingController.delete
   },
 
   rsp: {
