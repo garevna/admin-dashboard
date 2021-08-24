@@ -44,6 +44,10 @@ class CustomersController {
   async createCustomer (request) {
     self.postMessage(await self.createCustomer(request.data))
   }
+
+  async hardRefresh () {
+    self.postMessage(await self.hardCustomersRefresh())
+  }
 }
 
 export const customersController = new CustomersController()

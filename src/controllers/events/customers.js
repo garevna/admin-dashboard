@@ -6,5 +6,7 @@ export const customers = {
   get: 'customer-data-received',
   post: 'customer-created',
   put: 'customer-updated',
-  pagination: 'page-of-customers-received'
+  pagination: 'page-of-customers-received',
+
+  'hard-refresh': 'customers-refreshed'
 }

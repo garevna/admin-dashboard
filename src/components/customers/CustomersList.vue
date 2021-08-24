@@ -46,9 +46,12 @@
             </tbody>
           </table>
           <v-spacer />
-          <v-btn text @click="refresh" class="mr-12 mb-5">
+          <v-btn text @click="refresh" class="mb-5">
             <v-icon>mdi-refresh</v-icon>
             Refresh
+          </v-btn>
+          <v-btn icon @click="hardRefresh" class="mb-5">
+            <v-icon>mdi-database-refresh</v-icon>
           </v-btn>
         </v-card-title>
 
@@ -252,6 +255,11 @@ export default {
     refresh () {
       this.ready = false
       this.__refreshCustomers()
+    },
+
+    hardRefresh () {
+      this.ready = false
+      this.__hardCustomersRefresh()
     }
   },
 

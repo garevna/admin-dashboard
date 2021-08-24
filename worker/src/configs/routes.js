@@ -64,7 +64,9 @@ export const routes = {
     get: customersController.getCustomer,
     post: customersController.createCustomer,
     delete: customersController.deleteCustomer,
-    put: customersController.updateCustomer
+    put: customersController.updateCustomer,
+
+    'hard-refresh': customersController.hardRefresh
   },
 
   crypto: {

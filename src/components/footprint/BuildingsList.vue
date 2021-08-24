@@ -172,10 +172,6 @@ export default {
     }
   },
   beforeDestroy () {
-    // this.$root.$off('buildings-data-received', this.getBuildings)
-    // this.$root.$off('buildings-list-received', this.getBuildings)
-    // this.$root.$off('buildings-data-list', this.getBuildings)
-
     this.$root.$off('buildings-refreshed', this.getRefreshedBuildings)
     this.$root.$off('buildings-address-list', this.getBuildings)
     this.$root.$off('buildings-data-list', this.getBuildings)
