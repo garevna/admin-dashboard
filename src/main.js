@@ -29,6 +29,8 @@ createController()
 
 init()
 
+console.log(window[Symbol.for('api.host')])
+
 /* eslint-disable no-extend-native */
 
 String.prototype.toKebab = function () {

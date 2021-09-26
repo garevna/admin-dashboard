@@ -9,7 +9,9 @@ export function refreshCallback (event) {
 
   refreshHandler(route, true)
 
-  if (route === 'tickets' && action !== 'archived') setCategories(data.result.ticketCategories)
+  if (route === 'settings') setCategories(data.result.ticketCategories)
+
+  // if (route === 'customers')
 
   window[Symbol.for('vue.instance')].$root.$emit(`${route}-refreshed`, route)
   window[Symbol.for('vue.instance')].$root.$emit(`${route}-data-refreshed`, data)

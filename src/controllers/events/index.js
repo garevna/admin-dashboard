@@ -8,6 +8,8 @@ import { rsp } from './rsp'
 import { mapWorkerEvents } from './map-worker-events'
 import { schedule, booking } from './schedule'
 
+import { settings } from './settings'
+
 import { building } from './building'
 
 const adminWorkerEvents = {
@@ -21,6 +23,7 @@ const adminWorkerEvents = {
   rsp,
   schedule,
   booking,
+  settings,
   building
 }
 

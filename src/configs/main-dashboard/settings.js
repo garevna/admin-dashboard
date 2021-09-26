@@ -25,6 +25,15 @@ export const settings = {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
       }
+    },
+    {
+      title: 'Service delivery time',
+      route: 'estimated-service-delivery-time-settings',
+      icon: 'mdi-map-clock',
+      access: {
+        change: ['Account_manager', 'SuperAdmin'],
+        read: ['View_only']
+      }
     }
   ]
 }

@@ -1,0 +1,111 @@
+<template>
+  <v-card flat class="transparent mx-auto text-center" max-width="960">
+    <v-card-title class="my-8">
+      <h5>
+        <small>Estimated service delivery time settings</small>
+      </h5>
+    </v-card-title>
+    <table class="mx-auto">
+      <thead>
+        <th style="min-width: 140px; color: #999"> Status </th>
+        <th style="min-width: 200px; color: #999"> Status to display </th>
+        <th style="color: #999"> Estimated service delivery time </th>
+        <th style="color: #999">  </th>
+      </thead>
+      <tbody>
+        <tr v-for="type of types" :key="type">
+          <td class="text-left mr-8">
+            <b>{{ type }}</b>
+          </td>
+          <td>
+            <v-text-field
+              v-model="data[type].toDisplay"
+              outlined
+              dense
+              hide-details
+            />
+          </td>
+          <td>
+            <v-text-field
+              v-model="data[type].value"
+              outlined
+              dense
+              hide-details
+            />
+          </td>
+          <td>
+            <v-checkbox
+              label="Disable new customer creation"
+              v-model="data[type].newCustomerDisabled"
+              dense
+              hide-details
+              class="ml-2"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <v-card-actions class="my-12">
+      <v-spacer />
+      <v-btn dark class="primary" @click="save()" text>
+        Save updates
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</template>
+
+<script>
+
+export default {
+  name: 'EstimatedServiceDeliveryTime',
+
+  data: () => ({
+    types: null,
+    data: null,
+    ready: false
+  }),
+
+  watch: {
+    data: {
+      deep: true,
+      handler (value) {
+        console.log(value)
+      }
+    }
+  },
+
+  methods: {
+    update (value, index) {
+      this.items[index] = value
+    },
+    getData (data) {
+      console.log(data)
+      this.types = Object.keys(data)
+      this.data = data
+      this.ready = true
+    },
+    showAnswer (response) {
+      console.log(response)
+    },
+    save () {
+      console.log(this.data)
+      this.__updateEstimatedServiceDeliveryTime(this.data)
+    }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('settings-data-received', this.getSettings)
+    this.$root.$off('settings-data-updated', this.getBuildings)
+  },
+
+  mounted () {
+    this.$root.$on('settings-data-received', this.getData)
+    this.$root.$on('settings-data-updated', this.showAnswer)
+    this.__getEstimatedServiceDeliveryTime()
+  }
+}
+</script>
+
+<style>
+</style>

@@ -55,7 +55,7 @@ export default {
       this.ready = Array.isArray(this.items)
     },
     showAnswer (response) {
-      //
+      console.log(response)
     },
     removeItem (index) {
       this.items.splice(index, 1)
@@ -70,17 +70,17 @@ export default {
       this.items.splice(index - 1, 0, this.items.splice(index, 1)[0])
     },
     save () {
-      this.__putCategories(this.items)
+      this.__putTicketCategories(this.items)
     }
   },
   beforeDestroy () {
-    this.$root.$off('categories-received', this.getBuildings)
-    this.$root.$off('categories-updated', this.getBuildings)
+    this.$root.$off('settings-data-received', this.data)
+    this.$root.$off('settings-data-updated', this.showAnswer)
   },
   mounted () {
-    this.$root.$on('categories-received', this.getData)
-    this.$root.$on('categories-updated', this.showAnswer)
-    this.__getCategories()
+    this.$root.$on('settings-data-received', this.getData)
+    this.$root.$on('settings-data-updated', this.showAnswer)
+    this.__getTicketCategories()
   }
 }
 </script>

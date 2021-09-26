@@ -15,7 +15,7 @@ const error = {
 export const patchBuildingDetails = async function (id, details) {
   const [route, action] = ['building', 'patch']
 
-  const { status } = await patch(`building/${id}`, Object.assign({}, details))
+  const { status } = await patch(`building/${id}`, details)
 
   const response = { status, route, action }
 

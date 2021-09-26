@@ -1,4 +1,4 @@
-export const scheduleSettings = (function () {
+export const scheduleSettingsHandler = (function () {
   let settings = []
   return function (value) {
     if (!value) return settings

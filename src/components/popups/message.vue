@@ -5,7 +5,7 @@
         <v-icon class="mr-4"> $message </v-icon>
         <v-toolbar-title> Message </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click="dialog = false">
+        <v-btn icon class="transparent" @click="dialog = false">
           <v-icon large> $close </v-icon>
         </v-btn>
       </v-toolbar>

@@ -7,12 +7,14 @@ const {
   servicesController,
   ticketsController,
   scheduleController,
-  documentsController
+  documentsController,
+  settingsController
 } = require('../controllers').default
 
 export const routes = {
   '*': {
     refresh: () => {
+      settingsController.refresh()
       rspController.refresh()
       servicesController.refresh()
       ticketsController.refresh()
@@ -29,6 +31,7 @@ export const routes = {
   },
 
   building: {
+    post: buildingController.post,
     patch: buildingController.patch,
     delete: buildingController.delete
   },
@@ -117,7 +120,7 @@ export const routes = {
     get: scheduleController.getFullSchedule,
     week: scheduleController.getByWeekNumber,
     update: scheduleController.updateRecord,
-    settings: scheduleController.getScheduleSettings,
+    // settings: scheduleController.getScheduleSettings,
     config: scheduleController.updateScheduleSettings,
     job: scheduleController.putRecordToJobQueue,
     activate: scheduleController.activateService
@@ -144,5 +147,11 @@ export const routes = {
     post: documentsController.post,
     update: documentsController.update,
     patch: documentsController.patch
+  },
+
+  settings: {
+    refresh: settingsController.refresh,
+    get: settingsController.get,
+    update: settingsController.update
   }
 }

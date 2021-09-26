@@ -152,7 +152,7 @@ body {
   /* margin-bottom: 88px; */
   background: #fbfbfb;
 }
-* {
+img {
   user-select: none;
 }
 

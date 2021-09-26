@@ -3256,10 +3256,20 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
-dgtek-map@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/dgtek-map/-/dgtek-map-1.7.0.tgz#a77a129d924824d4556292c85d66ee156f069e17"
-  integrity sha512-/TWcZtTgxyKXGlg5GiaSccWtlkUVaTL+Jo8QzVUuy8vQsc09z8CfiNv+qBK3pYI0Wi36E3jZRHlJOexvlU6Btg==
+dgtek-google-autocomplete@^1.1.87:
+  version "1.1.87"
+  resolved "https://registry.yarnpkg.com/dgtek-google-autocomplete/-/dgtek-google-autocomplete-1.1.87.tgz#fc09cc4622c8f53ba9944f1567027c8d8e787336"
+  integrity sha512-WH3Ik2eEHaFTiressy6dkmFLtqQnaU5vwwSkIgyAntx3FWGaPZK/05rn1fQc244iVdxtYDzASjvQsHD4tfB9Wg==
+  dependencies:
+    core-js "^3.6.5"
+    dgtek-styles "^0.0.8"
+    vue "^2.6.11"
+    vuetify "^2.2.11"
+
+dgtek-portal-map-package@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.0.4.tgz#f636706d298691d1a419ca1c63f252f487b3fd6a"
+  integrity sha512-FMtNy7ftf82AnW9+bYJjdJ0l6rXcG2pmPAInM9rVggxSVz82M1ZrCl08frtPpnlAN1saaM8hlM2M13pnVqLFdA==
 
 dgtek-styles@^0.0.8:
   version "0.0.8"
@@ -9035,6 +9045,11 @@ vue@2.6.11:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
 
+vue@^2.6.11:
+  version "2.6.14"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
+
 vuetify-loader@^1.3.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vuetify-loader/-/vuetify-loader-1.6.0.tgz#05df0805b3ab2ff0de198109d34f9da3f69da667"
@@ -9042,6 +9057,11 @@ vuetify-loader@^1.3.0:
   dependencies:
     file-loader "^4.0.0"
     loader-utils "^1.2.0"
+
+vuetify@^2.2.11:
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.5.8.tgz#a23e6a7e77b77de0744b53cf1e7c9d40efac0635"
+  integrity sha512-paLmNhKTYFD41+14rIHnCo+P1jHbUzwBiMowxs5qXVq8RdRMqRmcy05Sfse1WUu90amPGK2fIFQq5rL2N8zqZg==
 
 vuetify@^2.5.7:
   version "2.5.7"

@@ -19,13 +19,13 @@ class ScheduleController {
     self.postMessage(await self.updateScheduleLots())
   }
 
-  async getScheduleSettings () {
-    self.postMessage(await self.getScheduleSettings())
-  }
+  // async getScheduleSettings () {
+  //   self.postMessage(await self.getScheduleSettings())
+  // }
 
-  async updateScheduleSettings (record) {
-    self.postMessage(await self.updateScheduleSettings(record.settings))
-  }
+  // async updateScheduleSettings (record) {
+  //   self.postMessage(await self.updateScheduleSettings(record.settings))
+  // }
 
   async updateRecord (record) {
     self.postMessage(await self.updateCustomerServiceStatus(record))

@@ -38,11 +38,11 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('schedule-settings-received', this.getSettings)
+    this.$root.$off('settings-data-received', this.getSettings)
   },
 
   beforeMount () {
-    this.$root.$on('schedule-settings-received', this.getSettings)
+    this.$root.$on('settings-data-received', this.getSettings)
     this.__getScheduleSettings()
   }
 }

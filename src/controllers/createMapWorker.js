@@ -3,6 +3,7 @@ import { mapWorkerErrors } from './errors'
 
 const readyEventHandler = function (event) {
   if (event.data.action === 'init') {
+    console.log('MAP WORKER INIT')
     event.stopImmediatePropagation()
     window[Symbol.for('map.worker')].ready = true
     window[Symbol.for('vue.instance')].$root.$emit('footprint-ready', true)
@@ -19,11 +20,12 @@ export function createMapWorker () {
     console.warn('Map worker Error\n', error)
   }
 
+  // window[Symbol.for('map.worker')].postMessage({ action: 'host', host: window[Symbol.for('api.host')] })
+
   window[Symbol.for('map.worker')].addEventListener('message', readyEventHandler)
 
-  window[Symbol.for('map.worker')].postMessage({ action: 'host', data: window[Symbol.for('vue.prototype')].$buildingsHost() })
-
   window[Symbol.for('map.worker')].onmessage = function (event) {
+    // console.log(event.data)
     if (!event.data) {
       event.stopImmediatePropagation()
       return

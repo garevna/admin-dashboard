@@ -350,4 +350,13 @@ export const updateDocumentError = {
   errorMessage: 'Failed to update document details: remote server error'
 }
 
+/* Settings */
+
+export const refreshSettingsError = {
+  route: 'settings',
+  action: 'refresh',
+  errorType: 'Settings',
+  errorMessage: 'Failed to update settings: remote server error'
+}
+
 /* END */

@@ -146,6 +146,7 @@ export default {
 
   methods: {
     getUniqueCodeList (data) {
+      console.log(data)
       this.uniqueCodeList = data
       uniqueCodeList = data
     },

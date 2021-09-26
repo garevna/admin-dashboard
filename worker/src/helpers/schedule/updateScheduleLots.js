@@ -1,14 +1,13 @@
 import { put } from '../AJAX'
 
-import { scheduleSettings } from '../data-handlers'
+import { scheduleCalendarSettingsHandler } from '../../data-handlers'
 
 export const updateScheduleLots = async function () {
-  const { settings } = (await self.getScheduleLots()).result
+  const { lots } = (await self.getScheduleLots()).result
 
-  scheduleSettings(settings)
+  const settings = scheduleCalendarSettingsHandler()
 
   const currentWeek = self.getWeekNumber(new Date())
-  const lots = { settings }
 
   const response = await self.buildSchedule()
 

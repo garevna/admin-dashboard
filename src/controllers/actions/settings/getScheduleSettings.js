@@ -1,6 +1,7 @@
 export const getScheduleSettings = function () {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'schedule',
-    action: 'settings'
+    route: 'settings',
+    action: 'get',
+    section: 'schedule'
   })
 }

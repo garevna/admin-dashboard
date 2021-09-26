@@ -1,5 +1,5 @@
 import { put } from '../AJAX'
-import { ticketCategories } from '../data-handlers'
+import { ticketCategoriesHandler } from '../../data-handlers'
 
 const ticketCategoriesMessage = {
   message: true,
@@ -17,7 +17,7 @@ export const putCategories = async (data) => {
   const { status, result } = await put('dictionary/ticket-categories', data)
   const response = { status, route: 'categories', action: 'put', result }
 
-  status === 200 && ticketCategories(data)
+  status === 200 && ticketCategoriesHandler(data)
 
   return Object.assign(response, status === 200 ? ticketCategoriesMessage : ticketCategoriesError)
 }

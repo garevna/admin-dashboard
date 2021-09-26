@@ -25,6 +25,17 @@ Object.assign(Vue.prototype, {
 
 window[Symbol.for('vue.prototype')] = Vue.prototype
 
+window[Symbol.for('api.host')] = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API_HOST_PROD : process.env.VUE_APP_API_HOST_DEV
+
+window[Symbol.for('global.addressData')] = {
+  address: '',
+  coordinates: null,
+  buildingId: null,
+  status: null,
+  addressComponents: {},
+  url: null
+}
+
 createMapWorker()
 createAdminWorker()
 

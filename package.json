@@ -4,13 +4,14 @@
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
     "worker": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "dgtek-map": "yarn add dgtek-map && mv node_modules/dgtek-map/dist/map.worker.js public"
+    "serve": "yarn add dgtek-google-autocomplete && rm -r node_modules/dgtek-google-autocomplete/node_modules && vue-cli-service serve",
+    "build": "yarn add dgtek-google-autocomplete && rm -r node_modules/dgtek-google-autocomplete/node_modules && vue-cli-service build",
+    "lint": "yarn add dgtek-google-autocomplete && rm -r node_modules/dgtek-google-autocomplete/node_modules && vue-cli-service lint",
+    "dgtek-portal-map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public"
   },
   "dependencies": {
-    "dgtek-map": "^1.7.0",
+    "dgtek-google-autocomplete": "^1.1.87",
+    "dgtek-portal-map-package": "^1.0.4",
     "dgtek-styles": "^0.0.8",
     "garevna-date-functions": "^1.1.5",
     "vue": "2.6.11",

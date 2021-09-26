@@ -1,6 +1,6 @@
 import { patch } from '../AJAX'
 
-import { scheduleSettings } from '../data-handlers'
+import { scheduleCalendarSettingsHandler } from '../../data-handlers'
 
 import { invalidRequest, updateScheduleSettingsError } from '../../errors'
 
@@ -10,11 +10,9 @@ const invalidRequestError = Object.assign({}, invalidRequest, {
 })
 
 export const updateScheduleSettings = async function (data) {
-  self.postDebugMessage({ data })
-
   if (!Array.isArray(data) || data.length !== 7 || data.filter(item => typeof item !== 'number').length) return invalidRequestError
 
-  scheduleSettings(data)
+  scheduleCalendarSettingsHandler(data)
 
   const response = await patch('slot', { settings: data })
 

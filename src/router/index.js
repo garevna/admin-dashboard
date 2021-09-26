@@ -176,6 +176,11 @@ const routes = [
         component: () => import(/* webpackChunkName: 'schedule-settings' */ '@/components/schedule/ScheduleSettings.vue')
       },
       {
+        path: '/estimated-service-delivery-time-settings',
+        name: 'estimated-service-delivery-time-settings',
+        component: () => import(/* webpackChunkName: 'estimated-service-delivery-time-settings' */ '@/components/settings/EstimatedServiceDeliveryTime.vue')
+      },
+      {
         path: '/documents',
         name: 'documents',
         component: () => import(/* webpackChunkName: 'documents' */ '@/components/documents/Documents.vue'),
