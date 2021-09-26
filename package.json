@@ -1,6 +1,6 @@
 {
   "name": "dgtek-admin-dash",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
     "worker": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
