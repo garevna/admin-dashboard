@@ -29,7 +29,7 @@ const buildingsHostHandler = (function () {
 
 const hostHandler = (function () {
   // const host = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API_HOST_PROD : process.env.VUE_APP_API_HOST_DEV
-  const host = process.env.NODE_ENV === 'production' ? 'https://portal.dgtek.net' : 'https://dgtek-staging.herokuapp.com'
+  const host = process.env.NODE_ENV === 'production' ? 'https://dka.portal.dgtek.net' : 'https://dgtek-staging.herokuapp.com'
   return function () {
     return host
   }
