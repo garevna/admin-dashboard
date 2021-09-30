@@ -15,7 +15,7 @@
 
 import DgtekMap from 'dgtek-portal-map-package'
 
-import { dgtekMapEvents } from '@/configs'
+const { dgtekMapEvents } = require('@/configs').default
 
 let container = null
 

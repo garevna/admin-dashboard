@@ -10,6 +10,11 @@ class BuildingController {
   async delete (request) {
     self.postMessage(await self.deleteBuilding(request.key))
   }
+
+  async excel (request) {
+    self.postDebugMessage({ data: request.data })
+    self.postMessage(await self.createBuildingExcelFile(request.data))
+  }
 }
 
 export const buildingController = new BuildingController()

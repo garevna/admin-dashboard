@@ -12,6 +12,10 @@ import { init } from '@/controllers/actions/init'
 
 import { createController } from './controllers/createController'
 
+import PortalGoogleAutocomplete from 'portal-google-autocomplete'
+
+customElements.define('portal-google-autocomplete', PortalGoogleAutocomplete)
+
 Vue.config.productionTip = false
 
 Vue.component('error-message', ErrorMessage)
@@ -29,7 +33,9 @@ createController()
 
 init()
 
-console.log(window[Symbol.for('api.host')])
+window.addEventListener('server-error', function (event) {
+  window[Symbol.for('vue.instance')].$emit('open-error-popup', event.detail)
+})
 
 /* eslint-disable no-extend-native */
 

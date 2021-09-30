@@ -15,31 +15,14 @@ import schedule from './schedule'
 import documents from './documents'
 import settings from './settings'
 
-import {
-  getBuildingByAddress,
-  getBuildingById,
-  getBuildingsByStatus,
-  postBuildingDetails,
-  putBuildingDetails,
-  patchBuildingDetails,
-  refreshBuildings,
-  deleteBuilding
-} from './map.worker'
+import buildings from './map.worker'
 
-const result = Object.assign({}, rsp, services, customers, tickets, schedule, documents, settings, {
+const result = Object.assign({}, rsp, services, customers, tickets, schedule, documents, settings, buildings, {
   // init,
   auth,
   changePassword,
   resetPassword,
-  sendPasswordResetCode,
-  getBuildingByAddress,
-  getBuildingById,
-  getBuildingsByStatus,
-  postBuildingDetails,
-  putBuildingDetails,
-  patchBuildingDetails,
-  refreshBuildings,
-  deleteBuilding
+  sendPasswordResetCode
 })
 
 export default result

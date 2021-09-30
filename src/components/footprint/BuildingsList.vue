@@ -75,7 +75,8 @@
 
 import { getBuildingUniqueCode } from '@/helpers'
 import { buildingStatusHandler, buildingsListPageNumberHandler } from '@/controllers/data-handlers'
-import { footprintOptions } from '@/configs'
+
+const { footprintOptions } = require('@/configs').default
 
 export default {
   name: 'BuildingsList',

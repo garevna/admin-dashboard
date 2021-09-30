@@ -1,17 +1,10 @@
-const modules = {}
-
 const context = require.context('./', false)
 
-let modulesNames = context.keys()
-  .filter(key => key !== './' && key !== './index' && key !== './index.js')
-  .map(key => key.split('.js').join(''))
+let moduleNames = context.keys().filter(key => key !== './' && key !== './index' && key !== './index.js')
 
-modulesNames = Array.from(new Set(modulesNames))
+moduleNames = Array.from(new Set(moduleNames))
 
-modulesNames.forEach((moduleName) => {
-  const name = moduleName.split('./').join('')
-  modules[name] = context(moduleName)
-})
+const modules = Object.assign({}, ...moduleNames.map(name => ({ [name.split('./').join('').split('.js').join('')]: context(name) })))
 
 const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
 

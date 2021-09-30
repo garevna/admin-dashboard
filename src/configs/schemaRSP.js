@@ -1,4 +1,4 @@
-export const schema = {
+export const schemaRSP = {
   company: {
     name: {
       title: 'Company name',

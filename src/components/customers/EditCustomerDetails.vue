@@ -116,9 +116,10 @@
 
 <script>
 
-import { customerSchema, rules } from '@/configs'
 import { testTextField } from '@/helpers'
 import { SwitchValues } from '@/components/inputs'
+
+const { customerSchema, rules } = require('@/configs').default
 
 const { customerDetails, commercial } = customerSchema
 

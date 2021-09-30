@@ -167,7 +167,7 @@ export default {
     this.$root.$on('categories-received', this.getCategories)
     this.$root.$on('rsp-tickets-list-received', this.getTickets)
     this.$root.$on('ticket-data-received', this.showTicketDetails)
-    this.__getCategories()
+    this.__getTicketCategories()
     this.__getTicketsOfPartner(this.details._id)
   }
 }

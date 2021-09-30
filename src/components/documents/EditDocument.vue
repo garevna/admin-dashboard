@@ -64,7 +64,9 @@
 
 <script>
 
-import { pdf404 } from '@/configs'
+const { pdf404 } = require('@/configs').default
+
+console.log(pdf404)
 
 export default {
   name: 'EditDocument',

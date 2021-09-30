@@ -8,7 +8,7 @@ import schedule from './schedule'
 import documents from './documents'
 import settings from './settings'
 
-import { patchBuildingDetails, deleteBuilding, postBuilding } from './building'
+import building from './building'
 
 import { testDBVersion } from './db'
 
@@ -20,7 +20,7 @@ const {
   sendPasswordResetCode
 } = require('./admin').default
 
-const result = Object.assign({}, rsp, customers, services, tickets, schedule, documents, settings, {
+const result = Object.assign({}, building, rsp, customers, services, tickets, schedule, documents, settings, {
   testDBVersion,
   init,
   hash,
@@ -30,11 +30,7 @@ const result = Object.assign({}, rsp, customers, services, tickets, schedule, do
   passwordReset,
   sendPasswordResetCode,
   changePassword,
-  passwordChange,
-
-  patchBuildingDetails,
-  deleteBuilding,
-  postBuilding
+  passwordChange
 })
 
 Object.keys(result).forEach((key) => { self[key] = result[key] })

@@ -1,37 +1,11 @@
-import { mainDashboard } from './mainDashboard'
-import { dgtekMapEvents } from './dgtekMapEvents'
-import { buildingStatusConfig } from './buildingStatusConfig'
-import { footprintOptions } from './footprintOptions'
-import { stepsNames } from './steps'
-import { schema } from './schemaRSP'
-import { buildingSchema } from './buildingSchema'
-import { newBuilding } from './newBuilding'
-import { customerSchema } from './customerSchema'
-import { newCustomer } from './newCustomer'
-import { serviceSchema } from './serviceSchema'
-import { ticketSchema } from './ticketSchema'
-import { patterns } from './patterns'
-import { validateABN } from './validateABN'
-import { rules } from './rules'
+const context = require.context('./', false)
 
-import pdf404 from './pdf404'
+let moduleNames = context.keys().filter(key => key !== './' && key !== './index' && key !== './index.js')
 
-export {
-  mainDashboard,
-  dgtekMapEvents,
-  buildingStatusConfig,
-  footprintOptions,
-  stepsNames,
-  schema,
-  buildingSchema,
-  newBuilding,
-  customerSchema,
-  newCustomer,
-  serviceSchema,
-  ticketSchema,
-  patterns,
-  validateABN,
-  rules,
+moduleNames = Array.from(new Set(moduleNames))
 
-  pdf404
-}
+const modules = Object.assign({}, ...moduleNames.map(name => ({ [name.split('./').join('').split('.js').join('')]: context(name) })))
+
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
+
+export default result

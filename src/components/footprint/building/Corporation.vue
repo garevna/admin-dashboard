@@ -48,10 +48,11 @@
 
 <script>
 
-import { buildingSchema, rules } from '@/configs'
 import { testTextField } from '@/helpers'
 
 import GeoscapeAutocomplete from '@/components/inputs/GeoscapeAutocomplete.vue'
+
+const { buildingSchema, rules } = require('@/configs').default
 
 export default {
   name: 'Corporation',

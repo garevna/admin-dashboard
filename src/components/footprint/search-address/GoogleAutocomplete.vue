@@ -1,19 +1,11 @@
 <template>
-  <DgtekGoogleAutocomplete v-if="mapIsReady" />
+  <portal-google-autocomplete v-if="mapIsReady" :host="$buildingsHost()" />
 </template>
 
 <script>
 
-import 'dgtek-google-autocomplete/dist/dgtek-google-autocomplete.css'
-
-const { DgtekGoogleAutocomplete } = require('dgtek-google-autocomplete').default
-
 export default {
   name: 'GoogleAutocomplete',
-
-  components: {
-    DgtekGoogleAutocomplete
-  },
 
   props: ['building'],
 
@@ -30,7 +22,7 @@ export default {
   },
 
   beforeDestroy () {
-    window.removeEventListener('new-address-data', this.catchEvent)
+    window.removeEventListener('submit-address', this.catchEvent)
   },
 
   mounted () {
@@ -43,7 +35,7 @@ export default {
 
     this.$emit('update:building', null)
 
-    window.addEventListener('new-address-data', this.catchEvent)
+    window.addEventListener('submit-address', this.catchEvent)
   }
 }
 </script>

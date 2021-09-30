@@ -1,4 +1,4 @@
-import { mainDashboard } from '../configs'
+const { mainDashboard } = require('@/configs').default
 
 const access = {
   change: ['Account_manager', 'SuperAdmin'],

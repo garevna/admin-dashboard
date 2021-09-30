@@ -1,4 +1,4 @@
-export const stepsNames = [
+export const steps = [
   'Dashboard',
   'Edit company details',
   'Check the address',

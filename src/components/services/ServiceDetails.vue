@@ -113,11 +113,12 @@
 
 <script>
 
-import { serviceSchema, rules } from '@/configs'
 import { SwitchValues } from '@/components/inputs'
 import { testTextField } from '@/helpers'
 
 import Partners from '@/components/services/Partners.vue'
+
+const { serviceSchema, rules } = require('@/configs').default
 
 export default {
   name: 'ServiceDetails',

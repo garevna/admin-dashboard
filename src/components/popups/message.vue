@@ -13,7 +13,7 @@
         <h4>{{ messageType || '' }}</h4>
       </v-card-text>
       <v-card-text class="text-center">
-        <p>{{ messageText }}</p>
+        <p v-html="messageText"></p>
       </v-card-text>
 
       <v-card-text class="text-center">
@@ -49,12 +49,6 @@ export default {
       this.messageText = ''
     },
     open (data) {
-      // const { messageType, messageText } = messageHandler()
-      // if (messageType === data.messageType && messageText === data.messageText) return this.resetMessage()
-      // messageHandler({
-      //   messageType: data.messageType,
-      //   messageText: data.messageText
-      // })
       this.message = true
       this.messageType = data.messageType
       this.messageText = data.messageText

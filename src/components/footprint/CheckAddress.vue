@@ -1,9 +1,12 @@
 <template>
   <v-container ref="container">
     <v-card flat class="transparent" >
-      <MapSearch :building.sync="buildingDetails" />
-
-      <GoogleAutocomplete :building.sync="buildingDetails" />
+      <v-row justify="center">
+        <MapSearch :building.sync="buildingDetails" />
+      </v-row>
+      <v-row justify="center" style="position: relative; margin-bottom: 120px;">
+        <GoogleAutocomplete :building.sync="buildingDetails" />
+      </v-row>
 
       <v-card id="dgtek-address-search-results" class="transparent mx-auto py-10 text-center" outlined>
 
@@ -135,6 +138,8 @@ export default {
     this.$root.$on('buildings-refreshed', this.buildingsRefreshed)
 
     this.scrollSize = document.getElementById('dgtek-address-search-results').getBoundingClientRect().top
+
+    window.addEventListener('new-address-data', this.catchGoogleAutocompleteEvent)
   }
 }
 </script>

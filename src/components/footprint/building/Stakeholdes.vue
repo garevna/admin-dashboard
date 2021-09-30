@@ -40,8 +40,9 @@
 
 <script>
 
-import { buildingSchema, rules } from '@/configs'
 import { testTextField } from '@/helpers'
+
+const { buildingSchema, rules } = require('@/configs').default
 
 export default {
   name: 'Stakeholders',

@@ -60,7 +60,7 @@
 
 <script>
 
-import { pdf404 } from '@/configs'
+const { pdf404 } = require('@/configs').default
 
 export default {
   name: 'ViewPDF',

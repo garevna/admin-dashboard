@@ -20,14 +20,14 @@ const geoscapeKeyHandler = (function () {
 })()
 
 const buildingsHostHandler = (function () {
-  const buildingHost = process.env.VUE_APP_BUILDINGS_API_HOST
+  const buildingHost = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BUILDINGS_API_HOST_PROD : process.env.VUE_APP_BUILDINGS_API_HOST_DEV
   return function () {
     return buildingHost
   }
 })()
 
 const hostHandler = (function () {
-  const host = process.env.VUE_APP_API_HOST
+  const host = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API_HOST_PROD : process.env.VUE_APP_API_HOST_DEV
   return function () {
     return host
   }

@@ -60,7 +60,8 @@
 <script>
 
 import { roleHandler } from '@/controllers/data-handlers'
-import { mainDashboard } from '@/configs'
+
+const { mainDashboard } = require('@/configs').default
 
 export default {
   name: 'Dashboard',

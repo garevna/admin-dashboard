@@ -65,7 +65,8 @@
 <script>
 
 import { loginHandler, passwordHandler, roleHandler } from '@/controllers/data-handlers'
-import { patterns } from '@/configs'
+
+import { patterns } from '@/configs/validation'
 
 export default {
   name: 'SignIn',

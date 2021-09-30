@@ -17,7 +17,7 @@
 
 <script>
 
-import { schema } from '@/configs'
+const { schemaRSP } = require('@/configs').default
 
 export default {
   name: 'CompanyDetails',
@@ -35,8 +35,8 @@ export default {
 
   data: () => ({
     ready: false,
-    schema: schema,
-    steps: Object.keys(schema)
+    schema: schemaRSP,
+    steps: Object.keys(schemaRSP)
   }),
 
   methods: {

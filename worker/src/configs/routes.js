@@ -33,7 +33,8 @@ export const routes = {
   building: {
     post: buildingController.post,
     patch: buildingController.patch,
-    delete: buildingController.delete
+    delete: buildingController.delete,
+    excel: buildingController.excel
   },
 
   rsp: {

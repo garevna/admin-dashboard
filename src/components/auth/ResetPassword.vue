@@ -60,7 +60,8 @@
 <script>
 
 import { loginHandler, codeHandler, passwordHandler } from '@/controllers/data-handlers'
-import { rules } from '@/configs'
+
+const { rules } = require('@/configs').default
 
 export default {
   name: 'ResetPassword',

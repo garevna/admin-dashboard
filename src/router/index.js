@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 
 import { roleHandler } from '@/controllers/data-handlers'
-// import { mainDashboard } from '@/configs'
 
 const { isNavigationFailure, NavigationFailureType } = VueRouter
 
@@ -136,6 +135,11 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'building-pages' */ '@/components/footprint/BuildingPages.vue'),
         props: true
+      },
+      {
+        path: '/excel',
+        name: 'excel',
+        component: () => import(/* webpackChunkName: 'buildings-to-excel' */ '@/components/footprint/CreateExcel.vue')
       },
       {
         path: '/booking',

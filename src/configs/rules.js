@@ -1,4 +1,4 @@
-import { patterns, validateABN } from './'
+import { patterns, validateABN } from './validation'
 
 export const rules = {
   required: value => !!value || 'Required.',

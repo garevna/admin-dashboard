@@ -34,6 +34,15 @@ export const footprint = {
         change: ['Map_editor', 'SuperAdmin'],
         read: ['View_only']
       }
+    },
+    {
+      title: 'Create Excel file',
+      route: 'excel',
+      icon: 'mdi-microsoft-excel',
+      access: {
+        change: ['Map_editor', 'SuperAdmin'],
+        read: ['View_only']
+      }
     }
   ]
 }

@@ -72,8 +72,9 @@
 
 <script>
 
-import { buildingSchema, rules } from '@/configs'
 import { testTextField, getBuildingUniqueCode } from '@/helpers'
+
+const { buildingSchema, rules } = require('@/configs').default
 
 export default {
   name: 'EditBuildingDetails',

@@ -1,26 +1,11 @@
-import { getBuildingByAddress } from './getBuildingByAddress'
-import { getBuildingById } from './getBuildingById'
-import { getBuildingsByStatus } from './getBuildingsByStatus'
-import { getAddressListByStatus } from './getAddressListByStatus'
-import { postBuildingDetails } from './postBuildingDetails'
-import { putBuildingDetails } from './putBuildingDetails'
+const context = require.context('./', false)
 
-import { patchBuildingDetails } from './patchBuildingDetails'
+let moduleNames = context.keys().filter(key => key !== './' && key !== './index' && key !== './index.js')
 
-import { refreshBuildings } from './refreshBuildings'
+moduleNames = Array.from(new Set(moduleNames))
 
-import { deleteBuilding } from './deleteBuilding'
+const modules = Object.assign({}, ...moduleNames.map(name => ({ [name.split('./').join('').split('.js').join('')]: context(name) })))
 
-export {
-  getBuildingByAddress,
-  getBuildingById,
-  getBuildingsByStatus,
-  getAddressListByStatus,
-  postBuildingDetails,
-  putBuildingDetails,
-  patchBuildingDetails,
+const result = Object.assign({}, ...Object.keys(modules).map(key => ({ [key]: modules[key][key] })))
 
-  refreshBuildings,
-
-  deleteBuilding
-}
+export default result

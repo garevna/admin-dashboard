@@ -5,10 +5,10 @@ export const scheduling = {
   serviceId: '',
   status: '',
   modified: Date.now(),
-  weekNumber: this.getWeekNumber(Date.now()),
+  weekNumber: 0,
   weekDetails: {
-    start: this.getWeekStartDate(Date.now()),
-    end: this.getWeekEndDate(Date.now())
+    start: 0,
+    end: 0
   },
   lots: [
     {
