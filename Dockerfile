@@ -12,4 +12,4 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-amd64
 RUN chmod +x /tini
 
 ENTRYPOINT ["/tini", "--"]
-CMD ["yarn", "serve"]
+CMD ["yarn", "prod"]
