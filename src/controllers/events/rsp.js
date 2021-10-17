@@ -5,6 +5,7 @@ export const rsp = {
   get: 'rsp-details-received',
   put: 'rsp-details-updated',
   registration: 'registration-requests-received',
+  credentials: 'partner-credentials-received',
 
   'confirm-registration-request': 'partner-created',
 

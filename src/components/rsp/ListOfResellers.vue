@@ -15,7 +15,13 @@
         :items="resellers"
         :search="search"
         @click:row="showDetails"
-      ></v-data-table>
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-icon @click.stop="getPartnerCredentials(item)">
+            mdi-open-in-new
+          </v-icon>
+        </template>
+      </v-data-table>
 
       <v-text-field
         v-model="search"
@@ -61,7 +67,8 @@ export default {
       { text: 'Address', value: 'company.address' },
       { text: 'Primary contact', value: 'company.primaryContact' },
       { text: 'Phone (mobile)', value: 'company.phoneMobile' },
-      { text: 'Phone (work)', value: 'company.phoneWork' }
+      { text: 'Phone (work)', value: 'company.phoneWork' },
+      { text: 'Cabinet', value: 'actions', sortable: false }
     ],
     resellers: null,
     details: false,
@@ -72,6 +79,17 @@ export default {
     getData (data) {
       this.resellers = data
       this.ready = true
+    },
+
+    getPartnerCredentials (partner) {
+      console.log(partner._id)
+      this.__getPartnerCredentials(partner._id)
+    },
+
+    gotoCabinet (data) {
+      console.log(data.result)
+      console.log(this.$partnerCabinetLink())
+      this.__openExternalLink(`${this.$partnerCabinetLink()}#${data.result}`)
     },
 
     refresh () {
@@ -86,12 +104,20 @@ export default {
 
   beforeMount () {
     this.$root.$on('rsp-list-received', this.getData)
+    this.$root.$on('partner-credentials-received', this.gotoCabinet)
     this.__getResellersList()
   },
 
   beforeDestroy () {
     this.$root.$off('rsp-list-received', this.getData)
+    this.$root.$off('partner-credentials-received', this.gotoCabinet)
   }
 }
 
 </script>
+
+<style scoped>
+td {
+  cursor: pointer;
+}
+</style>

@@ -42,6 +42,7 @@ export const routes = {
     list: rspController.list,
     short: rspController.short,
     get: rspController.get,
+    credentials: rspController.getPartnerCredentials,
 
     'refresh-partners-list': rspController.refreshPartnersList,
 

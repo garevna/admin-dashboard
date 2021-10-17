@@ -1,3 +1,5 @@
+const apiHost = process.env.NODE_ENV === 'production' ? 'https://portal.dgtek.net' : 'https://dgtek-staging.herokuapp.com'
+
 const secretHandler = (function () {
   const secret = process.env.VUE_APP_SECRET
   return function () {
@@ -21,7 +23,7 @@ const geoscapeKeyHandler = (function () {
 
 const buildingsHostHandler = (function () {
   // const buildingHost = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BUILDINGS_API_HOST_PROD : process.env.VUE_APP_BUILDINGS_API_HOST_DEV
-  const buildingHost = process.env.NODE_ENV === 'production' ? 'https://portal.dgtek.net' : 'https://dgtek-staging.herokuapp.com'
+  const buildingHost = apiHost
   return function () {
     return buildingHost
   }
@@ -29,9 +31,16 @@ const buildingsHostHandler = (function () {
 
 const hostHandler = (function () {
   // const host = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API_HOST_PROD : process.env.VUE_APP_API_HOST_DEV
-  const host = process.env.NODE_ENV === 'production' ? 'https://portal.dgtek.net' : 'https://dgtek-staging.herokuapp.com'
+  const host = apiHost
   return function () {
     return host
+  }
+})()
+
+const partnerCabinetLinkHandler = (function () {
+  const link = process.env.NODE_ENV === 'production' ? 'https://portal.dgtek.net/rsp' : 'http://192.168.0.101:8082/rsp'
+  return function () {
+    return link
   }
 })()
 
@@ -40,7 +49,8 @@ const config = {
   apiKey: apiKeyHandler,
   apiHost: hostHandler,
   geoscapeKey: geoscapeKeyHandler,
-  buildingsHost: buildingsHostHandler
+  buildingsHost: buildingsHostHandler,
+  partnerCabinetLink: partnerCabinetLinkHandler
 }
 
 export {
@@ -55,11 +65,14 @@ export default {
     Vue.apiHost = hostHandler
     Vue.geoscapeKey = geoscapeKeyHandler
     Vue.buildingsHost = buildingsHostHandler
+    Vue.partnerCabinetLink = partnerCabinetLinkHandler
+
     Vue.prototype.$appConfig = config
     Vue.prototype.$apiSecret = secretHandler
     Vue.prototype.$apiKey = apiKeyHandler
     Vue.prototype.$apiHost = hostHandler
     Vue.prototype.$geoscapeKey = geoscapeKeyHandler
     Vue.prototype.$buildingsHost = buildingsHostHandler
+    Vue.prototype.$partnerCabinetLink = partnerCabinetLinkHandler
   }
 }

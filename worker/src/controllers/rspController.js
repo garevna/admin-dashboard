@@ -54,6 +54,10 @@ class ResellersController {
     self.postMessage(await self.deleteMessage(request.messageId))
   }
 
+  async getPartnerCredentials (request) {
+    self.postMessage(await self.getPartnerCredentials(request.resellerId))
+  }
+
   getUniqueCodeList () {
     self.postMessage({ status: 200, route: 'rsp', action: 'get-unique-code-list', result: uniqueCodes() })
   }

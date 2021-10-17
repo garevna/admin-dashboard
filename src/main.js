@@ -29,6 +29,10 @@ window[Symbol.for('vue.instance')] = new Vue({
   render: h => h(App)
 }).$mount('#app')
 
+window[Symbol.for('vue.prototype')].__openExternalLink = function (url) {
+  window.open(url, '_blank')
+}
+
 createController()
 
 init()
