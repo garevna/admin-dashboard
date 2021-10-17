@@ -1,21 +1,47 @@
-FROM node:14-alpine as build-stage
-# WORKDIR /usr/src/app
+# =============== simple http server ===============
 
-WORKDIR /usr/app
+FROM node:14-alpine
+
+RUN yarn global add http-server
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN yarn install
 
 COPY . .
 
-RUN yarn install
 RUN yarn build
 
-# Copy from VueJS Build Stage dist folder to nginx (production-stage)
+EXPOSE 8080
+CMD [ "http-server", "dist" ]
 
-FROM nginx:stable-alpine as production-stage
+# ================ multi-stage ===================
 
-COPY --from=build-stage /usr/app/dist /usr/share/nginx/html
+# FROM node:14-alpine as build-stage
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# WORKDIR /usr/app
+
+# COPY . .
+
+# RUN yarn install
+# RUN yarn build
+
+# === Copy from VueJS Build Stage dist folder to nginx (production-stage) ===
+
+# FROM nginx:stable-alpine as production-stage
+
+# COPY --from=build-stage /usr/app/dist /usr/share/nginx/html
+
+# EXPOSE 80
+# CMD ["nginx", "-g", "daemon off;"]
+
+# ================================= needs server.js ===================
+
+# FROM node:14-alpine
+
+# WORKDIR /usr/src/app
 
 # ENV TINI_VERSION v0.19.0
 # ENV PATH /usr/src/app/node_modules/.bin:$PATH
