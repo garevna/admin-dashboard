@@ -8,14 +8,14 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prod": "node server.js",
+    "prod": "http-server dist",
     "dgtek-portal-map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public"
   },
   "dependencies": {
     "dgtek-portal-map-package": "^1.0.4",
     "dgtek-styles": "^0.0.8",
-    "express": "^4.17.1",
     "garevna-date-functions": "^1.1.5",
+    "http-server": "^13.0.2",
     "portal-google-autocomplete": "^1.0.8",
     "vue": "2.6.11",
     "vue-router": "^3.5.1",
