@@ -4,7 +4,7 @@ deploy:
   before_script:
     - sed -i "s~<VERSION>~${CI_COMMIT_SHA}~g" .helm/Chart.yaml
   script:
-    - helm upgrade dgtek-admin-dash .helm --namespace dgtek-admin-dash --install --values values.prod.yaml
+    - helm upgrade dgtek-admin-dash .helm --namespace dgtek-admin-dash --install --values .helm/values.prod.yaml
   environment:
     name: production
   rules:
