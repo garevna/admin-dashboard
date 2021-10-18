@@ -1,4 +1,4 @@
-deploy:
+deploy-staging:
   stage: staging
   image: dtzar/helm-kubectl
   before_script:
