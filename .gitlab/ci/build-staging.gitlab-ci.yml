@@ -6,7 +6,7 @@ build-app:
   before_script:
     - echo "${CI_REGISTRY_PASSWORD}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
   script:
-    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA} ./ -f Dockerfile.staging
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}-staging ./ -f Dockerfile.staging
     - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}-staging
   only:
     - master
