@@ -9,7 +9,7 @@ ___toBeRemoved
 
 # local env files
 .env
-.env.*
+.env.local.*
 
 # Log files
 npm-debug.log*
