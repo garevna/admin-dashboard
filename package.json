@@ -15,11 +15,13 @@
     "dgtek-portal-map-package": "^1.0.4",
     "dgtek-styles": "^0.0.8",
     "express": "^4.17.1",
+    "express-winston": "^4.2.0",
     "garevna-date-functions": "^1.1.5",
     "portal-google-autocomplete": "^1.0.8",
     "vue": "2.6.11",
     "vue-router": "^3.5.1",
-    "vuetify": "^2.5.7"
+    "vuetify": "^2.5.7",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
