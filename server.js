@@ -29,6 +29,8 @@ const logger = winston.createLogger({
   )
 })
 
+app.use(express.static(path.join(__dirname, 'dist')))
+
 app.get('*', (req, res) => {
   const options = {
     root: path.join(__dirname, 'dist'),
@@ -44,8 +46,6 @@ app.get('*', (req, res) => {
     }
   })
 })
-
-app.use(express.static(path.join(__dirname, 'dist')))
 
 // start the server
 app.listen(port, () => console.log(`Listening on port ${port}`))
