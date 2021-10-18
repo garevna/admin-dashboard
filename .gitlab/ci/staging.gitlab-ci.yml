@@ -1,0 +1,11 @@
+deploy:
+  stage: staging
+  image: dtzar/helm-kubectl
+  before_script:
+    - sed -i "s~<VERSION>~${CI_COMMIT_SHA}-staging~g" .helm/Chart.yaml
+  script:
+    - helm upgrade dgtek-admin-dash-staging .helm --namespace dgtek-admin-dash-staging --install --values values.staging.yaml
+  environment:
+    name: production
+  only:
+    - master
