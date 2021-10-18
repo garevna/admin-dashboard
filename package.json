@@ -7,6 +7,7 @@
     "worker": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-staging": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint",
     "prod": "node server.js",
     "dgtek-portal-map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public"
