@@ -21,6 +21,14 @@ app.use(expressWinston.logger({
   ignoreRoute: function (req, res) { return false }
 }))
 
+const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  transports: [new winston.transports.Console()],
+  format: winston.format.combine(
+    winston.format.json()
+  )
+})
+
 app.get('*', (req, res) => {
   const options = {
     root: path.join(__dirname, 'dist'),
@@ -29,7 +37,10 @@ app.get('*', (req, res) => {
 
   res.sendFile('index.html', options, function (err) {
     if (err) {
-      res.status(err.status).end()
+      logger.error({
+        message: err.message,
+        name: err.name
+      })
     }
   })
 })
