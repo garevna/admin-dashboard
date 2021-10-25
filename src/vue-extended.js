@@ -25,7 +25,7 @@ Object.assign(Vue.prototype, {
 
 window[Symbol.for('vue.prototype')] = Vue.prototype
 
-window[Symbol.for('api.host')] = () => {
+window[Symbol.for('api.host')] = (() => {
   switch (process.env.NODE_ENV) {
     case 'production':
       return 'https://portal.dgtek.net'
@@ -35,7 +35,7 @@ window[Symbol.for('api.host')] = () => {
     default:
       return 'https://dgtek-staging.herokuapp.com'
   }
-}
+})()
 
 window[Symbol.for('global.addressData')] = {
   address: '',

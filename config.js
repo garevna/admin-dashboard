@@ -1,4 +1,4 @@
-const apiHost = () => {
+const apiHost = (() => {
   switch (process.env.NODE_ENV) {
     case 'production':
       return 'https://portal.dgtek.net'
@@ -8,7 +8,7 @@ const apiHost = () => {
     default:
       return 'https://dgtek-staging.herokuapp.com'
   }
-}
+})()
 
 const secretHandler = (function () {
   const secret = process.env.VUE_APP_SECRET
