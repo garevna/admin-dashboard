@@ -1,0 +1,11 @@
+deploy-master:
+  stage: master
+  image: dtzar/helm-kubectl
+  before_script:
+    - sed -i "s~<VERSION>~${CI_COMMIT_SHA}-master~g" .helm/Chart.yaml
+  script:
+    - helm upgrade dgtek-admin-dash-master .helm --namespace dgtek-admin-dash-master --install --values .helm/values.master.yaml
+  environment:
+    name: mater
+  except:
+    - master
