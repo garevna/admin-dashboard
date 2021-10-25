@@ -1,5 +1,5 @@
 const apiHost = (() => {
-  switch(process.env.NODE_ENV) {
+  switch (process.env.NODE_ENV) {
     case 'production':
       return 'https://portal.dgtek.net'
     case 'staging':
