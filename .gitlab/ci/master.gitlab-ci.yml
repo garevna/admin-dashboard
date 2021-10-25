@@ -7,5 +7,5 @@ deploy-master:
     - helm upgrade dgtek-admin-dash-master .helm --namespace dgtek-admin-dash-master --install --values .helm/values.master.yaml
   environment:
     name: mater
-  only:
+  except:
     - master
