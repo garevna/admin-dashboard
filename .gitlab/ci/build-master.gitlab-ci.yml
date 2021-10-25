@@ -1,0 +1,12 @@
+build-master-app:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login --username "${CI_REGISTRY_USER}" --password-stdin "${CI_REGISTRY}"
+  script:
+    - docker build -t ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}-master ./ -f Dockerfile.staging
+    - docker push ${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHA}-master
+  except:
+    - master
