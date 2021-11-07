@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN yarn install
-RUN yarn build
+RUN yarn build-staging
 
 ENV TINI_VERSION v0.19.0
 ENV PATH /usr/src/app/node_modules/.bin:$PATH

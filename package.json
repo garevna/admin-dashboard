@@ -7,17 +7,23 @@
     "worker": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-staging": "vue-cli-service build --mode staging",
+    "build-master": "vue-cli-service build --mode master",
     "lint": "vue-cli-service lint",
+    "prod": "node server.js",
     "dgtek-portal-map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public"
   },
   "dependencies": {
     "dgtek-portal-map-package": "^1.1.0",
     "dgtek-styles": "^0.0.8",
+    "express": "^4.17.1",
+    "express-winston": "^4.2.0",
     "garevna-date-functions": "^1.1.5",
     "portal-google-autocomplete": "^1.0.8",
     "vue": "2.6.11",
     "vue-router": "^3.5.1",
-    "vuetify": "^2.5.7"
+    "vuetify": "^2.5.7",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
