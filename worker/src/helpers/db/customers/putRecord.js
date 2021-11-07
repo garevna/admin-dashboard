@@ -4,7 +4,7 @@ export const putRecord = function (store, data) {
       onsuccess: event => resolve({ status: 200 }),
       onerror: event => {
         self.postDebugMessage({ route: store, action: 'put', error: 'Error', data })
-        resolve({ status: 500 })
+        resolve({ status: 400 })
       }
     })
   })

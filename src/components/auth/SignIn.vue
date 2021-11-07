@@ -64,7 +64,9 @@
 
 <script>
 
-import { loginHandler, passwordHandler, roleHandler } from '@/controllers/data-handlers'
+import { loginHandler, passwordHandler, roleHandler, credentialsHandler } from '@/controllers/data-handlers'
+
+import { createMapWorker } from '@/controllers'
 
 import { patterns } from '@/configs/validation'
 
@@ -96,15 +98,35 @@ export default {
     updatePassword (value) {
       passwordHandler(value)
     },
-    showResult (event) {
-      roleHandler(event.data.role)
+
+    showResult (result) {
+      this.$root.$off('auth-success', this.showResult)
+      console.log(result.role, result.credentials)
+      roleHandler(result.role)
+      credentialsHandler(result.credentials)
+
+      createMapWorker(credentialsHandler(), roleHandler())
+
       this.$router.push({ name: 'dash' }).catch(failure => console.warn('Router failure:\n', failure))
     },
+
     async signIn () {
       this.$root.$on('auth-success', this.showResult)
       this.__auth(this.email, passwordHandler())
       this.step = 1
+    },
+
+    buildingsRefreshed (data) {
+      console.log('BUILDINGS REFRESHED:\n', data)
     }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('buildings-refreshed', this.buildingsRefreshed)
+  },
+
+  mounted () {
+    this.$root.$on('buildings-refreshed', this.buildingsRefreshed)
   }
 }
 </script>

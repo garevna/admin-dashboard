@@ -1,10 +1,10 @@
 export const mapWorkerErrors = {
-  getByAddress: (address) => ({
+  address: (address) => ({
     type: address,
     message: 'Error reading building details from local DB'
   }),
 
-  getById: () => ({
+  details: () => ({
     type: 'Building details',
     message: 'Error reading the data from local DB'
   }),
@@ -14,7 +14,7 @@ export const mapWorkerErrors = {
     message: 'Error reading the data from local DB'
   }),
 
-  data: () => ({
+  table: () => ({
     type: 'Buildings list',
     message: 'Error reading the data from local DB'
   }),
@@ -22,6 +22,11 @@ export const mapWorkerErrors = {
   post: (type = 'Add new building', message = 'New building was not created') => ({
     type,
     message
+  }),
+
+  patch: (type = 'Building details') => ({
+    type,
+    message: 'Data was not updated.'
   }),
 
   put: (type = 'Building details') => ({

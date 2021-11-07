@@ -3,6 +3,7 @@ import { refreshHandler } from '../data-handlers'
 import { setCategories } from '../../helpers'
 
 export function refreshCallback (event) {
+  console.log('REFRESH CALLBACK\n', event.data)
   const { status, route, action, ...data } = event.data
 
   if (status !== 200) return refreshError(route)
@@ -10,8 +11,6 @@ export function refreshCallback (event) {
   refreshHandler(route, true)
 
   if (route === 'settings') setCategories(data.result.ticketCategories)
-
-  // if (route === 'customers')
 
   window[Symbol.for('vue.instance')].$root.$emit(`${route}-refreshed`, route)
   window[Symbol.for('vue.instance')].$root.$emit(`${route}-data-refreshed`, data)

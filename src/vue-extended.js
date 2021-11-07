@@ -1,7 +1,6 @@
 import Vue from 'vue'
 
 import {
-  createMapWorker,
   createAdminWorker
 } from './controllers'
 
@@ -25,7 +24,7 @@ Object.assign(Vue.prototype, {
 
 window[Symbol.for('vue.prototype')] = Vue.prototype
 
-window[Symbol.for('api.host')] = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API_HOST_PROD : process.env.VUE_APP_API_HOST_DEV
+// window[Symbol.for('api.host')] = process.env.NODE_ENV === 'production' ? 'process.env.VUE_APP_API_HOST_PROD' : process.env.VUE_APP_API_HOST_DEV
 
 window[Symbol.for('global.addressData')] = {
   address: '',
@@ -36,7 +35,10 @@ window[Symbol.for('global.addressData')] = {
   url: null
 }
 
-createMapWorker()
+window.addEventListener('dgtek-portal-map-package-error', function (event) {
+  console.log(event.detail)
+})
+
 createAdminWorker()
 
 export default Vue

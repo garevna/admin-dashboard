@@ -60,6 +60,8 @@
 import '@/sass/main.scss'
 import 'dgtek-styles'
 
+import { credentialsHandler, roleHandler } from '@/controllers/data-handlers'
+
 const servicesImage = require('@/assets/images/melbourne-2-1.svg')
 const homeImage = require('@/assets/images/Webb-Bridge-Melbourne-Drawing-effect.svg')
 
@@ -84,6 +86,16 @@ export default {
     },
     backgroundImage () {
       return this.$route.name === 'home' ? homeImage : servicesImage
+    }
+  },
+
+  watch: {
+    signIn (val) {
+      console.log('signIn: ', val)
+      if (val) {
+        console.log('CREDENTIALS: ', credentialsHandler())
+        console.log('ROLE: ', roleHandler())
+      }
     }
   },
 
@@ -133,6 +145,15 @@ export default {
     this.$root.$on('progress-event', this.progressEventCallback)
 
     window.scroll({ top: 0, left: 0, behavior: 'smooth' })
+
+    // const test = (route, action, key, data) => new Promise((resolve, reject) => {
+    //   window[Symbol.for('admin.worker')].sendMessage({ route, action, key, data })
+    //   const callback = function (event) {
+    //     const { status, route, action, key, result } = event.data
+    //     console.log(status, route, action, key, result)
+    //   }.bind(null, route, action, resolve)
+    //   window[Symbol.for('admin.worker')].addEventListener('message', callback)
+    // })
   },
 
   errorCaptured (err, instance, info) {

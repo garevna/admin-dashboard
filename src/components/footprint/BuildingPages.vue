@@ -25,7 +25,7 @@
         <transition name="current-component" v-if="ready">
           <component
             :is="currentComponent"
-            :buildingData="buildingData"
+            :buildingData.sync="buildingData"
             class="mb-8"
           />
         </transition>
@@ -156,6 +156,7 @@ export default {
       Other
     ],
     currentComponent: GeneralInfo,
+    generalInfoUpdated: false,
     buildingData: null
   }),
 
@@ -200,12 +201,18 @@ export default {
       })
     },
     exit () {
-      buildingStatusHandler(this.buildingData.status)
-      this.$route.name !== 'buildings' && this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
+      const { address, uniqueCode, status, estimatedServiceDeliveryTime } = this.buildingData
+
+      buildingStatusHandler(status)
+
+      this.generalInfoUpdated && this.$root.$emit('building-general-data-changed', { address, uniqueCode, status, estimatedServiceDeliveryTime })
+
+      this.$route.name !== 'buildings' && this.$router.push({ name: 'buildings' })
+        .catch(failure => console.warn('Router failure:\n', failure))
     },
 
     getData (data) {
-      this.buildingData = data.result
+      this.buildingData = data
       this.ready = true
     },
     goToGeneralInfo () {
@@ -243,17 +250,18 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('building-details', this.getData)
+    // this.$root.$off('building-details-received', this.getData)
     this.$root.$off('building-details-updated', this.showMessage)
     this.$root.$off('new-building-created', this.getNewBuildingId)
   },
 
   mounted () {
-    this.$root.$on('building-details', this.getData)
+    // this.$root.$on('building-details-received', this.getData)
     this.$root.$on('building-details-updated', this.showMessage)
     this.$root.$on('new-building-created', this.getNewBuildingId)
 
-    this.__getBuildingById(this.buildingId)
+    // this.__getBuildingById(this.buildingId)
+    window[Symbol.for('map.worker')].getBuildingDetailsById(this.buildingId, this.getData)
     this.$vuetify.goTo(0)
   }
 }

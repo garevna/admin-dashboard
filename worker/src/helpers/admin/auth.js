@@ -25,13 +25,15 @@ export const auth = async (login, password) => {
 
   const result = await response.json()
 
+  self.postDebugMessage({ result })
+
   if (response.status !== 200) return self.errorMessage('authError')
 
   return {
     status: 200,
     route: 'admin',
     action: 'redirect',
-    result,
+    result: Object.assign(result.data, { credentials: credentialsHandler() }),
     message: true,
     messageType: 'DGtek Admin authorization',
     messageText: `Role: ${result.data.role}`

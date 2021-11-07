@@ -11,9 +11,7 @@
         <tr>
           <td width="160"> Building unique code </td>
           <td>
-            <p style="border: solid 1px #999; border-radius: 4px; padding: 4px 16px;">
-              <b>{{ buildingUniqueCode }}</b>
-            </p>
+            <v-text-field v-model="generalBuildingData.uniqueCode" dense hide-details outlined />
           </td>
         </tr>
       </table>
@@ -30,7 +28,7 @@
                 :items="footprintOptions"
                 item-text="text"
                 item-value="value"
-                v-model="buildingData.status"
+                v-model="generalBuildingData.status"
                 outlined
                 dense
                 hide-details
@@ -39,7 +37,7 @@
             </td>
             <td width="180">
               <v-text-field
-                v-model="buildingData.estimatedServiceDeliveryTime"
+                v-model="generalBuildingData.estimatedServiceDeliveryTime"
                 outlined
                 dense
                 hide-details
@@ -79,7 +77,7 @@
               </h5>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <component :is="section" :buildingData="buildingData" />
+              <component :is="section" :buildingData="buildingDetails" />
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -116,30 +114,50 @@ export default {
       { text: 'Coming soon', value: 'ComingSoon' },
       { text: 'N/A', value: 'Other' }
     ],
-    buildingDetails: {},
-    address: '',
-    addressComponents: {},
-    buildingType: null,
-    value: null,
+    generalInfoUpdated: false,
     panel: null
   }),
 
   computed: {
-    buildingUniqueCode () {
-      return getBuildingUniqueCode(this.buildingData.addressComponents)
+    address: {
+      get () {
+        return this.buildingData.address
+      },
+      set (value) {
+        this.$emit('update:buildingData', Object.assign(this.buildingData, { address: value }))
+      }
+    },
+    buildingDetails: {
+      get () {
+        return JSON.parse(JSON.stringify(this.buildingData))
+      },
+      set (data) {
+        console.log(data)
+      }
     },
     status: {
       get () {
-        return convertBuildingStatus(this.buildingData.status)
+        return convertBuildingStatus(this.generalBuildingData.status)
       },
       set (value) {
-        Object.assign(this.buildingData.status, { status: convertBuildingStatus(value) })
+        Object.assign(this.generalBuildingData.status, { status: convertBuildingStatus(value) })
       }
     },
     buildingAddressDetails: {
       get () {
         const { address, addressComponents, coordinates, status } = this.buildingData
         return { address, addressComponents, coordinates, status }
+      },
+      set (data) {
+        if (JSON.stringify(data.addressComponents) !== JSON.stringify(this.buildingData.addressComponents)) {
+          Object.assign(this.generalBuildingData, {
+            addressComponents: data.addressComponents,
+            address: data.address,
+            coordinates: data.coordinates,
+            uniqueCode: getBuildingUniqueCode(data.addressComponents)
+          })
+          this.$emit('update:buildingData', Object.assign(this.buildingData, this.generalBuildingData))
+        }
       }
     }
   },
@@ -147,8 +165,14 @@ export default {
   methods: {
     saveBuildingDetails () {
       this.$root.$emit('progress-event', true)
-      const { address, addressComponents, coordinates, status, estimatedServiceDeliveryTime } = this.buildingData
-      this.__patchBuildingDetails(this.buildingData._id, { address, addressComponents, coordinates, status, estimatedServiceDeliveryTime })
+      const { address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime } = this.generalBuildingData
+      console.log({ address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime })
+      console.log(this.generalBuildingData)
+
+      // this.__patchBuildingDetails(this.buildingData._id, { address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime })
+      window[Symbol.for('map.worker')].patchBuildingDetails(this.buildingData._id, this.generalBuildingData, this.sendMessage)
+      this.generalInfoUpdated = true
+      // this.$root.$emit('building-general-data-changed', { address, uniqueCode, status, estimatedServiceDeliveryTime })
     },
 
     sendMessage (event) {
@@ -160,6 +184,7 @@ export default {
 
     exit () {
       this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
+      this.generalInfoUpdated && this.$root.$emit('building-general-data-changed', this.generalBuildingData)
     }
   },
 

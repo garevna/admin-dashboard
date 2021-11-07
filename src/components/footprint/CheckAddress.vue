@@ -52,6 +52,7 @@ export default {
   },
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     buildingDetails: {},
     statusToDisplay: '',
     showButtons: false,
@@ -88,19 +89,21 @@ export default {
         estimatedServiceDeliveryTime
       } = this.buildingDetails
 
-      this.__postBuildingDetails({ address, addressComponents, coordinates, status, estimatedServiceDeliveryTime })
+      // this.__postBuildingDetails({ address, addressComponents, coordinates, status, estimatedServiceDeliveryTime })
+      this.worker.createNewBuilding({ address, addressComponents, coordinates, status, estimatedServiceDeliveryTime }, this.newBuildingCreated)
     },
 
-    newBuildingCreated (response) {
-      console.log(response)
-      this.newBuildingId = response.data
-      this.__refreshBuildings()
-    },
-
-    buildingsRefreshed (response) {
-      console.log(this.newBuildingId)
+    newBuildingCreated (buildingId) {
+      console.log(buildingId)
+      this.newBuildingId = buildingId
       this.gotoBuildingEditor(this.newBuildingId)
+      // this.__refreshBuildings()
     },
+
+    // buildingsRefreshed (response) {
+    //   console.log(this.newBuildingId)
+    //   this.gotoBuildingEditor(this.newBuildingId)
+    // },
 
     gotoBuildingEditor (buildingId) {
       this.$router.push({ name: 'building-details', params: { buildingId } })
@@ -120,22 +123,23 @@ export default {
     },
 
     refresh () {
-      this.__getBuildingById(this.buildingId)
+      console.log('REFRESH: WHAT FOR?...')
+      // this.__getBuildingById(this.buildingId)
     }
   },
 
   beforeDestroy () {
     this.$root.$off('settings-data-received', this.getSettings)
-    this.$root.$off('new-building-created', this.newBuildingCreated)
-    this.$root.$off('buildings-refreshed', this.buildingsRefreshed)
+    // this.$root.$off('new-building-created', this.newBuildingCreated)
+    // this.$root.$off('buildings-refreshed', this.buildingsRefreshed)
 
     window.removeEventListener('new-address-data', this.catchGoogleAutocompleteEvent)
   },
 
   mounted () {
     this.$root.$on('settings-data-received', this.getSettings)
-    this.$root.$on('new-building-created', this.newBuildingCreated)
-    this.$root.$on('buildings-refreshed', this.buildingsRefreshed)
+    // this.$root.$on('new-building-created', this.newBuildingCreated)
+    // this.$root.$on('buildings-refreshed', this.buildingsRefreshed)
 
     this.scrollSize = document.getElementById('dgtek-address-search-results').getBoundingClientRect().top
 

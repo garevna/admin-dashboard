@@ -70,7 +70,7 @@ export default {
     items: mainDashboard,
     refreshed: {
       rsp: false,
-      footprint: window[Symbol.for('map.worker')].ready,
+      footprint: false,
       customers: false,
       tickets: false,
       services: false,

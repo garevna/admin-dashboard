@@ -15,6 +15,7 @@ export default {
 
   methods: {
     catchEvent (event) {
+      console.log('AUTOCOMPLETE:\n', event.detail)
       const { address, addressComponents, status, buildingId, url, coordinates, estimatedServiceDeliveryTime } = event.detail
 
       this.$emit('update:building', { address, addressComponents, status, buildingId, url, coordinates, estimatedServiceDeliveryTime })

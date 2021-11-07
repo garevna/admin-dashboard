@@ -35,39 +35,33 @@ export default {
   props: ['building'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     litBuildings: [],
     footprintBuildings: [],
     buildingId: null
   }),
 
   watch: {
-    buildingId (value) {
-      value && this.__getBuildingById(value)
+    buildingId (id) {
+      id && this.worker.getBuildingDetailsById(id, this.getBuildingDetails)
     }
   },
 
   methods: {
-    getBuildings (response) {
-      this[`${response.store}Buildings`] = response.result.map(item => ({ text: item.address, id: item.id }))
-      this[`${response.store}Loading`] = false
+    getBuildings (data) {
+      this[`${data.buildingStatus.toLowerCase()}Buildings`] = data.map(item => ({ text: item.address, id: item.id }))
+      this[`${data.buildingStatus.toLowerCase()}Loading`] = false
     },
 
-    getBuildingDetails (response) {
-      const { address, status, addressComponents, coordinates, _id: buildingId, estimatedServiceDeliveryTime } = response.result
-      this.$emit('update:building', { address, status, addressComponents, coordinates, buildingId, estimatedServiceDeliveryTime })
+    getBuildingDetails (data) {
+      const { address, status, addressComponents, uniqueCode, coordinates, _id: buildingId, estimatedServiceDeliveryTime } = data
+      this.$emit('update:building', { address, status, addressComponents, uniqueCode, coordinates, buildingId, estimatedServiceDeliveryTime })
     }
   },
 
-  beforeDestroy () {
-    this.$root.$off('buildings-data-list', this.getBuildings)
-    this.$root.$off('building-details', this.getBuildingDetails)
-  },
-
   mounted () {
-    this.$root.$on('buildings-data-list', this.getBuildings)
-    this.$root.$on('building-details', this.getBuildingDetails)
-    this.__getBuildingsByStatus('lit')
-    this.__getBuildingsByStatus('footprint')
+    this.worker.getBuildingsListForTable('lit', this.getBuildings)
+    this.worker.getBuildingsListForTable('footprint', this.getBuildings)
   }
 }
 </script>

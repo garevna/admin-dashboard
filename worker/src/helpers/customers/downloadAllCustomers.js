@@ -4,7 +4,7 @@ import { putRecordByKey } from '../db'
 export const downloadAllCustomers = async function () {
   const [route, action] = ['customers', 'refresh']
 
-  const perPage = 30
+  const perPage = 50
 
   let currentPage = 1
   let done = false

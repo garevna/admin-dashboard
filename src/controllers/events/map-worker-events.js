@@ -1,12 +1,13 @@
 export const mapWorkerEvents = {
+  init: 'map-worker-is-ready',
   refresh: 'buildings-refreshed',
-  init: 'buildings-refreshed',
-  getByAddress: 'building-details',
-  getById: 'building-details',
-  list: 'buildings-address-list',
-  data: 'buildings-data-list',
+  address: 'building-details-received',
+  details: 'building-details-received',
+  getById: 'building-details-received', /* for old ver */
+  list: 'buildings-address-list-received',
+  table: 'buildings-table-data-received',
   post: 'new-building-created',
   put: 'building-details-updated',
   patch: 'building-details-updated',
-  delete: 'building-deleted'
+  remove: 'building-deleted'
 }

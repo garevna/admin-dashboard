@@ -5,8 +5,6 @@ export function initCallback (event) {
   const { status } = event.data
 
   if (status === 200) {
-    // window[Symbol.for('admin.worker')].addEventListener('message', refreshCallback)
-
-    // window[Symbol.for('admin.worker')].removeEventListener('message', initCallback)
+    window[Symbol.for('admin.worker')].removeEventListener('message', initCallback)
   } else initError()
 }

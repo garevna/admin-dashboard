@@ -15,8 +15,6 @@
 
 import DgtekMap from 'dgtek-portal-map-package'
 
-const { dgtekMapEvents } = require('@/configs').default
-
 let container = null
 
 export default {
@@ -25,37 +23,28 @@ export default {
   props: ['building'],
 
   data: () => ({
-    map: null,
-    events: dgtekMapEvents
+    worker: window[Symbol.for('map.worker')],
+    map: null
   }),
 
   methods: {
-    catchEvent (event) {
-      const { address, addressComponents, coordinates, status, buildingId, estimatedServiceDeliveryTime } = event.data
-      this.$emit('update:building', { address, addressComponents, coordinates, status, buildingId, estimatedServiceDeliveryTime })
+    catchEvent (data) {
+      const { address, addressComponents, coordinates, status, uniqueCode, buildingId, estimatedServiceDeliveryTime } = data
+      this.$emit('update:building', { address, addressComponents, coordinates, status, uniqueCode, buildingId, estimatedServiceDeliveryTime })
     }
-  },
-
-  beforeDestroy () {
-    this.events.forEach(eventName => container.removeEventListener(eventName, this.catchEvent))
   },
 
   mounted () {
     container = document.getElementById('container-for-map')
-    this.events.forEach(eventName => container.addEventListener(eventName, this.catchEvent))
 
     window.google = null
+
+    this.worker.searchCallback = this.catchEvent
 
     this.map = new DgtekMap({
       container,
       center: { lat: -37.8357725, lng: 144.9738764 }
     })
-
-    this.events.getEventName = function (status) {
-      for (const key in this) {
-        if (this[key].includes(status)) return key
-      }
-    }
   }
 }
 

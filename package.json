@@ -11,7 +11,7 @@
     "dgtek-portal-map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public"
   },
   "dependencies": {
-    "dgtek-portal-map-package": "^1.0.4",
+    "dgtek-portal-map-package": "^1.1.0",
     "dgtek-styles": "^0.0.8",
     "garevna-date-functions": "^1.1.5",
     "portal-google-autocomplete": "^1.0.8",

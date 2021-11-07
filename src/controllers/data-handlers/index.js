@@ -10,6 +10,8 @@ import { buildingsListPageNumberHandler } from './buildingsListPageNumberHandler
 
 import { refreshHandler } from './refreshHandler'
 
+import { mapComponent } from './mapComponent'
+
 export {
   codeHandler,
   loginHandler,
@@ -21,5 +23,7 @@ export {
   buildingStatusHandler,
   buildingsListPageNumberHandler,
 
-  refreshHandler
+  refreshHandler,
+
+  mapComponent
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mb-12 pb-12">
     <v-card flat class="transparent mx-auto" max-width="900">
       <v-row justify="end">
         <v-btn text @click="refresh" class="mr-12 mb-5">

@@ -1,20 +1,17 @@
+const { footprintOptions } = require('../../configs').default
+
 export const buildingStatusHandler = (function () {
-  let status = 'lit'
-
-  const available = ['lit', 'footprint', 'build', 'soon', 'other']
-
-  const convert = {
-    LIT: 'lit',
-    Footprint: 'footprint',
-    BuildCommenced: 'build',
-    UnderConstruction: 'build',
-    ComingSoon: 'soon',
-    Other: 'other'
+  let status = {
+    title: 'On-net buildings',
+    value: 'lit',
+    status: 'LIT'
   }
 
-  return function (value) {
-    if (!value) return status
+  return function (data) {
+    if (!data) return status
 
-    status = available.includes(value) ? value : convert[value] ? convert[value] : status
+    const found = footprintOptions.find(item => item.value === data.value && item.title === data.title && item.status === data.status)
+
+    status = found || status
   }
 })()

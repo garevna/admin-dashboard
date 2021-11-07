@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="ready" style="max-width: 800px">
+  <v-container v-if="ready" style="max-width: 960px">
     <v-data-table
       :headers="headers"
       :items="filteredItems"
@@ -8,6 +8,10 @@
       class="transparent"
       @click:row="edit($event)"
     >
+      <template v-slot:item.selected="{ item }">
+        <v-checkbox v-model="item.selected" hide-details label="" dense @click.stop="selectItem" />
+      </template>
+
       <template v-slot:footer.prepend>
         <v-text-field
           v-model="search"
@@ -25,9 +29,9 @@
         <v-toolbar flat class="transparent">
           <v-toolbar-title>
             <v-select
-              :items="available"
+              :items="footprintOptions"
               item-text="title"
-              item-value="value"
+              return-object
               v-model="status"
               label="Building status"
               outlined
@@ -36,10 +40,16 @@
               class="mt-4"
               style="width: 300px"
               :menu-props="{ bottom: true, offsetY: true }"
+              @change="statusChanged"
             ></v-select>
           </v-toolbar-title>
 
           <v-spacer />
+
+          <v-btn v-if="selects.length" text class="mb-2" @click="updateGroup" color="primary">
+            <v-icon>mdi-pencil-box-multiple-outline</v-icon>
+            Group update
+          </v-btn>
 
           <v-btn text class="mb-2" @click="refresh">
             <v-icon>mdi-refresh</v-icon>
@@ -68,6 +78,8 @@
     </v-data-table>
 
     <span class="ml-12"><small>Total selected buildings: {{ selectedBuildingsNumber }}</small></span>
+
+    <GroupUpdate v-if="selects.length" :dialog.sync="groupUpdate" :items.sync="selects" />
   </v-container>
 </template>
 
@@ -76,26 +88,36 @@
 import { getBuildingUniqueCode } from '@/helpers'
 import { buildingStatusHandler, buildingsListPageNumberHandler } from '@/controllers/data-handlers'
 
+import GroupUpdate from '@/components/footprint/GroupUpdate.vue'
+
 const { footprintOptions } = require('@/configs').default
 
 export default {
   name: 'BuildingsList',
 
+  components: {
+    GroupUpdate
+  },
+
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     ready: false,
     buildings: [],
+    selects: [],
+    groupUpdate: false,
     toBeRemoved: null,
     search: '',
     page: buildingsListPageNumberHandler(),
-    available: footprintOptions,
+    footprintOptions,
     selectedBuildingId: undefined,
-    // selectedBuildingsNumber: null,
     headers: [
-      { text: '', value: 'actions', sortable: false },
+      { text: 'Group updates', value: 'selected' },
       { text: 'Building address', align: 'start', sortable: true, value: 'address' },
-      { text: 'Building unique code', value: 'buildingUniqueCode' },
+      { text: 'Building unique code', value: 'uniqueCode' },
       { text: 'Footprint', value: 'status' },
-      { text: 'Estimated service delivery time', value: 'estimatedServiceDeliveryTime' }
+      { text: 'Estimated service delivery time', value: 'estimatedServiceDeliveryTime' },
+      { text: '', value: 'actions', sortable: false }
+
     ]
   }),
 
@@ -105,9 +127,10 @@ export default {
         return buildingStatusHandler()
       },
       set (value) {
-        if (value !== buildingStatusHandler()) {
+        console.log('STATUS UPDATED: ', value)
+        if (value.status !== buildingStatusHandler().status) {
           buildingStatusHandler(value)
-          this.__getBuildingsByStatus(buildingStatusHandler())
+          this.worker.getBuildingsListForTable(buildingStatusHandler().value, this.getBuildings)
         }
       }
     },
@@ -126,34 +149,55 @@ export default {
   },
 
   methods: {
+    statusChanged (val) {
+      console.log(val)
+      buildingStatusHandler(val)
+    },
+
+    requestBuildingList () {
+      this.$root.$emit('progress-event', true)
+      this.worker.getBuildingsListForTable(buildingStatusHandler().value, this.getBuildings)
+    },
+
     getBuildings (data) {
-      const { result } = data
-      this.buildings = result.map(building => ({
+      this.$root.$emit('progress-event', false)
+      this.buildings = data.map(building => ({
         address: building.address,
-        buildingUniqueCode: getBuildingUniqueCode(building.addressComponents),
-        status: result.buildingStatus,
+        uniqueCode: building.uniqueCode || getBuildingUniqueCode(building.addressComponents),
+        status: data.buildingStatus,
         estimatedServiceDeliveryTime: building.estimatedServiceDeliveryTime,
-        id: building.id
+        id: building.id,
+        selected: false
       }))
 
       this.ready = true
     },
 
     refresh () {
+      this.$root.$emit('progress-event', true)
       this.ready = false
       this.buildings = []
-      this.__refreshBuildings()
+      this.worker.refresh(this.getRefreshedBuildings)
     },
 
-    getRefreshedBuildings (data) {
-      console.log('Refreshed!!!', data)
-      this.status = buildingStatusHandler()
-      this.__getBuildingsByStatus(buildingStatusHandler())
+    getRefreshedBuildings () {
+      this.$root.$emit('progress-event', false)
+      this.requestBuildingList()
+    },
+
+    updateGroup () {
+      this.groupUpdate = true
+      this.requestBuildingList()
     },
 
     edit (item) {
-      const buildingId = item.id
-      this.$router.push({ name: 'building-details', params: { buildingId } }).catch(failure => console.warn('Router failure:\n', failure))
+      this.selectedBuildingId = item.id
+      const { address, uniqueCode, status, estimatedServiceDeliveryTime } = item
+      window[Symbol.for('selected-building-general-info')] = { address, uniqueCode, status, estimatedServiceDeliveryTime }
+      console.log(window[Symbol.for('selected-building-general-info')])
+
+      this.$router.push({ name: 'building-details', params: { buildingId: this.selectedBuildingId } })
+        .catch(failure => console.warn('Router failure:\n', failure))
     },
 
     createBuilding () {
@@ -169,31 +213,41 @@ export default {
     },
 
     confirmationReceived () {
-      this.__deleteBuilding(this.toBeRemoved)
+      this.worker.deleteBuilding(this.toBeRemoved, this.requestBuildingList)
+    },
+
+    moveToNewStatus (data) {
+      console.log(this.selectedBuildingId)
+      console.log(data)
+    },
+
+    selectItem (item) {
+      this.selects = this.buildings.filter(item => item.selected)
+        .map(item => ({ id: item.id, status: item.status, estimatedServiceDeliveryTime: item.estimatedServiceDeliveryTime, address: item.address }))
+    },
+
+    buildingsGroupUpdated () {
+      this.worker.getBuildingsListForTable(buildingStatusHandler().value, this.getBuildings)
     }
   },
   beforeDestroy () {
-    this.$root.$off('buildings-refreshed', this.getRefreshedBuildings)
-    this.$root.$off('buildings-address-list', this.getBuildings)
-    this.$root.$off('buildings-data-list', this.getBuildings)
+    console.log('BEFORE DESTROY\n', window[Symbol.for('selected-building-general-info')])
 
     this.$root.$off('operation-confirmed', this.confirmationReceived)
-    this.$root.$off('building-deleted', this.refresh)
   },
 
   mounted () {
+    if (window[Symbol.for('selected-building-general-info')]) {
+      const { updated, status, address, uniqueCode, estimatedServiceDeliveryTime } = window[Symbol.for('selected-building-general-info')]
+      console.log({ updated, status, address, uniqueCode, estimatedServiceDeliveryTime })
+      if (status !== this.status) console.log('building status changed!')
+    }
+
     this.page = buildingsListPageNumberHandler()
 
-    this.$root.$on('buildings-refreshed', this.getRefreshedBuildings)
-    this.$root.$on('buildings-address-list', this.getBuildings)
-    this.$root.$on('buildings-data-list', this.getBuildings)
-
     this.$root.$on('operation-confirmed', this.confirmationReceived)
-    this.$root.$on('building-deleted', this.refresh)
 
-    if (!buildingStatusHandler()) buildingStatusHandler('lit')
-
-    this.__getBuildingsByStatus(buildingStatusHandler())
+    this.requestBuildingList()
   }
 }
 </script>

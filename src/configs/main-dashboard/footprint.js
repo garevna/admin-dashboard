@@ -1,6 +1,5 @@
 export const footprint = {
   title: 'Footprint',
-  callback: '__refreshCustomersWithPagination',
   refresh: 'footprint',
   icon: 'mdi-map',
   access: {
@@ -18,7 +17,7 @@ export const footprint = {
       }
     },
     {
-      title: 'Edit polygins',
+      title: 'Edit polygons',
       route: 'polygons',
       icon: 'mdi-map-marker-path',
       access: {
