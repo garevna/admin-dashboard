@@ -6,7 +6,7 @@ const apiHost = (() => {
     case 'master':
       return `https://portal.${process.env.NODE_ENV}.dgtek.net`
     default:
-      return 'https://dgtek-staging.herokuapp.com'
+      return 'https://portal.staging.dgtek.net'
   }
 })()
 

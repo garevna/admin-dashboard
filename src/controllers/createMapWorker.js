@@ -18,9 +18,6 @@ const callback = () => {
 }
 
 export const createMapWorker = function (credentials, role) {
-  const path = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_PUBLIC_PATH_PRODUCTION : ''
-
   const { $apiHost, $apiKey } = window[Symbol.for('vue.prototype')]
-
-  window[Symbol.for('map.worker')] = startWorker(path, $apiHost(), $apiKey(), credentials, role, callback)
+  window[Symbol.for('map.worker')] = startWorker(location.origin, $apiHost(), $apiKey(), credentials, role, callback)
 }

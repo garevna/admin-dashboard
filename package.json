@@ -14,7 +14,7 @@
     "dgtek-portal-map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public"
   },
   "dependencies": {
-    "dgtek-portal-map-package": "^1.1.0",
+    "dgtek-portal-map-package": "^1.1.1",
     "dgtek-styles": "^0.0.8",
     "express": "^4.17.1",
     "express-winston": "^4.2.0",

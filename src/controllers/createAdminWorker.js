@@ -3,9 +3,9 @@ import { adminWorkerErrors } from './errors'
 import { initCallback, startRefreshing, refreshCallback, showDebugMessage } from './callbacks'
 
 export function createAdminWorker () {
-  const path = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_PUBLIC_PATH_PRODUCTION : ''
+  // const path = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_PUBLIC_PATH_PRODUCTION : ''
 
-  window[Symbol.for('admin.worker')] = new Worker(`${path}admin.worker.js`)
+  window[Symbol.for('admin.worker')] = new Worker(`${location.origin}/admin.worker.js`)
 
   window[Symbol.for('admin.worker')].onerror = function (error) {
     console.warn('Admin worker Error\n', error)

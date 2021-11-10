@@ -3299,10 +3299,10 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
-dgtek-portal-map-package@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.0.tgz#1fb4bca94d6ca5e2cb1c6acededdb73b547c3158"
-  integrity sha512-O1OoyMQJaqWGvOwIhrU3WZY4zvTRQ2J854n8QneNiU7JefhpfIqDGz4DPEJom5JuLFo+Z1tPUnZ24zztPbQgXw==
+dgtek-portal-map-package@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.1.tgz#5c9857c7295943e5cddfac44f001b802956207b4"
+  integrity sha512-XERAb4TLK6/cjkYicueUjD43mGLWFxfQfML1PL1oKvK8LFFgzutg+7nn2TSGpxKaRqPbpHFVzFv9ptbUGQiKng==
 
 dgtek-styles@^0.0.8:
   version "0.0.8"

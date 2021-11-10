@@ -35,10 +35,11 @@
                     <p><small>{{ record.serviceName }}</small></p>
                   </td>
                   <td>
-                      <v-icon :color="getIcon(record.status).color" small class="mr-1">
+                    <ServiceStatusButton :record.sync="record" />
+                      <!-- <v-icon :color="getIcon(record.status).color" small class="mr-1">
                         {{ getIcon(record.status).icon }}
                       </v-icon>
-                      <v-menu offset-y>
+                      <v-menu>
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
                             text
@@ -70,7 +71,7 @@
                             </v-list-item-title>
                           </v-list-item>
                         </v-list>
-                      </v-menu>
+                      </v-menu> -->
                   </td>
                   <!-- <td>
                     <v-btn text @click="showInfo(record)">
@@ -89,8 +90,14 @@
 
 <script>
 
+import ServiceStatusButton from '@/components/schedule/ServiceStatusButton.vue'
+
 export default {
   name: 'Booking',
+
+  components: {
+    ServiceStatusButton
+  },
 
   data: () => ({
     panel: [],
@@ -126,6 +133,7 @@ export default {
     },
 
     changeRecordStatus (record, status) {
+      console.log(record, status)
       this.selected = record
       this.status = status
       this.__changeServiceDeliveryStatus(Object.assign(record, { status }))

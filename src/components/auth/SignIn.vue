@@ -101,7 +101,6 @@ export default {
 
     showResult (result) {
       this.$root.$off('auth-success', this.showResult)
-      console.log(result.role, result.credentials)
       roleHandler(result.role)
       credentialsHandler(result.credentials)
 
@@ -114,19 +113,7 @@ export default {
       this.$root.$on('auth-success', this.showResult)
       this.__auth(this.email, passwordHandler())
       this.step = 1
-    },
-
-    buildingsRefreshed (data) {
-      console.log('BUILDINGS REFRESHED:\n', data)
     }
-  },
-
-  beforeDestroy () {
-    this.$root.$off('buildings-refreshed', this.buildingsRefreshed)
-  },
-
-  mounted () {
-    this.$root.$on('buildings-refreshed', this.buildingsRefreshed)
   }
 }
 </script>
