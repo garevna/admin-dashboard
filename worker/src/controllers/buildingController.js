@@ -7,6 +7,10 @@ class BuildingController {
     self.postMessage(await self.patchBuildingDetails(request.key, request.details))
   }
 
+  async patchGroup (request) {
+    self.postMessage(await self.patchBuildingsGroup(request.keys, request.details))
+  }
+
   async delete (request) {
     self.postMessage(await self.deleteBuilding(request.key))
   }

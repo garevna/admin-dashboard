@@ -48,6 +48,10 @@ class CustomersController {
   async hardRefresh () {
     self.postMessage(await self.hardCustomersRefresh())
   }
+
+  async getCustomersForExcel (request) {
+    self.postMessage(await self.getCustomersForExcelTable(request.data))
+  }
 }
 
 export const customersController = new CustomersController()

@@ -71,6 +71,8 @@ export const routes = {
     delete: customersController.deleteCustomer,
     put: customersController.updateCustomer,
 
+    excel: customersController.getCustomersForExcel,
+
     'hard-refresh': customersController.hardRefresh
   },
 

@@ -61,6 +61,7 @@ import '@/sass/main.scss'
 import 'dgtek-styles'
 
 import { credentialsHandler, roleHandler } from '@/controllers/data-handlers'
+// import { startRefreshing } from '@/controllers/callbacks'
 
 const servicesImage = require('@/assets/images/melbourne-2-1.svg')
 const homeImage = require('@/assets/images/Webb-Bridge-Melbourne-Drawing-effect.svg')
@@ -139,6 +140,17 @@ export default {
   },
 
   mounted () {
+    roleHandler(localStorage.getItem('admin'))
+    credentialsHandler(localStorage.getItem('refresh'))
+
+    // this.signIn = Boolean(roleHandler() && credentialsHandler())
+    // if (this.signIn) startRefreshing()
+
+    this.$root.$on('show-snackbar', this.showSnackbar)
+    this.$root.$on('hide-snackbar', this.hideSnackbar)
+
+    if (this.$apiHost() === 'https://dka.portal.staging.dgtek.net') this.$root.$emit('show-snackbar', 'Staging release. You are at testing mode now.')
+
     this.$root.$on('app-is-ready', this.setReady)
     this.$root.$on('db-refreshing', this.dataRefreshing)
     this.$root.$on('db-refreshing-complete', this.dataRefreshed)

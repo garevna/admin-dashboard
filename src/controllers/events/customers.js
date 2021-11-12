@@ -8,5 +8,7 @@ export const customers = {
   put: 'customer-updated',
   pagination: 'page-of-customers-received',
 
+  excel: 'customers-for-excel-received',
+
   'hard-refresh': 'customers-refreshed'
 }

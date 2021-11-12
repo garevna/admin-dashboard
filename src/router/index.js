@@ -96,6 +96,11 @@ const routes = [
         component: () => import(/* webpackChunkName: 'customers-list' */ '@/components/customers/CustomersList.vue')
       },
       {
+        path: '/customers-to-excel',
+        name: 'customers-to-excel',
+        component: () => import(/* webpackChunkName: 'customers-to-excel' */ '@/components/customers/ExportToExcel.vue')
+      },
+      {
         path: '/footprint',
         name: 'footprint',
         beforeEnter (to, from, next) {

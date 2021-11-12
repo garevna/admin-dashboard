@@ -106,6 +106,9 @@ export default {
 
       createMapWorker(credentialsHandler(), roleHandler())
 
+      localStorage.setItem('admin', roleHandler())
+      localStorage.setItem('refresh', credentialsHandler())
+
       this.$router.push({ name: 'dash' }).catch(failure => console.warn('Router failure:\n', failure))
     },
 

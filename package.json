@@ -1,6 +1,6 @@
 {
   "name": "dgtek-admin-dash",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "license": "MIT",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
@@ -23,7 +23,8 @@
     "vue": "2.6.11",
     "vue-router": "^3.5.1",
     "vuetify": "^2.5.7",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "xlsx": "^0.17.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

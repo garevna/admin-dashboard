@@ -2,9 +2,9 @@ import { openDB } from '../openDB'
 
 import { getRecord, putRecord } from './'
 
-export const iterateCustomers = async function () {
-  const [route, action] = ['schedule', 'refresh']
+const [route, action] = ['schedule', 'refresh']
 
+export const iterateCustomers = async function () {
   const { status, result: db } = await openDB()
 
   if (status !== 200) return { status, result: db, route, action }
