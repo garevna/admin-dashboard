@@ -1,5 +1,5 @@
 export const getCustomersByResellerId = async function (resellerId) {
-  const [route, action] = ['customers', 'list']
+  const [route, action] = ['rsp', 'customers']
 
   const { status, result } = await self.getAllCustomers()
 

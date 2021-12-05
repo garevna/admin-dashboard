@@ -13,13 +13,32 @@ const {
 
 export const routes = {
   '*': {
-    refresh: () => {
-      settingsController.refresh()
-      rspController.refresh()
-      servicesController.refresh()
-      ticketsController.refresh()
-      customersController.refresh()
-      documentsController.refresh()
+    refresh: async () => {
+      const actions = [
+        // self.refreshSettings,
+        self.refreshServicesList,
+        self.getResellersFromRemoteServer,
+        self.getTicketsFromRemoteServer,
+        self.refreshDocumentsList,
+        self.downloadAllCustomers
+        // self.refreshSchedule
+      ]
+
+      const response = await self.refreshSettings()
+      self.postDebugMessage({ settings: response })
+      self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
+
+      for (const action of actions) {
+        action().then(response => self.postMessage(Object.assign(response, { action: 'initial-refresh' })))
+      }
+
+      self.downloadAllCustomers().then(response => {
+        self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
+        self.refreshSchedule()
+          .then(response => {
+            self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
+          })
+      })
     }
   },
   admin: {
@@ -85,6 +104,7 @@ export const routes = {
   services: {
     refresh: servicesController.refresh,
     list: servicesController.list,
+    names: servicesController.names,
     get: servicesController.get,
     post: servicesController.post,
     put: servicesController.put,

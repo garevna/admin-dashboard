@@ -101,7 +101,7 @@ export default {
 
   watch: {
     selected (index) {
-      if (index) this.__getSLAContent(this.listOfSLA[index]._id)
+      if (index) this.__getSLAContent(this.listOfSLA[index]._id, this.getSLAContent)
       else this.content = pdf404
     }
   },
@@ -117,7 +117,7 @@ export default {
 
     readLocalFile (file) {
       this.ready = false
-      file && this.__readLocalFile(file)
+      file && this.__readLocalFile(file, this.getLocalFileContent)
     },
 
     getLocalFileContent (data) {
@@ -135,7 +135,7 @@ export default {
 
       this.selected = this.listOfSLA.length - 1
 
-      this.__createSLA({ title: 'New SLA', content: this.content })
+      this.__createSLA({ title: 'New SLA', content: this.content }, this.finishCreation)
     },
 
     finishCreation (data) {
@@ -150,7 +150,7 @@ export default {
     },
 
     remove (item) {
-      this.__removeSLA(item._id)
+      this.__removeSLA(item._id, this.finishRemoving)
       this.toBeRemoved = item._id
     },
 
@@ -176,28 +176,28 @@ export default {
     saveNewSLA () {
       console.log(this.listOfSLA[this.editing].title)
       console.log(this.content)
-      this.__createNewSLA({ title: this.listOfSLA[this.editing].title, content: this.content })
+      this.__createNewSLA({ title: this.listOfSLA[this.editing].title, content: this.content }, this.finishCreation)
     }
   },
 
   beforeDestroy () {
-    this.$root.$off('sla-list-received', this.getSLAList)
-    this.$root.$off('sla-content-received', this.getSLAContent)
+    // this.$root.$off('sla-list-received', this.getSLAList)
+    // this.$root.$off('sla-content-received', this.getSLAContent)
     this.$root.$off('local-file-content-loaded', this.getLocalFileContent)
 
-    this.$root.$off('new-sla-created', this.finishCreation)
-    this.$root.$off('sla-removed', this.finishRemoving)
+    // this.$root.$off('new-sla-created', this.finishCreation)
+    // this.$root.$off('sla-removed', this.finishRemoving)
   },
 
   beforeMount () {
-    this.$root.$on('sla-list-received', this.getSLAList)
-    this.$root.$on('sla-content-received', this.getSLAContent)
+    // this.$root.$on('sla-list-received', this.getSLAList)
+    // this.$root.$on('sla-content-received', this.getSLAContent)
     this.$root.$on('local-file-content-loaded', this.getLocalFileContent)
 
-    this.$root.$on('sla-removed', this.finishRemoving)
-    this.$root.$on('new-sla-created', this.finishCreation)
+    // this.$root.$on('sla-removed', this.finishRemoving)
+    // this.$root.$on('new-sla-created', this.finishCreation)
 
-    this.__getSLAList()
+    this.__getSLAList(this.getSLAList)
 
     this.ready = false
   }

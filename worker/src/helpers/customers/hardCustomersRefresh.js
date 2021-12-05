@@ -8,6 +8,7 @@ export const hardCustomersRefresh = async function () {
 
   let currentPage = 1
   let done = false
+  let counter = 0
 
   await clearStore('customers')
 
@@ -17,6 +18,7 @@ export const hardCustomersRefresh = async function () {
     done = page >= pages
 
     for (const customer of result) {
+      self.postDebugMessage({ num: counter++, customer: customer.address })
       const { _id } = customer
       const { status } = await putRecordByKey('customers', _id, customer)
       if (status !== 200) return self.errorMessage('refreshCustomersListError')

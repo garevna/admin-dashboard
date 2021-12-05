@@ -3,56 +3,13 @@
     <v-row v-if="!edit" justify="center">
       <v-card flat class="transparent pb-12 px-12" v-if="ready">
         <v-card-title>
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                  <v-select
-                    :items="statuses"
-                    v-model="status"
-                    label="Service status"
-                    outlined
-                    clearable
-                    dense
-                    color="primary"
-                    style="width: 270px"
-                  ></v-select>
-                </td>
-                <td>
-                  <v-select
-                    :items="types"
-                    v-model="type"
-                    label="Service type"
-                    outlined
-                    clearable
-                    dense
-                    color="primary"
-                    style="width: 180px"
-                  ></v-select>
-                </td>
-                <td>
-                  <v-select
-                    :items="services"
-                    v-model="serviceName"
-                    label="Services"
-                    outlined
-                    clearable
-                    dense
-                    color="primary"
-                    style="width: 240px"
-                  ></v-select>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <v-spacer />
-          <v-btn text @click="refresh" class="mb-5">
-            <v-icon>mdi-refresh</v-icon>
-            Refresh
-          </v-btn>
-          <v-btn icon @click="hardRefresh" class="mb-5">
-            <v-icon>mdi-database-refresh</v-icon>
-          </v-btn>
+          <CustomersFilters
+            :serviceName.sync="serviceName"
+            :type.sync="serviceType"
+            :status.sync="status"
+            :refresh.sync="refresh"
+            :hardRefresh.sync="hardRefresh"
+          />
         </v-card-title>
 
         <v-data-table
@@ -138,25 +95,30 @@ export default {
   props: ['details'],
 
   components: {
+    CustomersFilters: () => import('@/components/customers/CustomersFilters.vue'),
     CustomerDetails: () => import('@/components/customers/CustomerDetails.vue')
   },
 
   data: () => ({
+    customers: null,
     ready: false,
+    icons: null,
     edit: false,
     selectedCustomerId: null,
     data: null,
     search: '',
     page: customersListPageNumberHandler(),
+
     status: null,
-    type: null,
     serviceName: '',
+    serviceType: undefined,
+    refresh: false,
+    hardRefresh: false,
 
     expanded: [],
 
-    statuses: ['Active', 'Awaiting for connection', 'Awaiting for confirmation', 'Awaiting for scheduling', 'In job queue', 'Unable to connect', 'Not connected'],
-    types: ['residential', 'commercial'],
     headers: [
+      { text: 'Created', value: 'customerCreationDate' },
       { text: 'Unique code', value: 'uniqueCode' },
       { text: 'Address', value: 'address' },
       { text: 'Customer name', align: 'start', sortable: false, value: 'name' },
@@ -164,42 +126,28 @@ export default {
     ]
   }),
 
-  computed: {
-    tableHeight () {
-      return window.innerHeight - 400
-    },
-
-    customers () {
-      if (!this.data) return
-
-      return this.data.map(customer => ({
-        name: customer.name,
-        uniqueCode: customer.uniqueCode,
-        postCode: customer.postCode,
-        address: customer.address,
-        services: customer.services,
-        id: customer._id
-      }))
-    },
-
-    selectedCustomersNumber () {
-      return this.filteredItems.length
-    },
-
-    services () {
-      return Array.from(new Set(this.customers.flatMap(customer => customer.services.map(service => service.name))))
-    },
-
-    filteredItems () {
-      if (!this.status && !this.type && !this.serviceName) return this.customers
-      return this.customers
-        .filter(customer => !this.status || (customer.services.filter(service => service.status === this.status).length))
-        .filter(customer => !this.type || (customer.services.filter(service => service.type === this.type)).length)
-        .filter(customer => !this.serviceName || (customer.services.filter(service => service.name === this.serviceName)).length)
-    }
-  },
-
   watch: {
+    // serviceType (val) {
+    //   console.log(val)
+    //   console.log(this.filteredItems.map(customer => customer.address))
+    // },
+    // serviceName (val) {
+    //   console.log(val)
+    //   console.log(this.filteredItems.map(customer => customer.address))
+    // },
+    refresh (val) {
+      if (!val) return
+      this.ready = false
+      this.__refreshCustomers(this.refreshed)
+      this.refresh = false
+    },
+    hardRefresh (val) {
+      if (!val) return
+      this.ready = false
+      this.__hardCustomersRefresh(this.refreshed)
+      this.hardRefresh = false
+    },
+
     edit (newVal, oldVal) {
       if (oldVal && !newVal) {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
@@ -207,18 +155,55 @@ export default {
     }
   },
 
+  computed: {
+    tableHeight () {
+      return window.innerHeight - 400
+    },
+
+    // customers () {
+    //   if (!this.data) return
+    //
+    //   return this.data.map(customer => ({
+    //     customerCreationDate: customer.customerCreationDate,
+    //     name: customer.name,
+    //     uniqueCode: customer.uniqueCode,
+    //     postCode: customer.postCode,
+    //     address: customer.address,
+    //     services: customer.services,
+    //     id: customer._id
+    //   }))
+    // },
+
+    selectedCustomersNumber () {
+      return this.filteredItems.length
+    },
+
+    filteredItems () {
+      if (!this.status && !this.type && !this.serviceName) return this.customers
+      return this.customers
+        .filter(customer => !this.status || (customer.services.filter(service => service.status === this.status).length))
+        .filter(customer => !this.serviceType || (customer.services.filter(service => service.type === this.serviceType)).length)
+        .filter(customer => !this.serviceName || (customer.services.filter(service => service.name === this.serviceName)).length)
+    }
+  },
+
   methods: {
+    getCustomersList (data) {
+      console.log(data)
+      this.customers = data
+      this.ready = true
+    },
     getIcon (status) {
-      const icons = {
-        Active: 'mdi-check-network-outline',
-        'Awaiting for connection': 'mdi-calendar-question',
-        'Awaiting for confirmation': 'mdi-calendar-clock',
-        'Awaiting confirmation': 'mdi-calendar-clock',
-        'Awaiting for scheduling': 'mdi-calendar-question',
-        'In job queue': 'mdi-calendar-check',
-        'Unable to connect': 'mdi-minus-network',
-        'Not connected': 'mdi-alert'
-      }
+      // const icons = {
+      //   Active: 'mdi-check-network-outline',
+      //   'Awaiting for connection': 'mdi-calendar-question',
+      //   'Awaiting for confirmation': 'mdi-calendar-clock',
+      //   'Awaiting confirmation': 'mdi-calendar-clock',
+      //   'Awaiting for scheduling': 'mdi-calendar-question',
+      //   'In job queue': 'mdi-calendar-check',
+      //   'Unable to connect': 'mdi-minus-network',
+      //   'Not connected': 'mdi-alert'
+      // }
       const colors = {
         Active: '#090',
         'Awaiting for connection': 'primary',
@@ -229,16 +214,21 @@ export default {
         'Unable to connect': '#777',
         'Not connected': '#f00'
       }
-      return { icon: icons[status], color: colors[status] }
+      return { icon: this.icons[status], color: colors[status] }
     },
 
-    async getData (data) {
+    getData (data) {
       this.data = Array.isArray(data) ? data : Array.isArray(data.result) ? data.result : []
       this.ready = true
     },
 
-    async refreshed (data) {
-      !this.details ? this.__getCustomers() : this.__getCustomersByResellerId(this.details._id)
+    refreshed (data) {
+      !this.details ? this.__getCustomers(this.getData) : this.__getCustomersByResellerId(this.details._id, this.getData)
+    },
+
+    getIcons (data) {
+      console.log(data)
+      this.icons = data
     },
 
     getEstimates (data) {
@@ -250,30 +240,17 @@ export default {
       this.selectedCustomerId = item.id
       customerHandler(item.id)
       this.edit = true
-    },
-
-    refresh () {
-      this.ready = false
-      this.__refreshCustomers()
-    },
-
-    hardRefresh () {
-      this.ready = false
-      this.__hardCustomersRefresh()
     }
   },
 
-  beforeDestroy () {
-    this.$root.$off('customers-list-received', this.getData)
-    this.$root.$off('customers-refreshed', this.getData)
+  created () {
+    this.__getServiceStatusIcons(this.getIcons)
+    console.log('DETAILS ???\n', this.details)
+    !this.details ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(this.details._id, this.getCustomersList)
   },
 
   mounted () {
     this.$vuetify.goTo(0)
-
-    this.$root.$on('customers-list-received', this.getData)
-    this.$root.$on('customers-refreshed', this.refreshed)
-    !this.details ? this.__getCustomers() : this.__getCustomersByResellerId(this.details._id)
   }
 }
 </script>

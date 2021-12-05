@@ -25,10 +25,11 @@ export const getAllCustomers = async function () {
     store.openCursor().onsuccess = (event) => {
       const cursor = event.target.result
       if (cursor) {
-        const { firstName, lastName, uniqueCode, address, apartmentNumber, services, _id, resellerId } = cursor.value
+        const { customerCreationDate, firstName, lastName, uniqueCode, address, apartmentNumber, services, _id, resellerId } = cursor.value
         const item = {
-          _id,
+          id: _id,
           resellerId,
+          customerCreationDate,
           name: `${firstName} ${lastName}`,
           uniqueCode: `${uniqueCodeList(resellerId)}${uniqueCode.slice(2)}`,
           address: `${apartmentNumber}/${address}`,

@@ -29,21 +29,15 @@ export default {
 
   methods: {
     getSettings (data) {
-      console.log(data)
       this.settings = data
     },
     updateSetting () {
-      this.__updateScheduleSettings(this.settings.map(item => parseInt(item)))
+      this.__updateScheduleSettings(this.settings.map(item => parseInt(item)), response => console.log('Schedule settings updated:\n', response))
     }
   },
 
-  beforeDestroy () {
-    this.$root.$off('settings-data-received', this.getSettings)
-  },
-
   beforeMount () {
-    this.$root.$on('settings-data-received', this.getSettings)
-    this.__getScheduleSettings()
+    this.__getScheduleSettings(this.getSettings)
   }
 }
 </script>

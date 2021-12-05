@@ -110,7 +110,7 @@ export default {
     documentId: {
       immediate: true,
       handler (id) {
-        id && this.__getDocumentContent(id)
+        id && this.__getDocumentContent(id, this.showDocument)
       }
     }
   },
@@ -122,7 +122,7 @@ export default {
     },
 
     readDocument (file) {
-      file && this.__readLocalDocument(file)
+      file && this.__readLocalDocument(file, this.showDocument)
       this.edited.content = true
     },
 
@@ -139,11 +139,11 @@ export default {
     saveChanges () {
       if (this.record._id) {
         const { folder, title } = this.record
-        this.__updateDocument(this.record._id, this.edited.content ? this.record : { folder, title })
+        this.__updateDocument(this.record._id, this.edited.content ? this.record : { folder, title }, this.saved)
       } else {
         this.record.folder = this.folder
         this.record.partners = []
-        this.__createDocument(this.record)
+        this.__createDocument(this.record, this.created)
       }
     },
 
@@ -155,7 +155,7 @@ export default {
     },
 
     uploadDocument (file) {
-      this.__uploadDocument(this.record.title, file)
+      this.__uploadDocument(this.record.title, file, this.getDocument)
     },
 
     saved () {
@@ -170,20 +170,20 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('local-document-loaded', this.showDocument)
+    // this.$root.$off('local-document-loaded', this.showDocument)
 
-    this.$root.$off('document-updated', this.saved)
+    // this.$root.$off('document-updated', this.saved)
 
-    this.$root.$off('new-document-created', this.created)
+    // this.$root.$off('new-document-created', this.created)
     this.$root.$off('document-content-received', this.getDocument)
   },
 
   beforeMount () {
-    this.$root.$on('local-document-loaded', this.showDocument)
+    // this.$root.$on('local-document-loaded', this.showDocument)
 
-    this.$root.$on('document-updated', this.saved)
+    // this.$root.$on('document-updated', this.saved)
 
-    this.$root.$on('new-document-created', this.created)
+    // this.$root.$on('new-document-created', this.created)
     this.$root.$on('document-content-received', this.getDocument)
   }
 }

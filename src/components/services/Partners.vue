@@ -95,13 +95,8 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    this.$root.$off('rsp-short-list-received', this.getPartnersList)
-  },
-
   beforeMount () {
-    this.$root.$on('rsp-short-list-received', this.getPartnersList)
-    this.__getResellersShortList()
+    this.__getResellersShortList(this.getPartnersList)
   }
 }
 

@@ -47,6 +47,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     ready: false,
     address: '',
     concierge: buildingSchema.concierge,
@@ -57,20 +58,29 @@ export default {
     textField (item) {
       return testTextField(item.type)
     },
+
     rule (item) {
       return this.rules[item.type]
     },
+
     exit () {
       this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
     },
+
     saveConciergeDetails () {
+      this.$dispatchProgressEvent(true)
       const concierge = {}
 
       for (const propName in this.concierge) {
         concierge[propName] = this.concierge[propName].value
       }
 
-      this.__patchBuildingDetails(this.buildingData._id, { concierge })
+      this.worker.patchBuildingDetails(this.buildingData._id, { concierge }, this.updated)
+    },
+
+    updated (data) {
+      this.$dispatchProgressEvent(false)
+      this.$root.$emit('open-message-popup', { messageType: data.address, messageText: 'Building detals updated' })
     }
   },
 

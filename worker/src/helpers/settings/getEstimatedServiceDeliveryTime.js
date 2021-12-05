@@ -5,9 +5,9 @@ const [route, action, section] = ['settings', 'get', 'estimatedServiceDeliveryTi
 export const getEstimatedServiceDeliveryTime = (key) => {
   const data = estimatedServiceDeliveryTimeHandler()
 
-  if (!key) return { status: 200, route, action, result: data }
+  if (!key) return { status: 200, route, action, section, result: data }
 
-  if (data[key]) return { status: 200, route, action, key, result: Object.assign({}, data[key], { estimatedServiceDeliveryTime: data[key].value }) }
+  if (data[key]) return { status: 200, route, action, section, key, result: Object.assign({}, data[key], { estimatedServiceDeliveryTime: data[key].value }) }
 
   for (const propName in data) {
     if (data[propName].synonyms.includes(key)) {

@@ -66,6 +66,7 @@ export default {
 
   methods: {
     getData (data) {
+      console.log(data)
       this.items = data
     },
 
@@ -85,7 +86,7 @@ export default {
     },
 
     confirmationReceived () {
-      this.__deleteService(this.selectedServiceId)
+      this.__deleteService(this.selectedServiceId, this.serviceDeleted)
     },
 
     serviceDeleted () {
@@ -99,20 +100,21 @@ export default {
     }
   },
 
+  beforeMount () {
+    this.__getListOfServices(this.getData)
+  },
+
   beforeDestroy () {
-    this.$root.$off('services-list-received', this.getData)
+    // this.$root.$off('services-list-received', this.getData)
     this.$root.$off('operation-confirmed', this.confirmationReceived)
-    this.$root.$off('service-deleted', this.serviceDeleted)
+    // this.$root.$off('service-deleted', this.serviceDeleted)
   },
 
   mounted () {
     this.$vuetify.goTo(0)
-
-    this.$root.$on('services-list-received', this.getData)
+    // this.$root.$on('services-list-received', this.getData)
     this.$root.$on('operation-confirmed', this.confirmationReceived)
-    this.$root.$on('service-deleted', this.serviceDeleted)
-
-    this.__getListOfServices()
+    // this.$root.$on('service-deleted', this.serviceDeleted)
   }
 }
 </script>

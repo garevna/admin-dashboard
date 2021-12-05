@@ -117,6 +117,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     buildingId: '',
     address: '',
     levels: [],
@@ -129,11 +130,17 @@ export default {
     },
 
     updateDetails () {
-      this.__patchBuildingDetails(this.buildingId, {
+      this.$dispatchProgressEvent(true)
+      this.worker.patchBuildingDetails(this.buildingId, {
         avgFloorHeight: this.buildingData.avgFloorHeight,
         numberOfLevels: this.buildingData.numberOfLevels,
         levels: this.levels
-      })
+      }, this.updated)
+    },
+
+    updated (data) {
+      this.$dispatchProgressEvent(false)
+      this.$root.$emit('open-message-popup', { messageType: data.address, messageText: 'Building detals updated' })
     }
   },
 

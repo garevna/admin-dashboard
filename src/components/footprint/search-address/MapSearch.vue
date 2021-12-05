@@ -37,8 +37,6 @@ export default {
   mounted () {
     container = document.getElementById('container-for-map')
 
-    window.google = null
-
     this.worker.searchCallback = this.catchEvent
 
     this.map = new DgtekMap({

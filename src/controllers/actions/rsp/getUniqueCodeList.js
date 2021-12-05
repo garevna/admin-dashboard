@@ -1,6 +1,10 @@
-export const getUniqueCodeList = function () {
-  window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'rsp',
-    action: 'get-unique-code-list'
-  })
+import { eventsTable } from '@/controllers/events-table'
+import { rsp } from '@/controllers/events'
+
+const [route, action] = ['rsp', 'get-unique-code-list']
+
+export const getUniqueCodeList = function (callback) {
+  window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action })
+
+  eventsTable[rsp[action]] = callback
 }

@@ -100,9 +100,11 @@ export default {
     },
 
     showResult (result) {
-      this.$root.$off('auth-success', this.showResult)
+      // this.$root.$off('auth-success', this.showResult)
       roleHandler(result.role)
       credentialsHandler(result.credentials)
+
+      console.log('SIGN IN RESULT: ', roleHandler(), credentialsHandler())
 
       createMapWorker(credentialsHandler(), roleHandler())
 
@@ -113,8 +115,8 @@ export default {
     },
 
     async signIn () {
-      this.$root.$on('auth-success', this.showResult)
-      this.__auth(this.email, passwordHandler())
+      // this.$root.$on('auth-success', this.showResult)
+      this.__auth(this.showResult)
       this.step = 1
     }
   }

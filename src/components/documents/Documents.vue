@@ -100,23 +100,19 @@ export default {
     },
 
     getNewDocumentId (data) {
-      this.__getDocumentsList()
+      this.__getDocumentsList(this.getData)
       this.editDialog = false
     }
   },
 
   beforeDestroy () {
-    this.$root.$off('documents-full-list-received', this.getData)
-
     this.$root.$off('new-document-created', this.getNewDocumentId)
   },
 
   beforeMount () {
-    this.$root.$on('documents-full-list-received', this.getData)
-
     this.$root.$on('new-document-created', this.getNewDocumentId)
 
-    this.__getDocumentsList()
+    this.__getDocumentsList(this.getData)
   }
 }
 </script>

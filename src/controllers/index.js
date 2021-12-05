@@ -11,6 +11,8 @@ import { createController } from './createController'
 import { createMapWorker } from './createMapWorker'
 import { createAdminWorker } from './createAdminWorker'
 
+import { eventsTable } from './events-table'
+
 export {
   codeHandler,
   loginHandler,
@@ -20,5 +22,7 @@ export {
   createAdminWorker,
   createController,
   messageHandler,
-  errorMessageHandler
+  errorMessageHandler,
+
+  eventsTable
 }

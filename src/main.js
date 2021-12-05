@@ -29,9 +29,15 @@ window[Symbol.for('vue.instance')] = new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-window[Symbol.for('vue.prototype')].__openExternalLink = function (url) {
-  window.open(url, '_blank')
-}
+Object.assign(window[Symbol.for('vue.prototype')], {
+  __openExternalLink: function (url) {
+    window.open(url, '_blank')
+  },
+  __removeGoogleMaps: function () {
+    Array.from(document.getElementsByTagName('script')).filter(script => script.src.indexOf('https://maps.googleapis.com') === 0).forEach(script => script.remove())
+    window.google = null
+  }
+})
 
 createController()
 

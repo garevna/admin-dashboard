@@ -99,6 +99,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     numberOfDwellings: '',
     customerInstallApprovalRequired: false,
     inductionRequired: false,
@@ -109,12 +110,18 @@ export default {
 
   methods: {
     updateInfrastructure () {
-      this.__patchBuildingDetails(this.buildingData._id, {
+      this.$dispatchProgressEvent(true)
+      this.worker.patchBuildingDetails(this.buildingData._id, {
         numberOfDwellings: this.numberOfDwellings,
         customerInstallApprovalRequired: this.customerInstallApprovalRequired,
         inductionRequired: this.inductionRequired,
         infrastructure: this.infrastructure
-      })
+      }, this.updated)
+    },
+
+    updated (data) {
+      this.$dispatchProgressEvent(false)
+      this.$root.$emit('open-message-popup', { messageType: data.address, messageText: 'Building detals updated' })
     }
   },
 

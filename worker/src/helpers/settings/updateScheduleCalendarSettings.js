@@ -1,7 +1,7 @@
 import { scheduleCalendarSettingsHandler } from '../../data-handlers'
 import { patch } from '../AJAX'
 
-const [route, action, section] = ['settings', 'update', 'schedule']
+const [route, action, section] = ['settings', 'update', 'scheduleCalendarSettings']
 const error = {
   error: true,
   errorType: 'Settings update',
@@ -15,7 +15,7 @@ const message = {
 
 export const updateScheduleCalendarSettings = async (data) => {
   scheduleCalendarSettingsHandler(data)
-  const { status, result } = await patch('settings', { schedule: data })
+  const { status, result } = await patch('settings', { scheduleCalendarSettings: data })
 
   const response = { status, route, action, section, result }
 

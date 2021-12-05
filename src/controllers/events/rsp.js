@@ -7,6 +7,8 @@ export const rsp = {
   registration: 'registration-requests-received',
   credentials: 'partner-credentials-received',
 
+  customers: 'rsp-customers-list-received',
+
   'confirm-registration-request': 'partner-created',
 
   'get-messages': 'messages-received',

@@ -105,6 +105,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     ready: false,
     generalBuildingData: null,
     footprintOptions: [
@@ -164,18 +165,19 @@ export default {
 
   methods: {
     saveBuildingDetails () {
-      this.$root.$emit('progress-event', true)
+      this.$dispatchProgressEvent(true)
       const { address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime } = this.generalBuildingData
       console.log({ address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime })
       console.log(this.generalBuildingData)
 
       // this.__patchBuildingDetails(this.buildingData._id, { address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime })
-      window[Symbol.for('map.worker')].patchBuildingDetails(this.buildingData._id, this.generalBuildingData, this.sendMessage)
+      this.worker.patchBuildingDetails(this.buildingData._id, this.generalBuildingData, this.sendMessage)
       this.generalInfoUpdated = true
       // this.$root.$emit('building-general-data-changed', { address, uniqueCode, status, estimatedServiceDeliveryTime })
     },
 
     sendMessage (event) {
+      this.$dispatchProgressEvent(false)
       this.$root.$emit('open-message-popup', {
         messageType: this.generalBuildingData.address,
         messageText: 'Building details updated'

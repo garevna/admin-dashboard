@@ -27,12 +27,39 @@ export const footprint = {
     },
     {
       title: 'Edit building list',
-      route: 'buildings',
-      icon: 'mdi-home-map-marker',
+      // route: 'buildings',
+      icon: 'mdi-home-city-outline',
       access: {
         change: ['Map_editor', 'SuperAdmin'],
         read: ['View_only']
-      }
+      },
+      children: [
+        {
+          title: 'On-net buildings',
+          route: 'lit-buildings',
+          icon: 'mdi-home-map-marker'
+        },
+        {
+          title: 'Footprint buildings',
+          route: 'footprint-buildings',
+          icon: 'mdi-home-map-marker'
+        },
+        {
+          title: 'Construction commenced',
+          route: 'build-buildings',
+          icon: 'mdi-home-map-marker'
+        },
+        {
+          title: 'Coming soon buildings',
+          route: 'soon-buildings',
+          icon: 'mdi-home-map-marker'
+        },
+        {
+          title: 'Not available buildings',
+          route: 'other-buildings',
+          icon: 'mdi-home-map-marker'
+        }
+      ]
     },
     {
       title: 'Create Excel file',

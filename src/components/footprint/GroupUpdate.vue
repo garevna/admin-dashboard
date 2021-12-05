@@ -63,7 +63,7 @@ const { footprintOptions } = require('@/configs').default
 export default {
   name: 'GroupUpdate',
 
-  props: ['dialog', 'items'],
+  props: ['dialog', 'items', 'groupUpdated'],
 
   data: () => ({
     buildings: null,
@@ -92,10 +92,7 @@ export default {
   methods: {
     updateItems () {
       this.$root.$emit('progress-event', true)
-      console.log('STATUS: ', this.status)
       buildingStatusHandler(footprintOptions.find(item => item.value === this.status))
-      console.log('buildingStatusHandler: ', buildingStatusHandler())
-      console.log(this.items)
 
       const data = {
         status: this.status,
@@ -106,8 +103,8 @@ export default {
 
     finishUpdates (data) {
       this.$root.$emit('progress-event', false)
-      console.log('FINISH GROUP UPDARES\n', data)
-      this.items.forEach(item => Object.assign(item, { status: this.status, estimatedServiceDeliveryTime: this.estimatedServiceDeliveryTime }))
+      this.$emit('update:items', [])
+      this.$emit('update:groupUpdated', true)
       this.opened = false
     }
   },

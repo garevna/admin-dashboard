@@ -83,7 +83,7 @@ export default {
 
     getPartnerCredentials (partner) {
       console.log(partner._id)
-      this.__getPartnerCredentials(partner._id)
+      this.__getPartnerCredentials(partner._id, this.gotoCabinet)
     },
 
     gotoCabinet (data) {
@@ -93,25 +93,29 @@ export default {
     },
 
     refresh () {
-      this.__refreshPartnersList()
+      this.__refreshPartnersList(this.refreshed)
     },
 
-    showDetails (rsp) {
-      this.rspDetails = rsp
+    refreshed (data) {
+      console.log('RSP LIST REFRESHED:\n', data)
+    },
+
+    showDetails (partnerDetails) {
+      console.log(partnerDetails)
+      this.rspDetails = partnerDetails
       this.details = true
     }
   },
 
   beforeMount () {
-    this.$root.$on('rsp-list-received', this.getData)
-    this.$root.$on('partner-credentials-received', this.gotoCabinet)
-    this.__getResellersList()
-  },
-
-  beforeDestroy () {
-    this.$root.$off('rsp-list-received', this.getData)
-    this.$root.$off('partner-credentials-received', this.gotoCabinet)
+    // this.$root.$on('partner-credentials-received', this.gotoCabinet)
+    this.__getResellersList(this.getData)
   }
+
+  // beforeDestroy () {
+  //   this.$root.$off('rsp-list-received', this.getData)
+  //   this.$root.$off('partner-credentials-received', this.gotoCabinet)
+  // }
 }
 
 </script>

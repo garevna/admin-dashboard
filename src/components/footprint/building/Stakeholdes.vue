@@ -50,6 +50,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     ready: false,
     address: '',
     schema: {
@@ -64,12 +65,15 @@ export default {
     textField (item) {
       return testTextField(item.type)
     },
+
     rule (item) {
       return this.rules[item.type]
     },
+
     exit () {
       this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
     },
+
     saveDetails () {
       const result = { manament: {}, owner: {} }
 
@@ -77,7 +81,12 @@ export default {
         result[section] = Object.assign({}, ...Object.keys(this.schema[section]).map(key => ({ [key]: this.schema[section][key].value })))
       }
 
-      this.__patchBuildingDetails(this.buildingData._id, { management: result.management, owner: result.owner })
+      this.worker.patchBuildingDetails(this.buildingData._id, { management: result.management, owner: result.owner }, this.updated)
+    },
+
+    updated (data) {
+      this.$dispatchProgressEvent(false)
+      this.$root.$emit('open-message-popup', { messageType: data.address, messageText: 'Building detals updated' })
     }
   },
 

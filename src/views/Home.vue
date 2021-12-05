@@ -10,16 +10,18 @@
 <script>
 export default {
   name: 'Home',
+
   components: {
     SignIn: () => import('@/components/auth/SignIn.vue')
   },
+
   data: () => ({
     resetPassword: false,
     success: false
   }),
+
   watch: {
     success (val) {
-      console.log('AUTH SUCCESS: ', val)
       if (val && this.$route.name !== 'dash') {
         this.$router.push({ name: 'dash' }).catch(failure => console.warn('Router failure:\n', failure))
       }

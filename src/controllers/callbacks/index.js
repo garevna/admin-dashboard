@@ -1,26 +1,22 @@
 import { initCallback } from './initCallback'
 import { startRefreshing } from './startRefreshing'
 import { refreshCallback } from './refreshCallback'
+import { debuggerCallback } from './debuggerCallback'
 
 import { initError } from './initError'
 import { refreshError } from './refreshError'
 
-// import { mapWorkerReadyCallback } from './mapWorkerReadyCallback'
-// import { catchMapWorkerEvent } from './catchMapWorkerEvent'
-
-import { showDebugMessage } from './showDebugMessage'
-// import { showMapWorkerDebugMessage } from './showMapWorkerDebugMessage'
+import { errorCallback } from './errorCallback'
+import { messageCallback } from './messageCallback'
 
 export {
   initCallback,
-  // mapWorkerReadyCallback,
-  // catchMapWorkerEvent,
+  debuggerCallback,
+  errorCallback,
+  messageCallback,
 
   startRefreshing,
   refreshCallback,
   initError,
-  refreshError,
-
-  showDebugMessage
-  // showMapWorkerDebugMessage
+  refreshError
 }

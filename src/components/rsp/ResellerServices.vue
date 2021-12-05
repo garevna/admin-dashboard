@@ -113,18 +113,13 @@ export default {
 
     saveResellerServices () {
       for (const service of this.services) {
-        this.__patchServiceDetails(service.id, { partners: service.partners })
+        this.__patchServiceDetails(service.id, { partners: service.partners }, response => console.log(response))
       }
     }
   },
 
   beforeMount () {
-    this.$root.$on('services-list-received', this.getData)
-    this.__getListOfServices()
-  },
-
-  beforeDestroy () {
-    this.$root.$off('services-list-received', this.getData)
+    this.__getListOfServices(this.getData)
   }
 }
 </script>

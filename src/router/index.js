@@ -120,14 +120,69 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'polygons' */ '@/components/footprint/EditPolygons.vue')
       },
+      // {
+      //   path: '/buildings',
+      //   name: 'buildings',
+      //   beforeEnter (to, from, next) {
+      //     if (!roleHandler()) next({ name: 'home' })
+      //     if (from.name === 'buildings') next(false)
+      //     next()
+      //   },
+      //   component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
+      // },
       {
-        path: '/buildings',
-        name: 'buildings',
+        path: '/lit-buildings',
+        name: 'lit-buildings',
         beforeEnter (to, from, next) {
           if (!roleHandler()) next({ name: 'home' })
           if (from.name === 'buildings') next(false)
           next()
         },
+        props: { status: 'lit' },
+        component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
+      },
+      {
+        path: '/footprint-buildings',
+        name: 'footprint-buildings',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'buildings') next(false)
+          next()
+        },
+        props: { status: 'footprint' },
+        component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
+      },
+      {
+        path: '/build-buildings',
+        name: 'build-buildings',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'buildings') next(false)
+          next()
+        },
+        props: { status: 'build' },
+        component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
+      },
+      {
+        path: '/soon-buildings',
+        name: 'soon-buildings',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'buildings') next(false)
+          next()
+        },
+        props: { status: 'soon' },
+        component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
+      },
+      {
+        path: '/other-buildings',
+        name: 'other-buildings',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'buildings') next(false)
+          next()
+        },
+        props: { status: 'other' },
         component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
       },
       {
@@ -177,17 +232,22 @@ const routes = [
       {
         path: '/ticket-categories',
         name: 'ticket-categories',
-        component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/tickets/EditTicketCategories.vue')
+        component: () => import(/* webpackChunkName: 'ticket-categories' */ '@/components/settings/EditTicketCategories.vue')
       },
       {
         path: '/schedule-settings',
         name: 'schedule-settings',
-        component: () => import(/* webpackChunkName: 'schedule-settings' */ '@/components/schedule/ScheduleSettings.vue')
+        component: () => import(/* webpackChunkName: 'schedule-settings' */ '@/components/settings/ScheduleSettings.vue')
       },
       {
         path: '/estimated-service-delivery-time-settings',
         name: 'estimated-service-delivery-time-settings',
         component: () => import(/* webpackChunkName: 'estimated-service-delivery-time-settings' */ '@/components/settings/EstimatedServiceDeliveryTime.vue')
+      },
+      {
+        path: '/available-service-status-settings',
+        name: 'available-service-status-settings',
+        component: () => import(/* webpackChunkName: 'available-service-status-settings' */ '@/components/settings/AvailableServiceStatus.vue')
       },
       {
         path: '/documents',

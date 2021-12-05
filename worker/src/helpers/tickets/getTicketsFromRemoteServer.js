@@ -14,7 +14,7 @@ export const getTicketsFromRemoteServer = async function () {
 
     if (status !== 200) return self.errorMessage('refreshTicketsListError')
 
-    var { ticketCategories: categories, tickets, page, pages } = result
+    var { tickets, page, pages } = result
 
     const promises = tickets.map(record => putRecordByKey('tickets', record._id, record))
 
@@ -23,5 +23,5 @@ export const getTicketsFromRemoteServer = async function () {
     if (response.filter(item => item.status !== 200).length) self.errorMessage('refreshTicketsListError')
   } while (page < pages)
 
-  return { status, route, action, result: { ticketCategories: categories } }
+  return { status, route, action }
 }

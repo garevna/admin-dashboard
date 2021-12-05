@@ -6,18 +6,15 @@ import { categories } from './categories'
 import { services, sla } from './services'
 import { rsp } from './rsp'
 
-import { mapWorkerEvents } from './map-worker-events'
+import { files } from './files'
 
-import { searchBuildingEvents } from './search-building-events'
-import { otherBuildingEvents } from './other-building-events'
-
-import { schedule, booking } from './schedule'
+import { schedule, booking, lots } from './schedule'
 
 import { settings } from './settings'
 
 import { building } from './building'
 
-const adminWorkerEvents = {
+export {
   admin,
   customers,
   documents,
@@ -28,13 +25,9 @@ const adminWorkerEvents = {
   rsp,
   schedule,
   booking,
+  lots,
   settings,
-  building
-}
+  building,
 
-export {
-  adminWorkerEvents,
-  mapWorkerEvents,
-  searchBuildingEvents,
-  otherBuildingEvents
+  files
 }

@@ -12,3 +12,7 @@ export const booking = {
   get: 'booking-requests-received',
   update: 'service-delivery-status-updated'
 }
+
+export const lots = {
+  get: 'schedule-lots-received'
+}

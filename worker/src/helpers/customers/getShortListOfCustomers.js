@@ -6,7 +6,7 @@ export const getShortListOfCustomers = async function () {
   if (response.status !== 200) return Object.assign(response, { route, action })
 
   const result = response.result.map(customer => ({
-    customerId: customer._id,
+    customerId: customer.id,
     resellerId: customer.resellerId,
     uniqueCode: customer.uniqueCode,
     address: customer.address

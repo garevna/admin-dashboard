@@ -1,6 +1,7 @@
 export const services = {
   refresh: 'services-refreshed',
-  list: 'services-list-received',
+  list: 'services-full-list-received',
+  names: 'list-of-service-names-received',
   get: 'service-data-received',
   put: 'service-data-updated',
   post: 'new-service-created',

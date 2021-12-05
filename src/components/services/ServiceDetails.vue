@@ -188,18 +188,18 @@ export default {
       result.partners = this.partnersList || []
 
       if (this.serviceId) {
-        this.__updateServiceDetails(this.serviceId, result)
+        this.__updateServiceDetails(this.serviceId, result, this.showResult)
       } else {
-        this.__createNewService(result)
+        this.__createNewService(result, this.showResult)
       }
     },
 
     saveServicePartners () {
-      this.__patchServiceDetails(this.serviceId, { partners: this.partnersList })
+      this.__patchServiceDetails(this.serviceId, { partners: this.partnersList }, this.showResult)
     },
 
     saveServiceSLA () {
-      this.__patchServiceDetails(this.serviceId, { serviceSLA: this.selectedId })
+      this.__patchServiceDetails(this.serviceId, { serviceSLA: this.selectedId }, this.showResult)
     },
 
     showResult (data) {
@@ -209,25 +209,25 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('service-data-received', this.getData)
+    // this.$root.$off('service-data-received', this.getData)
 
-    this.$root.$off('service-data-updated', this.showResult)
-    this.$root.$off('new-service-created', this.showResult)
+    // this.$root.$off('service-data-updated', this.showResult)
+    // this.$root.$off('new-service-created', this.showResult)
   },
 
   mounted () {
     this.service = JSON.parse(JSON.stringify(serviceSchema))
 
     if (this.serviceId) {
-      this.$root.$on('service-data-received', this.getData)
+      // this.$root.$on('service-data-received', this.getData)
 
-      this.__getServiceDetails(this.serviceId)
+      this.__getServiceDetails(this.serviceId, this.getData)
     } else {
       this.ready = true
     }
 
-    this.$root.$on('service-data-updated', this.showResult)
-    this.$root.$on('new-service-created', this.showResult)
+    // this.$root.$on('service-data-updated', this.showResult)
+    // this.$root.$on('new-service-created', this.showResult)
 
     this.$vuetify.goTo(0)
   }

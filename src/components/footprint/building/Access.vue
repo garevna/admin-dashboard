@@ -94,6 +94,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     access: {
       toRiser: '',
       toMDF: '',
@@ -106,7 +107,13 @@ export default {
 
   methods: {
     updateAccess () {
-      this.__patchBuildingDetails(this.buildingId, { access: this.access })
+      this.$dispatchProgressEvent(true)
+      this.worker.patchBuildingDetails(this.buildingId, { access: this.access }, this.updated)
+    },
+
+    updated (data) {
+      this.$dispatchProgressEvent(false)
+      this.$root.$emit('open-message-popup', { messageType: data.address, messageText: 'Building detals updated' })
     }
   },
 

@@ -1,6 +1,10 @@
-export const refreshResellersList = function () {
-  window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'rsp',
-    action: 'refresh'
-  })
+import { eventsTable } from '@/controllers/events-table'
+import { rsp } from '@/controllers/events'
+
+const [route, action] = ['rsp', 'refresh']
+
+export const refreshResellersList = function (callback) {
+  window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action })
+
+  eventsTable[rsp[action]] = callback
 }

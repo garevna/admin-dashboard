@@ -149,7 +149,7 @@ export default {
       this.ready = true
     },
     editItem (item) {
-      this.__getTicketById(item._id)
+      this.__getTicketById(item._id, this.showTicketDetails)
     },
     showTicketDetails (data) {
       this.selectedTicket = data
@@ -158,17 +158,17 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('categories-received', this.getCategories)
-    this.$root.$off('rsp-tickets-list-received', this.getTickets)
-    this.$root.$off('ticket-data-received', this.showTicketDetails)
+    // this.$root.$off('categories-received', this.getCategories)
+    // this.$root.$off('rsp-tickets-list-received', this.getTickets)
+    // this.$root.$off('ticket-data-received', this.showTicketDetails)
   },
 
   beforeMount () {
-    this.$root.$on('categories-received', this.getCategories)
-    this.$root.$on('rsp-tickets-list-received', this.getTickets)
-    this.$root.$on('ticket-data-received', this.showTicketDetails)
-    this.__getTicketCategories()
-    this.__getTicketsOfPartner(this.details._id)
+    // this.$root.$on('categories-received', this.getCategories)
+    // this.$root.$on('rsp-tickets-list-received', this.getTickets)
+    // this.$root.$on('ticket-data-received', this.showTicketDetails)
+    this.__getTicketCategories(this.getCategories)
+    this.__getTicketsOfPartner(this.details._id, this.getTickets)
   }
 }
 </script>

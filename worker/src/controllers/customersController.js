@@ -5,7 +5,7 @@ class CustomersController {
 
   async refresh () {
     self.getCustomersFromRemote()
-    self.postMessage(await self.refreshWithPagination())
+    // self.postMessage(await self.refreshUpdatedCustomersOnly())
     self.postMessage(await self.refreshSchedule())
   }
 

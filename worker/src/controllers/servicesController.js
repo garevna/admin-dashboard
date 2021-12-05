@@ -9,6 +9,10 @@ class ServicesController {
     self.postMessage(await self.getServicesListFromLocalDb())
   }
 
+  async names (request) {
+    self.postMessage(await self.getServiceNamesFromLocalDb())
+  }
+
   async get (request) {
     self.postMessage(await self.getServiceDetails(request.key))
   }

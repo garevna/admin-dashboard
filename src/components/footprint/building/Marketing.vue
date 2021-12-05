@@ -108,6 +108,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     buildingId: null,
     marketing: {
       foyer: false,
@@ -122,8 +123,13 @@ export default {
 
   methods: {
     updateMarketing () {
-      this.__patchBuildingDetails(this.buildingId, { access: this.access })
-      this.__patchBuildingDetails(this.buildingId, { marketing: this.marketing })
+      this.worker.patchBuildingDetails(this.buildingId, { access: this.access }, this.updated)
+      this.worker.patchBuildingDetails(this.buildingId, { marketing: this.marketing }, this.updated)
+    },
+
+    updated (data) {
+      this.$dispatchProgressEvent(false)
+      this.$root.$emit('open-message-popup', { messageType: data.address, messageText: 'Building detals updated' })
     }
   },
 

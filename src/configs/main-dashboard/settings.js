@@ -34,6 +34,15 @@ export const settings = {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
       }
+    },
+    {
+      title: 'Available service status list',
+      route: 'available-service-status-settings',
+      icon: 'mdi-access-point',
+      access: {
+        change: ['Account_manager', 'SuperAdmin'],
+        read: ['View_only']
+      }
     }
   ]
 }

@@ -129,20 +129,16 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('settings-data-received', this.getSettings)
-    // this.$root.$off('new-building-created', this.newBuildingCreated)
-    // this.$root.$off('buildings-refreshed', this.buildingsRefreshed)
-
+    this.__removeGoogleMaps()
     window.removeEventListener('new-address-data', this.catchGoogleAutocompleteEvent)
   },
 
+  beforeMount () {
+    this.__removeGoogleMaps()
+  },
+
   mounted () {
-    this.$root.$on('settings-data-received', this.getSettings)
-    // this.$root.$on('new-building-created', this.newBuildingCreated)
-    // this.$root.$on('buildings-refreshed', this.buildingsRefreshed)
-
     this.scrollSize = document.getElementById('dgtek-address-search-results').getBoundingClientRect().top
-
     window.addEventListener('new-address-data', this.catchGoogleAutocompleteEvent)
   }
 }

@@ -1,1 +1,1 @@
-export const storeNames = ['rsp', 'tickets', 'categories', 'services', 'customers', 'schedule', 'documents']
+export const storeNames = ['rsp', 'tickets', 'categories', 'services', 'customers', 'schedule', 'documents', 'statistics']

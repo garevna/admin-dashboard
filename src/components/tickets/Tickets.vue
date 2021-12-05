@@ -101,7 +101,7 @@ export default {
       immediate: true,
       handler (data) {
         this.section = data.params.section.fromKebab()
-        this.__getTickets(data.params.section.fromKebab())
+        this.__getTickets(data.params.section.fromKebab(), this.getTickets)
         this.customer = null
         this.severity = null
         this.priority = null
@@ -120,13 +120,13 @@ export default {
 
       const list = Array.from(new Set(this.tickets.map(ticket => ticket.customerId)))
 
-      this.__getFilteredShortListOfCustomers(list)
+      this.__getFilteredShortListOfCustomers(list, this.getCustomersList)
 
       this.ready = true
     },
 
     editItem (item) {
-      this.__getTicketById(item._id)
+      this.__getTicketById(item._id, this.showTicketDetails)
     },
 
     showTicketDetails (data) {
@@ -141,18 +141,18 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('categories-received', this.getCategories)
-    this.$root.$off('tickets-list-received', this.getTickets)
-    this.$root.$off('ticket-data-received', this.showTicketDetails)
+    // this.$root.$off('tickets-list-received', this.getTickets)
+    // this.$root.$off('ticket-data-received', this.showTicketDetails)
 
-    this.$root.$off('customers-filtered-short-list-received', this.getCustomersList)
+    // this.$root.$off('customers-filtered-short-list-received', this.getCustomersList)
   },
 
   beforeMount () {
     this.$root.$on('categories-received', this.getCategories)
-    this.$root.$on('tickets-list-received', this.getTickets)
-    this.$root.$on('ticket-data-received', this.showTicketDetails)
+    // this.$root.$on('tickets-list-received', this.getTickets)
+    // this.$root.$on('ticket-data-received', this.showTicketDetails)
 
-    this.$root.$on('customers-filtered-short-list-received', this.getCustomersList)
+    // this.$root.$on('customers-filtered-short-list-received', this.getCustomersList)
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import { get } from '../AJAX'
 import { putRecordByKey } from '../db'
 
-export const refreshWithPagination = async function () {
+export const refreshUpdatedCustomersOnly = async function () {
   const [route, action] = ['customers', 'refresh']
 
   const perPage = 30

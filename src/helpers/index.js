@@ -13,6 +13,7 @@ import { readFile } from './readFile'
 import { getBuildingUniqueCode } from './getBuildingUniqueCode'
 import { getGeneralBuildingData } from './getGeneralBuildingData'
 import { convertBuildingStatus } from './convertBuildingStatus'
+import { getRouteByBuildingStatus } from './getRouteByBuildingStatus'
 
 import { setCategories } from './setCategories'
 
@@ -30,6 +31,7 @@ export {
   getBuildingUniqueCode,
   getGeneralBuildingData,
   convertBuildingStatus,
+  getRouteByBuildingStatus,
 
   setCategories
 }

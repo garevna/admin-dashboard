@@ -118,6 +118,7 @@ import Files from '@/components/footprint/building/Files.vue'
 import Other from '@/components/footprint/building/Other.vue'
 
 import { buildingStatusHandler /*, buildingsListPageNumberHandler */ } from '@/controllers/data-handlers'
+import { getRouteByBuildingStatus } from '@/helpers'
 
 export default {
   name: 'BuildingPages',
@@ -194,21 +195,16 @@ export default {
   },
 
   methods: {
-    showMessage () {
-      this.$root.$emit('open-message-popup', {
-        messageType: this.buildingData.address,
-        messageText: 'Building details updated'
-      })
-    },
     exit () {
       const { address, uniqueCode, status, estimatedServiceDeliveryTime } = this.buildingData
 
       buildingStatusHandler(status)
+      console.log('STATUS: ', status)
+      const routeName = getRouteByBuildingStatus(status)
 
       this.generalInfoUpdated && this.$root.$emit('building-general-data-changed', { address, uniqueCode, status, estimatedServiceDeliveryTime })
 
-      this.$route.name !== 'buildings' && this.$router.push({ name: 'buildings' })
-        .catch(failure => console.warn('Router failure:\n', failure))
+      this.$route.name !== routeName && this.$router.push({ name: routeName }).catch(failure => console.warn('Router failure:\n', failure))
     },
 
     getData (data) {
@@ -249,18 +245,7 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    // this.$root.$off('building-details-received', this.getData)
-    this.$root.$off('building-details-updated', this.showMessage)
-    this.$root.$off('new-building-created', this.getNewBuildingId)
-  },
-
   mounted () {
-    // this.$root.$on('building-details-received', this.getData)
-    this.$root.$on('building-details-updated', this.showMessage)
-    this.$root.$on('new-building-created', this.getNewBuildingId)
-
-    // this.__getBuildingById(this.buildingId)
     window[Symbol.for('map.worker')].getBuildingDetailsById(this.buildingId, this.getData)
     this.$vuetify.goTo(0)
   }

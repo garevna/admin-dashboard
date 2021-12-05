@@ -1,10 +1,12 @@
 <template>
   <v-container v-if="ready" style="max-width: 960px">
     <v-data-table
+      v-model="selects"
       :headers="headers"
       :items="filteredItems"
       :search="search"
       :page.sync="page"
+      show-select
       class="transparent"
       @click:row="edit($event)"
     >
@@ -27,25 +29,6 @@
 
       <template v-slot:top>
         <v-toolbar flat class="transparent">
-          <v-toolbar-title>
-            <v-select
-              :items="footprintOptions"
-              item-text="title"
-              return-object
-              v-model="status"
-              label="Building status"
-              outlined
-              dense
-              color="#900"
-              class="mt-4"
-              style="width: 300px"
-              :menu-props="{ bottom: true, offsetY: true }"
-              @change="statusChanged"
-            ></v-select>
-          </v-toolbar-title>
-
-          <v-spacer />
-
           <v-btn v-if="selects.length" text class="mb-2" @click="updateGroup" color="primary">
             <v-icon>mdi-pencil-box-multiple-outline</v-icon>
             Group update
@@ -79,7 +62,12 @@
 
     <span class="ml-12"><small>Total selected buildings: {{ selectedBuildingsNumber }}</small></span>
 
-    <GroupUpdate v-if="selects.length" :dialog.sync="groupUpdate" :items.sync="selects" />
+    <GroupUpdate
+      v-if="selects.length"
+      :dialog.sync="groupUpdate"
+      :items.sync="selects"
+      :groupUpdated.sync="groupUpdated"
+    />
   </v-container>
 </template>
 
@@ -105,13 +93,13 @@ export default {
     buildings: [],
     selects: [],
     groupUpdate: false,
+    groupUpdated: false,
     toBeRemoved: null,
     search: '',
     page: buildingsListPageNumberHandler(),
     footprintOptions,
     selectedBuildingId: undefined,
     headers: [
-      { text: 'Group updates', value: 'selected' },
       { text: 'Building address', align: 'start', sortable: true, value: 'address' },
       { text: 'Building unique code', value: 'uniqueCode' },
       { text: 'Footprint', value: 'status' },
@@ -122,17 +110,8 @@ export default {
   }),
 
   computed: {
-    status: {
-      get () {
-        return buildingStatusHandler()
-      },
-      set (value) {
-        console.log('STATUS UPDATED: ', value)
-        if (value.status !== buildingStatusHandler().status) {
-          buildingStatusHandler(value)
-          this.worker.getBuildingsListForTable(buildingStatusHandler().value, this.getBuildings)
-        }
-      }
+    selectedStatus () {
+      return this.$route.name.split('-buildings')[0]
     },
     filteredItems () {
       return this.ready ? this.buildings.filter(building => !this.postCode || (building.addressComponents.postCode === this.postCode)) : []
@@ -145,18 +124,28 @@ export default {
   watch: {
     page (val) {
       buildingsListPageNumberHandler(val)
+    },
+    groupUpdated (val) {
+      if (val) this.requestBuildingList()
+      this.selects = []
+    },
+    $route: {
+      deep: true,
+      handler (val) {
+        this.worker.getBuildingsListForTable(val.name.split('-buildings')[0], this.getBuildings)
+      }
     }
   },
 
   methods: {
     statusChanged (val) {
-      console.log(val)
       buildingStatusHandler(val)
+      this.requestBuildingList()
     },
 
     requestBuildingList () {
       this.$root.$emit('progress-event', true)
-      this.worker.getBuildingsListForTable(buildingStatusHandler().value, this.getBuildings)
+      this.worker.getBuildingsListForTable(this.selectedStatus, this.getBuildings)
     },
 
     getBuildings (data) {
@@ -216,37 +205,22 @@ export default {
       this.worker.deleteBuilding(this.toBeRemoved, this.requestBuildingList)
     },
 
-    moveToNewStatus (data) {
-      console.log(this.selectedBuildingId)
-      console.log(data)
-    },
-
     selectItem (item) {
       this.selects = this.buildings.filter(item => item.selected)
         .map(item => ({ id: item.id, status: item.status, estimatedServiceDeliveryTime: item.estimatedServiceDeliveryTime, address: item.address }))
     },
 
     buildingsGroupUpdated () {
-      this.worker.getBuildingsListForTable(buildingStatusHandler().value, this.getBuildings)
+      this.worker.getBuildingsListForTable(this.selectedStatus, this.getBuildings)
     }
   },
   beforeDestroy () {
-    console.log('BEFORE DESTROY\n', window[Symbol.for('selected-building-general-info')])
-
     this.$root.$off('operation-confirmed', this.confirmationReceived)
   },
 
   mounted () {
-    if (window[Symbol.for('selected-building-general-info')]) {
-      const { updated, status, address, uniqueCode, estimatedServiceDeliveryTime } = window[Symbol.for('selected-building-general-info')]
-      console.log({ updated, status, address, uniqueCode, estimatedServiceDeliveryTime })
-      if (status !== this.status) console.log('building status changed!')
-    }
-
     this.page = buildingsListPageNumberHandler()
-
     this.$root.$on('operation-confirmed', this.confirmationReceived)
-
     this.requestBuildingList()
   }
 }

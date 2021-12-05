@@ -61,19 +61,14 @@ export default {
       }))
     },
     deleteMessage (message) {
-      this.__deleteMessage(message._id)
+      this.__deleteMessage(message._id, response => console.log('MESSAGE DELETED', response))
       const index = this.messages.findIndex(item => item._id === message._id)
       index !== -1 && this.messages.splice(index, 1)
     }
   },
 
   beforeMount () {
-    this.$root.$on('messages-received', this.getData)
-    this.__getMessages(this.details._id)
-  },
-
-  beforeDestroy () {
-    this.$root.$off('messages-received', this.getData)
+    this.__getMessages(this.details._id, this.getData)
   }
 }
 </script>

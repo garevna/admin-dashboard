@@ -21,7 +21,6 @@
           v-for="item in items"
           :key="item.title"
           v-model="item.active"
-          no-action
         >
           <template v-slot:activator>
             <v-list-item-content>
@@ -38,11 +37,38 @@
             :disabled="$route.name !== 'tickets' ? $route.name === child.route : false"
             @click="jumpTo(child)"
           >
-            <v-list-item-content>
+            <v-list-item-content v-if="!child.children">
               <v-list-item-title>
                 <v-icon small>{{ child.icon }}</v-icon>
                 <small>{{ child.title }}</small>
               </v-list-item-title>
+            </v-list-item-content>
+
+            <v-list-item-content v-else style="margin-left: -32px!important; margin-top: -16px!important; padding-bottom: 0; padding-right: 0">
+              <v-list-group sub-group prepend-icon="">
+                <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title active-class="active-list-item">
+                      <v-icon small>{{ child.icon }}</v-icon>
+                      <small>{{ child.title }}</small>
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </template>
+
+                <v-list-item
+                  v-for="(subChild, i) in child.children"
+                  :key="i"
+                  @click="jumpTo(subChild)"
+                  class="my-0 py-0"
+                  active-class="active-list-item"
+                  style="min-height: 24px!important; max-height: 32px!important; padding-left: 48px"
+                >
+                  <v-list-item-title>
+                    <v-icon small :color="$route.name === subChild.route ? '#900' : '#777'">{{ subChild.icon }}</v-icon>
+                    <small :style="{ color: $route.name === subChild.route ? '#900' : '#777' }">{{ subChild.title }}</small>
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list-group>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
@@ -154,4 +180,5 @@ export default {
 .v-icon.v-icon {
   margin-right: 8px!important;
 }
+
 </style>

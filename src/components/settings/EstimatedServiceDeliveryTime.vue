@@ -80,29 +80,21 @@ export default {
       this.items[index] = value
     },
     getData (data) {
-      console.log(data)
       this.types = Object.keys(data)
       this.data = data
       this.ready = true
     },
     showAnswer (response) {
-      console.log(response)
+      console.log('Settings updated:\n', response)
     },
     save () {
       console.log(this.data)
-      this.__updateEstimatedServiceDeliveryTime(this.data)
+      this.__updateEstimatedServiceDeliveryTime(this.data, this.showAnswer)
     }
   },
 
-  beforeDestroy () {
-    this.$root.$off('settings-data-received', this.getSettings)
-    this.$root.$off('settings-data-updated', this.getBuildings)
-  },
-
   mounted () {
-    this.$root.$on('settings-data-received', this.getData)
-    this.$root.$on('settings-data-updated', this.showAnswer)
-    this.__getEstimatedServiceDeliveryTime()
+    this.__getEstimatedServiceDeliveryTime('all', this.getData)
   }
 }
 </script>

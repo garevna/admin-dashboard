@@ -64,6 +64,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    worker: window[Symbol.for('map.worker')],
     ready: false,
     address: '',
     corporation: buildingSchema.corporation,
@@ -85,6 +86,7 @@ export default {
     },
 
     saveCorporationDetails () {
+      this.$dispatchProgressEvent(true)
       const corporation = {}
 
       for (const propName in this.corporation) {
@@ -93,7 +95,12 @@ export default {
           : this.corporation[propName].value
       }
 
-      this.__patchBuildingDetails(this.buildingData._id, { corporation })
+      this.worker.patchBuildingDetails(this.buildingData._id, { corporation }, this.updated)
+    },
+
+    updated (data) {
+      this.$dispatchProgressEvent(false)
+      this.$root.$emit('open-message-popup', { messageType: data.address, messageText: 'Building detals updated' })
     }
   },
 

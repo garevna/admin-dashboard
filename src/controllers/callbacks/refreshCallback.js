@@ -1,15 +1,20 @@
 import { refreshError } from './'
-import { refreshHandler } from '../data-handlers'
+import { refreshHandler, serviceStatusIconsHandler } from '../data-handlers'
 import { setCategories } from '../../helpers'
 
 export function refreshCallback (event) {
   const { status, route, action, ...data } = event.data
 
+  console.log(route, action, data)
+
   if (status !== 200) return refreshError(route)
 
   refreshHandler(route, true)
 
-  if (route === 'settings') setCategories(data.result.ticketCategories)
+  if (route === 'settings') {
+    serviceStatusIconsHandler(data.result.serviceStatusIcons)
+    setCategories(data.result.ticketCategories)
+  }
 
   window[Symbol.for('vue.instance')].$root.$emit(`${route}-refreshed`, route)
   window[Symbol.for('vue.instance')].$root.$emit(`${route}-data-refreshed`, data)

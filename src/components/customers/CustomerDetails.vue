@@ -53,7 +53,6 @@ export default {
 
   beforeDestroy () {
     this.$root.showMainMenu = true
-    this.$root.$off('customer-data-received', this.getCustomerDetails)
   },
 
   beforeMount () {
@@ -62,8 +61,7 @@ export default {
 
   mounted () {
     if (this.customerId) {
-      this.$root.$on('customer-data-received', this.getCustomerDetails)
-      this.__getCustomerData(this.customerId)
+      this.__getCustomerData(this.customerId, this.getCustomerDetails)
     }
   }
 }

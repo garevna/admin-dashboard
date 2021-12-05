@@ -60,12 +60,16 @@
 
 <script>
 
+import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'ScheduleWeekCol',
 
   props: ['date', 'period', 'records'],
 
-  data: () => ({}),
+  data: () => ({
+    icons: serviceStatusIconsHandler()
+  }),
 
   methods: {
     showCustomerDetails (record) {
@@ -126,16 +130,16 @@ export default {
     },
 
     getIcon (status) {
-      const icons = {
-        Active: 'mdi-check-network-outline',
-        'Awaiting for connection': 'mdi-calendar-question',
-        'Awaiting for confirmation': 'mdi-calendar-clock',
-        'Awaiting confirmation': 'mdi-calendar-clock',
-        'Awaiting for scheduling': 'mdi-calendar-question',
-        'In job queue': 'mdi-calendar-check',
-        'Unable to connect': 'mdi-minus-network',
-        'Not connected': 'mdi-alert'
-      }
+      // const icons = {
+      //   Active: 'mdi-check-network-outline',
+      //   'Awaiting for connection': 'mdi-calendar-question',
+      //   'Awaiting for confirmation': 'mdi-calendar-clock',
+      //   'Awaiting confirmation': 'mdi-calendar-clock',
+      //   'Awaiting for scheduling': 'mdi-calendar-question',
+      //   'In job queue': 'mdi-calendar-check',
+      //   'Unable to connect': 'mdi-minus-network',
+      //   'Not connected': 'mdi-alert'
+      // }
       const colors = {
         Active: '#999',
         'Awaiting for connection': '#999',
@@ -146,7 +150,7 @@ export default {
         'Unable to connect': '#777',
         'Not connected': '#f00'
       }
-      return { icon: icons[status], color: colors[status] }
+      return { icon: this.icons[status], color: colors[status] }
     }
   }
 }

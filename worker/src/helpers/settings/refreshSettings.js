@@ -4,10 +4,13 @@ import {
   estimatedServiceDeliveryTimeHandler,
   ticketCategoriesHandler,
   scheduleCalendarSettingsHandler,
-  serviceProductTypesHandler
+  serviceProductTypesHandler,
+  availableServiceStatusHandler,
+  pendingConnectionStatusHandler,
+  serviceStatusIconsHandler
 } from '../../data-handlers'
 
-const [route, action] = ['settings', 'refresh']
+const [route, action, section] = ['settings', 'refresh', 'all']
 
 export const refreshSettings = async function () {
   const { status, result } = await get('settings')
@@ -17,23 +20,34 @@ export const refreshSettings = async function () {
   const {
     estimatedServiceDeliveryTime,
     ticketCategories,
-    schedule,
-    serviceProductTypes
+    scheduleCalendarSettings,
+    serviceProductTypes,
+    availableServiceStatus,
+    pendingConnectionStatus,
+    serviceStatusIcons
   } = result
 
   estimatedServiceDeliveryTimeHandler(estimatedServiceDeliveryTime)
   ticketCategoriesHandler(ticketCategories)
-  scheduleCalendarSettingsHandler(schedule)
+  scheduleCalendarSettingsHandler(scheduleCalendarSettings)
   serviceProductTypesHandler(serviceProductTypes)
+  availableServiceStatusHandler(availableServiceStatus)
+  pendingConnectionStatusHandler(pendingConnectionStatus)
+  serviceStatusIconsHandler(serviceStatusIcons)
 
   return {
     status,
     route,
     action,
+    section,
     result: {
       estimatedServiceDeliveryTime,
       ticketCategories,
-      schedule
+      scheduleCalendarSettings,
+      serviceProductTypes,
+      availableServiceStatus,
+      pendingConnectionStatus,
+      serviceStatusIcons
     }
   }
 }

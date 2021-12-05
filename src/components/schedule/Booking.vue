@@ -36,48 +36,7 @@
                   </td>
                   <td>
                     <ServiceStatusButton :record.sync="record" />
-                      <!-- <v-icon :color="getIcon(record.status).color" small class="mr-1">
-                        {{ getIcon(record.status).icon }}
-                      </v-icon>
-                      <v-menu>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            text
-                            small
-                            color="primary"
-                            v-bind="attrs"
-                            v-on="on"
-                            :disabled="record.status === 'Awaiting for scheduling'"
-                          >
-                            {{ record.status }}
-                          </v-btn>
-                        </template>
-                        <v-list>
-                          <v-list-item
-                            v-if="record.status === 'Awaiting for connection' || record.status === 'Unable to connect'"
-                            @click="changeRecordStatus(record, 'Awaiting for scheduling')"
-                          >
-                            <v-list-item-title>
-                              Awaiting for scheduling
-                            </v-list-item-title>
-                          </v-list-item>
-
-                          <v-list-item
-                            v-if="record.status === 'Awaiting for connection'"
-                            @click="changeRecordStatus(record, 'Unable to connect')"
-                          >
-                            <v-list-item-title>
-                              Unable to connect
-                            </v-list-item-title>
-                          </v-list-item>
-                        </v-list>
-                      </v-menu> -->
                   </td>
-                  <!-- <td>
-                    <v-btn text @click="showInfo(record)">
-                    .
-                    </v-btn>
-                  </td> -->
                 </tr>
               </tbody>
             </table>
@@ -104,14 +63,17 @@ export default {
     booking: null,
     selected: null,
     status: null,
-    ready: false
+    ready: false,
+    icons: {}
   }),
 
   methods: {
-    getData (data) {
-      this.records = data.map(item => Object.assign(item, { modified: new Date(item.modified).toISOString().slice(0, 10) }))
+    getData (booking) {
+      this.panel = Object.keys(booking).map(value => Number(value))
 
-      const dates = Array.from(new Set(data.map(record => record.modified)))
+      this.records = booking.map(item => Object.assign(item, { modified: new Date(item.modified).toISOString().slice(0, 10) }))
+
+      const dates = Array.from(new Set(booking.map(record => record.modified)))
 
       this.booking = Object.assign({}, ...dates.map(date => ({ [date]: [] })))
 
@@ -139,54 +101,27 @@ export default {
       this.__changeServiceDeliveryStatus(Object.assign(record, { status }))
     },
 
-    getIcon (status) {
-      const icons = {
-        Active: 'mdi-check-network-outline',
-        'Awaiting for connection': 'mdi-calendar-question',
-        'Awaiting for confirmation': 'mdi-calendar-clock',
-        'Awaiting confirmation': 'mdi-calendar-clock',
-        'Awaiting for scheduling': 'mdi-calendar-question',
-        'In job queue': 'mdi-calendar-check',
-        'Unable to connect': 'mdi-minus-network',
-        'Not connected': 'mdi-alert'
-      }
-      const colors = {
-        Active: '#999',
-        'Awaiting for connection': 'primary',
-        'Awaiting for confirmation': 'primary',
-        'Awaiting confirmation': 'primary',
-        'Awaiting for scheduling': '#999',
-        'In job queue': '#999',
-        'Unable to connect': '#777',
-        'Not connected': '#f00'
-      }
-      return { icon: icons[status], color: colors[status] }
-    },
     showInfo (item) {
       //
     },
 
     refresh () {
       this.ready = false
-      this.__refreshSchedule()
+      this.__refreshSchedule(this.scheduleRefreshed)
     },
 
-    scheduleRefreshed (event) {
-      this.getData(event.result.booking)
+    scheduleRefreshed (data) {
+      this.getData(data.booking)
     }
   },
 
   beforeMount () {
     this.$root.$on('service-delivery-status-updated', this.updated)
-    this.$root.$on('booking-requests-received', this.getData)
-    this.$root.$on('schedule-data-refreshed', this.scheduleRefreshed)
-    this.__getBookingRequests()
+    this.__getBookingRequests(this.getData)
   },
 
   beforeDestroy () {
-    this.$root.$off('booking-requests-received', this.getData)
     this.$root.$off('service-delivery-status-updated', this.updated)
-    this.$root.$off('schedule-data-refreshed', this.scheduleRefreshed)
   },
 
   mounted () {

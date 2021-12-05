@@ -1,8 +1,10 @@
-export const createBuildingExcelFile = function (data) {
-  window[Symbol.for('vue.instance')].$root.$emit('progress-event', true)
-  window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'building',
-    action: 'excel',
-    data
-  })
+import { eventsTable } from '@/controllers/events-table'
+import { building } from '@/controllers/events'
+
+const [route, action] = ['building', 'excel']
+
+export const createBuildingExcelFile = function (data, callback) {
+  window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action, data })
+
+  eventsTable[building[action]] = callback
 }

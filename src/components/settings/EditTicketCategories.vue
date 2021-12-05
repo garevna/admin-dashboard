@@ -70,17 +70,17 @@ export default {
       this.items.splice(index - 1, 0, this.items.splice(index, 1)[0])
     },
     save () {
-      this.__putTicketCategories(this.items)
+      this.__updateTicketCategories(this.items, this.showAnswer)
     }
   },
   beforeDestroy () {
-    this.$root.$off('settings-data-received', this.data)
-    this.$root.$off('settings-data-updated', this.showAnswer)
+    // this.$root.$off('settings-data-received', this.data)
+    // this.$root.$off('settings-data-updated', this.showAnswer)
   },
   mounted () {
-    this.$root.$on('settings-data-received', this.getData)
-    this.$root.$on('settings-data-updated', this.showAnswer)
-    this.__getTicketCategories()
+    // this.$root.$on('settings-data-received', this.getData)
+    // this.$root.$on('settings-data-updated', this.showAnswer)
+    this.__getTicketCategories(this.getData)
   }
 }
 </script>

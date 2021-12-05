@@ -8,6 +8,8 @@ import { errorMessageHandler } from './errorMessageHandler'
 import { buildingStatusHandler } from './buildingStatusHandler'
 import { buildingsListPageNumberHandler } from './buildingsListPageNumberHandler'
 
+import { serviceStatusIconsHandler } from './serviceStatusIconsHandler'
+
 import { refreshHandler } from './refreshHandler'
 
 import { mapComponent } from './mapComponent'
@@ -22,6 +24,8 @@ export {
   errorMessageHandler,
   buildingStatusHandler,
   buildingsListPageNumberHandler,
+
+  serviceStatusIconsHandler,
 
   refreshHandler,
 

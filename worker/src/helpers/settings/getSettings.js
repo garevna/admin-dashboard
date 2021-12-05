@@ -1,22 +1,51 @@
-import { getEstimatedServiceDeliveryTime } from './getEstimatedServiceDeliveryTime'
-import { getError } from './getError'
+import { availableSections } from './availableSections'
+
 import {
   ticketCategoriesHandler,
   scheduleCalendarSettingsHandler,
-  serviceProductTypesHandler
+  serviceProductTypesHandler,
+  availableServiceStatusHandler,
+  pendingConnectionStatusHandler,
+  serviceStatusIconsHandler
 } from '../../data-handlers'
+
+import {
+  getEstimatedServiceDeliveryTime,
+  getScheduleCalendarSettings,
+  getTicketCategories,
+  getAvailableServiceStatus,
+  getPendingConnectionStatus,
+  getServiceStatusIcons,
+  getServiceProductTypes
+} from './methods'
 
 const [route, action] = ['settings', 'get']
 
-const availableSections = ['estimatedServiceDeliveryTime', 'ticketCategories', 'schedule', 'serviceProductTypes']
-
 const availableMethods = {
   estimatedServiceDeliveryTime: getEstimatedServiceDeliveryTime,
-  ticketCategories: () => ({ status: 200, route, action, result: ticketCategoriesHandler() }),
-  schedule: () => ({ status: 200, route, action, result: scheduleCalendarSettingsHandler() }),
-  serviceProductTypes: () => ({ status: 200, route, action, result: serviceProductTypesHandler() })
+  ticketCategories: getTicketCategories,
+  scheduleCalendarSettings: getScheduleCalendarSettings,
+  serviceProductTypes: getServiceProductTypes,
+  availableServiceStatus: getAvailableServiceStatus,
+  pendingConnectionStatus: getPendingConnectionStatus,
+  serviceStatusIcons: getServiceStatusIcons,
+  all: () => ({
+    status: 200,
+    route,
+    action,
+    section: 'all',
+    result: {
+      estimatedServiceDeliveryTime: getEstimatedServiceDeliveryTime(),
+      ticketCategories: ticketCategoriesHandler(),
+      scheduleCalendarSettings: scheduleCalendarSettingsHandler(),
+      serviceProductTypes: serviceProductTypesHandler(),
+      availableServiceStatus: availableServiceStatusHandler(),
+      pendingConnectionStatus: pendingConnectionStatusHandler(),
+      serviceStatusIcons: serviceStatusIconsHandler()
+    }
+  })
 }
 
 export const getSettings = (section, key) => {
-  return availableSections.includes(section) ? availableMethods[section](key) : getError(section)
+  return section && availableSections.includes(section) ? availableMethods[section](key) : availableMethods.all()
 }

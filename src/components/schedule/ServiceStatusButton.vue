@@ -3,8 +3,8 @@
     <v-expansion-panels flat>
       <v-expansion-panel>
         <v-expansion-panel-header hide-actions>
-          <v-icon :color="getIcon(record.status).color" small class="mr-1">
-            {{ getIcon(record.status).icon }}
+          <v-icon :color="color" small class="mr-1">
+            {{ icon }}
           </v-icon>
           <v-btn
             text
@@ -74,6 +74,8 @@
 
 <script>
 
+import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'ServiceStatusButton',
 
@@ -81,35 +83,32 @@ export default {
 
   data: () => ({
     activation: false,
-    icons: {
-      Active: 'mdi-check-network-outline',
-      'Awaiting for connection': 'mdi-calendar-question',
-      'Awaiting for confirmation': 'mdi-calendar-clock',
-      'Awaiting confirmation': 'mdi-calendar-clock',
-      'Awaiting for scheduling': 'mdi-calendar-question',
-      'In job queue': 'mdi-calendar-check',
-      'Unable to connect': 'mdi-minus-network',
-      'Not connected': 'mdi-alert'
-    },
+    icons: serviceStatusIconsHandler(),
     colors: {
-      Active: '#999',
+      Active: '#09b',
       'Awaiting for connection': 'primary',
       'Awaiting for confirmation': 'primary',
       'Awaiting confirmation': 'primary',
-      'Awaiting for scheduling': '#999',
-      'In job queue': '#999',
-      'Unable to connect': '#777',
+      'Awaiting for scheduling': '#888',
+      'In job queue': '#888',
+      'Unable to connect': '#555',
       'Not connected': '#f00'
     }
   }),
 
-  methods: {
-    getIcon (status) {
-      return { icon: this.icons[status], color: this.colors[status] }
+  computed: {
+    icon () {
+      return this.icons && this.icons[this.record.status]
     },
+    color () {
+      return this.colors[this.record.status] || '#999'
+    }
+  },
+
+  methods: {
     changeRecordStatus (status) {
       this.$emit('update:record', Object.assign(this.record, { status }))
-      this.__changeServiceDeliveryStatus(this.record)
+      this.__changeServiceDeliveryStatus(this.record, response => console.log(response))
     }
   }
 }
