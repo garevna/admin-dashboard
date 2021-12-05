@@ -61,13 +61,12 @@ export default {
       this.ready = Array.isArray(this.items)
     },
     getPending (data) {
-      console.log('PENDING:\n', data)
       this.pending = data.partner
       // this.items = data
       // this.ready = Array.isArray(this.items)
     },
     showAnswer (response) {
-      console.log(response)
+      console.log('Pending connection status:\n', response)
     },
     save () {
       this.__getPendingConnectionStatus(this.items, this.showAnswer)

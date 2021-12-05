@@ -82,13 +82,10 @@ export default {
     },
 
     getPartnerCredentials (partner) {
-      console.log(partner._id)
       this.__getPartnerCredentials(partner._id, this.gotoCabinet)
     },
 
     gotoCabinet (data) {
-      console.log(data.result)
-      console.log(this.$partnerCabinetLink())
       this.__openExternalLink(`${this.$partnerCabinetLink()}#${data.result}`)
     },
 
@@ -101,21 +98,14 @@ export default {
     },
 
     showDetails (partnerDetails) {
-      console.log(partnerDetails)
       this.rspDetails = partnerDetails
       this.details = true
     }
   },
 
   beforeMount () {
-    // this.$root.$on('partner-credentials-received', this.gotoCabinet)
     this.__getResellersList(this.getData)
   }
-
-  // beforeDestroy () {
-  //   this.$root.$off('rsp-list-received', this.getData)
-  //   this.$root.$off('partner-credentials-received', this.gotoCabinet)
-  // }
 }
 
 </script>

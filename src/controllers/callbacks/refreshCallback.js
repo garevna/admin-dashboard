@@ -5,8 +5,6 @@ import { setCategories } from '../../helpers'
 export function refreshCallback (event) {
   const { status, route, action, ...data } = event.data
 
-  console.log(route, action, data)
-
   if (status !== 200) return refreshError(route)
 
   refreshHandler(route, true)

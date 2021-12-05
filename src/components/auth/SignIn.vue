@@ -100,22 +100,18 @@ export default {
     },
 
     showResult (result) {
-      // this.$root.$off('auth-success', this.showResult)
       roleHandler(result.role)
       credentialsHandler(result.credentials)
 
-      console.log('SIGN IN RESULT: ', roleHandler(), credentialsHandler())
-
       createMapWorker(credentialsHandler(), roleHandler())
 
-      localStorage.setItem('admin', roleHandler())
-      localStorage.setItem('refresh', credentialsHandler())
+      // localStorage.setItem('admin', roleHandler())
+      // localStorage.setItem('refresh', credentialsHandler())
 
       this.$router.push({ name: 'dash' }).catch(failure => console.warn('Router failure:\n', failure))
     },
 
     async signIn () {
-      // this.$root.$on('auth-success', this.showResult)
       this.__auth(this.showResult)
       this.step = 1
     }
@@ -135,8 +131,6 @@ export default {
     }
     .reset-password {
       font-size: 11px;
-      /* margin-top: -16px;
-      text-transform: none; */
     }
   }
 </style>
