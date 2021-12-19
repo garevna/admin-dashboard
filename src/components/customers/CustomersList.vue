@@ -127,14 +127,6 @@ export default {
   }),
 
   watch: {
-    // serviceType (val) {
-    //   console.log(val)
-    //   console.log(this.filteredItems.map(customer => customer.address))
-    // },
-    // serviceName (val) {
-    //   console.log(val)
-    //   console.log(this.filteredItems.map(customer => customer.address))
-    // },
     refresh (val) {
       if (!val) return
       this.ready = false
@@ -160,20 +152,6 @@ export default {
       return window.innerHeight - 400
     },
 
-    // customers () {
-    //   if (!this.data) return
-    //
-    //   return this.data.map(customer => ({
-    //     customerCreationDate: customer.customerCreationDate,
-    //     name: customer.name,
-    //     uniqueCode: customer.uniqueCode,
-    //     postCode: customer.postCode,
-    //     address: customer.address,
-    //     services: customer.services,
-    //     id: customer._id
-    //   }))
-    // },
-
     selectedCustomersNumber () {
       return this.filteredItems.length
     },
@@ -194,16 +172,6 @@ export default {
       this.ready = true
     },
     getIcon (status) {
-      // const icons = {
-      //   Active: 'mdi-check-network-outline',
-      //   'Awaiting for connection': 'mdi-calendar-question',
-      //   'Awaiting for confirmation': 'mdi-calendar-clock',
-      //   'Awaiting confirmation': 'mdi-calendar-clock',
-      //   'Awaiting for scheduling': 'mdi-calendar-question',
-      //   'In job queue': 'mdi-calendar-check',
-      //   'Unable to connect': 'mdi-minus-network',
-      //   'Not connected': 'mdi-alert'
-      // }
       const colors = {
         Active: '#090',
         'Awaiting for connection': 'primary',
@@ -223,7 +191,8 @@ export default {
     },
 
     refreshed (data) {
-      !this.details ? this.__getCustomers(this.getData) : this.__getCustomersByResellerId(this.details._id, this.getData)
+      // !this.details ? this.__getCustomers(this.getData) : this.__getCustomersByResellerId(this.details._id, this.getData)
+      this.sendRequest()
     },
 
     getIcons (data) {
@@ -240,16 +209,21 @@ export default {
       this.selectedCustomerId = item.id
       customerHandler(item.id)
       this.edit = true
+    },
+
+    sendRequest () {
+      !this.details ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(this.details._id, this.getCustomersList)
     }
   },
 
   created () {
     this.__getServiceStatusIcons(this.getIcons)
     console.log('DETAILS ???\n', this.details)
-    !this.details ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(this.details._id, this.getCustomersList)
+    this.sendRequest()
   },
 
   mounted () {
+    this.$root.$on('customers-updated', this.sendRequest)
     this.$vuetify.goTo(0)
   }
 }

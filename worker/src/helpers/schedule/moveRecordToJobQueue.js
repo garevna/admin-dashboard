@@ -1,5 +1,5 @@
 export const moveRecordToJobQueue = async (request) => {
-  self.postDebugMessage({ request })
+  // self.postDebugMessage({ request })
 
   const { status } = await self.updateCustomerServiceStatus(request)
 

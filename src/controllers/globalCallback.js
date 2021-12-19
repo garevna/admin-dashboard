@@ -18,20 +18,21 @@ export const globalCallback = function (event) {
 
   if (error || message) error ? errorCallback(event) : messageCallback(event)
 
-  // console.log('GLOBAL CALLBACK:\n', route, action, section, status, result, error, message)
-
   if (action === 'init') return initCallback(event)
 
   if (action === 'initial-refresh') return refreshCallback(event)
+
+  if (route === 'updates') {
+    event.stopPropagation()
+    console.log(event.data)
+    return
+  }
 
   window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
 
   const eventName = route === 'settings' && action === 'get' ? events[route][action][section] : events[route][action]
 
   if (!eventsTable[eventName]) {
-    // console.log('EVENTS TABLE:\n', eventsTable)
-    // console.log('ROUTE AND ACTION:\n', route, action)
-    // console.log('EVENT NAME: ', eventName)
     return console.warn('Unknown event', route, action, event.data)
   }
   if (typeof eventsTable[eventName] !== 'function') return console.warn('Error: callback is not a function', eventName, event.data)

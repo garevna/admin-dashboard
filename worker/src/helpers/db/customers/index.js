@@ -1,13 +1,13 @@
 import { getRecord } from './getRecord'
 import { putRecord } from './putRecord'
 import { iterateCustomers } from './iterateCustomers'
-import { createStatisticRecord } from './createStatisticRecord'
+import { updateStatistics } from './updateStatistics'
 import { getCustomersForExcel } from './getCustomersForExcel'
 
 export {
   getRecord,
   putRecord,
   iterateCustomers,
-  createStatisticRecord,
+  updateStatistics,
   getCustomersForExcel
 }

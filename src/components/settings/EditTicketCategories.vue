@@ -40,6 +40,8 @@
 
 <script>
 
+import { setCategories } from '@/helpers'
+
 export default {
   name: 'EditTicketCategories',
   data: () => ({
@@ -55,7 +57,9 @@ export default {
       this.ready = Array.isArray(this.items)
     },
     showAnswer (response) {
-      console.log(response)
+      console.log('CATEGORIES:', response)
+      const { ticketCategories } = response.data
+      setCategories(ticketCategories)
     },
     removeItem (index) {
       this.items.splice(index, 1)

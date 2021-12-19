@@ -1,5 +1,6 @@
 import { routes } from './configs'
 import { serviceStatus } from './configs/serviceStatus'
+import { credentialsHandler } from './helpers/env'
 
 import {
   getWeekNumber,
@@ -9,6 +10,8 @@ import {
   getWeekEndDateByWeekNumber,
   getWeekDatesByWeekNumber
 } from 'garevna-date-functions'
+
+const { updatesController } = require('./controllers').default
 
 Object.assign(self, {
   getWeekNumber,
@@ -40,8 +43,20 @@ const { testDBVersion } = require('./helpers').default
 testDBVersion()
 
 self.initialized = false
-
 self.serviceStatus = serviceStatus
+self.frequency = 60000
+self.lastRequestTime = Date.now() - 1000 * 60 * 60 * 24 * 2
+
+const getUpdatesFromRemote = async () => {
+  self.postDebugMessage({ timeout: (Date.now() - self.lastRequestTime) / 1000 })
+  if (!credentialsHandler()) return setTimeout(getUpdatesFromRemote, self.frequency)
+
+  updatesController.getLastUpdates()
+  // updatesController.setLastRequestDate()
+  setTimeout(getUpdatesFromRemote, self.frequency)
+}
+
+getUpdatesFromRemote()
 
 self.onmessage = (event) => {
   if (!navigator.onLine) return self.postMessage(self.errorMessage('offline'))

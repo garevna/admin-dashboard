@@ -18,11 +18,11 @@ export const updateScheduleSettings = async function (data) {
 
   if (response.status !== 200) return Object.assign(response, updateScheduleSettingsError)
 
-  const { status, result } = await self.updateScheduleLots()
+  const { status /*, result */ } = await self.updateScheduleLots()
 
   if (status !== 200) return Object.assign(response, updateScheduleSettingsError)
 
-  self.postDebugMessage({ result })
+  // self.postDebugMessage({ result })
 
   return Object.assign(response, {
     route: 'schedule',

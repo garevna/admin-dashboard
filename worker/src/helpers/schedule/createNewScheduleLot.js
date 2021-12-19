@@ -20,7 +20,7 @@ export const createNewScheduleLot = async function (date, period = 'am') {
 
   const { result: lots } = (await self.getScheduleLots())
 
-  self.postDebugMessage({ lots })
+  // self.postDebugMessage({ lots })
 
   Object.keys(lots).filter(date => date >= currentDate)
 
@@ -28,7 +28,7 @@ export const createNewScheduleLot = async function (date, period = 'am') {
 
   const settings = scheduleCalendarSettingsHandler()[self.getWeekDatesByWeekNumber(self.getWeekNumber(date))]
 
-  self.postDebugMessage({ settings })
+  // self.postDebugMessage({ settings })
 
   if (lots[date][period].length >= settings) {
     return Object.assign({}, error, {

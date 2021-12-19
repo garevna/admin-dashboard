@@ -157,15 +157,6 @@ export default {
     this.$root.$on('progress-event', this.progressEventCallback)
 
     window.scroll({ top: 0, left: 0, behavior: 'smooth' })
-
-    // const test = (route, action, key, data) => new Promise((resolve, reject) => {
-    //   window[Symbol.for('admin.worker')].sendMessage({ route, action, key, data })
-    //   const callback = function (event) {
-    //     const { status, route, action, key, result } = event.data
-    //     console.log(status, route, action, key, result)
-    //   }.bind(null, route, action, resolve)
-    //   window[Symbol.for('admin.worker')].addEventListener('message', callback)
-    // })
   },
 
   errorCaptured (err, instance, info) {

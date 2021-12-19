@@ -12,7 +12,7 @@ const invalidRequest = {
 }
 
 export const updateSLA = async (record) => {
-  self.postDebugMessage({ record })
+  // self.postDebugMessage({ record })
   if (!record.id || (!record.title && !record.content)) return invalidRequest
 
   const success = {

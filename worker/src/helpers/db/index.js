@@ -12,7 +12,7 @@ import {
 } from './initDB'
 
 // import { putBooking } from './putBooking'
-import { iterateCustomers, getCustomersForExcel } from './customers'
+import { iterateCustomers, getCustomersForExcel, updateStatistics } from './customers'
 
 import { clearStore } from './clearStore'
 import { putRecordByKey } from './putRecordByKey'
@@ -42,5 +42,6 @@ export {
   deleteRecordByKey,
   getAllRecords,
   iterateCustomers,
+  updateStatistics,
   getCustomersForExcel
 }

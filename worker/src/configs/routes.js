@@ -8,7 +8,8 @@ const {
   ticketsController,
   scheduleController,
   documentsController,
-  settingsController
+  settingsController,
+  updatesController
 } = require('../controllers').default
 
 export const routes = {
@@ -25,7 +26,7 @@ export const routes = {
       ]
 
       const response = await self.refreshSettings()
-      self.postDebugMessage({ settings: response })
+      // self.postDebugMessage({ settings: response })
       self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
 
       for (const action of actions) {
@@ -134,10 +135,10 @@ export const routes = {
     put: ticketsController.put
   },
 
-  categories: {
-    get: ticketsController.getCategories,
-    put: ticketsController.putCategories
-  },
+  // categories: {
+  //   get: ticketsController.getCategories,
+  //   put: ticketsController.putCategories
+  // },
 
   schedule: {
     refresh: scheduleController.refresh,
@@ -177,5 +178,10 @@ export const routes = {
     refresh: settingsController.refresh,
     get: settingsController.get,
     update: settingsController.update
+  },
+
+  updates: {
+    get: updatesController.getLastUpdates,
+    'set-last-request-date': updatesController.setLastRequestDate
   }
 }

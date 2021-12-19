@@ -7,6 +7,7 @@ const access = {
 
 export const setCategories = function (categories) {
   const section = mainDashboard.find(item => item.refresh === 'tickets')
+  section.children = []
   categories.forEach((title, index) => section.children.push({
     title,
     route: 'tickets',
@@ -24,6 +25,8 @@ export const setCategories = function (categories) {
     icon: 'mdi-archive-search',
     access
   })
+
+  window[Symbol.for('vue.instance')].$emit('ticket-categories-updated')
 
   return true
 }

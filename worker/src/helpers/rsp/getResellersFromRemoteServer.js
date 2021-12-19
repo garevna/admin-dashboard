@@ -3,24 +3,25 @@ import { clearStore, putRecordByKey } from '../db'
 
 import { uniqueCodes, uniqueCodeList } from '../data-handlers'
 
-export const getResellersFromRemoteServer = async function () {
-  const [route, action] = ['rsp', 'refresh']
+const [route, action] = ['rsp', 'refresh']
 
-  const { status, result } = await get('user')
+export const getResellersFromRemoteServer = async function () {
+  const { status, result } = await get('user/get_rsp?per_page=100')
 
   if (status !== 200) return self.errorMessage('refreshUsersError')
 
   clearStore('rsp')
   uniqueCodes([])
 
-  const partners = result.filter(user => user.role === 'RSP')
+  /* const response = */ await Promise.all(result.map(rsp => putRecordByKey('rsp', rsp._id, rsp)))
 
-  for (const rsp of partners) {
-    if (rsp.approved) {
-      uniqueCodeList(rsp._id, rsp.uniqueCode)
-      uniqueCodes(rsp.uniqueCode)
-    }
-    if ((await putRecordByKey('rsp', rsp._id, rsp)).status !== 200) return self.errorMessage('putUserRecordError')
+  // self.postDebugMessage({ putRSPToLocalDBResult: response })
+
+  const partners = result.filter(user => user.approved)
+
+  for (const partner of partners) {
+    uniqueCodeList(partner._id, partner.uniqueCode)
+    uniqueCodes(partner.uniqueCode)
   }
 
   return { status: 200, route, action, result: partners }

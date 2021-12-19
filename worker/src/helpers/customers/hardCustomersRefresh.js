@@ -1,6 +1,8 @@
 import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
 
+const { updatesController } = require('../../controllers')
+
 export const hardCustomersRefresh = async function () {
   const [route, action] = ['customers', 'hard-refresh']
 
@@ -8,7 +10,7 @@ export const hardCustomersRefresh = async function () {
 
   let currentPage = 1
   let done = false
-  let counter = 0
+  // let counter = 0
 
   await clearStore('customers')
 
@@ -18,12 +20,17 @@ export const hardCustomersRefresh = async function () {
     done = page >= pages
 
     for (const customer of result) {
-      self.postDebugMessage({ num: counter++, customer: customer.address })
+      // self.postDebugMessage({ num: counter++, customer: customer.address })
       const { _id } = customer
       const { status } = await putRecordByKey('customers', _id, customer)
+
+      self.updateStatistics(_id, customer.services)
+
       if (status !== 200) return self.errorMessage('refreshCustomersListError')
     }
   }
+
+  updatesController.setLastRequestDate(Date.now())
 
   return { status: 200, route, action, result: (await self.getAllCustomers()).result }
 }

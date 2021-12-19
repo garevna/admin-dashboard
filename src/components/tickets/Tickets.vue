@@ -52,6 +52,8 @@
 
 <script>
 
+import { tickets } from '@/configs/main-dashboard'
+
 export default {
   name: 'Tickets',
 
@@ -61,6 +63,7 @@ export default {
   },
 
   data: () => ({
+    config: tickets,
     ready: false,
     edit: false,
     section: '',
@@ -110,6 +113,9 @@ export default {
   },
 
   methods: {
+    getTicketCategories (data) {
+      console.log(data)
+    },
     getTickets (data) {
       const getDate = date => date.indexOf('-') !== -1 ? date : new Date(date - 0).toISOString().slice(0, 10)
 
@@ -140,7 +146,7 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('categories-received', this.getCategories)
+    // this.$root.$off('categories-received', this.getCategories)
     // this.$root.$off('tickets-list-received', this.getTickets)
     // this.$root.$off('ticket-data-received', this.showTicketDetails)
 
@@ -148,7 +154,8 @@ export default {
   },
 
   beforeMount () {
-    this.$root.$on('categories-received', this.getCategories)
+    this.__getTicketCategories(this.getTicketCategories)
+    // this.$root.$on('categories-received', this.getCategories)
     // this.$root.$on('tickets-list-received', this.getTickets)
     // this.$root.$on('ticket-data-received', this.showTicketDetails)
 

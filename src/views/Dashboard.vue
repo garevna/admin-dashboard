@@ -34,6 +34,7 @@
             v-for="child in item.children"
             :key="child.title"
             class="clickable"
+            style="margin-left: 16px!important; margin-top: -16px!important"
             :disabled="$route.name !== 'tickets' ? $route.name === child.route : false"
             @click="jumpTo(child)"
           >
@@ -44,8 +45,8 @@
               </v-list-item-title>
             </v-list-item-content>
 
-            <v-list-item-content v-else style="margin-left: -32px!important; margin-top: -16px!important; padding-bottom: 0; padding-right: 0">
-              <v-list-group sub-group prepend-icon="">
+            <v-list-item-content v-else style="margin-left: -32px!important; margin-top: -12px!important; padding-bottom: 0; padding-right: 0">
+              <v-list-group sub-group prepend-icon="" style="margin-bottom: 16px!important">
                 <template v-slot:activator>
                   <v-list-item-content>
                     <v-list-item-title active-class="active-list-item">
@@ -112,6 +113,7 @@ export default {
     },
 
     jumpTo (item) {
+      console.log(item)
       if (item.route === 'tickets') {
         if (item.path.indexOf(this.$route.path) !== -1) return
         this.$router.push({ name: item.route, params: item.params }).catch(failure => console.warn('Router failure:\n', failure))
@@ -119,6 +121,10 @@ export default {
         if (this.$route.name === item.route) return
         item.route && this.$router.push({ name: item.route }).catch(failure => console.warn('Router failure:\n', failure))
       }
+    },
+
+    refreshTicketCategories (data) {
+      console.log(data)
     }
   },
 
@@ -134,6 +140,8 @@ export default {
     ].forEach((event) => {
       this.$root.$off(event, this.setRefreshed)
     })
+
+    this.$root.$off('ticket-categories-updated', this.refreshTicketCategories)
   },
 
   mounted () {
@@ -150,6 +158,8 @@ export default {
     })
 
     if (!roleHandler()) this.$router.push({ name: 'home' }).catch(failure => console.warn('Router failure:\n', failure))
+
+    this.$root.$on('ticket-categories-updated', this.refreshTicketCategories)
   }
 }
 </script>

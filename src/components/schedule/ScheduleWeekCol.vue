@@ -12,7 +12,13 @@
 
       <p class="text-center"><sub><small>{{ record.serviceName }}</small></sub></p>
 
-      <v-menu offset-y>
+      <ScheduleRecordStatusButton
+        :date="date"
+        :period="period"
+        :record.sync="record"
+      />
+
+      <!-- <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
           <v-btn text small v-bind="attrs" v-on="on">
             <v-icon small :color="getIcon(record.status).color"> {{ getIcon(record.status).icon }} </v-icon>
@@ -35,21 +41,21 @@
               Activate service
             </v-list-item-title>
           </v-list-item>
-        </v-list>
+        </v-list> -->
 
-        <v-list v-if="record.status === 'In job queue'">
+        <!-- <v-list v-if="record.status === 'In job queue'"> -->
           <!-- <v-list-item @click="reject(record)">
             <v-list-item-title>
               Reject installation
             </v-list-item-title>
           </v-list-item> -->
-          <v-list-item @click="activate(record)">
+          <!-- <v-list-item @click="activate(record)">
             <v-list-item-title>
               Activate service
             </v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
       <!-- <v-btn text small>
         <v-icon small :color="getIcon(record.status).color"> {{ getIcon(record.status).icon }} </v-icon>
         {{ record.status }}
@@ -67,6 +73,10 @@ export default {
 
   props: ['date', 'period', 'records'],
 
+  components: {
+    ScheduleRecordStatusButton: () => import('@/components/schedule/ScheduleRecordStatusButton.vue')
+  },
+
   data: () => ({
     icons: serviceStatusIconsHandler()
   }),
@@ -80,66 +90,52 @@ export default {
       })
     },
 
-    confirm (record) {
-      if (record.status === 'In job queue') return
+    // confirm (record) {
+    //   if (record.status === 'In job queue') return
+    //
+    //   const { customerId, serviceId, lots } = record
+    //
+    //   const lot = lots.find(item => item.date === this.date)
+    //
+    //   const installation = {
+    //     date: this.date,
+    //     period: this.period,
+    //     message: lot.message || ''
+    //   }
+    //   this.__putRecordToJobQueue(Object.assign({}, {
+    //     customerId,
+    //     serviceId,
+    //     lots,
+    //     status: 'In job queue',
+    //     modified: Date.now(),
+    //     installation
+    //   }))
+    //   this.$root.$emit('move-record-to-job-queue', { customerId, serviceId, lots, installation })
+    // },
 
-      const { customerId, serviceId, lots } = record
+    // activate (record) {
+    //   if (record.status !== 'In job queue') return
+    //   this.__activateService(record, response => console.log(response))
+    //   this.$root.$emit('activate-record', {
+    //     week: this.getWeekNumber(this.date),
+    //     date: this.date,
+    //     period: this.period,
+    //     customerId: record.customerId,
+    //     serviceId: record.serviceId
+    //   })
+    // },
 
-      const lot = lots.find(item => item.date === this.date)
-
-      const installation = {
-        date: this.date,
-        period: this.period,
-        message: lot.message || ''
-      }
-
-      this.__putRecordToJobQueue(Object.assign({}, {
-        customerId,
-        serviceId,
-        lots,
-        status: 'In job queue',
-        modified: Date.now(),
-        installation
-      }))
-
-      this.$root.$emit('move-record-to-job-queue', { customerId, serviceId, lots, installation })
-    },
-
-    activate (record) {
-      if (record.status !== 'In job queue') return
-
-      this.__activateService(record)
-
-      this.$root.$emit('activate-record', {
-        week: this.getWeekNumber(this.date),
-        date: this.date,
-        period: this.period,
-        customerId: record.customerId,
-        serviceId: record.serviceId
-      })
-    },
-
-    reject (record) {
-      if (record.status === 'In job queue') return
-
-      this.__updateScheduleRecordStatus(Object.assign({}, record, {
-        status: 'Awaiting for scheduling',
-        modified: Date.now(),
-        lots: []
-      }))
-    },
+    // reject (record) {
+    //   if (record.status === 'In job queue') return
+    //
+    //   this.__updateScheduleRecordStatus(Object.assign({}, record, {
+    //     status: 'Awaiting for scheduling',
+    //     modified: Date.now(),
+    //     lots: []
+    //   }))
+    // },
 
     getIcon (status) {
-      // const icons = {
-      //   Active: 'mdi-check-network-outline',
-      //   'Awaiting for connection': 'mdi-calendar-question',
-      //   'Awaiting for confirmation': 'mdi-calendar-clock',
-      //   'Awaiting confirmation': 'mdi-calendar-clock',
-      //   'Awaiting for scheduling': 'mdi-calendar-question',
-      //   'In job queue': 'mdi-calendar-check',
-      //   'Unable to connect': 'mdi-minus-network',
-      //   'Not connected': 'mdi-alert'
-      // }
       const colors = {
         Active: '#999',
         'Awaiting for connection': '#999',
@@ -147,10 +143,10 @@ export default {
         'Awaiting confirmation': 'primary',
         'Awaiting for scheduling': '#999',
         'In job queue': '#999',
-        'Unable to connect': '#777',
+        'Unable to connect': '#555',
         'Not connected': '#f00'
       }
-      return { icon: this.icons[status], color: colors[status] }
+      return { icon: this.icons[status], color: colors[status] || '#777' }
     }
   }
 }

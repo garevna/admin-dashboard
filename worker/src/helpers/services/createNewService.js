@@ -9,7 +9,7 @@ export const createNewService = async function (data) {
 
   const { status, result } = await post('service', service)
 
-  self.postDebugMessage({ response: { status, serviceId: result.data } })
+  // self.postDebugMessage({ response: { status, serviceId: result.data } })
 
   if (status !== 200) return self.errorMessage('postServiceDetailsError')
 

@@ -5,6 +5,14 @@ export const offline = {
   errorMessage: 'Operation failed'
 }
 
+export const remoteServerError = {
+  status: 500,
+  route: '*',
+  action: '*',
+  errorType: 'Remote server error',
+  errorMessage: 'Request failed. Bad server response.'
+}
+
 export const invalidRequest = {
   status: 422,
   route: '*',

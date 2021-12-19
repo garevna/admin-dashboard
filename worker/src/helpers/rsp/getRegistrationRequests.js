@@ -1,13 +1,18 @@
-import { getAllRecords } from '../db'
+import { get } from '../AJAX'
+import { putRecordByKey } from '../db'
+
+const [route, action] = ['rsp', 'registration']
 
 export const getRegistrationRequests = async () => {
-  const [route, action] = ['rsp', 'registration']
+  const { status, result } = await get('registration?per_page=100')
+  if (status !== 200) return self.errorMessage('getRegistrationRequestsError')
 
-  const response = await getAllRecords('rsp')
+  // self.postDebugMessage({ registrationRequests: result })
 
-  if (response.status !== 200) return self.errorMessage('getRegistrationRequestsError')
+  const promises = result.map(user => putRecordByKey('rsp', user._id, user))
+  /* const response = */ await Promise.all(promises)
 
-  const requests = response.result.filter(rsp => !rsp.approved)
+  // self.postDebugMessage({ registrationLocalUpdates: response })
 
-  return { status: 200, route, action, result: requests }
+  return { status: 200, route, action, result }
 }

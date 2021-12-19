@@ -15,14 +15,16 @@ export const get = async function (path) {
     }
   })
 
-  const result = await response.json()
+  const { page, pages, data: result } = await response.json()
 
   if (response.status !== 200 || !result) {
     return {
       status: response.status,
+      page,
+      pages,
       result: 'Error fetching the data from remote server'
     }
   }
 
-  return { status: 200, result: result.data, page: result.page, pages: result.pages }
+  return { status: 200, result, page, pages }
 }

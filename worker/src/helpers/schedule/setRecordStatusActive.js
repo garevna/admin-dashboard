@@ -1,6 +1,7 @@
 import { removeScheduleRecord } from '../db/schedule'
 
 export const setRecordStatusActive = async (request) => {
+  // self.postDebugMessage(request)
   const { customerId, serviceId } = request
 
   await Promise.all([

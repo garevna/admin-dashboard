@@ -12,7 +12,6 @@ class AuthController {
   }
 
   async auth (request) {
-    self.postDebugMessage({ message: 'AUTH CONTROLLER' })
     self.postMessage(await auth(request.login, request.password))
   }
 
