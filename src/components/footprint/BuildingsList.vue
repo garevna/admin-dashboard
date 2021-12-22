@@ -183,7 +183,6 @@ export default {
       this.selectedBuildingId = item.id
       const { address, uniqueCode, status, estimatedServiceDeliveryTime } = item
       window[Symbol.for('selected-building-general-info')] = { address, uniqueCode, status, estimatedServiceDeliveryTime }
-      console.log(window[Symbol.for('selected-building-general-info')])
 
       this.$router.push({ name: 'building-details', params: { buildingId: this.selectedBuildingId } })
         .catch(failure => console.warn('Router failure:\n', failure))
@@ -216,11 +215,13 @@ export default {
   },
   beforeDestroy () {
     this.$root.$off('operation-confirmed', this.confirmationReceived)
+    this.$root.$off('settings-updated', this.buildingsGroupUpdated)
   },
 
   mounted () {
     this.page = buildingsListPageNumberHandler()
     this.$root.$on('operation-confirmed', this.confirmationReceived)
+    this.$root.$on('settings-updated', this.buildingsGroupUpdated)
     this.requestBuildingList()
   }
 }

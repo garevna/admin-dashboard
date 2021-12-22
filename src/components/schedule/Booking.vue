@@ -35,7 +35,7 @@
                     <p><small>{{ record.serviceName }}</small></p>
                   </td>
                   <td>
-                    <ServiceStatusButton :record.sync="record" />
+                    <ServiceStatusButton :record.sync="record" :activated.sync="activated" />
                   </td>
                 </tr>
               </tbody>
@@ -62,10 +62,20 @@ export default {
     panel: [],
     booking: null,
     selected: null,
+    activated: false,
     status: null,
     ready: false,
     icons: {}
   }),
+
+  watch: {
+    activated (val) {
+      if (val) {
+        this.__refreshSchedule(this.scheduleRefreshed)
+        this.activated = false
+      }
+    }
+  },
 
   methods: {
     getData (booking) {

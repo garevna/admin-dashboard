@@ -66,15 +66,6 @@ export default {
     ready: false
   }),
 
-  watch: {
-    data: {
-      deep: true,
-      handler (value) {
-        console.log(value)
-      }
-    }
-  },
-
   methods: {
     update (value, index) {
       this.items[index] = value
@@ -84,12 +75,11 @@ export default {
       this.data = data
       this.ready = true
     },
-    showAnswer (response) {
-      console.log('Settings updated:\n', response)
+    emitEvent (response) {
+      this.$root.$emit('settings-updated')
     },
     save () {
-      console.log(this.data)
-      this.__updateEstimatedServiceDeliveryTime(this.data, this.showAnswer)
+      this.__updateEstimatedServiceDeliveryTime(this.data, this.emitEvent)
     }
   },
 

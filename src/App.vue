@@ -90,16 +90,6 @@ export default {
     }
   },
 
-  // watch: {
-  //   signIn (val) {
-  //     console.log('signIn: ', val)
-  //     if (val) {
-  //       console.log('CREDENTIALS: ', credentialsHandler())
-  //       console.log('ROLE: ', roleHandler())
-  //     }
-  //   }
-  // },
-
   methods: {
     errorHandler (event) {
       const { errorType, errorMessage } = event.data
@@ -160,7 +150,7 @@ export default {
   },
 
   errorCaptured (err, instance, info) {
-    console.log(err === 'TypeError: Cannot read properties of undefined (reading \'lang\')')
+    // console.log(err === 'TypeError: Cannot read properties of undefined (reading \'lang\')')
     console.warn('ERROR:\n', err, info, instance.$options._componentTag)
     return false
   }

@@ -25,8 +25,6 @@ export const auth = async (login, password) => {
 
   const result = await response.json()
 
-  // self.postDebugMessage({ result })
-
   if (response.status !== 200) return self.errorMessage('authError')
 
   return {

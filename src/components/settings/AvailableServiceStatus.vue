@@ -70,17 +70,11 @@ export default {
 
   methods: {
     updateSwitchToItems (item, selected) {
-      console.log(item.title)
-      console.log(selected.title)
       item.switchToStatus.includes(selected.title)
         ? item.switchToStatus.splice(item.switchToStatus.indexOf(selected.title), 1)
         : item.switchToStatus.push(selected.title)
-
-      console.log(item.switchToStatus)
     },
     getData (data) {
-      console.log(data)
-
       this.items = data.map(item => ({
         title: item,
         pending: {

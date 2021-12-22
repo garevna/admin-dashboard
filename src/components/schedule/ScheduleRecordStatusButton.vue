@@ -10,7 +10,6 @@
             text
             small
             color="primary"
-            :disabled="record.status === 'Awaiting for scheduling'"
           >
             {{ record.status }}
           </v-btn>
@@ -26,13 +25,8 @@
               </v-list-item-title>
             </v-list-item>
 
-            <v-list-item
-              v-if="record.status === 'In job queue'"
-              @click="activate"
-            >
-              <v-list-item-title>
-                Activate
-              </v-list-item-title>
+            <v-list-item @click="activation = true">
+              <v-list-item-title> Activate from date: </v-list-item-title>
             </v-list-item>
 
             <v-list-item
@@ -45,7 +39,7 @@
             </v-list-item>
           </v-list>
 
-          <!-- <div v-if="activation">
+          <div v-if="activation">
             <v-date-picker
               label="Activation date"
               v-model="record.activationDate"
@@ -62,12 +56,12 @@
               small
               color="primary"
               :disabled="!record.activationDate"
-              @click="changeRecordStatus('Active')"
+              @click="activate"
               width="270"
             >
               Submit
             </v-btn>
-          </div> -->
+          </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -108,9 +102,6 @@ export default {
   },
 
   methods: {
-    changeRecordStatus (status) {
-
-    },
     confirm () {
       if (this.record.status === 'In job queue') return
 
@@ -137,10 +128,15 @@ export default {
     },
 
     activate () {
-      if (this.record.status !== 'In job queue') return
+      // if (this.record.status !== 'In job queue') return
+      console.log(this.record.activationDate)
 
-      this.__activateService(this.record, response => console.log(response))
+      console.log(this.record)
 
+      this.__activateService(this.record, this.activated)
+    },
+
+    activated (result) {
       this.$root.$emit('activate-record', {
         week: this.getWeekNumber(this.date),
         date: this.date,

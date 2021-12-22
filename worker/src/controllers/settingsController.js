@@ -4,7 +4,6 @@ class SettingsController {
   }
 
   async get (request) {
-    self.postDebugMessage(request)
     if (request.key === 'all' || request.key === '*') self.postMessage(await self.getSettings(request.section))
     else self.postMessage(await self.getSettings(request.section, request.key))
   }

@@ -1,7 +1,6 @@
 import { getBuildingUniqueCode } from './'
 
 export const getGeneralBuildingData = function (data) {
-  console.log('RECEIVED: ', data.uniqueCode)
   const {
     address,
     addressComponents,
@@ -17,8 +16,6 @@ export const getGeneralBuildingData = function (data) {
     infrastructure,
     marketing
   } = data
-
-  console.log('CREATED: ', uniqueCode)
 
   return {
     address,

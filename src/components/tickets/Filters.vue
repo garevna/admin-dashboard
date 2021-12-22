@@ -88,11 +88,5 @@ export default {
       }
     }
   }
-
-  // watch: {
-  //   customer (data) {
-  //     console.log(data)
-  //   }
-  // },
 }
 </script>

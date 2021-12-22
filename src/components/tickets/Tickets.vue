@@ -114,7 +114,7 @@ export default {
 
   methods: {
     getTicketCategories (data) {
-      console.log(data)
+      //
     },
     getTickets (data) {
       const getDate = date => date.indexOf('-') !== -1 ? date : new Date(date - 0).toISOString().slice(0, 10)

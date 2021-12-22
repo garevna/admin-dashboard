@@ -28,7 +28,10 @@ class ScheduleController {
   // }
 
   async updateRecord (record) {
-    self.postMessage(await self.updateCustomerServiceStatus(record))
+    self.postMessage(Object.assign(await self.updateCustomerServiceStatus(record), {
+      route: 'booking',
+      action: 'update'
+    }))
   }
 
   async putRecordToJobQueue (data) {

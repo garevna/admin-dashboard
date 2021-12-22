@@ -91,7 +91,6 @@ export default {
       this.statuses = data
     },
     getListOfServices (data) {
-      console.log('SERVICES:\n', data)
       this.services = data
     }
   },

@@ -33,9 +33,9 @@
         </v-row>
 
         <v-card-text
-          v-if="ticket.category === 'Customer issue' || ticket.category === 'Service issue'"
+          v-if="customerDetailsAvailable"
           class="mt-5"
-          @click="showCustomerDetails"
+          @click="editCustomerDetails = true"
         >
           Customer: <b class="show-customer-details">{{ ticket.customer.uniqueCode }}</b>
           <b class="show-customer-details">{{ ticket.customer.apartmentNumber }}/{{ ticket.customer.address }}</b>
@@ -107,6 +107,7 @@
 
     <v-row v-else align="start" justify="center">
       <CustomerDetails
+        v-if="customerDetailsAvailable"
         :dialog.sync="editCustomerDetails"
         :customerId="ticket.customerId"
       />
@@ -132,6 +133,9 @@ export default {
   }),
 
   computed: {
+    customerDetailsAvailable () {
+      return (this.ticket.category === 'Customer issue' || this.ticket.category === 'Service issue') && this.ticket.customerId
+    },
     dialog () {
       return this.ticket.history
     }
@@ -142,6 +146,12 @@ export default {
       deep: true,
       handler (data) {
         this.$emit('update:edit', false)
+      }
+    },
+    ticket: {
+      deep: true,
+      handler (val) {
+        //
       }
     }
   },
@@ -156,13 +166,11 @@ export default {
         message: this.response
       })
 
-      this.__saveTicketData(this.ticket)
-
-      this.$emit('update:edit', false)
+      this.__saveTicketData(this.ticket, this.updated)
     },
 
-    showCustomerDetails () {
-      this.editCustomerDetails = true
+    updated () {
+      this.$emit('update:edit', false)
     }
   }
 }

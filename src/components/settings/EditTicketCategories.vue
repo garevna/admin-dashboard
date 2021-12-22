@@ -57,7 +57,6 @@ export default {
       this.ready = Array.isArray(this.items)
     },
     showAnswer (response) {
-      console.log('CATEGORIES:', response)
       const { ticketCategories } = response.data
       setCategories(ticketCategories)
     },

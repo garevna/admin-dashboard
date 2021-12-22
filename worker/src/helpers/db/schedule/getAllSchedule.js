@@ -1,9 +1,9 @@
 import { openDB } from '../openDB'
 import { getAllData } from './getAllData'
 
-export const getAllSchedule = async () => {
-  const [route, action] = ['schedule', 'all']
+const [route, action] = ['schedule', 'all']
 
+export const getAllSchedule = async () => {
   const { result: db } = await openDB()
 
   const { status, result } = await getAllData(db)

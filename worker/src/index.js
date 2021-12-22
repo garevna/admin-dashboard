@@ -48,7 +48,6 @@ self.frequency = 60000
 self.lastRequestTime = Date.now() - 1000 * 60 * 60 * 24 * 2
 
 const getUpdatesFromRemote = async () => {
-  self.postDebugMessage({ timeout: (Date.now() - self.lastRequestTime) / 1000 })
   if (!credentialsHandler()) return setTimeout(getUpdatesFromRemote, self.frequency)
 
   updatesController.getLastUpdates()

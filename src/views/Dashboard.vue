@@ -113,7 +113,6 @@ export default {
     },
 
     jumpTo (item) {
-      console.log(item)
       if (item.route === 'tickets') {
         if (item.path.indexOf(this.$route.path) !== -1) return
         this.$router.push({ name: item.route, params: item.params }).catch(failure => console.warn('Router failure:\n', failure))
@@ -124,7 +123,7 @@ export default {
     },
 
     refreshTicketCategories (data) {
-      console.log(data)
+      //
     }
   },
 

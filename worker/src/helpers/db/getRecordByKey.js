@@ -1,7 +1,7 @@
 import { openDB } from './openDB'
 
 export const getRecordByKey = async (storeName, recordKey) => {
-  self.postDebugMessage({ action: 'GET_RECORD_BY_KEY', storeName, recordKey })
+  // self.postDebugMessage({ action: 'GET_RECORD_BY_KEY', storeName, recordKey })
   const response = await openDB()
   if (response.status !== 200) return response
 

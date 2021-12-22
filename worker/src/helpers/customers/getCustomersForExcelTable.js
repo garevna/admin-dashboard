@@ -5,8 +5,6 @@ const [route, action] = ['customers', 'excel']
 export const getCustomersForExcelTable = async function (data) {
   const { status, result } = await getCustomersForExcel(data)
 
-  self.postDebugMessage({ excelData: result })
-
   if (status !== 200) return self.errorMessage('getCustomerDataError')
 
   return {

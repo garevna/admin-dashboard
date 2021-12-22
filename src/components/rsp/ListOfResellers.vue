@@ -94,7 +94,7 @@ export default {
     },
 
     refreshed (data) {
-      console.log('RSP LIST REFRESHED:\n', data)
+      // console.log('RSP LIST REFRESHED:\n', data)
     },
 
     showDetails (partnerDetails) {

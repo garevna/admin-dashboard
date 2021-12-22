@@ -199,7 +199,6 @@ export default {
       const { address, uniqueCode, status, estimatedServiceDeliveryTime } = this.buildingData
 
       buildingStatusHandler(status)
-      console.log('STATUS: ', status)
       const routeName = getRouteByBuildingStatus(status)
 
       this.generalInfoUpdated && this.$root.$emit('building-general-data-changed', { address, uniqueCode, status, estimatedServiceDeliveryTime })

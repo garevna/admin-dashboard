@@ -19,6 +19,6 @@ export const infrastructureSchema = {
   }
 }
 
-export const infrastructureFields = ['backbone', 'leadIn', 'gPOinMDF', 'uPSinMDF']
+// export const infrastructureFields = ['backbone', 'leadIn', 'gPOinMDF', 'uPSinMDF']
 
-export const infrastructureTitles = ['Backbone', 'Lead In', 'GPO in MDF', 'UPS in MDF']
+// export const infrastructureTitles = ['Backbone', 'Lead In', 'GPO in MDF', 'UPS in MDF']

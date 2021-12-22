@@ -146,7 +146,6 @@ export default {
 
   methods: {
     getUniqueCodeList (data) {
-      console.log(data)
       this.uniqueCodeList = data
       uniqueCodeList = data
     },
@@ -157,9 +156,6 @@ export default {
     },
 
     refresh () {
-      // this.requests = null
-      // this.ready = false
-      // this.__refreshRegistrationRequests()
       this.__getRegistrationRequests(this.getData)
     },
 
@@ -174,12 +170,10 @@ export default {
     },
 
     partnerCreated (data) {
-      console.log('PARTNER CREATED:', data)
       this.$router.push({ name: 'rsp-list' })
     },
 
     confirm (request) {
-      console.log(request)
       this.__confirmRegistrationRequest(request._id, request.uniqueCode, this.partnerCreated)
     },
 
@@ -200,18 +194,14 @@ export default {
 
   beforeMount () {
     this.$root.$on('partner-created', this.partnerCreated)
-    // this.$root.$on('unique-code-list-received', this.getUniqueCodeList)
     this.$root.$on('operation-confirmed', this.rejectConfirmed)
-    // this.$root.$on('registration-requests-received', this.getData)
     this.__getRegistrationRequests(this.getData)
     this.__getUniqueCodeList(this.getUniqueCodeList)
   },
 
   beforeDestroy () {
     this.$root.$off('partner-created', this.refresh)
-    // this.$root.$off('unique-code-list-received', this.getUniqueCodeList)
     this.$root.$off('operation-confirmed', this.rejectConfirmed)
-    // this.$root.$off('registration-requests-received', this.getData)
   }
 }
 

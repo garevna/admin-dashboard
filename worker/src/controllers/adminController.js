@@ -8,7 +8,6 @@ const {
 
 class AdminController {
   async auth () {
-    self.postDebugMessage({ message: 'ADMIN CONTROLLER' })
     self.postMessage(await auth())
   }
 

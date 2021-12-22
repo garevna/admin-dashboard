@@ -1,13 +1,10 @@
 import { eventsTable } from '@/controllers/events-table'
 import { customers } from '@/controllers/events'
 
+const [route, action] = ['customers', 'excel']
+
 export const getCustomersForExcel = function (data, callback) {
-  console.log('SOURCE DATA:\n', data)
-  window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'customers',
-    action: 'excel',
-    data
-  })
+  window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action, data })
 
   eventsTable[customers.excel] = callback
 }

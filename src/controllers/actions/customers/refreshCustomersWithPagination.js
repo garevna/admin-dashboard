@@ -1,11 +1,10 @@
 import { eventsTable } from '@/controllers/events-table'
 import { customers } from '@/controllers/events'
 
-export const refreshCustomersWithPagination = function (callback) {
-  window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'customers',
-    action: 'pagination'
-  })
+const [route, action] = ['customers', 'pagination']
 
-  eventsTable[customers.pagination] = callback
+export const refreshCustomersWithPagination = function (callback) {
+  window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action })
+
+  eventsTable[customers[action]] = callback
 }

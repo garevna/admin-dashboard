@@ -48,7 +48,8 @@ const hostHandler = (function () {
 })()
 
 const partnerCabinetLinkHandler = (function () {
-  const link = process.env.NODE_ENV === 'production' ? 'https://portal.dgtek.net/rsp' : 'http://192.168.0.101:8082/rsp'
+  // const link = process.env.NODE_ENV === 'production' ? 'https://portal.dgtek.net/rsp' : 'http://192.168.0.101:8082/rsp'
+  const link = location.origin === 'https://dka.portal.dgtek.net' ? 'https://portal.dgtek.net/rsp' : 'https://portal.staging.dgtek.net/rsp'
   return function () {
     return link
   }

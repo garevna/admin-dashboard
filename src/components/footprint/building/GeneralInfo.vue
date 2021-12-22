@@ -133,7 +133,7 @@ export default {
         return JSON.parse(JSON.stringify(this.buildingData))
       },
       set (data) {
-        console.log(data)
+        // console.log(data)
       }
     },
     status: {
@@ -166,14 +166,8 @@ export default {
   methods: {
     saveBuildingDetails () {
       this.$dispatchProgressEvent(true)
-      const { address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime } = this.generalBuildingData
-      console.log({ address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime })
-      console.log(this.generalBuildingData)
-
-      // this.__patchBuildingDetails(this.buildingData._id, { address, addressComponents, uniqueCode, coordinates, status, estimatedServiceDeliveryTime })
       this.worker.patchBuildingDetails(this.buildingData._id, this.generalBuildingData, this.sendMessage)
       this.generalInfoUpdated = true
-      // this.$root.$emit('building-general-data-changed', { address, uniqueCode, status, estimatedServiceDeliveryTime })
     },
 
     sendMessage (event) {

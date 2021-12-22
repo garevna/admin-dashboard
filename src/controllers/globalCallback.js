@@ -24,7 +24,7 @@ export const globalCallback = function (event) {
 
   if (route === 'updates') {
     event.stopPropagation()
-    console.log(event.data)
+    // console.log(event.data)
     return
   }
 

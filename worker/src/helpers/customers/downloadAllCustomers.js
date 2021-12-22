@@ -1,9 +1,10 @@
 import { get } from '../AJAX'
 import { putRecordByKey } from '../db'
+// import { refreshStatistics } from '../db/customers'
+
+const [route, action] = ['customers', 'refresh']
 
 export const downloadAllCustomers = async function () {
-  const [route, action] = ['customers', 'refresh']
-
   const perPage = 50
 
   let currentPage = 1
@@ -21,6 +22,9 @@ export const downloadAllCustomers = async function () {
       if (status !== 200) return self.errorMessage('refreshCustomersListError')
     }
   }
+
+  // const response = await refreshStatistics()
+  // self.postDebugMessage(response)
 
   return { status: 200, route, action, result: 'OK' }
 }

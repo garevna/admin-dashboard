@@ -129,8 +129,7 @@ export default {
   watch: {
     refresh (val) {
       if (!val) return
-      this.ready = false
-      this.__refreshCustomers(this.refreshed)
+      this.__refreshCustomersWithPagination(this.refreshed)
       this.refresh = false
     },
     hardRefresh (val) {
@@ -167,7 +166,6 @@ export default {
 
   methods: {
     getCustomersList (data) {
-      console.log(data)
       this.customers = data
       this.ready = true
     },
@@ -196,7 +194,6 @@ export default {
     },
 
     getIcons (data) {
-      console.log(data)
       this.icons = data
     },
 
@@ -218,7 +215,6 @@ export default {
 
   created () {
     this.__getServiceStatusIcons(this.getIcons)
-    console.log('DETAILS ???\n', this.details)
     this.sendRequest()
   },
 

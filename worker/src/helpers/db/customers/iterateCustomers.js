@@ -1,5 +1,7 @@
 import { openDB } from '../openDB'
 
+import { clearStore } from '../'
+
 import { getRecord, putRecord } from './'
 
 const [route, action] = ['schedule', 'refresh']
@@ -8,6 +10,8 @@ export const iterateCustomers = async function () {
   const { status, result: db } = await openDB()
 
   if (status !== 200) return { status, result: db, route, action }
+
+  await clearStore('schedule')
 
   const transaction = db.transaction(['customers', 'services', 'schedule'], 'readwrite')
   const [customerStore, serviceStore, scheduleStore] = [

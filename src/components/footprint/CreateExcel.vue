@@ -1,17 +1,5 @@
 <template>
   <v-card flat class="transparent mx-auto mt-4 mb-12" max-width="960">
-    <!-- <v-toolbar flat class="transparent my-4"> -->
-      <!-- <h5>Create excel table: select the fields to include</h5> -->
-    <!-- </v-toolbar> -->
-    <!-- <v-row justify="center" class="my-12">
-      <v-checkbox
-        :value="true"
-        hide-details
-        readonly
-        color="primary"
-        label="Address"
-      />
-    </v-row> -->
     <v-row justify="center" class="my-12">
       <v-col cols="4">
         <v-card class="transparent py-3 px-5" min-height="480">
@@ -41,6 +29,22 @@
           </div>
         </v-card>
       </v-col>
+
+      <v-col cols="4" max-width="360">
+        <v-card class="transparent py-2 px-4" min-height="480">
+          <h5>
+            <small> Infrastructure </small>
+          </h5>
+          <div v-for="(prop, propName) in infrastructure" :key="propName">
+            <v-checkbox
+              v-model="prop.selected"
+              hide-details
+              color="primary"
+              :label="prop.title"
+            />
+          </div>
+        </v-card>
+      </v-col>
     </v-row>
     <v-row justify="center">
       <v-btn @click="createExcelTable" dark color="primary" class="mb-12">
@@ -56,9 +60,7 @@ import {
   access,
   concierge,
   corporation,
-  // infrastructureFields,
-  // infrastructureTitles,
-  // level,
+  infrastructureFields,
   management,
   marketing,
   owner,
@@ -69,7 +71,6 @@ export default {
   name: 'CreateExcel',
 
   data: () => ({
-    // ready: false,
     simple: simpleFields,
 
     sectionNames: ['access', 'concierge', 'corporation', 'management', 'owner', 'marketing'],
@@ -77,13 +78,11 @@ export default {
       access,
       concierge,
       corporation,
-      // infrastructureFields,
-      // infrastructureTitles,
-      // level,
       management,
       owner,
       marketing
     ],
+    infrastructure: infrastructureFields,
     sections: {}
   }),
 
@@ -112,26 +111,40 @@ export default {
             })
           }
         }
-        console.log(request)
       }
-      this.__createBuildingExcelFile(request)
+
+      for (const item in this.infrastructure) {
+        if (this.infrastructure[item].selected) {
+          if (this.infrastructure[item].children) {
+            for (const child in this.infrastructure[item].children) {
+              request.push({
+                header: this.infrastructure[item].children[child].title,
+                key: `infrastructure.${item}.${child}`,
+                width: this.infrastructure[item].children[child].width || 5
+              })
+            }
+          } else {
+            request.push({
+              header: this.infrastructure[item].title,
+              key: `infrastructure.${item}`,
+              width: this.infrastructure[item].width || 5
+            })
+          }
+        }
+      }
+
+      this.__createBuildingExcelFile(request, this.excelFileCreated)
     },
+
     excelFileCreated (data) {
-      console.log(data)
+      console.log('Link to excel file: ', data)
     }
   },
 
-  beforeDestroy () {
-    this.$root.$off('buildings-excel-file-created', this.excelFileCreated)
-  },
-
   beforeMount () {
-    this.$root.$on('buildings-excel-file-created', this.excelFileCreated)
-
     this.schema.forEach((section, index) => {
       this.sections[this.sectionNames[index]] = Object.assign({}, ...Object.keys(section).map(key => ({ [key]: { selected: false, title: section[key].title } })))
     })
-    // this.ready = true
   }
 }
 </script>

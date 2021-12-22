@@ -1,12 +1,13 @@
 import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
+// import { updateStatistics } from '../db/customers'
 
-const { updatesController } = require('../../controllers')
+// const { updatesController } = require('../../controllers')
 
 export const hardCustomersRefresh = async function () {
   const [route, action] = ['customers', 'hard-refresh']
 
-  const perPage = 30
+  const perPage = 100
 
   let currentPage = 1
   let done = false
@@ -24,13 +25,15 @@ export const hardCustomersRefresh = async function () {
       const { _id } = customer
       const { status } = await putRecordByKey('customers', _id, customer)
 
-      self.updateStatistics(_id, customer.services)
+      // updateStatistics(_id, customer.services)
 
       if (status !== 200) return self.errorMessage('refreshCustomersListError')
     }
   }
 
-  updatesController.setLastRequestDate(Date.now())
+  self.lastRequestTime = Date.now()
+
+  // updatesController.setLastRequestDate(Date.now())
 
   return { status: 200, route, action, result: (await self.getAllCustomers()).result }
 }

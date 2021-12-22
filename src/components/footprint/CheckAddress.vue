@@ -1,5 +1,5 @@
 <template>
-  <v-container ref="container">
+  <v-container ref="container" class="mb-12 pb-12">
     <v-card flat class="transparent" >
       <v-row justify="center">
         <MapSearch :building.sync="buildingDetails" />
@@ -8,7 +8,7 @@
         <GoogleAutocomplete :building.sync="buildingDetails" />
       </v-row>
 
-      <v-card id="dgtek-address-search-results" class="transparent mx-auto py-10 text-center" outlined>
+      <v-card id="dgtek-address-search-results" class="transparent mx-auto py-10 mb-12 text-center" outlined>
 
         <v-card-text text-center v-if="buildingDetails && buildingDetails.address">
           <p>DGtek service at</p>
@@ -64,7 +64,7 @@ export default {
     buildingDetails: {
       deep: true,
       handler (data) {
-        data && this.__getEstimatedServiceDeliveryTime(data.status)
+        data && this.__getEstimatedServiceDeliveryTime(data.status, this.getSettings)
       }
     }
   },
@@ -89,21 +89,13 @@ export default {
         estimatedServiceDeliveryTime
       } = this.buildingDetails
 
-      // this.__postBuildingDetails({ address, addressComponents, coordinates, status, estimatedServiceDeliveryTime })
       this.worker.createNewBuilding({ address, addressComponents, coordinates, status, estimatedServiceDeliveryTime }, this.newBuildingCreated)
     },
 
     newBuildingCreated (buildingId) {
-      console.log(buildingId)
       this.newBuildingId = buildingId
       this.gotoBuildingEditor(this.newBuildingId)
-      // this.__refreshBuildings()
     },
-
-    // buildingsRefreshed (response) {
-    //   console.log(this.newBuildingId)
-    //   this.gotoBuildingEditor(this.newBuildingId)
-    // },
 
     gotoBuildingEditor (buildingId) {
       this.$router.push({ name: 'building-details', params: { buildingId } })
@@ -119,12 +111,7 @@ export default {
 
       this.buildingDetails = { address, addressComponents, status, buildingId, estimatedServiceDeliveryTime, coordinates, url }
 
-      this.__getEstimatedServiceDeliveryTime(status)
-    },
-
-    refresh () {
-      console.log('REFRESH: WHAT FOR?...')
-      // this.__getBuildingById(this.buildingId)
+      this.__getEstimatedServiceDeliveryTime(status, this.getSettings)
     }
   },
 

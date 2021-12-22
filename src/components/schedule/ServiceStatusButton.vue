@@ -60,7 +60,7 @@
               small
               color="primary"
               :disabled="!record.activationDate"
-              @click="changeRecordStatus('Active')"
+              @click="activate"
               width="270"
             >
               Submit
@@ -79,7 +79,7 @@ import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
 export default {
   name: 'ServiceStatusButton',
 
-  props: ['record'],
+  props: ['record', 'activated'],
 
   data: () => ({
     activation: false,
@@ -108,7 +108,21 @@ export default {
   methods: {
     changeRecordStatus (status) {
       this.$emit('update:record', Object.assign(this.record, { status }))
-      this.__changeServiceDeliveryStatus(this.record, response => console.log(response))
+      this.__changeServiceDeliveryStatus(this.record, this.statusChanged)
+    },
+
+    activate () {
+      this.$emit('update:record', Object.assign(this.record, { status: 'Active' }))
+      this.__activateService(this.record, this.serviceActivated)
+    },
+
+    serviceActivated (response) {
+      this.activation = false
+      this.$emit('update:activated', true)
+    },
+
+    statusChanged (response) {
+      // console.log('STATUS UPDATED:\n', response)
     }
   }
 }

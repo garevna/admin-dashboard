@@ -14,8 +14,6 @@ import 'dgtek-portal-polygons-editor/dist/dgtek-portal-polygons-editor.css'
 
 const { Polygons } = require('dgtek-portal-polygons-editor').default
 
-console.log(Polygons)
-
 export default {
   name: 'EditPolygons',
 
@@ -31,15 +29,10 @@ export default {
 
   beforeMount () {
     this.__removeGoogleMaps()
-    console.log(this.credentials)
   },
 
   beforeDestroy () {
     this.__removeGoogleMaps()
-  },
-
-  mounted () {
-    console.log(this.apiHost, credentialsHandler())
   }
 }
 </script>

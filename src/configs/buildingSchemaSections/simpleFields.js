@@ -1,17 +1,27 @@
 export const simpleFields = {
+  buildingName: {
+    header: 'Building name',
+    width: 40,
+    selected: false
+  },
+  uniqueCode: {
+    header: 'Building unique code',
+    width: 21,
+    selected: false
+  },
   customerInstallApprovalRequired: {
     header: 'Customer install approval required',
-    width: 12,
+    width: 25,
     selected: false
   },
   inductionRequired: {
     header: 'Induction required',
-    width: 12,
+    width: 21,
     selected: false
   },
   avgFloorHeight: {
     header: 'Avg floor height',
-    width: 12,
+    width: 17,
     selected: false
   },
   numberOfLevels: {
@@ -20,8 +30,8 @@ export const simpleFields = {
     selected: false
   },
   numberOfDwellings: {
-    header: 'Number of dDwellings',
-    width: 12,
+    header: 'Number of dwellings',
+    width: 17,
     selected: false
   },
   estimatedServiceDeliveryTime: {

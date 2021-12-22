@@ -20,11 +20,15 @@ export const getTicketData = async function (key) {
 
   const reseller = await self.getResellerDetails(resellerId)
 
-  if (reseller.status !== 200) self.errorMessage('getUserDetailsError')
+  self.postDebugMessage({ resellerId, reseller })
 
-  const { name: resellerName } = reseller.result.company
+  if (reseller.error) self.postMessage(reseller)
+  else {
+    const { name: resellerName } = reseller.result.company
+    Object.assign(ticket, { resellerName })
+  }
 
-  Object.assign(ticket, { resellerName })
+  // if (reseller.error) self.errorMessage('getUserDetailsError')
 
   return { status, route, action, result: ticket }
 }

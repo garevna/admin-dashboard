@@ -66,7 +66,6 @@ export default {
 
   methods: {
     getData (data) {
-      console.log(data)
       this.items = data
     },
 

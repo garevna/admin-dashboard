@@ -6,10 +6,11 @@ import { concierge } from './concierge'
 import { marketing } from './marketing'
 
 import { simpleFields } from './simpleFields'
+import { infrastructureFields } from './infrastructureFields'
 
 import { levelSchema, equipmentNames } from './level'
 
-import { infrastructureSchema, infrastructureFields, infrastructureTitles } from './infrastructure'
+import { infrastructureSchema } from './infrastructure'
 
 export {
   access,
@@ -22,7 +23,6 @@ export {
   equipmentNames,
   infrastructureSchema,
   infrastructureFields,
-  infrastructureTitles,
 
   simpleFields
 }

@@ -5,17 +5,20 @@
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
     "worker": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build-staging": "vue-cli-service build --mode staging",
-    "build-master": "vue-cli-service build --mode master",
+    "serve": "yarn polygons-editor && vue-cli-service serve",
+    "build": "yarn polygons-editor && vue-cli-service build",
+    "build-staging": "yarn polygons-editor && vue-cli-service build --mode staging",
+    "build-master": "yarn polygons-editor && vue-cli-service build --mode master",
     "lint": "vue-cli-service lint",
     "prod": "node server.js",
-    "dgtek-portal-map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public"
+    "map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public",
+    "clear-vue": "rm -r node_modules/dgtek-portal-polygons-editor/node_modules/vue",
+    "clear-vuetify": "rm -r node_modules/dgtek-portal-polygons-editor/node_modules/vuetify",
+    "polygons-editor": "yarn add dgtek-portal-polygons-editor && yarn clear-vue && yarn clear-vuetify"
   },
   "dependencies": {
-    "dgtek-portal-map-package": "^1.1.1",
-    "dgtek-portal-polygons-editor": "^1.0.75",
+    "dgtek-portal-map-package": "^1.1.4",
+    "dgtek-portal-polygons-editor": "^1.1.0",
     "dgtek-styles": "^0.0.8",
     "express": "^4.17.1",
     "express-winston": "^4.2.0",
