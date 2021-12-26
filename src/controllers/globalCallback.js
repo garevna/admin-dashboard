@@ -6,7 +6,8 @@ import {
   debuggerCallback,
   startRefreshing,
   errorCallback,
-  messageCallback
+  messageCallback,
+  updatesCallback
 } from '@/controllers/callbacks'
 
 import * as events from './events'
@@ -22,11 +23,7 @@ export const globalCallback = function (event) {
 
   if (action === 'initial-refresh') return refreshCallback(event)
 
-  if (route === 'updates') {
-    event.stopPropagation()
-    // console.log(event.data)
-    return
-  }
+  if (route === 'updates') return updatesCallback(event)
 
   window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
 

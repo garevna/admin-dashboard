@@ -210,6 +210,10 @@ export default {
 
     sendRequest () {
       !this.details ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(this.details._id, this.getCustomersList)
+    },
+
+    customersUpdatedRemotelly (event) {
+      this.sendRequest()
     }
   },
 
@@ -218,8 +222,14 @@ export default {
     this.sendRequest()
   },
 
+  beforeDestroy () {
+    this.$root.$off('customers-updated', this.sendRequest)
+    this.$root.$off('customers-updated-remotelly', this.customersUpdatedRemotelly)
+  },
+
   mounted () {
     this.$root.$on('customers-updated', this.sendRequest)
+    this.$root.$on('customers-updated-remotelly', this.customersUpdatedRemotelly)
     this.$vuetify.goTo(0)
   }
 }

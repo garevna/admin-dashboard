@@ -8,7 +8,7 @@
     </v-row>
     <v-expansion-panels v-if="ready" v-model="panels" multiple>
       <ScheduleWeek
-        v-for="weekNumber of Object.keys(weeks)"
+        v-for="weekNumber of Object.keys(weeks).reverse()"
         :key="weekNumber"
         :weekNumber="weekNumber"
         :weekData.sync=weeks[weekNumber]
@@ -43,7 +43,7 @@ export default {
     },
 
     getScheduleData (data) {
-      const weeks = [0, 1, 2, 3].map(num => this.getWeekNumber(new Date()) + num)
+      const weeks = [3, 2, 1, 0].map(num => this.getWeekNumber(new Date()) + num)
       for (const week of weeks) {
         if (!Object.keys(data).includes(week.toString())) Object.assign(data, { [week]: this.createEmptyWeekSchedule(week) })
       }
@@ -91,19 +91,21 @@ export default {
   beforeMount () {
     this.__getScheduleWeekData(this.weekNumber, this.getScheduleData)
     this.$root.$on('service-activated', this.scheduleRefreshed)
-
     this.$root.$on('move-record-to-job-queue', this.moveRecordToJobQueue)
     this.$root.$on('activate-record', this.activateRecord)
   },
 
   beforeDestroy () {
-    this.$root.$off('service-activated', this.updateInstallationSchedule)
+    this.$root.$off('service-activated', this.scheduleRefreshed)
+
+    this.$root.$off('customers-updated-remotelly', this.refresh)
 
     this.$root.$off('move-record-to-job-queue', this.moveRecordToJobQueue)
     this.$root.$off('activate-record', this.activateRecord)
   },
 
   mounted () {
+    this.$root.$on('customers-updated-remotelly', this.refresh)
     this.$vuetify.goTo(0)
   }
 }

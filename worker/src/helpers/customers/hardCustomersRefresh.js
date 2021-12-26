@@ -1,6 +1,6 @@
 import { get } from '../AJAX'
 import { clearStore, putRecordByKey } from '../db'
-// import { updateStatistics } from '../db/customers'
+import { updateStatistics } from '../db/customers'
 
 // const { updatesController } = require('../../controllers')
 
@@ -25,7 +25,7 @@ export const hardCustomersRefresh = async function () {
       const { _id } = customer
       const { status } = await putRecordByKey('customers', _id, customer)
 
-      // updateStatistics(_id, customer.services)
+      updateStatistics(_id, customer.services)
 
       if (status !== 200) return self.errorMessage('refreshCustomersListError')
     }

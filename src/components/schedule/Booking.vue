@@ -126,15 +126,17 @@ export default {
   },
 
   beforeMount () {
-    this.$root.$on('service-delivery-status-updated', this.updated)
     this.__getBookingRequests(this.getData)
   },
 
   beforeDestroy () {
+    this.$root.$off('customers-updated-remotelly', this.refresh)
     this.$root.$off('service-delivery-status-updated', this.updated)
   },
 
   mounted () {
+    this.$root.$on('customers-updated-remotelly', this.refresh)
+    this.$root.$on('service-delivery-status-updated', this.updated)
     this.$vuetify.goTo(0)
   }
 }

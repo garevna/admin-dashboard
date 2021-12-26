@@ -81,7 +81,8 @@ export const routes = {
   },
 
   customers: {
-    refresh: customersController.refresh,
+    // refresh: customersController.refresh,
+    refresh: customersController.getCustomersFromRemote,
     pagination: customersController.refreshByPageNumber,
     list: customersController.getAllCustomers,
     'short-list': customersController.getShortListOfCustomers,
@@ -181,7 +182,9 @@ export const routes = {
   },
 
   updates: {
-    get: updatesController.getLastUpdates,
-    'set-last-request-date': updatesController.setLastRequestDate
+    customers: updatesController.getCustomerUpdates,
+    tickets: updatesController.getTicketUpdates,
+    schedule: updatesController.getScheduleUpdates,
+    get: updatesController.getLastUpdates
   }
 }

@@ -1,11 +1,11 @@
 import { get } from '../AJAX'
 import { putRecordByKey } from '../db'
-// import { refreshStatistics } from '../db/customers'
+import { refreshStatistics } from '../db/customers'
 
 export const refreshUpdatedCustomersOnly = async function () {
   const [route, action] = ['customers', 'refresh']
 
-  const perPage = 30
+  const perPage = 100
 
   let currentPage = 1
   let done = false
@@ -22,7 +22,7 @@ export const refreshUpdatedCustomersOnly = async function () {
     }
   }
 
-  // refreshStatistics()
+  refreshStatistics()
 
   return { status: 200, route, action, result: (await self.getAllCustomers()).result }
 }

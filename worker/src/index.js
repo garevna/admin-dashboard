@@ -44,14 +44,14 @@ testDBVersion()
 
 self.initialized = false
 self.serviceStatus = serviceStatus
-self.frequency = 60000
+self.frequency = 10000
 self.lastRequestTime = Date.now() - 1000 * 60 * 60 * 24 * 2
 
 const getUpdatesFromRemote = async () => {
   if (!credentialsHandler()) return setTimeout(getUpdatesFromRemote, self.frequency)
 
   updatesController.getLastUpdates()
-  // updatesController.setLastRequestDate()
+  self.lastRequestTime = Date.now()
   setTimeout(getUpdatesFromRemote, self.frequency)
 }
 

@@ -14,9 +14,5 @@ export const applyUpdates = async updates => {
 
   const events = Array.from(new Set(routes)).map(route => `${route}-updated`)
 
-  // self.postDebugMessage({ events })
-
-  const instance = window[Symbol.for('vue.instance')]
-
-  events.forEach(event => instance.$emit(event))
+  self.postDebugMessage({ events })
 }
