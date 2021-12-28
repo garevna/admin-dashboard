@@ -8,7 +8,7 @@
 
     <v-row justify="center" v-if="ready" style="margin-top: -42px">
       <Fieldset legend="Customer details" style="width: 900px">
-        <EditCustomerDetails :initialCustomer.sync="customer" />
+        <ShowCustomerDetails :initialCustomer.sync="customer" />
       </Fieldset>
 
     </v-row>
@@ -26,7 +26,7 @@ export default {
   name: 'CustomerDetails',
   components: {
     Fieldset,
-    EditCustomerDetails: () => import('@/components/customers/EditCustomerDetails.vue')
+    ShowCustomerDetails: () => import('@/components/customers/ShowCustomerDetails.vue')
   },
   props: ['customerId', 'initialAddressData', 'dialog'],
   data: () => ({

@@ -3,13 +3,23 @@ node_modules
 /dist
 dist
 dist.*
+
+Dockerfile
+Dockerfile.*
+
+.gitlab-ci.yml
+.gitlab/*
+.gitlab
+.helm/*
+.helm
+
 ___toBeRemoved
 
 !.env.example
 
 # local env files
 .env
-.env.local.*
+.env.*
 
 # Log files
 npm-debug.log*

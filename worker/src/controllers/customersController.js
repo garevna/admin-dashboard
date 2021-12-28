@@ -41,6 +41,10 @@ class CustomersController {
     self.postMessage(await self.updateCustomer(request.key, request.data))
   }
 
+  async patchCustomer (request) {
+    self.postMessage(await self.patchCustomer(request.key, request.data))
+  }
+
   async createCustomer (request) {
     self.postMessage(await self.createCustomer(request.data))
   }

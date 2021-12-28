@@ -73,10 +73,14 @@
     </v-row>
 
     <v-row v-else justify="center">
-      <CustomerDetails
+      <ShowCustomerDetails
         :dialog.sync="edit"
         :customerId="selectedCustomerId"
       />
+      <!-- <CustomerDetails
+        :dialog.sync="edit"
+        :customerId="selectedCustomerId"
+      /> -->
     </v-row>
   </v-container>
 </template>
@@ -96,7 +100,8 @@ export default {
 
   components: {
     CustomersFilters: () => import('@/components/customers/CustomersFilters.vue'),
-    CustomerDetails: () => import('@/components/customers/CustomerDetails.vue')
+    ShowCustomerDetails: () => import('@/components/customers/ShowCustomerDetails.vue')
+    // CustomerDetails: () => import('@/components/customers/CustomerDetails.vue')
   },
 
   data: () => ({

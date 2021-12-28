@@ -20,7 +20,7 @@
             <h6 class="text-right mr-4">{{ item.title }}</h6>
           </td>
           <td width="400">
-            <div style="border: solid 1px #ddd; padding: 4px 8px; border-radius: 4px; user-select: text !important">
+            <div class="bordered-item">
               <small style="user-select: text !important">{{ item.value || '...' }}</small>
             </div>
           </td>
@@ -74,4 +74,11 @@ export default {
 </script>
 
 <style scoped>
+
+.bordered-item {
+  border: solid 1px #ddd;
+  padding: 4px 8px;
+  border-radius: 4px;
+  user-select: text !important;
+}
 </style>

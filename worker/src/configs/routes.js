@@ -89,8 +89,9 @@ export const routes = {
     'filtered-short-list': customersController.getFilteredShortListOfCustomers,
     get: customersController.getCustomer,
     post: customersController.createCustomer,
-    delete: customersController.deleteCustomer,
     put: customersController.updateCustomer,
+    patch: customersController.patchCustomer,
+    delete: customersController.deleteCustomer,
 
     excel: customersController.getCustomersForExcel,
 

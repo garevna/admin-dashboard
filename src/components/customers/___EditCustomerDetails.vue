@@ -3,10 +3,13 @@
       <table>
         <tbody>
           <tr>
-            <td width="160" class="d-none d-md-flex">
+            <!-- <td width="160" class="d-none d-md-flex">
+              {{ customerType ? 'Commercial' : 'Residential' }}
+            </td> -->
+            <!-- <td width="160" class="d-none d-md-flex">
               Residential/commercial
-            </td>
-            <td width="*" colspan="2">
+            </td> -->
+            <!-- <td width="*" colspan="2">
               <SwitchValues
                 label="Residential/commercial"
                 :value.sync="customerType"
@@ -14,52 +17,53 @@
                 hide-details
                 class="mb-8"
               />
-            </td>
+            </td> -->
           </tr>
           <tr v-if="customerType">
             <td class="d-none d-md-flex">Company name</td>
             <td colspan="2">
-              <v-text-field
+              <p>{{ customer.commercial.companyName }}</p>
+              <!-- <v-text-field
                 v-model="customer.commercial.companyName"
                 label="Company name"
                 :rules="[rules.required]"
                 outlined
                 dense
                 hide-details
-              />
+              /> -->
             </td>
           </tr>
           <tr v-if="customerType">
-            <td class="d-none d-md-flex">Company ABN</td>
-            <td colspan="2">
-              <v-text-field
+            <td>Company ABN</td>
+            <td>
+              <p>{{ customer.commercial.companyAbn }}</p>
+              <!-- <v-text-field
                 v-model="customer.commercial.companyAbn"
                 label="Company ABN"
                 :rules="[rules.required, rules.abn]"
                 outlined
                 dense
                 hide-details
-              />
+              /> -->
             </td>
           </tr>
           <tr>
-            <td class="d-none d-md-flex"></td>
-            <td>Apartment number</td>
-            <td>Building address</td>
+            <td>Address</td>
           </tr>
           <tr v-if="customer">
-            <td class="d-none d-md-flex">Address</td>
-            <td width="160">
-              <v-text-field
+            <td>Address</td>
+            <td>
+              <p>{{ customer.apartmentNumber }}/{{ customer.address }}</p>
+              <!-- <v-text-field
                 v-model="customer.apartmentNumber"
                 @input="changeUniqueCode"
                 label="apt"
                 outlined
                 dense
                 hide-details
-              />
+              /> -->
             </td>
-            <td>
+            <!-- <td>
               <v-select
                 :items="buildings"
                 v-model="customer.address"
@@ -70,12 +74,13 @@
                 label="address"
                 :menu-props="{ bottom: true, offsetY: true }"
               />
-            </td>
+            </td> -->
           </tr>
           <tr v-for="(prop, propName) in customerDetailsSchema" :key="propName">
-            <td class="d-none d-md-flex">{{ prop.title }}</td>
-            <td colspan="2">
-              <v-text-field
+            <td>{{ prop.title }}</td>
+            <td>
+              <p v-if="textField(prop)">{{ prop.value }}</p>
+              <!-- <v-text-field
                 v-if="textField(prop)"
                 v-model="prop.value"
                 @input="update(propName, prop.value)"
@@ -84,8 +89,9 @@
                 outlined
                 dense
                 hide-details
-              />
-              <v-text-field
+              /> -->
+              <p v-if="prop.type === 'mobile'">+61 {{ prop.value }}</p>
+              <!-- <v-text-field
                 v-if="prop.type === 'mobile'"
                 v-model="prop.value"
                 @input="update(propName, prop.value)"
@@ -95,20 +101,20 @@
                 outlined
                 dense
                 hide-details
-              ></v-text-field>
+              ></v-text-field> -->
             </td>
           </tr>
 
-          <tr style="height: 48px;"></tr>
+          <!-- <tr style="height: 48px;"></tr> -->
 
-          <tr style="margin-top: 48px!important">
+          <!-- <tr style="margin-top: 48px!important">
               <td colspan="2" class="text-right">
               <v-spacer />
               <v-btn dark class="buttons" @click="saveCustomerDetails">
                 Update/save details
               </v-btn>
             </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </v-card>
@@ -117,7 +123,7 @@
 <script>
 
 import { testTextField } from '@/helpers'
-import { SwitchValues } from '@/components/inputs'
+// import { SwitchValues } from '@/components/inputs'
 
 const { customerSchema, rules } = require('@/configs').default
 
@@ -126,9 +132,9 @@ const { customerDetails, commercial } = customerSchema
 export default {
   name: 'EditCustomerDetails',
 
-  components: {
-    SwitchValues
-  },
+  // components: {
+  //   SwitchValues
+  // },
 
   props: {
     dialog: Boolean,

@@ -106,7 +106,7 @@
     </v-row>
 
     <v-row v-else align="start" justify="center">
-      <CustomerDetails
+      <ShowCustomerDetails
         v-if="customerDetailsAvailable"
         :dialog.sync="editCustomerDetails"
         :customerId="ticket.customerId"
@@ -123,7 +123,7 @@ export default {
   props: ['ticket', 'categories', 'edit'],
 
   components: {
-    CustomerDetails: () => import('@/components/customers/CustomerDetails.vue')
+    ShowCustomerDetails: () => import('@/components/customers/ShowCustomerDetails.vue')
   },
 
   data: () => ({

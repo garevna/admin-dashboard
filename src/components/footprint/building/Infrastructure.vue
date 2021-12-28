@@ -21,7 +21,7 @@
     </v-row>
 
     <v-row justify="center" class="my-12">
-      <table width="600" class="mx-auto">
+      <table width="600" class="mx-auto" v-if="infrastructure">
         <tbody>
           <tr>
             <td width="140">
@@ -51,27 +51,29 @@
             <th>Exist</th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="(item, index) of infrastructureFields" :key="index">
-            <td> {{ infrastructureTitles[index] }} </td>
+        <tbody v-if="infrastructure">
+          <tr v-for="(item, key) of infrastructureEquipment" :key="key">
+            <td>
+              <small>{{ infrastructureEquipmentTitles[key] }}</small>
+            </td>
             <td>
               <v-checkbox
-                v-model="infrastructure[item].planned"
+                v-model="infrastructure[key].planned"
                 hide-details
                 class="checkbox-no-label mx-auto"
               />
             </td>
             <td>
               <v-checkbox
-                v-model="infrastructure[item].installed"
+                v-model="infrastructure[key].installed"
                 hide-details
                 class="checkbox-no-label mx-auto"
               />
             </td>
             <td>
               <v-checkbox
-                v-if="Object.keys(infrastructure[item]).includes('exist')"
-                v-model="infrastructure[item].exist"
+                v-if="Object.keys(item).includes('exist')"
+                v-model="infrastructure[key].exist"
                 hide-details
                 class="checkbox-no-label mx-auto"
               />
@@ -91,7 +93,10 @@
 
 <script>
 
-import { infrastructureSchema, infrastructureFields, infrastructureTitles } from '@/configs/buildingSchemaSections'
+import {
+  infrastructureEquipmentTitles,
+  infrastructureEquipment
+} from '@/configs/buildingSchemaSections'
 
 export default {
   name: 'Infrasructure',
@@ -103,19 +108,21 @@ export default {
     numberOfDwellings: '',
     customerInstallApprovalRequired: false,
     inductionRequired: false,
-    infrastructure: JSON.parse(JSON.stringify(infrastructureSchema)),
-    infrastructureFields,
-    infrastructureTitles
+    infrastructure: null,
+    infrastructureEquipmentTitles,
+    infrastructureEquipment
   }),
 
   methods: {
     updateInfrastructure () {
       this.$dispatchProgressEvent(true)
+      const { numberOfDwellings, customerInstallApprovalRequired, inductionRequired, infrastructure } = this
+
       this.worker.patchBuildingDetails(this.buildingData._id, {
-        numberOfDwellings: this.numberOfDwellings,
-        customerInstallApprovalRequired: this.customerInstallApprovalRequired,
-        inductionRequired: this.inductionRequired,
-        infrastructure: this.infrastructure
+        numberOfDwellings,
+        customerInstallApprovalRequired,
+        inductionRequired,
+        infrastructure
       }, this.updated)
     },
 
@@ -129,14 +136,17 @@ export default {
     this.numberOfDwellings = this.buildingData.numberOfDwellings
     this.customerInstallApprovalRequired = this.buildingData.customerInstallApprovalRequired
     this.inductionRequired = this.buildingData.inductionRequired
-    this.infrastructure = Object.assign(this.infrastructure, this.buildingData.infrastructure)
+
+    const { infrastructureSchema } = require('@/configs/buildingSchemaSections/infrastructureSchema')
+
+    this.infrastructure = Object.assign({}, JSON.parse(JSON.stringify(infrastructureSchema)), this.buildingData.infrastructure)
   }
 }
 </script>
 
 <style scoped>
 tr, td {
-  height: 24px !important;
+  max-height: 24px !important;
   vertical-align: super;
 }
 
