@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="transparent mx-auto" max-width="700" v-if="dialog && ready">
+  <v-card flat class="transparent mx-auto pb-12" max-width="700" v-if="dialog && ready">
     <v-row justify="end">
       <v-btn icon @click="$emit('update:dialog', false)" class="mb-8">
         <v-icon large>mdi-close</v-icon>

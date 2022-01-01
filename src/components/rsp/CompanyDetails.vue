@@ -6,7 +6,7 @@
         <CompanyDetailsStep :data.sync="schema" step="general" title="General information" :approved="details.approved" />
         <CompanyDetailsStep :data.sync="schema" step="technic" title="Technical information" :approved="details.approved" />
       </v-row>
-      <v-row justify="end" class="mt-12 mr-12" v-if="details.approved">
+      <v-row justify="end" v-if="details.approved">
         <v-btn dark class="primary mr-12" @click="requestUpdates">
           request for updates
         </v-btn>
