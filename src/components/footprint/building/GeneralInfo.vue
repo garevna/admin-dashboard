@@ -14,6 +14,12 @@
             <v-text-field v-model="generalBuildingData.uniqueCode" dense hide-details outlined />
           </td>
         </tr>
+        <tr>
+          <td width="160"> Building name </td>
+          <td>
+            <v-text-field v-model="generalBuildingData.buildingName" dense hide-details outlined />
+          </td>
+        </tr>
       </table>
 
       <v-row justify="center" class="outlined-row mt-0">
@@ -88,7 +94,11 @@
 
 <script>
 
-import { convertBuildingStatus, getBuildingUniqueCode, getGeneralBuildingData } from '@/helpers'
+import {
+  convertBuildingStatus,
+  getBuildingUniqueCode,
+  getGeneralBuildingData
+} from '@/helpers'
 
 import Marketing from '@/components/footprint/building/Marketing.vue'
 import Concierge from '@/components/footprint/building/Concierge.vue'
