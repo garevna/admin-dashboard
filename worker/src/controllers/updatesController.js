@@ -29,16 +29,11 @@ class UpdatesController {
   }
 
   async getLastUpdates () {
-    const [customers, tickets] = await Promise.all([
-      getCustomerUpdates(),
-      getTicketUpdates()
-    ])
-
-    if (!customers.result?.length && !tickets.result?.length) return
-
-    if (customers.result.length) await iterateCustomers()
-
-    self.postMessage({ status: 200, route: 'updates', action: '*', result: { customers: customers.result, tickets: tickets.result } })
+    const customers = await getCustomerUpdates()
+    if (customers.result) {
+      await iterateCustomers()
+      self.postMessage({ status: 200, route: 'updates', action: '*', result: customers.result })
+    }
   }
 
   setLastRequestDate () {

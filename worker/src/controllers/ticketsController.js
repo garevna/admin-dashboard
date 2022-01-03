@@ -15,6 +15,10 @@ class TicketsController {
     self.postMessage(await self.getTicketsFromLocalDb(request.category))
   }
 
+  async pending () {
+    self.postMessage(await self.getPendingTickets())
+  }
+
   async archived (request) {
     self.postMessage(await self.getArchivedTicketsFromRemoteServer(request.year, request.month))
   }

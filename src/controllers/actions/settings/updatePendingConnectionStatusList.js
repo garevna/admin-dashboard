@@ -1,13 +1,10 @@
 import { eventsTable } from '@/controllers/events-table'
 import { settings } from '@/controllers/events'
 
-export const updateTicketCategories = function (data, callback) {
-  window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'settings',
-    action: 'update',
-    section: 'ticketCategories',
-    data
-  })
+const [route, action, section] = ['settings', 'update', 'pendingConnectionStatus']
 
-  eventsTable[settings.update] = callback
+export const updatePendingConnectionStatusList = function (data, callback) {
+  window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action, section, data })
+
+  eventsTable[settings[action]] = callback
 }

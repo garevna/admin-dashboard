@@ -5,7 +5,8 @@ export const schedule = {
   settings: 'schedule-settings-received',
   config: 'schedule-settings-updated',
   job: 'moved-to-job-queue',
-  activate: 'service-activated'
+  activate: 'service-activated',
+  pending: 'pending-requests-received'
 }
 
 export const booking = {

@@ -9,7 +9,10 @@
       <template v-slot:prepend>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-subtitle>Dashboard</v-list-item-subtitle>
+            <v-list-item-subtitle @click="$route.name !== 'main-dash' && $router.push({ name: 'main-dash' })">
+              <v-icon style="cursor: pointer">mdi-view-dashboard</v-icon>
+              <b style="cursor: pointer">Dashboard</b>
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -159,6 +162,7 @@ export default {
     if (!roleHandler()) this.$router.push({ name: 'home' }).catch(failure => console.warn('Router failure:\n', failure))
 
     this.$root.$on('ticket-categories-updated', this.refreshTicketCategories)
+    this.$router.push({ name: 'main-dash' })
   }
 }
 </script>

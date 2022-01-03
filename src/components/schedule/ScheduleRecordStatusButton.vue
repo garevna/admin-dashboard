@@ -129,10 +129,6 @@ export default {
 
     activate () {
       // if (this.record.status !== 'In job queue') return
-      console.log(this.record.activationDate)
-
-      console.log(this.record)
-
       this.__activateService(this.record, this.activated)
     },
 

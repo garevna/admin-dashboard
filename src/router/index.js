@@ -25,6 +25,16 @@ const routes = [
     component: () => import(/* webpackChunkName: 'dashboard' */ '@/views/Dashboard.vue'),
     children: [
       {
+        path: '/main-dash',
+        name: 'main-dash',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'main-dash') next(false)
+          next()
+        },
+        component: () => import(/* webpackChunkName: 'dashboard-info-page' */ '@/components/dashboard/MainPage.vue')
+      },
+      {
         path: '/rsp-list',
         name: 'rsp-list',
         beforeEnter (to, from, next) {

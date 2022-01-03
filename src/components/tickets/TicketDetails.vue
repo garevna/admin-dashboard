@@ -118,7 +118,7 @@
 <script>
 
 export default {
-  name: 'EditTicket',
+  name: 'TicketDetails',
 
   props: ['ticket', 'categories', 'edit'],
 

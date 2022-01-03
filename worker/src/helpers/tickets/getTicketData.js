@@ -20,8 +20,6 @@ export const getTicketData = async function (key) {
 
   const reseller = await self.getResellerDetails(resellerId)
 
-  self.postDebugMessage({ resellerId, reseller })
-
   if (reseller.error) self.postMessage(reseller)
   else {
     const { name: resellerName } = reseller.result.company

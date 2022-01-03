@@ -1,9 +1,9 @@
-class ScheduleController {
-  async refresh () {
-    self.postMessage(await self.refreshSchedule())
+class StatisticsController {
+  async update (request) {
+    self.postMessage(await self.updateStatistics(request.customerId, request.customerServices))
   }
 
-  async getBookingList () {
+  async localRefresh () {
     self.postMessage(await self.getBooking())
   }
 
@@ -40,4 +40,4 @@ class ScheduleController {
   }
 }
 
-export const scheduleController = new ScheduleController()
+export const statisticsController = new StatisticsController()

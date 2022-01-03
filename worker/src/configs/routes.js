@@ -16,17 +16,15 @@ export const routes = {
   '*': {
     refresh: async () => {
       const actions = [
-        // self.refreshSettings,
         self.refreshServicesList,
         self.getResellersFromRemoteServer,
         self.getTicketsFromRemoteServer,
         self.refreshDocumentsList,
         self.downloadAllCustomers
-        // self.refreshSchedule
       ]
 
       const response = await self.refreshSettings()
-      // self.postDebugMessage({ settings: response })
+
       self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
 
       for (const action of actions) {
@@ -130,6 +128,7 @@ export const routes = {
   tickets: {
     refresh: ticketsController.refresh,
     list: ticketsController.list,
+    pending: ticketsController.pending,
     archived: ticketsController.archived,
     details: ticketsController.getArchivedTicketDetails,
     rsp: ticketsController.listForPartner,
@@ -150,7 +149,8 @@ export const routes = {
     // settings: scheduleController.getScheduleSettings,
     config: scheduleController.updateScheduleSettings,
     job: scheduleController.putRecordToJobQueue,
-    activate: scheduleController.activateService
+    activate: scheduleController.activateService,
+    pending: scheduleController.getPendingRequests
   },
 
   booking: {

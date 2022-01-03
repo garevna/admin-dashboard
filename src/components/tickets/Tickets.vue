@@ -7,6 +7,12 @@
       <v-spacer />
       <p><small>Category:</small> <strong>{{ section }}</strong></p>
     </v-toolbar>
+    <v-row justify="end">
+      <v-btn text @click="refresh" class="mr-12 mb-5">
+        <v-icon>mdi-refresh</v-icon>
+        Refresh
+      </v-btn>
+    </v-row>
     <v-row align="start" justify="center" v-if="!edit">
         <v-data-table
           :headers="headers"
@@ -142,24 +148,21 @@ export default {
 
     getCustomersList (data) {
       this.customersList = data
+    },
+
+    refresh () {
+      this.__refreshTickets(this.sendRequestForTickets)
+      setTimeout(this.refresh, 40000)
+    },
+
+    sendRequestForTickets () {
+      this.__getTickets(this.$route.params.section.fromKebab(), this.getTickets)
     }
-  },
-
-  beforeDestroy () {
-    // this.$root.$off('categories-received', this.getCategories)
-    // this.$root.$off('tickets-list-received', this.getTickets)
-    // this.$root.$off('ticket-data-received', this.showTicketDetails)
-
-    // this.$root.$off('customers-filtered-short-list-received', this.getCustomersList)
   },
 
   beforeMount () {
     this.__getTicketCategories(this.getTicketCategories)
-    // this.$root.$on('categories-received', this.getCategories)
-    // this.$root.$on('tickets-list-received', this.getTickets)
-    // this.$root.$on('ticket-data-received', this.showTicketDetails)
-
-    // this.$root.$on('customers-filtered-short-list-received', this.getCustomersList)
+    this.refresh()
   }
 }
 </script>

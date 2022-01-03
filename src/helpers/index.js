@@ -8,6 +8,9 @@ import { testTextField } from './testTextField'
 import { validateAddress } from './validateAddress'
 import { validateABN } from './validateABN'
 
+import { toKebab } from './toKebab'
+import { fromKebab } from './fromKebab'
+
 import { readFile } from './readFile'
 
 import { getBuildingUniqueCode } from './getBuildingUniqueCode'
@@ -25,6 +28,9 @@ export {
   testTextField,
   validateAddress,
   validateABN,
+
+  toKebab,
+  fromKebab,
 
   readFile,
 

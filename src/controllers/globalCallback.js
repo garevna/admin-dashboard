@@ -30,6 +30,7 @@ export const globalCallback = function (event) {
   const eventName = route === 'settings' && action === 'get' ? events[route][action][section] : events[route][action]
 
   if (!eventsTable[eventName]) {
+    console.log(eventsTable)
     return console.warn('Unknown event', route, action, event.data)
   }
   if (typeof eventsTable[eventName] !== 'function') return console.warn('Error: callback is not a function', eventName, event.data)

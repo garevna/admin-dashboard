@@ -1,3 +1,4 @@
+import { main } from './main'
 import { partners } from './partners'
 import { services } from './services'
 import { customers } from './customers'
@@ -8,6 +9,7 @@ import { documents } from './documents'
 import { settings } from './settings'
 
 export {
+  main,
   partners,
   services,
   customers,

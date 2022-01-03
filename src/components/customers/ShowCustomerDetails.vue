@@ -134,7 +134,7 @@ export default {
     },
 
     callback (data) {
-      console.log(data)
+      // console.log(data)
     },
 
     updateCustomerUniqueCode () {

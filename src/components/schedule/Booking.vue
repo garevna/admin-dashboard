@@ -105,7 +105,6 @@ export default {
     },
 
     changeRecordStatus (record, status) {
-      console.log(record, status)
       this.selected = record
       this.status = status
       this.__changeServiceDeliveryStatus(Object.assign(record, { status }))
