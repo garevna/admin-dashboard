@@ -15,9 +15,9 @@ export const get = async function (path) {
     }
   })
 
-  const { page, pages, data: result } = await response.json()
+  const { page, pages, data, file } = await response.json()
 
-  if (response.status !== 200 || !result) {
+  if (response.status !== 200 || (!data && !file)) {
     return {
       status: response.status,
       page,
@@ -26,5 +26,5 @@ export const get = async function (path) {
     }
   }
 
-  return { status: 200, result, page, pages }
+  return { status: 200, result: data || file, page, pages }
 }

@@ -55,6 +55,12 @@ export const routes = {
     excel: buildingController.excel
   },
 
+  files: {
+    get: buildingController.getFileContent,
+    create: buildingController.postFile,
+    remove: buildingController.deleteFile
+  },
+
   rsp: {
     refresh: rspController.refresh,
     list: rspController.list,

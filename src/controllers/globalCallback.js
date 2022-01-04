@@ -27,7 +27,8 @@ export const globalCallback = function (event) {
 
   window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
 
-  const eventName = route === 'settings' && action === 'get' ? events[route][action][section] : events[route][action]
+  const eventName = route === 'files' && action === 'get' ? `${section}-${events[route][action]}`
+    : route === 'settings' && action === 'get' ? events[route][action][section] : events[route][action]
 
   if (!eventsTable[eventName]) {
     console.log(eventsTable)
