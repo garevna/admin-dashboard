@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "dgtek-portal-map-package": "^1.1.4",
-    "dgtek-portal-polygons-editor": "^1.1.0",
+    "dgtek-portal-polygons-editor": "^1.1.4",
     "dgtek-styles": "^0.0.8",
     "express": "^4.17.1",
     "express-winston": "^4.2.0",

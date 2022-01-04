@@ -3341,10 +3341,10 @@ dgtek-portal-map-package@^1.1.4:
   resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.4.tgz#5b74bf37f0fe04bf07fd441f78af72e357333ded"
   integrity sha512-7+agCxMFtP5TWMWudRUNoIJw+sSgrCtHDYPBi1rWTixltpREPIab6bPB1gVH+ctyeM+oy6S7ajTuD87ixgUR/A==
 
-dgtek-portal-polygons-editor@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/dgtek-portal-polygons-editor/-/dgtek-portal-polygons-editor-1.1.0.tgz#4743732b5c4ca9b24a9b449e64f62b975e1b3372"
-  integrity sha512-2bOQvuolEAkfVvMbQ5WUarVYLb5GJetnillQxd502P5oKmtI4AAGQFu+a+SxtVuO/2HmyluXKNiAgfJCwB5fqg==
+dgtek-portal-polygons-editor@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-polygons-editor/-/dgtek-portal-polygons-editor-1.1.4.tgz#be1dac2f247737c482e997779b52fe4bc84df1ca"
+  integrity sha512-QYXJWBvFDg5lckOMibq7IX/u0fWPA4FBgzBTcpXtDTOXHoxWfYApCETl2BgsWpSUz/v8lJX8H+PR0WVgqUsY+A==
   dependencies:
     core-js "^3.6.5"
     vue "^2.6.11"
