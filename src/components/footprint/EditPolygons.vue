@@ -22,7 +22,7 @@ export default {
   },
 
   data: () => ({
-    apiHost: location.origin === 'https://portal.dgtek.net' ? 'https://portal.dgtek.net' : 'https://portal.staging.dgtek.net',
+    apiHost: location.origin === 'https://dka.portal.dgtek.net' ? 'https://portal.dgtek.net' : 'https://portal.staging.dgtek.net',
     apiKey: process.env.VUE_APP_AUTHORIZATION_KEY,
     credentials: credentialsHandler()
   }),
