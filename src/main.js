@@ -52,14 +52,3 @@ window.addEventListener('server-error', function (event) {
 /* eslint-disable no-extend-native */
 
 Object.assign(String.prototype, { toKebab, fromKebab })
-
-// String.prototype.toKebab = function () {
-//   return this.split(' ').join('-').split('')
-//     .map((char, index) => char.charCodeAt(0) < 91 && char.charCodeAt(0) > 64 ? `${index ? '-' : ''}${char.toLowerCase()}` : char)
-//     .join('').split('--').join('-')
-// }
-
-// String.prototype.fromKebab = function () {
-//   const string = this.split('-').join(' ')
-//   return `${string[0].toUpperCase()}${string.slice(1)}`
-// }
