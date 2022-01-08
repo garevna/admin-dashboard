@@ -2,6 +2,9 @@ import { routes } from './routes'
 import { emptyData, secretError, encryptError, decryptError } from './errors'
 import { serviceSchema } from './serviceSchema'
 
+import { polygonColors } from './polygonColors'
+import { polygonsEndpoint } from './polygonsEndpoint'
+
 import { uploads } from './uploads'
 import {
   invalidRoute,
@@ -23,5 +26,7 @@ export {
   invalidFileType,
   uploadFailed,
 
-  pdf404
+  pdf404,
+  polygonColors,
+  polygonsEndpoint
 }

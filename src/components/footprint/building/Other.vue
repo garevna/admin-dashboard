@@ -7,3 +7,16 @@
     </v-toolbar>
   </v-card>
 </template>
+
+<script>
+
+export default {
+  name: 'OtherBuildingDetails',
+  data: () => ({
+    //
+  }),
+  methods: {
+    //
+  }
+}
+</script>

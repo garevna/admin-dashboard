@@ -9,6 +9,7 @@ import documents from './documents'
 import settings from './settings'
 
 import building from './building'
+import polygons from './polygons'
 
 import { testDBVersion } from './db'
 
@@ -20,7 +21,7 @@ const {
   sendPasswordResetCode
 } = require('./admin').default
 
-const result = Object.assign({}, building, rsp, customers, services, tickets, schedule, documents, settings, {
+const result = Object.assign({}, building, rsp, customers, services, tickets, schedule, documents, settings, polygons, {
   testDBVersion,
   init,
   hash,

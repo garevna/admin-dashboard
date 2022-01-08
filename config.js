@@ -4,6 +4,7 @@ const apiHost = (() => {
       return 'https://portal.dgtek.net'
     case 'staging':
     case 'master':
+    case 'development':
       return `https://portal.${process.env.NODE_ENV}.dgtek.net`
     default:
       return 'https://portal.staging.dgtek.net'
@@ -41,7 +42,8 @@ const buildingsHostHandler = (function () {
 
 const hostHandler = (function () {
   // const host = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_API_HOST_PROD : process.env.VUE_APP_API_HOST_DEV
-  const host = apiHost
+  // const host = apiHost
+  const host = location.origin === 'https://dka.portal.dgtek.net' ? 'https://portal.dgtek.net' : 'https://portal.staging.dgtek.net'
   return function () {
     return host
   }

@@ -31,6 +31,17 @@
             />
           </template>
 
+          <template v-slot:item.actions="{ item }">
+            <v-icon
+              v-if="unread(item)"
+              small
+              color="primary"
+              class="mr-2"
+            >
+              mdi-email-mark-as-unread
+            </v-icon>
+          </template>
+
           <template v-slot:footer.prepend>
             <v-text-field
               v-model="search"
@@ -80,9 +91,10 @@ export default {
     customer: null,
     dates: [],
     headers: [
+      { text: '', value: 'actions' },
+      { text: 'Date (created)', value: 'created' },
       { text: 'Number', align: 'start', value: 'number' },
       { text: 'Subject', align: 'start', value: 'subject' },
-      { text: 'Date (created)', value: 'created' },
       { text: 'Date (modified)', value: 'modified' },
       { text: 'Category', value: 'category' },
       { text: 'Priority', value: 'priority' },
@@ -115,12 +127,21 @@ export default {
         this.severity = null
         this.priority = null
       }
+    },
+
+    edit (newVal, oldVal) {
+      if (!newVal && oldVal) {
+        this.sendRequestForTickets()
+      }
     }
   },
 
   methods: {
-    getTicketCategories (data) {
-      //
+    unread (ticket) {
+      if (!ticket.history?.length) return false
+
+      const { source, read = false } = ticket.history.slice(-1)[0]
+      return source === 'partner' && !read
     },
     getTickets (data) {
       const getDate = date => date.indexOf('-') !== -1 ? date : new Date(date - 0).toISOString().slice(0, 10)
@@ -150,9 +171,17 @@ export default {
       this.customersList = data
     },
 
+    refreshSettings () {
+      this.__refreshSettings(this.refreshCategories)
+      setTimeout(this.refreshSettings, 30000)
+    },
+
+    refreshCategories () {
+      this.__getTicketCategories(this.refresh)
+    },
+
     refresh () {
       this.__refreshTickets(this.sendRequestForTickets)
-      setTimeout(this.refresh, 40000)
     },
 
     sendRequestForTickets () {
@@ -161,8 +190,9 @@ export default {
   },
 
   beforeMount () {
-    this.__getTicketCategories(this.getTicketCategories)
-    this.refresh()
+    // this.__getTicketCategories(this.getTicketCategories)
+    // this.refresh()
+    this.refreshSettings()
   }
 }
 </script>

@@ -47,6 +47,10 @@ class BuildingController {
   async excel (request) {
     self.postMessage(await self.createBuildingExcelFile(request.data))
   }
+
+  async convertToKML () {
+    self.postMessage(await self.convertToKML())
+  }
 }
 
 export const buildingController = new BuildingController()

@@ -14,6 +14,10 @@ import { settings } from './settings'
 
 import { building } from './building'
 
+const polygons = {
+  kml: 'polygons-converted-to-kml'
+}
+
 export {
   admin,
   customers,
@@ -29,5 +33,6 @@ export {
   settings,
   building,
 
-  files
+  files,
+  polygons
 }

@@ -55,6 +55,10 @@ export const routes = {
     excel: buildingController.excel
   },
 
+  polygons: {
+    kml: buildingController.convertToKML
+  },
+
   files: {
     get: buildingController.getFileContent,
     create: buildingController.postFile,
