@@ -1,5 +1,12 @@
 export const updateCustomerServiceStatus = async function (request) {
-  const { customerId, serviceId, status, lots, installation, activationDate } = request.data ? request.data : request
+  const {
+    customerId,
+    serviceId,
+    status,
+    lots,
+    installation,
+    activationDate = new Date().toISOString().slice(0, 10)
+  } = request.data ? request.data : request
 
   const response = await self.getCustomer(customerId)
 
@@ -16,10 +23,9 @@ export const updateCustomerServiceStatus = async function (request) {
     status,
     lots,
     installation,
-    activationDate
+    activationDate,
+    log: Object.assign(customer.services[index].log, { [Date.now()]: status })
   })
 
-  Object.assign(customer.services[index].log, { [Date.now()]: status })
-
-  return await self.putCustomer(customerId, customer)
+  return await self.patchCustomer(customerId, { services: customer.services })
 }
