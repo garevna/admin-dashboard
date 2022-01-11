@@ -90,13 +90,19 @@ export const getResellersListError = {
 export const getUserDetailsError = {
   route: 'rsp',
   errorType: 'Partner details',
-  errorMessage: 'Failed to fetch RSP details'
+  errorMessage: 'Failed to fetch partner details'
 }
 
 export const updateUserDetailsError = {
   route: 'rsp',
   errorType: 'Partner details',
   errorMessage: 'Failed to update the data'
+}
+
+export const createPartnerError = {
+  route: 'rsp',
+  errorType: 'DGtek Partner creation',
+  errorMessage: 'Failed to create new partner'
 }
 
 export const putUserRecordError = {

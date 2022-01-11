@@ -40,6 +40,7 @@ export const routes = {
       })
     }
   },
+
   admin: {
     init: authController.init,
     auth: authController.auth,
@@ -67,6 +68,7 @@ export const routes = {
 
   rsp: {
     refresh: rspController.refresh,
+    create: rspController.create,
     list: rspController.list,
     short: rspController.short,
     get: rspController.get,

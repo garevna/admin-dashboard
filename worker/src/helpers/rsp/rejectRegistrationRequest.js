@@ -1,11 +1,22 @@
 import { remove } from '../AJAX'
+import { deleteRecordByKey } from '../db'
+
+const [route, action] = ['rsp', 'reject']
+
+const message = {
+  message: true,
+  messageType: 'Leads request',
+  messageText: 'Request was rejected'
+}
 
 export const rejectRegistrationRequest = async ({ id }) => {
-  const response = await remove(`user/${id}`)
+  const { status } = await remove(`user/${id}`)
 
-  if (response.status !== 200) return self.errorMessage('rejectRequestError')
+  // self.postDebugMessage({ status })
 
-  await self.getResellersFromRemoteServer()
+  // if (status !== 200) return Object.assign({ status, route, action }, self.errorMessage('rejectRequestError'))
 
-  return await self.getRegistrationRequests()
+  const response = await deleteRecordByKey('rsp', id)
+
+  return Object.assign({ status, route, action }, response.status !== 200 ? self.errorMessage('rejectRequestError') : message)
 }

@@ -24,7 +24,7 @@
             small
             color="#888"
             class="table-icon-button"
-            @click="reject(item)"
+            @click.stop="reject(item)"
           > mdi-trash-can </v-icon>
       </template>
 
@@ -170,6 +170,7 @@ export default {
     },
 
     partnerCreated (data) {
+      console.log(data)
       this.$router.push({ name: 'rsp-list' })
     },
 
@@ -188,7 +189,11 @@ export default {
     rejectConfirmed (id) {
       this.expanded = []
       this.ready = false
-      this.__rejectRegistrationRequest(id)
+      this.__rejectRegistrationRequest(id, this.rejected)
+    },
+
+    rejected () {
+      this.__getRegistrationRequests(this.getData)
     }
   },
 

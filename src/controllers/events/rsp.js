@@ -1,5 +1,6 @@
 export const rsp = {
   refresh: 'rsp-data-refreshed',
+  create: 'partner-created',
   list: 'rsp-list-received',
   short: 'rsp-short-list-received',
   get: 'rsp-details-received',

@@ -5,6 +5,10 @@ class ResellersController {
     self.postMessage(await self.getResellersFromRemoteServer())
   }
 
+  async create (request) {
+    self.postMessage(await self.createPartner(request.data))
+  }
+
   async refreshPartnersList () {
     self.postMessage(await self.refreshPartnersList())
   }

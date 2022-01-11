@@ -13,8 +13,17 @@ export const partners = {
       }
     },
     {
-      title: 'New RSP',
+      title: 'Leads requests',
       route: 'leads-request',
+      icon: 'mdi-account-question',
+      access: {
+        change: ['Account_manager', 'SuperAdmin'],
+        read: ['View_only']
+      }
+    },
+    {
+      title: 'Create partner',
+      route: 'create-partner',
       icon: 'mdi-account-plus',
       access: {
         change: ['Account_manager', 'SuperAdmin'],

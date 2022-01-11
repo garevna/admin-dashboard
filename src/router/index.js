@@ -55,6 +55,16 @@ const routes = [
         component: () => import(/* webpackChunkName: 'leads-request' */ '@/components/rsp/RegistrationRequests.vue')
       },
       {
+        path: '/create-partner',
+        name: 'create-partner',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'create-partner') next(false)
+          next()
+        },
+        component: () => import(/* webpackChunkName: 'leads-request' */ '@/components/rsp/CreateNewPartner.vue')
+      },
+      {
         path: '/services-list',
         name: 'services-list',
         beforeEnter (to, from, next) {

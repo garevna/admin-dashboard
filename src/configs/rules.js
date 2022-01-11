@@ -12,5 +12,8 @@ export const rules = {
   abn: value => validateABN(value) || 'Invalid ABN.',
   url: value => patterns.url.test(value) || 'Invalid URL.',
   login: value => value.length > 5 || 'Invalid login',
-  password: value => patterns.password.test(value) || 'Password is not strong enough.'
+  password: value => patterns.password.test(value) || 'Password is not strong enough.',
+  counter: value => value.length === 2 || 'Exact 2 characters',
+  letters: value => value.split('')
+    .filter(symbol => symbol.charCodeAt(0) < 91 && symbol.charCodeAt(0) > 64).length === 2 || 'Invalid symbols'
 }
