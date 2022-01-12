@@ -61,7 +61,7 @@
 <script>
 
 export default {
-  name: 'AvailableServiceStatus',
+  name: 'AvailableServiceStatusUpdates',
 
   data: () => ({
     items: null,

@@ -265,9 +265,14 @@ const routes = [
         component: () => import(/* webpackChunkName: 'estimated-service-delivery-time-settings' */ '@/components/settings/EstimatedServiceDeliveryTime.vue')
       },
       {
-        path: '/available-service-status-settings',
-        name: 'available-service-status-settings',
-        component: () => import(/* webpackChunkName: 'available-service-status-settings' */ '@/components/settings/AvailableServiceStatus.vue')
+        path: '/available-service-status-updates-settings',
+        name: 'available-service-status-updates-settings',
+        component: () => import(/* webpackChunkName: 'available-service-status-settings' */ '@/components/settings/AvailableServiceStatusUpdates.vue')
+      },
+      {
+        path: '/pending-connection-status-settings',
+        name: 'pending-connection-status-settings',
+        component: () => import(/* webpackChunkName: 'pending-connection-status-settings' */ '@/components/settings/PendingConnectionStatus.vue')
       },
       {
         path: '/documents',

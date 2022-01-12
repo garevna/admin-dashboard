@@ -16,8 +16,6 @@
         color="primary"
         v-bind="attrs"
         v-on="on"
-        max-width="320"
-        class="mx-auto"
       />
     </template>
     <v-date-picker
@@ -35,11 +33,14 @@
 
 export default {
   name: 'DatePicker',
+
   props: ['title', 'date'],
+
   data: () => ({
     menu: false,
     modal: false
   }),
+
   computed: {
     localDate: {
       get () {

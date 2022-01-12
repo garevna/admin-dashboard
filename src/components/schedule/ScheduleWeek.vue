@@ -10,44 +10,7 @@
       </p>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
-      <table width="100%">
-        <thead>
-          <tr>
-            <th width="48"><small>Day</small></th>
-            <th width="120"><small>Date</small></th>
-            <th width="240">AM</th>
-            <th width="240">PM</th>
-            <th width="240">Afterhours</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(row, date) of weekData" :key="date">
-            <td><small><strong>{{ getDayName(date) }}</strong></small></td>
-            <td><small>{{ date }}</small></td>
-            <td>
-              <ScheduleWeekCol
-                :date="date"
-                period="am"
-                :records="weekData[date].am"
-              />
-            </td>
-            <td>
-              <ScheduleWeekCol
-                :date="date"
-                period="pm"
-                :records="weekData[date].pm"
-              />
-            </td>
-            <td>
-              <ScheduleWeekCol
-                :date="date"
-                period="afterhours"
-                :records="weekData[date].afterhours"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <WeekContent :weekData.sync="weekData" />
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -57,13 +20,16 @@
 export default {
   name: 'ScheduleWeek',
   components: {
-    ScheduleWeekCol: () => import('@/components/schedule/ScheduleWeekCol.vue')
+    WeekContent: () => import('@/components/schedule/WeekContent.vue')
   },
+
   props: ['weekNumber', 'weekData'],
+
   data: () => ({
     records: null,
     ready: false
   }),
+
   computed: {
     weekStartDate () {
       if (!this.weekNumber) return ''

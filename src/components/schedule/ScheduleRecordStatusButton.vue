@@ -16,13 +16,29 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-list dense>
-            <v-list-item
-              v-if="record.status === 'Awaiting for confirmation' || record.status === 'Awaiting for cancelation'"
-              @click="confirm"
-            >
-              <v-list-item-title>
-                Confirm
-              </v-list-item-title>
+            <v-list-item v-if="record.status === 'Awaiting for confirmation'" @click="confirm">
+              <v-list-item-title> Confirm </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel">
+              <v-list-item-title> Cancel </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspension = true">
+              <v-list-item-title> Suspend from: </v-list-item-title>
+              <div v-if="suspension">
+                <SelectDateOfStatusChanging title="Suspension date" :date.sync="record.suspensionDate" />
+                <!-- <v-btn
+                  outlined
+                  small
+                  color="primary"
+                  :disabled="!record.suspensionDate"
+                  @click="suspend"
+                  width="270"
+                >
+                  Submit
+                </v-btn> -->
+              </div>
             </v-list-item>
 
             <v-list-item @click="activation = true">
@@ -40,27 +56,11 @@
           </v-list>
 
           <div v-if="activation">
-            <v-date-picker
-              label="Activation date"
-              v-model="record.activationDate"
-              @input="menu = false"
-              color="primary"
-              :first-day-of-week="1"
-              no-title
-              scrollable
-              max-width="270"
-              style="margin-left: -16px"
+            <SelectDateOfStatusChanging
+              title="Activation date"
+              :date.sync="record.activationDate"
+              :action.sync="submitActivation"
             />
-            <v-btn
-              outlined
-              small
-              color="primary"
-              :disabled="!record.activationDate"
-              @click="activate"
-              width="270"
-            >
-              Submit
-            </v-btn>
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -75,10 +75,17 @@ import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
 export default {
   name: 'ScheduleRecordStatusButton',
 
+  components: {
+    SelectDateOfStatusChanging: () => import('@/components/schedule/SelectDateOfStatusChanging.vue')
+  },
+
   props: ['date', 'period', 'record'],
 
   data: () => ({
     activation: false,
+    submitActivation: false,
+    suspension: false,
+    cancelation: false,
     icons: serviceStatusIconsHandler(),
     colors: {
       Active: '#09b',
@@ -98,6 +105,16 @@ export default {
     },
     color () {
       return this.colors[this.record.status] || '#999'
+    }
+  },
+
+  watch: {
+    submitActivation (value) {
+      if (value) {
+        this.activate()
+        this.submitActivation = false
+        this.activation = false
+      }
     }
   },
 
@@ -128,7 +145,6 @@ export default {
     },
 
     activate () {
-      // if (this.record.status !== 'In job queue') return
       this.__activateService(this.record, this.activated)
     },
 
@@ -150,13 +166,12 @@ export default {
         modified: Date.now(),
         lots: []
       }))
-      this.__changeServiceDeliveryStatus(this.record, response => console.log(response))
 
-      // this.__updateScheduleRecordStatus(Object.assign({}, this.record, {
-      //   status: 'Awaiting for scheduling',
-      //   modified: Date.now(),
-      //   lots: []
-      // }))
+      this.__changeServiceDeliveryStatus(this.record, this.rejected)
+    },
+
+    rejected (customer) {
+      this.$root.$emit('reject-record', customer.services)
     }
   }
 }

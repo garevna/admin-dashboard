@@ -17,49 +17,6 @@
         :period="period"
         :record.sync="record"
       />
-
-      <!-- <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn text small v-bind="attrs" v-on="on">
-            <v-icon small :color="getIcon(record.status).color"> {{ getIcon(record.status).icon }} </v-icon>
-            {{ record.status }}
-          </v-btn>
-        </template>
-        <v-list v-if="record.status === 'Awaiting for confirmation' || record.status === 'Awaiting confirmation'">
-          <v-list-item @click="confirm(record)">
-            <v-list-item-title>
-              Confirm
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="reject(record)">
-            <v-list-item-title>
-              Reject
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="activate(record)">
-            <v-list-item-title>
-              Activate service
-            </v-list-item-title>
-          </v-list-item>
-        </v-list> -->
-
-        <!-- <v-list v-if="record.status === 'In job queue'"> -->
-          <!-- <v-list-item @click="reject(record)">
-            <v-list-item-title>
-              Reject installation
-            </v-list-item-title>
-          </v-list-item> -->
-          <!-- <v-list-item @click="activate(record)">
-            <v-list-item-title>
-              Activate service
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu> -->
-      <!-- <v-btn text small>
-        <v-icon small :color="getIcon(record.status).color"> {{ getIcon(record.status).icon }} </v-icon>
-        {{ record.status }}
-      </v-btn> -->
     </v-card-text>
   </v-card>
 </template>
@@ -89,51 +46,6 @@ export default {
         phone: record.customer.phone
       })
     },
-
-    // confirm (record) {
-    //   if (record.status === 'In job queue') return
-    //
-    //   const { customerId, serviceId, lots } = record
-    //
-    //   const lot = lots.find(item => item.date === this.date)
-    //
-    //   const installation = {
-    //     date: this.date,
-    //     period: this.period,
-    //     message: lot.message || ''
-    //   }
-    //   this.__putRecordToJobQueue(Object.assign({}, {
-    //     customerId,
-    //     serviceId,
-    //     lots,
-    //     status: 'In job queue',
-    //     modified: Date.now(),
-    //     installation
-    //   }))
-    //   this.$root.$emit('move-record-to-job-queue', { customerId, serviceId, lots, installation })
-    // },
-
-    // activate (record) {
-    //   if (record.status !== 'In job queue') return
-    //   this.__activateService(record, response => console.log(response))
-    //   this.$root.$emit('activate-record', {
-    //     week: this.getWeekNumber(this.date),
-    //     date: this.date,
-    //     period: this.period,
-    //     customerId: record.customerId,
-    //     serviceId: record.serviceId
-    //   })
-    // },
-
-    // reject (record) {
-    //   if (record.status === 'In job queue') return
-    //
-    //   this.__updateScheduleRecordStatus(Object.assign({}, record, {
-    //     status: 'Awaiting for scheduling',
-    //     modified: Date.now(),
-    //     lots: []
-    //   }))
-    // },
 
     getIcon (status) {
       const colors = {

@@ -1,43 +1,45 @@
 <template>
-  <v-card flat class="transparent mx-auto text-center" max-width="480">
+  <v-card flat class="transparent mx-auto text-center" max-width="800">
     <v-card-title class="my-8">
-      <h5><small>List of connection statuses to be shown as <b><em>pending</em></b> for partner</small></h5>
+      <h5><small color="prim">List of connection statuses to be shown as <em>pending</em></small></h5>
     </v-card-title>
-    <v-card-text v-for="(item, index) of items" :key="item" class="my-0 py-1">
-      <!-- <v-btn @click="removeItem(index)" icon>
-        <v-checkbox
-          v-model=""
-          :label="item"
-          color="primary"
-        />
-      </v-btn> -->
-
-      <v-textField
-        :value="item"
-        @input="update($event, index)"
-        outlined
-        dense
-        hide-details
-        style="display: inline-block!important; width: 320px!important"
-      />
-
-      <v-btn @click="moveDown(index)" icon :disabled="index === items.length - 1">
-        <v-icon small>mdi-arrow-down</v-icon>
-      </v-btn>
-      <v-btn @click="moveUp(index)" icon :disabled="index === 0">
-        <v-icon small>mdi-arrow-up</v-icon>
-      </v-btn>
-    </v-card-text>
-    <v-card-actions class="my-12">
-      <v-btn @click="addItem()" outlined text color="primary">
-        <v-icon small>mdi-plus</v-icon>
-        Create new category
-      </v-btn>
-      <v-spacer />
+    <v-row justify="center">
+      <v-col cols="6" lg="4" xl="3" class="text-left">
+        <p><b>for partner</b></p>
+        <v-card flat class="transparent my-0 py-1">
+          <div v-for="(item, index) of partnerSettings" :key="item.name">
+            <v-checkbox
+              v-model="item.selected"
+              @click="updatePartnerSettings(item, index)"
+              :label="item.name"
+              color="primary"
+              dense
+              hide-details
+            />
+          </div>
+        </v-card>
+      </v-col>
+      <v-col cols="6" lg="4" xl="3" class="text-left">
+        <p><b>for admin</b></p>
+        <v-card flat class="transparent my-0 py-1">
+          <div v-for="(item, index) of adminSettings" :key="item.name">
+            <v-checkbox
+              v-model="item.selected"
+              @click="updateAdminSettings(item, index)"
+              :label="item.name"
+              color="primary"
+              dense
+              hide-details
+            />
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="end" class="my-8">
       <v-btn dark class="primary" @click="save()" text>
         Save
       </v-btn>
-    </v-card-actions>
+    </v-row>
   </v-card>
 </template>
 
@@ -48,28 +50,51 @@ export default {
 
   data: () => ({
     items: null,
-    pending: null,
-    ready: false
+    partnerPending: null,
+    adminPending: null
   }),
 
-  methods: {
-    update (value, index) {
-      this.items[index] = value
+  computed: {
+    ready () {
+      return this.items && this.partnerPending && this.adminPending
     },
+
+    partnerSettings () {
+      return this.ready ? this.items.map(item => ({ name: item, selected: this.partnerPending.includes(item) })) : null
+    },
+
+    adminSettings () {
+      return this.ready ? this.items.map(item => ({ name: item, selected: this.adminPending.includes(item) })) : null
+    }
+  },
+
+  methods: {
+    updatePartnerSettings (item, index) {
+      console.log(index, item.name, item.selected)
+    },
+
+    updateAdminSettings (item, index) {
+      console.log(index, item.name, item.selected)
+    },
+
     getAvailable (data) {
       this.items = data
-      this.ready = Array.isArray(this.items)
     },
+
     getPending (data) {
-      this.pending = data.partner
-      // this.items = data
-      // this.ready = Array.isArray(this.items)
+      this.partnerPending = data.partner
+      this.adminPending = data.admin
     },
+
     showAnswer (response) {
       console.log('Pending connection status:\n', response)
     },
+
     save () {
-      this.__getPendingConnectionStatus(this.items, this.showAnswer)
+      const admin = this.adminSettings.filter(item => item.selected).map(item => item.name)
+      const partner = this.partnerSettings.filter(item => item.selected).map(item => item.name)
+
+      this.__updatePendingConnectionSettings({ admin, partner }, this.showAnswer)
     }
   },
 

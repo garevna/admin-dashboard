@@ -22,7 +22,7 @@ export const settings = {
       route: 'schedule-settings',
       icon: 'mdi-calendar-edit',
       access: {
-        change: ['Account_manager', 'SuperAdmin'],
+        change: ['SuperAdmin'],
         read: ['View_only']
       }
     },
@@ -31,18 +31,36 @@ export const settings = {
       route: 'estimated-service-delivery-time-settings',
       icon: 'mdi-map-clock',
       access: {
-        change: ['Account_manager', 'SuperAdmin'],
+        change: ['SuperAdmin'],
         read: ['View_only']
       }
     },
     {
-      title: 'Available service status list',
-      route: 'available-service-status-settings',
+      title: 'Pending connection status',
+      route: 'pending-connection-status-settings',
+      icon: 'mdi-lan-pending',
+      access: {
+        change: ['SuperAdmin'],
+        read: ['View_only']
+      }
+    },
+    {
+      title: 'Available service status updates',
+      route: 'available-service-status-updates-settings',
       icon: 'mdi-access-point',
       access: {
-        change: ['Account_manager', 'SuperAdmin'],
+        change: ['SuperAdmin'],
         read: ['View_only']
       }
     }
+    // {
+    //   title: 'Available service status list',
+    //   route: 'available-service-status-settings',
+    //   icon: 'mdi-access-point',
+    //   access: {
+    //     change: ['SuperAdmin'],
+    //     read: ['View_only']
+    //   }
+    // }
   ]
 }

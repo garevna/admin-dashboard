@@ -171,15 +171,6 @@ export default {
       this.customersList = data
     },
 
-    refreshSettings () {
-      this.__refreshSettings(this.refreshCategories)
-      setTimeout(this.refreshSettings, 30000)
-    },
-
-    refreshCategories () {
-      this.__getTicketCategories(this.refresh)
-    },
-
     refresh () {
       this.__refreshTickets(this.sendRequestForTickets)
     },
@@ -190,9 +181,7 @@ export default {
   },
 
   beforeMount () {
-    // this.__getTicketCategories(this.getTicketCategories)
-    // this.refresh()
-    this.refreshSettings()
+    this.__getTicketCategories(this.refresh)
   }
 }
 </script>

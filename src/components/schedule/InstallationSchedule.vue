@@ -1,20 +1,41 @@
 <template>
   <v-card flat class="transparent mx-auto mb-12" max-width="1200">
-    <v-row justify="end">
-      <v-btn text @click="refresh" class="mr-12 mb-5">
-        <v-icon>mdi-refresh</v-icon>
-        Refresh
-      </v-btn>
-    </v-row>
-    <v-expansion-panels v-if="ready" v-model="panels" multiple>
-      <ScheduleWeek
-        v-for="weekNumber of Object.keys(weeks).reverse()"
-        :key="weekNumber"
-        :weekNumber="weekNumber"
-        :weekData.sync=weeks[weekNumber]
-        :changedRecord.sync="changedRecord"
-      />
-    </v-expansion-panels>
+    <v-tabs
+      v-model="tab"
+      dark
+      background-color="primary"
+    >
+      <v-tab> Week </v-tab>
+      <v-tab> Table </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab" class="transparent">
+      <v-tab-item>
+        <v-card flat class="transparent">
+          <WeekSelector :scheduleData="weeks" />
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat class="transparent mt-5">
+          <v-row justify="end">
+            <v-btn text @click="refresh" class="mr-12 mb-5">
+              <v-icon>mdi-refresh</v-icon>
+              Refresh
+            </v-btn>
+          </v-row>
+
+          <v-expansion-panels v-if="ready" v-model="panels" multiple>
+            <ScheduleWeek
+              v-for="weekNumber of Object.keys(weeks).reverse()"
+              :key="weekNumber"
+              :weekNumber="weekNumber"
+              :weekData.sync=weeks[weekNumber]
+            />
+          </v-expansion-panels>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
   </v-card>
 </template>
 
@@ -24,15 +45,16 @@ export default {
   name: 'InstallationSchedule',
 
   components: {
+    WeekSelector: () => import('@/components/schedule/WeekSelector.vue'),
     ScheduleWeek: () => import('@/components/schedule/ScheduleWeek.vue')
   },
 
   data: () => ({
+    tab: 1,
     ready: false,
     records: null,
     weeks: {},
-    panels: [],
-    changedRecord: null
+    panels: []
   }),
 
   methods: {
@@ -53,33 +75,41 @@ export default {
       this.ready = true
     },
 
+    findLotIndex (customerId, serviceId, lot) {
+      const weekNumber = this.getWeekNumber(lot.date)
+      const records = this.weeks[weekNumber][lot.date][lot.period]
+
+      return [weekNumber, records.findIndex(record => record.customerId === customerId && record.serviceId === serviceId)]
+    },
+
     moveRecordToJobQueue (data) {
       const { customerId, serviceId, lots, installation } = data
 
       lots.forEach((lot) => {
-        const weekNumber = this.getWeekNumber(lot.date)
-        const records = this.weeks[weekNumber][lot.date][lot.period]
-        const index = records.findIndex(record => record.customerId === customerId && record.serviceId === serviceId)
-        if (lot.date === installation.date) {
-          this.weeks[weekNumber][lot.date][lot.period][index].status = 'In job queue'
-        } else {
-          this.weeks[weekNumber][lot.date][lot.period].splice(index, 1)
-        }
+        const [weekNumber, index] = this.findLotIndex(customerId, serviceId, lot)
+        if (lot.date === installation.date) this.weeks[weekNumber][lot.date][lot.period][index].status = 'In job queue'
+        else this.weeks[weekNumber][lot.date][lot.period].splice(index, 1)
       })
     },
 
+    removeRecordsFromSchedule (data) {
+      const { customerId, serviceId } = data
+
+      for (const weekNumber of Object.keys(this.weeks)) {
+        for (const date of Object.keys(this.weeks[weekNumber])) {
+          for (const period of Object.keys(this.weeks[weekNumber][date])) {
+            const index = this.weeks[weekNumber][date][period].findIndex(item => item.customerId === customerId && item.serviceId === serviceId)
+            if (index !== -1) this.weeks[weekNumber][date][period].splice(index, 1)
+          }
+        }
+      }
+    },
+
     activateRecord (data) {
-      const { week, date, period, customerId, serviceId } = data
-
-      const records = this.weeks[week][date][period]
-
-      const index = records.findIndex(record => record.customerId === customerId && record.serviceId === serviceId)
-
-      if (index !== -1) this.weeks[week][date][period].splice(index, 1)
+      this.removeRecordsFromSchedule(data)
     },
 
     refresh () {
-      this.ready = false
       this.__refreshSchedule(this.scheduleRefreshed)
     },
 
@@ -90,18 +120,20 @@ export default {
 
   beforeMount () {
     this.__getScheduleWeekData(this.weekNumber, this.getScheduleData)
+
     this.$root.$on('service-activated', this.scheduleRefreshed)
     this.$root.$on('move-record-to-job-queue', this.moveRecordToJobQueue)
     this.$root.$on('activate-record', this.activateRecord)
+    this.$root.$on('reject-record', this.removeRecordsFromSchedule)
   },
 
   beforeDestroy () {
-    this.$root.$off('service-activated', this.scheduleRefreshed)
-
     this.$root.$off('customers-updated-remotelly', this.refresh)
 
+    this.$root.$off('service-activated', this.scheduleRefreshed)
     this.$root.$off('move-record-to-job-queue', this.moveRecordToJobQueue)
     this.$root.$off('activate-record', this.activateRecord)
+    this.$root.$off('reject-record', this.removeRecordsFromSchedule)
   },
 
   mounted () {
