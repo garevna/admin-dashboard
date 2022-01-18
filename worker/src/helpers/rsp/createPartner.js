@@ -8,6 +8,13 @@ import { invalidRequest, createPartnerError } from '../../errors'
 
 const [route, action] = ['rsp', 'create']
 
+const error = { route, action, error: true, errorType: 'Partner creation' }
+
+const duplicationError = Object.assign({}, error, {
+  status: 409,
+  errorMessage: 'User login already in use'
+})
+
 export const createPartner = async function (data) {
   const { login, password, phoneNumber, userName = 'partner', ...details } = data
 
@@ -21,7 +28,9 @@ export const createPartner = async function (data) {
 
   const { status, result } = await post('registration', details)
 
-  if (status !== 200) return createPartnerError(status)
+  self.postDebugMessage({ response: { status, result } })
+
+  if (result.error === 'A user with this login already exists.') return duplicationError
 
   idHandler(result.data._id)
 

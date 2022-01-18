@@ -1,10 +1,10 @@
 {
   "name": "dgtek-admin-dash",
-  "version": "4.4.1",
+  "version": "4.4.9",
   "license": "MIT",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
-    "worker": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
+    "worker-prod": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
     "serve": "yarn polygons-editor && vue-cli-service serve",
     "build": "yarn polygons-editor && vue-cli-service build",
     "build-staging": "yarn polygons-editor && vue-cli-service build --mode staging",

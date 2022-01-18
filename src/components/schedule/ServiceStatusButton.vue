@@ -44,7 +44,12 @@
           </v-list>
 
           <div v-if="activation">
-            <v-date-picker
+            <SelectDateOfStatusChanging
+              title="Activation date"
+              :date.sync="record.activationDate"
+              :action.sync="activationSubmitted"
+            />
+            <!-- <v-date-picker
               label="Activation date"
               v-model="record.activationDate"
               @input="menu = false"
@@ -64,7 +69,7 @@
               width="270"
             >
               Submit
-            </v-btn>
+            </v-btn> -->
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -79,10 +84,15 @@ import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
 export default {
   name: 'ServiceStatusButton',
 
+  components: {
+    SelectDateOfStatusChanging: () => import('@/components/schedule/SelectDateOfStatusChanging.vue')
+  },
+
   props: ['record', 'activated'],
 
   data: () => ({
     activation: false,
+    activationSubmitted: false,
     icons: serviceStatusIconsHandler(),
     colors: {
       Active: '#09b',
@@ -102,6 +112,16 @@ export default {
     },
     color () {
       return this.colors[this.record.status] || '#999'
+    }
+  },
+
+  watch: {
+    activationSubmitted (value) {
+      if (value) {
+        this.activate()
+        this.activation = false
+        this.activationSubmitted = false
+      }
     }
   },
 

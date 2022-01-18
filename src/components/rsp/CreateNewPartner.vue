@@ -212,6 +212,7 @@ export default {
     },
 
     callback (data) {
+      console.log(data)
       this.$router.push({ name: 'rsp-list' })
     }
   },
