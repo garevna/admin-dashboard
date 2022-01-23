@@ -76,11 +76,8 @@
       <ShowCustomerDetails
         :dialog.sync="edit"
         :customerId="selectedCustomerId"
+        :customerUpdated.sync="customerUpdated"
       />
-      <!-- <CustomerDetails
-        :dialog.sync="edit"
-        :customerId="selectedCustomerId"
-      /> -->
     </v-row>
   </v-container>
 </template>
@@ -106,6 +103,7 @@ export default {
 
   data: () => ({
     customers: null,
+    customerUpdated: false,
     ready: false,
     icons: null,
     edit: false,
@@ -132,11 +130,16 @@ export default {
   }),
 
   watch: {
+    customerUpdated (val) {
+
+    },
+
     refresh (val) {
       if (!val) return
       this.__refreshCustomersWithPagination(this.refreshed)
       this.refresh = false
     },
+
     hardRefresh (val) {
       if (!val) return
       this.ready = false
@@ -170,6 +173,15 @@ export default {
   },
 
   methods: {
+    refreshUpdatedCustomers () {
+      this.__refreshUpdatedCustomers(this.getUpdatedCustomers)
+      setTimeout(this.refreshUpdatedCustomers, 40000)
+    },
+
+    getUpdatedCustomers (data) {
+      //
+    },
+
     getCustomersList (data) {
       this.customers = data
       this.ready = true
@@ -217,7 +229,8 @@ export default {
       !this.details ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(this.details._id, this.getCustomersList)
     },
 
-    customersUpdatedRemotelly (event) {
+    customersUpdatedRemotely (event) {
+      this.customerUpdated = true
       this.sendRequest()
     }
   },
@@ -229,12 +242,12 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('customers-updated', this.sendRequest)
-    this.$root.$off('customers-updated-remotelly', this.customersUpdatedRemotelly)
+    this.$root.$off('customers-updated-remotely', this.customersUpdatedRemotely)
   },
 
   mounted () {
     this.$root.$on('customers-updated', this.sendRequest)
-    this.$root.$on('customers-updated-remotelly', this.customersUpdatedRemotelly)
+    this.$root.$on('customers-updated-remotely', this.customersUpdatedRemotely)
     this.$vuetify.goTo(0)
   }
 }

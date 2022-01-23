@@ -15,6 +15,7 @@ export const rsp = {
   'get-messages': 'messages-received',
   'send-message': 'message-transmitted',
   'delete-message': 'message-deleted',
+  'update-message': 'message-updated',
 
   'get-unique-code-list': 'unique-code-list-received'
 }

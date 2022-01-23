@@ -47,9 +47,9 @@ self.serviceStatus = serviceStatus
 self.frequency = 30000
 self.lastRequestTime = Date.now() - 1000 * 60 * 60 * 24 * 2
 
-const getUpdatesFromRemote = async () => {
-  if (!credentialsHandler()) return setTimeout(getUpdatesFromRemote, self.frequency)
-  updatesController.getLastUpdates()
+const getUpdatesFromRemote = () => {
+  // self.postDebugMessage({ message: '=== Request for updates ===', creds: credentialsHandler() })
+  if (credentialsHandler()) updatesController.getCustomerUpdates()
   setTimeout(getUpdatesFromRemote, self.frequency)
 }
 

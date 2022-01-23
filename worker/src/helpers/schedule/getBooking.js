@@ -9,7 +9,5 @@ export const getBooking = async function () {
 
   const records = response.result.filter(record => record.request === 'booking')
 
-  // self.postDebugMessage({ booking: records.sort((a, b) => b.modified - a.modified).map(item => new Date(item.modified).toISOString().slice(0, 10)) })
-
   return { status: 200, route, action, result: records.sort((a, b) => b.modified - a.modified) }
 }

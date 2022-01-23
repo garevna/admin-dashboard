@@ -23,8 +23,5 @@ export const downloadAllCustomers = async function () {
     }
   }
 
-  // const response = await refreshStatistics()
-  // self.postDebugMessage(response)
-
   return { status: 200, route, action, result: 'OK' }
 }

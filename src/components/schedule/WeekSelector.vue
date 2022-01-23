@@ -73,7 +73,6 @@ export default {
     scheduleData: {
       deep: true,
       handler (data) {
-        console.log(data)
         const week = this.weekNumber.toString()
         this.weekData = Object.keys(this.scheduleData).includes(week) ? this.scheduleData[week] : this.createEmptyWeekSchedule(week)
       }

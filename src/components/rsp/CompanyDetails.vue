@@ -2,14 +2,34 @@
   <v-container class="homefone" v-if="ready">
     <v-card flat class="transparent pa-5 mx-auto mb-12" max-width="960" outlined>
       <v-row justify="center">
-        <CompanyDetailsStep :data.sync="schema" step="company" title="Company details" :approved="details.approved" />
-        <CompanyDetailsStep :data.sync="schema" step="general" title="General information" :approved="details.approved" />
-        <CompanyDetailsStep :data.sync="schema" step="technic" title="Technical information" :approved="details.approved" />
+        <CompanyDetailsStep
+          :sourceData="schema"
+          step="company"
+          title="Company details"
+          :approved="details.approved"
+        />
+        <CompanyDetailsStep
+          :sourceData="schema"
+          step="general"
+          title="General information"
+          :approved="details.approved"
+        />
+        <CompanyDetailsStep
+          :sourceData="schema"
+          step="technic"
+          title="Technical information"
+          :approved="details.approved"
+        />
       </v-row>
-      <v-row justify="end" v-if="details.approved">
-        <v-btn dark class="primary mr-12" @click="requestUpdates">
-          request for updates
+      <v-row justify="end" v-if="details.approved" class="mt-12">
+        <v-btn v-if="messageId" dark class="primary mr-12" @click="updateRequestForUpdates">
+          Update request
         </v-btn>
+
+        <v-btn v-else dark class="primary mr-12" @click="sendRequestForUpdates">
+          Send request for updates
+        </v-btn>
+
       </v-row>
     </v-card>
   </v-container>
@@ -17,7 +37,7 @@
 
 <script>
 
-const { schemaRSP } = require('@/configs').default
+const { schemaRSP, partnerDetailsUpdatesSchema } = require('@/configs').default
 
 export default {
   name: 'CompanyDetails',
@@ -34,38 +54,99 @@ export default {
   },
 
   data: () => ({
-    ready: false,
-    schema: schemaRSP,
-    steps: Object.keys(schemaRSP)
+    detailsReady: false,
+    messageReady: false,
+    messageId: null,
+    schema: JSON.parse(JSON.stringify(schemaRSP)),
+    steps: Object.keys(schemaRSP),
+    updatesNeeded: []
   }),
 
+  computed: {
+    ready () {
+      return Boolean(this.messageReady && this.detailsReady)
+    }
+  },
+
   methods: {
+    getMessages (data) {
+      const message = data.find(item => item.type === 'update-company-details')
+      this.messageId = message?._id
+      this.updatesNeeded = message ? message.fields : []
+
+      this.detailsReady && this.configSchema()
+
+      this.messageReady = true
+    },
+
     getData () {
+      this.__getPartnerMessages(this.details._id, this.getMessages)
       if (!this.details) return
       for (const step of ['company', 'general', 'technic']) {
         for (const prop in this.details[step]) {
-          this.schema[step][prop].value = this.details[step][prop]
+          Object.assign(this.schema[step][prop], {
+            value: this.details[step][prop],
+            selected: false,
+            updated: false
+          })
         }
       }
-      this.ready = true
+      this.messageReady && this.configSchema()
+
+      this.detailsReady = true
     },
-    requestUpdates () {
+
+    refreshData () {
+
+    },
+
+    configSchema () {
+      for (const step of ['company', 'general', 'technic']) {
+        const currentUpdates = this.updatesNeeded.filter(item => item.section === step)
+        for (const item of currentUpdates) {
+          this.schema[step][item.field].selected = true
+          this.schema[step][item.field].updated = item.updated
+        }
+      }
+    },
+
+    findUpdatesSchemaItem: (section, propName) => partnerDetailsUpdatesSchema.find(item => item.section === section && item.field === propName),
+
+    getFieldsForRequest () {
       const fields = []
       for (const section in this.schema) {
-        Object.keys(this.schema[section])
+        const items = Object.keys(this.schema[section])
           .filter(key => this.schema[section][key].selected)
-          .map(field => ({ title: this.schema[section][field].title, section, field }))
-          .forEach(item => fields.push(item))
+          .map(field => this.findUpdatesSchemaItem(section, field))
+
+        fields.push(...items)
       }
 
+      return fields
+    },
+
+    updateRequestForUpdates () {
+      this.__updateMessage(this.messageId, this.getFieldsForRequest(), this.messageUpdated)
+    },
+
+    sendRequestForUpdates () {
       this.__sendMessage({
         type: 'update-company-details',
         resellerId: this.details._id,
         subject: 'Update company details',
         propmt: 'Update please the next data in company details',
-        fields
-      })
+        fields: this.getFieldsForRequest()
+      }, this.messageTransmitted)
     },
+
+    messageUpdated (data) {
+      // console.log('Message updated:\n', data)
+    },
+
+    messageTransmitted (data) {
+      this.messageId = data
+    },
+
     saveData () {
       const result = {}
       for (const stepName of Object.keys(this.schema)) {
@@ -76,12 +157,42 @@ export default {
         }
       }
       this.__putClientData(result)
+    },
+
+    confirmUpdate (data) {
+      const { section, field } = data
+
+      Object.assign(this.schema[section][field], {
+        selected: false,
+        updated: false
+      })
+
+      const index = this.updatesNeeded.findIndex(item => item.section === section && item.field === field)
+      this.updatesNeeded.splice(index, 1)
+    },
+
+    rejectUpdate (data) {
+      const { section, field } = data
+
+      Object.assign(this.schema[section][field], { updated: false })
+
+      Object.assign(this.updatesNeeded.find(item => item.section === section && item.field === field), {
+        updated: false
+      })
     }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('confirm-update', this.confirmUpdate)
+    this.$root.$off('reject-update', this.rejectUpdate)
   },
 
   mounted () {
     this.getData()
     this.$vuetify.goTo(0)
+
+    this.$root.$on('confirm-update', this.confirmUpdate)
+    this.$root.$on('reject-update', this.rejectUpdate)
   }
 }
 </script>

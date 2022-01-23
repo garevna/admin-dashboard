@@ -22,7 +22,7 @@
             <v-spacer />
             <v-file-input
               accept="application/pdf"
-              placeholder="Pick the file"
+              placeholder="Click here to choose a file"
               prepend-icon="mdi-file-upload"
               outlined
               label=""

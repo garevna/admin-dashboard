@@ -1,10 +1,10 @@
 import { eventsTable } from '@/controllers/events-table'
-import { rsp } from '@/controllers/events'
+import { messages } from '@/controllers/events'
 
-const [route, action] = ['rsp', 'delete-message']
+const [route, action] = ['messages', 'remove']
 
 export const deleteMessage = function (messageId, callback) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action, messageId })
 
-  eventsTable[rsp[action]] = callback
+  eventsTable[messages[action]] = callback
 }

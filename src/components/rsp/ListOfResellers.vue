@@ -78,6 +78,15 @@ export default {
   methods: {
     getData (data) {
       this.resellers = data
+
+      const partnerId = window[Symbol.for('message-from-partner.id')]
+
+      if (partnerId) {
+        this.rspDetails = this.resellers.find(item => item._id === partnerId)
+        window[Symbol.for('message-from-partner.id')] = null
+        this.details = Boolean(this.rspDetails)
+      }
+
       this.ready = true
     },
 

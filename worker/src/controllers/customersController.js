@@ -9,6 +9,10 @@ class CustomersController {
     self.postMessage(await self.refreshSchedule())
   }
 
+  async refreshUpdatedCustomersOnly () {
+    self.postMessage(await self.refreshUpdatedCustomersOnly())
+  }
+
   async getAllCustomers () {
     self.postMessage(await self.getAllCustomers())
   }

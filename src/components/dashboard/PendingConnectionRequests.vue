@@ -75,12 +75,12 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('customers-updated-remotelly', this.sendRequestForData)
+    this.$root.$off('customers-updated-remotely', this.sendRequestForData)
   },
 
   mounted () {
     this.__getPendingRequests(this.getSchedule)
-    this.$root.$on('customers-updated-remotelly', this.sendRequestForData)
+    this.$root.$on('customers-updated-remotely', this.sendRequestForData)
   }
 }
 </script>

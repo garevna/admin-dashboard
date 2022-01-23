@@ -46,17 +46,21 @@ class ResellersController {
     self.postMessage(await self.rejectRegistrationRequest(id))
   }
 
-  async sendMessage (request) {
-    self.postMessage(await self.sendMessage(request.message))
-  }
+  // async sendMessage (request) {
+  //   self.postMessage(await self.sendMessage(request.message))
+  // }
 
-  async getMessagesByResellerId (request) {
-    self.postMessage(await self.getMessages(request.resellerId))
-  }
+  // async updateMessage (request) {
+  //   self.postMessage(await self.patchMessage(request.messageId, request.data))
+  // }
 
-  async deleteMessage (request) {
-    self.postMessage(await self.deleteMessage(request.messageId))
-  }
+  // async getMessagesByResellerId (request) {
+  //   self.postMessage(await self.getMessages(request.resellerId))
+  // }
+
+  // async deleteMessage (request) {
+  //   self.postMessage(await self.deleteMessage(request.messageId))
+  // }
 
   async getPartnerCredentials (request) {
     self.postMessage(await self.getPartnerCredentials(request.resellerId))

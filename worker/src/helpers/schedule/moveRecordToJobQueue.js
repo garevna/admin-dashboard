@@ -1,6 +1,4 @@
 export const moveRecordToJobQueue = async (request) => {
-  // self.postDebugMessage({ request })
-
   const { status } = await self.updateCustomerServiceStatus(request)
 
   if (status !== 200) return self.errorMessage('updateStatusError')

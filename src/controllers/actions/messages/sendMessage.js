@@ -1,10 +1,10 @@
 import { eventsTable } from '@/controllers/events-table'
-import { rsp } from '@/controllers/events'
+import { messages } from '@/controllers/events'
 
-const [route, action] = ['rsp', 'send-message']
+const [route, action] = ['messages', 'send']
 
 export const sendMessage = function (message, callback) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action, message })
 
-  eventsTable[rsp[action]] = callback
+  eventsTable[messages[action]] = callback
 }

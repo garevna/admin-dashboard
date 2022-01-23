@@ -1,9 +1,11 @@
 <template>
   <v-container>
-    <v-card v-for="field of fields" :key="field.prop" flat class="transparent">
+    <v-card v-for="field of fields" :key="field.prop" flat class="transparent mx-auto" width="360">
       <v-checkbox v-model="field.selected" :label="field.title" />
     </v-card>
-    <v-btn outlined color="primary" @click="sendRequestForData">Submit</v-btn>
+    <v-row justify="center" class="mt-12">
+      <v-btn outlined color="primary" @click="sendRequestForData"> Submit </v-btn>
+    </v-row>
   </v-container>
 </template>
 

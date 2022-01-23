@@ -13,6 +13,8 @@ export const updateStatistics = async function (customerId, customerServices = [
   for (const service of customerServices) {
     let { status, result: serviceStatistics } = await getRecordByKey('statistics', service.id)
 
+    self.postDebugMessage({ status, serviceStatistics })
+
     if (status !== 200) {
       const { status, result } = await getRecordByKey('services', service.id)
       if (status !== 200) {

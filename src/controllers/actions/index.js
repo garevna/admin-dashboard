@@ -19,7 +19,9 @@ import buildings from './map.worker'
 
 import files from './files'
 
-const result = Object.assign({}, rsp, services, customers, tickets, schedule, documents, settings, buildings, files, {
+import messages from './messages'
+
+const result = Object.assign({}, rsp, services, customers, tickets, schedule, documents, settings, buildings, files, messages, {
   // init,
   auth,
   changePassword,

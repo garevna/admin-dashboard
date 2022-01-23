@@ -11,6 +11,7 @@ import { files } from './files'
 import { schedule, booking, lots } from './schedule'
 
 import { settings } from './settings'
+import { messages } from './messages'
 
 import { building } from './building'
 
@@ -31,6 +32,7 @@ export {
   booking,
   lots,
   settings,
+  messages,
   building,
 
   files,

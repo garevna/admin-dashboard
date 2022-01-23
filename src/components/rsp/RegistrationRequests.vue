@@ -170,7 +170,6 @@ export default {
     },
 
     partnerCreated (data) {
-      console.log(data)
       this.$router.push({ name: 'rsp-list' })
     },
 

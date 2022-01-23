@@ -83,6 +83,7 @@ import ResellerMessages from '@/components/rsp/ResellerMessages.vue'
 
 export default {
   name: 'ResellerPages',
+
   components: {
     CompanyDetails,
     ResellerServices,

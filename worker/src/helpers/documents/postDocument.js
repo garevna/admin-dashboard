@@ -6,11 +6,7 @@ const [route, action] = ['documents', 'post']
 export const postDocument = async (data) => {
   if (!data.folder || !data.title) return self.errorMessage('invalidRequest')
 
-  self.postDebugMessage({ data })
-
   const { status, result } = await post('documents', data)
-
-  self.postDebugMessage({ response: { status, result } })
 
   if (status !== 200) return self.errorMessage('createNewDocumentError')
 

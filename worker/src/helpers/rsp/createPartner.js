@@ -4,7 +4,9 @@ import { putRecordByKey } from '../db'
 
 import { encrypt, hash } from '../crypto'
 
-import { invalidRequest, createPartnerError } from '../../errors'
+import { invalidRequest } from '../../errors'
+
+const duplicated = 'A user with this login already exists.'
 
 const [route, action] = ['rsp', 'create']
 
@@ -13,6 +15,11 @@ const error = { route, action, error: true, errorType: 'Partner creation' }
 const duplicationError = Object.assign({}, error, {
   status: 409,
   errorMessage: 'User login already in use'
+})
+
+const localDBError = Object.assign({}, error, {
+  status: 400,
+  errorMessage: 'Failed to save new partner data to local DB'
 })
 
 export const createPartner = async function (data) {
@@ -28,16 +35,14 @@ export const createPartner = async function (data) {
 
   const { status, result } = await post('registration', details)
 
-  self.postDebugMessage({ response: { status, result } })
-
-  if (result.error === 'A user with this login already exists.') return duplicationError
+  if (result.error) return result.error === duplicated ? duplicationError : Object.assign({}, error, { status: 500, errorMessage: result.error })
 
   idHandler(result.data._id)
 
   await patch(`user/${result.data._id}`, { approved: true })
 
   const response = await putRecordByKey('rsp', idHandler(), Object.assign(result.data, { approved: true }))
-  if (response.status !== 200) return createPartnerError(response.status)
+  if (response.status !== 200) return localDBError
 
   return {
     status,

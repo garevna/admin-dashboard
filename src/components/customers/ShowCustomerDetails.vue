@@ -16,6 +16,15 @@
           <td width="120" style="padding: 0 16px">
             <h6> Update needed </h6>
           </td>
+          <td width="120" style="padding: 0 16px">
+            <h6> Updated </h6>
+          </td>
+          <td width="120" style="padding: 0 16px">
+            <h6> Confirm update </h6>
+          </td>
+          <td width="120" style="padding: 0 16px">
+            <h6> Reject update </h6>
+          </td>
         </tr>
       </thead>
       <tbody v-if="customerType">
@@ -34,6 +43,19 @@
               hide-details
               style="margin-top: 0!important"
             />
+          </td>
+          <td>
+            <small color="#777" v-if="item.updated"> {{  item.updated || '' }} </small>
+          </td>
+          <td>
+            <v-btn text v-if="item.updated" color="#777" @click="confirmUpdate(propName)">
+              OK
+            </v-btn>
+          </td>
+          <td>
+            <v-btn text v-if="item.updated" color="#aaa" @click="rejectUpdate(propName)">
+              <v-icon small>mdi-close</v-icon>
+            </v-btn>
           </td>
         </tr>
       </tbody>
@@ -59,18 +81,37 @@
             <v-btn icon v-if="propName === 'uniqueCode'" @click="updateCustomerUniqueCode">
               <v-icon color="primary"> mdi-content-save </v-icon>
             </v-btn>
-            <v-checkbox
-              v-else
-              v-model="item.selected"
-              hide-details
-              style="margin-top: 0!important"
-            />
+            <div v-else class="text-center">
+              <v-checkbox
+                v-model="item.selected"
+                hide-details
+                style="margin-top: 0!important"
+                :disabled="Boolean(item.updated)"
+              />
+            </div>
+          </td>
+          <td>
+            <small color="#777" v-if="item.updated"> {{  item.updated || '' }} </small>
+          </td>
+          <td>
+            <v-btn text v-if="item.updated" color="#777" @click="confirmUpdate(propName)">
+              OK
+            </v-btn>
+          </td>
+          <td>
+            <v-btn text v-if="item.updated" color="#aaa" @click="rejectUpdate(propName)">
+              <v-icon small>mdi-close</v-icon>
+            </v-btn>
           </td>
         </tr>
       </tbody>
     </table>
     <v-row justify="end" class="mt-12 mr-12">
-      <v-btn outlined color="primary" @click="sendMessageToPartner">
+      <v-btn v-if="messageId" outlined color="primary" @click="updateMessageToPartner">
+        Update request
+        <v-icon small class="ml-4">mdi-update</v-icon>
+      </v-btn>
+      <v-btn v-else outlined color="primary" @click="sendMessageToPartner">
         Send request for updates
         <v-icon small class="ml-4">mdi-send</v-icon>
       </v-btn>
@@ -89,12 +130,15 @@ export default {
 
   props: {
     dialog: Boolean,
-    customerId: String
+    customerId: String,
+    customerUpdated: Boolean
   },
 
   data: () => ({
     ready: false,
     customer: null,
+    message: null,
+    messageId: null,
     customerDetails: JSON.parse(JSON.stringify(customerDetails)),
     commercial: JSON.parse(JSON.stringify(commercial)),
     customerAddress: JSON.parse(JSON.stringify(customerAddress))
@@ -106,42 +150,98 @@ export default {
     }
   },
 
+  watch: {
+    customerUpdated (val) {
+      if (!val) return
+      if (this.customerId) {
+        this.__getCustomerData(this.customerId, this.getCustomerDetails)
+      }
+      this.$emit('update:customerUpdated', false)
+    }
+  },
+
   methods: {
-    createSchema () {
-      if (this.customerType) {
-        const { companyName, companyAbn } = this.customer.commercial
-        this.commercial.companyName.value = companyName
-        this.commercial.companyAbn.value = companyAbn
+    getCommercialUpdates () {
+      const commercial = {
+        companyName: this.message ? this.message.fields.find(item => item.section === 'commercial' && item.field === 'companyName') : null,
+        companyAbn: this.message ? this.message.fields.find(item => item.section === 'commercial' && item.field === 'companyAbn') : null
       }
 
-      for (const prop in this.customerDetails) {
-        this.customerDetails[prop].value = this.customer[prop]
+      for (const propName of ['companyName', 'companyAbn']) {
+        Object.assign(this.commercial[propName], {
+          value: this.customer.commercial[propName],
+          selected: Boolean(commercial[propName]),
+          updated: commercial[propName]?.updated || false
+        })
       }
+    },
+
+    createSchema () {
+      if (this.customer.commercial) this.getCommercialUpdates()
+
       Object.assign(this.customerDetails, {
         address: {
           title: 'Address',
           type: '',
-          selected: false,
           value: `${this.customer.apartmentNumber}/${this.customer.address}`
         }
       })
+
+      for (const propName in this.customerDetails) {
+        if (propName === 'uniqueCode') {
+          Object.assign(this.customerDetails.uniqueCode, { value: this.customer[propName] })
+          continue
+        }
+        const messageField = this.message ? this.message.fields.find(item => item.section === 'customerDetails' && item.field === propName) : null
+
+        Object.assign(this.customerDetails[propName], {
+          value: this.customer[propName],
+          selected: Boolean(messageField) || false,
+          updated: messageField?.updated || false
+        })
+      }
+    },
+
+    getPartnerMessages () {
+      this.__getPartnerMessages(this.customer.resellerId, this.getMessages)
+      setTimeout(this.getPartnerMessages, 30000)
+    },
+
+    getMessages (messages) {
+      this.message = messages.find(item => item.type === 'update-customer-details' && item.customerId === this.customer._id)
+      this.messageId = this.message?._id
+
+      this.createSchema()
+      this.ready = true
     },
 
     getCustomerDetails (data) {
       this.customer = data
-      this.createSchema()
-      this.ready = true
+      this.getPartnerMessages()
     },
 
     callback (data) {
       // console.log(data)
     },
 
+    getMessageId (messageId) {
+      // console.log('Message has been sent:\n', messageId)
+      this.messageId = messageId
+    },
+
+    getResponse (data) {
+      // console.log('Message has been updated:\n', data)
+    },
+
     updateCustomerUniqueCode () {
       this.__patchCustomer(this.customer._id, { uniqueCode: this.customerDetails.uniqueCode.value }, this.callback)
     },
 
-    sendMessageToPartner () {
+    updateCustomer () {
+      this.__patchCustomer(this.customer._id, { status: Date.now() }, this.callback)
+    },
+
+    createMessage () {
       const commercial = Object.keys(this.commercial)
         .filter(key => this.commercial[key].selected)
         .map(key => ({
@@ -170,9 +270,49 @@ export default {
         fields: commercial.concat(selected),
         content
       }
+      return message
+    },
 
-      this.__sendMessage(message, this.callback)
+    updateMessageToPartner () {
+      this.message = this.createMessage()
+      this.__updateMessage(this.messageId, this.message.fields, this.getResponse)
+      this.updateCustomer()
+    },
+
+    sendMessageToPartner () {
+      this.message = this.createMessage()
+      this.__sendMessage(this.message, this.getMessageId)
+      this.updateCustomer()
+    },
+
+    getMessageField (propName) {
+      const index = this.message.fields.findIndex(messageField => messageField.field === propName)
+      if (index === -1) return console.warn(`Field ${propName} was not found in message\n`, this.message.fields)
+      const section = this.message.fields[index].section
+      return { index, section }
+    },
+
+    confirmUpdate (propName) {
+      const { index, section } = this.getMessageField(propName) || {}
+      if (!section) return
+      this.ready = false
+      this.message.fields.splice(index, 1)
+      Object.assign(this[section][propName], { selected: false, updated: false })
+      this.$nextTick(() => { this.ready = true })
+    },
+
+    rejectUpdate (propName) {
+      const { index, section } = this.getMessageField(propName) || {}
+      if (!section) return
+      this.ready = false
+      Object.assign(this.message.fields[index], { updated: false })
+      Object.assign(this[section][propName], { updated: false })
+      this.$nextTick(() => { this.ready = true })
     }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('customers-updated-remotely', this.customersUpdatedRemotely)
   },
 
   mounted () {

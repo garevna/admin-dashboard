@@ -12,8 +12,6 @@ const message = {
 export const rejectRegistrationRequest = async ({ id }) => {
   const { status } = await remove(`user/${id}`)
 
-  // self.postDebugMessage({ status })
-
   // if (status !== 200) return Object.assign({ status, route, action }, self.errorMessage('rejectRequestError'))
 
   const response = await deleteRecordByKey('rsp', id)

@@ -9,7 +9,8 @@ const {
   scheduleController,
   documentsController,
   settingsController,
-  updatesController
+  updatesController,
+  messageController
 } = require('../controllers').default
 
 export const routes = {
@@ -84,15 +85,13 @@ export const routes = {
 
     customers: customersController.getCustomersByResellerId,
 
-    'get-messages': rspController.getMessagesByResellerId,
-    'send-message': rspController.sendMessage,
-    'delete-message': rspController.deleteMessage,
     'get-unique-code-list': rspController.getUniqueCodeList
   },
 
   customers: {
     // refresh: customersController.refresh,
     refresh: customersController.getCustomersFromRemote,
+    updated: customersController.refreshUpdatedCustomersOnly,
     pagination: customersController.refreshByPageNumber,
     list: customersController.getAllCustomers,
     'short-list': customersController.getShortListOfCustomers,
@@ -148,11 +147,6 @@ export const routes = {
     put: ticketsController.put
   },
 
-  // categories: {
-  //   get: ticketsController.getCategories,
-  //   put: ticketsController.putCategories
-  // },
-
   schedule: {
     refresh: scheduleController.refresh,
     get: scheduleController.getFullSchedule,
@@ -199,5 +193,14 @@ export const routes = {
     tickets: updatesController.getTicketUpdates,
     schedule: updatesController.getScheduleUpdates,
     get: updatesController.getLastUpdates
+  },
+
+  messages: {
+    updated: messageController.getUpdated,
+    get: messageController.getMessages,
+    partner: messageController.getMessagesByResellerId,
+    send: messageController.sendMessage,
+    remove: messageController.deleteMessage,
+    update: messageController.updateMessage
   }
 }

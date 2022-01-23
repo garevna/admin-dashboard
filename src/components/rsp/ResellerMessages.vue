@@ -11,15 +11,14 @@
         class="elevation-1"
       >
         <template v-slot:expanded-item="{ headers, item }">
-          <td :colspan="headers.length">
-            <div v-if="item.type === 'update-company-details'" class="pa-3">
-              <li v-for="option of item.fields" :key="option.field">
-                {{ option.title }}
+          <td :colspan="headers.length" class="pa-4">
+            <b>{{ item.subject }}</b>
+            <div class="pa-3">
+              <li v-for="option of item.fields" :key="`${option.section}-${option.field}`">
+                {{ option.sectionTitle }}{{ option.sectionTitle ? ':' : '' }} {{ option.title }}
+                <v-icon small v-if="option.updated" color="#09b">mdi-checkbox-marked</v-icon>
               </li>
             </div>
-            <p v-else>
-              <small v-html="item.content.split('\n').join('<br>')"></small>
-            </p>
           </td>
         </template>
 
@@ -68,7 +67,7 @@ export default {
   },
 
   beforeMount () {
-    this.__getMessages(this.details._id, this.getData)
+    this.__getPartnerMessages(this.details._id, this.getData)
   }
 }
 </script>

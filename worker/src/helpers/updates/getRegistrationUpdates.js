@@ -12,12 +12,8 @@ export const getRegistrationUpdates = async () => {
   const { status, result } = await get('registration?per_page=50')
   if (status !== 200) return remoteError
 
-  // self.postDebugMessage({ registrationRequests: result })
-
   const promises = result.map(user => putRecordByKey('rsp', user._id, user))
-  /* const response = */ await Promise.all(promises)
-
-  // self.postDebugMessage({ registrationUpdates: response })
+  await Promise.all(promises)
 
   self.lastRequestTime = Date.now()
 

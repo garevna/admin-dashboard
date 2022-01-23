@@ -13,9 +13,7 @@ export const getResellersFromRemoteServer = async function () {
   clearStore('rsp')
   uniqueCodes([])
 
-  /* const response = */ await Promise.all(result.map(rsp => putRecordByKey('rsp', rsp._id, rsp)))
-
-  // self.postDebugMessage({ putRSPToLocalDBResult: response })
+  await Promise.all(result.map(rsp => putRecordByKey('rsp', rsp._id, rsp)))
 
   const partners = result.filter(user => user.approved)
 

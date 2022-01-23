@@ -1,6 +1,6 @@
 import { post } from '../AJAX'
 
-const [route, action] = ['rsp', 'send-message']
+const [route, action] = ['messages', 'send']
 
 const sendMessageError = {
   status: 500,

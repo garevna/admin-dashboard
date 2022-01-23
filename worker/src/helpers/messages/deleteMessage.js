@@ -1,6 +1,6 @@
 import { remove } from '../AJAX'
 
-const [route, action] = ['rsp', 'delete-message']
+const [route, action] = ['messages', 'remove']
 
 const deleteMessageError = {
   status: 500,

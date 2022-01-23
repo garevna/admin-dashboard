@@ -145,15 +145,10 @@ export default {
     },
 
     saveChanges () {
-      console.log(this.id)
-      console.log(this.title)
-      console.log(this.content)
-
-      console.log()
       if (this.id) {
-        // this.__updateSLA({ id: this.id, title: this.title, content: this.content })
+        this.__updateSLA({ id: this.id, title: this.title, content: this.content })
       } else {
-        // this.__uploadNewSLA(this.title, this.file)
+        this.__uploadNewSLA(this.title, this.file)
       }
     },
 

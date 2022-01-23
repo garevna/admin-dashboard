@@ -128,7 +128,7 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('customers-updated-remotelly', this.refresh)
+    this.$root.$off('customers-updated-remotely', this.refresh)
 
     this.$root.$off('service-activated', this.scheduleRefreshed)
     this.$root.$off('move-record-to-job-queue', this.moveRecordToJobQueue)
@@ -137,7 +137,7 @@ export default {
   },
 
   mounted () {
-    this.$root.$on('customers-updated-remotelly', this.refresh)
+    this.$root.$on('customers-updated-remotely', this.refresh)
     this.$vuetify.goTo(0)
   }
 }

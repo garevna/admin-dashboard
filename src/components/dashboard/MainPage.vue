@@ -16,6 +16,7 @@
     <v-row v-if="!showTicketDetails">
       <v-col cols="6">
         <Fieldset legend="Responses on details update request">
+          <PartnersResposes />
         </Fieldset>
       </v-col>
       <v-col cols="6">
@@ -35,6 +36,7 @@
 import Fieldset from '@/components/Fieldset.vue'
 import PendingTickets from '@/components/dashboard/PendingTickets.vue'
 import PendingConnectionRequests from '@/components/dashboard/PendingConnectionRequests.vue'
+import PartnersResposes from '@/components/dashboard/PartnersResposes.vue'
 
 export default {
   name: 'MainPage',
@@ -43,6 +45,7 @@ export default {
     Fieldset,
     PendingTickets,
     PendingConnectionRequests,
+    PartnersResposes,
     TicketDetails: () => import('@/components/tickets/TicketDetails.vue')
   },
 

@@ -1,9 +1,9 @@
 import { eventsTable } from '@/controllers/events-table'
 import { customers } from '@/controllers/events'
 
-const [route, action] = ['customers', 'hard-refresh']
+const [route, action] = ['customers', 'updated']
 
-export const hardCustomersRefresh = function (callback) {
+export const refreshUpdatedCustomers = function (callback) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action })
 
   eventsTable[customers[action]] = callback

@@ -9,6 +9,15 @@
           <td width="120" style="padding: 0 16px" v-if="approved">
             <h6>Update needed</h6>
           </td>
+          <td width="120" style="padding: 0 16px" v-if="approved">
+            <h6>Updated</h6>
+          </td>
+          <td width="120" style="padding: 0 16px" v-if="approved">
+            <h6>Approve updates</h6>
+          </td>
+          <td width="120" style="padding: 0 16px" v-if="approved">
+            <h6>Reject updates</h6>
+          </td>
         </tr>
       </thead>
       <tbody>
@@ -24,12 +33,32 @@
               <small style="user-select: text !important">{{ item.value || '...' }}</small>
             </div>
           </td>
+
           <td v-if="approved">
             <v-checkbox
               v-model="item.selected"
               hide-details
               style="margin-top: 0!important"
+              :disabled="Boolean(item.updated)"
             />
+          </td>
+
+          <td v-if="approved" class="text-center">
+            <small v-if="item.updated"> {{ item.updated }} </small>
+            <!-- <v-icon v-if="item.updated" color="#09b"> mdi-check-circle-outline </v-icon> -->
+          </td>
+
+          <td v-if="approved" class="text-center">
+            <v-btn small text v-if="item.updated" color="#777" @click="confirmUpdates(propName)">
+              ok
+              <!-- <v-icon> mdi-bookmark-check-outline </v-icon> -->
+            </v-btn>
+          </td>
+
+          <td v-if="approved" class="text-center">
+            <v-btn small text v-if="item.updated" color="#999" @click="rejectUpdates(propName)">
+              <v-icon> mdi-close </v-icon>
+            </v-btn>
           </td>
         </tr>
       </tbody>
@@ -43,32 +72,41 @@ export default {
   name: 'CompanyDetailsStep',
 
   props: {
-    data: Object,
+    sourceData: Object,
     step: String,
     title: String,
     approved: Boolean
   },
 
   data: () => ({
-    ready: false,
-    schema: {},
+    ready: true,
     selected: []
   }),
 
-  watch: {
-    data: {
-      deep: true,
-      immediate: true,
-      handler (value) {
-        if (!value) return
-        this.schema = value[this.step]
-        this.ready = true
-      }
+  computed: {
+    schema () {
+      return this.sourceData[this.step]
     }
   },
 
   methods: {
-    //
+    rejectUpdates (propName) {
+      this.ready = false
+      this.$root.$emit('reject-update', {
+        section: this.step,
+        field: propName
+      })
+      this.$nextTick(() => { this.ready = true })
+    },
+
+    confirmUpdates (propName) {
+      this.ready = false
+      this.$root.$emit('confirm-update', {
+        section: this.step,
+        field: propName
+      })
+      this.$nextTick(() => { this.ready = true })
+    }
   }
 }
 </script>
