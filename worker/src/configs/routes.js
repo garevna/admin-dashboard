@@ -121,6 +121,7 @@ export const routes = {
     post: servicesController.post,
     put: servicesController.put,
     patch: servicesController.patch,
+    'patch-group': servicesController.patchGroup,
     delete: servicesController.deleteService
   },
 

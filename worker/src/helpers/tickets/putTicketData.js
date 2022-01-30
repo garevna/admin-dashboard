@@ -1,5 +1,6 @@
 import { patch } from '../AJAX'
 import { putRecordByKey } from '../db'
+import { sendNotification } from '../updates'
 
 export const putTicketData = async function (ticket) {
   const { status, result } = await patch(`ticket/${ticket._id}`, { history: ticket.history })
@@ -9,6 +10,8 @@ export const putTicketData = async function (ticket) {
   const response = await putRecordByKey('tickets', ticket._id, ticket)
 
   if (response.status !== 200) return self.errorMessage('putTicketDataError')
+
+  await sendNotification(ticket.resellerId, 'ticket', ticket._id)
 
   return {
     status,

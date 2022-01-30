@@ -4,10 +4,14 @@ import { serviceHandler } from './serviceHandler'
 import { estimatesHandler } from './estimatesHandler'
 import { customersListPageNumberHandler } from './customersListPageNumberHandler'
 
+import { messagesHandler } from './messagesHandler'
+
 export {
   customerHandler,
   buildingHandler,
   serviceHandler,
   estimatesHandler,
-  customersListPageNumberHandler
+  customersListPageNumberHandler,
+
+  messagesHandler
 }

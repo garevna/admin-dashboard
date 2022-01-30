@@ -1,4 +1,5 @@
 import { get } from '../AJAX'
+import { messagesHandler } from '../../data-handlers'
 
 const [route, action] = ['messages', 'get']
 
@@ -18,8 +19,11 @@ export const getMessages = async () => {
     var { status, result } = await get(`messages?per_page=100&page=${currentPage++}`)
 
     if (status !== 200) self.postMessage(messagesRequestError)
+
     messages.push(...result.messages)
   } while (result.page <= result.pages)
+
+  messagesHandler(messages)
 
   return {
     status,

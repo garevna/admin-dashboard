@@ -4,6 +4,8 @@ export const services = {
   names: 'list-of-service-names-received',
   get: 'service-data-received',
   put: 'service-data-updated',
+  patch: 'service-details-updated',
+  'patch-group': 'group-of-services-updated',
   post: 'new-service-created',
   delete: 'service-deleted'
 }

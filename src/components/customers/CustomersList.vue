@@ -229,9 +229,12 @@ export default {
       !this.details ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(this.details._id, this.getCustomersList)
     },
 
-    customersUpdatedRemotely (event) {
-      this.customerUpdated = true
-      this.sendRequest()
+    updatesCallback (data) {
+      console.log('CUSTOMERS LIST UPDATES CALLBACK:\n', data)
+      if (Array.isArray(data) && data.length) {
+        this.ready = false
+        this.sendRequest()
+      }
     }
   },
 
@@ -242,12 +245,15 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('customers-updated', this.sendRequest)
-    this.$root.$off('customers-updated-remotely', this.customersUpdatedRemotely)
+    // this.$root.$off('customers-updated-remotely', this.customersUpdatedRemotely)
+    this.$root.$off('customers-updates-received', this.updatesCallback)
   },
 
   mounted () {
     this.$root.$on('customers-updated', this.sendRequest)
-    this.$root.$on('customers-updated-remotely', this.customersUpdatedRemotely)
+    // this.$root.$on('customers-updated-remotely', this.customersUpdatedRemotely)
+    // this.$root.$on('updates-received', this.updatesCallback)
+    this.$root.$on('customers-updates-received', this.updatesCallback)
     this.$vuetify.goTo(0)
   }
 }

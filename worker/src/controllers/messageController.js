@@ -20,7 +20,7 @@ class MessageController {
   }
 
   async deleteMessage (request) {
-    self.postMessage(await self.deleteMessage(request.messageId))
+    self.postMessage(await self.deleteMessage(request.messageId, request.resellerId))
   }
 
   async getUpdated (request) {

@@ -36,15 +36,13 @@
       <span class="ml-12"><small>Total number of RSP: {{ resellers.length }}</small></span>
     </v-card>
 
-    <ResellerPages
-      v-if="details"
-      :opened.sync="details"
-      :resellerDetails="rspDetails"
-    />
+    <ResellerPages v-if="details" :opened.sync="details" />
   </v-container>
 </template>
 
 <script>
+
+import { partnerDetailsHandler } from '@/controllers'
 
 export default {
   name: 'ListOfResellers',
@@ -71,8 +69,7 @@ export default {
       { text: 'Cabinet', value: 'actions', sortable: false }
     ],
     resellers: null,
-    details: false,
-    rspDetails: null
+    details: false
   }),
 
   methods: {
@@ -82,9 +79,9 @@ export default {
       const partnerId = window[Symbol.for('message-from-partner.id')]
 
       if (partnerId) {
-        this.rspDetails = this.resellers.find(item => item._id === partnerId)
+        partnerDetailsHandler(this.resellers.find(item => item._id === partnerId))
         window[Symbol.for('message-from-partner.id')] = null
-        this.details = Boolean(this.rspDetails)
+        this.details = Boolean(partnerDetailsHandler())
       }
 
       this.ready = true
@@ -103,17 +100,26 @@ export default {
     },
 
     refreshed (data) {
-      // console.log('RSP LIST REFRESHED:\n', data)
+      console.log('RSP LIST REFRESHED')
     },
 
     showDetails (partnerDetails) {
-      this.rspDetails = partnerDetails
+      partnerDetailsHandler(partnerDetails)
       this.details = true
+    },
+
+    getUpdates (data) {
+      if (data.length) this.__getResellersList(this.getData)
     }
+  },
+
+  beforeDestroy () {
+    this.$root.$off('partners-updates-received', this.getUpdates)
   },
 
   beforeMount () {
     this.__getResellersList(this.getData)
+    this.$root.$on('partners-updates-received', this.getUpdates)
   }
 }
 

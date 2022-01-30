@@ -12,21 +12,6 @@
         :sort-desc.sync="sortDesc"
         @click:row="getTicketDetails"
       />
-      <!-- <table v-if="!edit">
-        <tbody>
-          <tr v-for="ticket of tickets" :key="ticket._id" @click="getTicketDetails(ticket._id)">
-            <td>
-              <small><sup>{{ (new Date(ticket.modified - 0)).toISOString().slice(0, 10) }}</sup></small>
-            </td>
-            <td class="px-4">
-              <small><strong>{{ ticket.number }}</strong></small>
-            </td>
-            <td>
-              <small>{{ ticket.subject }}</small>
-            </td>
-          </tr>
-        </tbody>
-      </table> -->
     </v-card>
   </v-container>
 </template>
@@ -53,9 +38,7 @@ export default {
 
   methods: {
     sendRequestToRefresh () {
-      if (this.stop) return
       this.__refreshTickets(this.sendRequestForTickets)
-      setTimeout(this.sendRequestToRefresh, 40000)
     },
 
     sendRequestForTickets () {
@@ -79,11 +62,12 @@ export default {
   },
 
   beforeDestroy () {
-    this.stop = true
+    this.$root.$off('tickets-updates-received', this.sendRequestForTickets)
   },
 
   mounted () {
     this.sendRequestToRefresh()
+    this.$root.$on('tickets-updates-received', this.sendRequestForTickets)
   }
 }
 </script>

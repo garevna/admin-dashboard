@@ -12,6 +12,16 @@
           }"
           @click:row="editItem"
         >
+          <template v-slot:item.actions="{ item }">
+            <v-icon
+              v-if="unread(item)"
+              small
+              color="primary"
+              class="mr-2"
+            >
+              mdi-email-mark-as-unread
+            </v-icon>
+          </template>
 
           <template v-slot:top>
             <v-row>
@@ -86,6 +96,8 @@
 
 <script>
 
+import { partnerDetailsHandler } from '@/controllers'
+
 export default {
   name: 'ResellerTickets',
 
@@ -105,6 +117,7 @@ export default {
     categories: null,
     dates: [],
     headers: [
+      { text: '', value: 'actions' },
       {
         text: 'Subject',
         align: 'start',
@@ -134,10 +147,30 @@ export default {
     }
   },
 
+  watch: {
+    edit (newVal, oldVal) {
+      if (!newVal && oldVal) {
+        this.sendRequestForTickets()
+      }
+    }
+  },
+
   methods: {
+    sendRequestForTickets () {
+      this.__getTicketsOfPartner(partnerDetailsHandler()._id, this.getTickets)
+    },
+
+    unread (ticket) {
+      if (!ticket.history?.length) return false
+
+      const { source, read = false } = ticket.history.slice(-1)[0]
+      return source === 'partner' && !read
+    },
+
     getCategories (data) {
       this.categories = data
     },
+
     getTickets (data) {
       const getDate = date => date.indexOf('-') !== -1 ? date : new Date(date - 0).toISOString().slice(0, 10)
 
@@ -148,9 +181,11 @@ export default {
 
       this.ready = true
     },
+
     editItem (item) {
       this.__getTicketById(item._id, this.showTicketDetails)
     },
+
     showTicketDetails (data) {
       this.selectedTicket = data
       this.edit = true
@@ -158,17 +193,16 @@ export default {
   },
 
   beforeDestroy () {
-    // this.$root.$off('categories-received', this.getCategories)
-    // this.$root.$off('rsp-tickets-list-received', this.getTickets)
-    // this.$root.$off('ticket-data-received', this.showTicketDetails)
+    this.$root.$off('tickets-updates-received', this.sendRequestForTickets)
+  },
+
+  mounted () {
+    this.$root.$on('tickets-updates-received', this.sendRequestForTickets)
   },
 
   beforeMount () {
-    // this.$root.$on('categories-received', this.getCategories)
-    // this.$root.$on('rsp-tickets-list-received', this.getTickets)
-    // this.$root.$on('ticket-data-received', this.showTicketDetails)
     this.__getTicketCategories(this.getCategories)
-    this.__getTicketsOfPartner(this.details._id, this.getTickets)
+    this.__getTicketsOfPartner(partnerDetailsHandler()._id, this.getTickets)
   }
 }
 </script>

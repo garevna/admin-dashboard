@@ -40,6 +40,9 @@
 </template>
 
 <script>
+
+import { partnerDetailsHandler } from '@/controllers'
+
 export default {
   name: 'ResellerServices',
 
@@ -51,6 +54,7 @@ export default {
 
   data: () => ({
     services: [],
+    updated: new Set([]),
     resellerServices: [],
     selectedServiceId: null,
     deselectedServiceId: null
@@ -70,7 +74,7 @@ export default {
     },
 
     partnerIndex () {
-      return this.deselectedService ? this.deselectedService.partners.findIndex(partner => partner === this.details._id) : -1
+      return this.deselectedService ? this.deselectedService.partners.findIndex(partner => partner === partnerDetailsHandler()._id) : -1
     }
   },
 
@@ -95,26 +99,35 @@ export default {
 
     getData (data) {
       this.services = this.mapServices(data)
-      this.resellerServices = this.mapServices(data.filter(service => service.partners.find(partner => partner === this.details._id)))
+      this.resellerServices = this.mapServices(data.filter(service => service.partners.find(partner => partner === partnerDetailsHandler()._id)))
     },
 
     selectService () {
       this.deselectedServiceId = null
       this.resellerServices.push(this.selectedService)
-      this.selectedService.partners.push(this.details._id)
+      this.selectedService.partners.push(partnerDetailsHandler()._id)
+
+      this.updated.add(this.selectedService)
     },
 
     deselectService () {
       this.selectedServiceId = null
+
       this.deselectedService.partners.splice(this.partnerIndex, 1)
       this.resellerServices.splice(this.deselectedServiceIndex, 1)
+
+      this.updated.add(this.deselectedService)
       this.deselectedServiceId = null
     },
 
     saveResellerServices () {
-      for (const service of this.services) {
-        this.__patchServiceDetails(service.id, { partners: service.partners }, response => console.log(response))
-      }
+      const data = Object.assign({}, ...Array.from(this.updated).map(service => ({ [service.id]: { partners: service.partners } })))
+
+      this.__patchServicesGroup(partnerDetailsHandler()._id, data, this.callback)
+    },
+
+    callback (data) {
+      // console.log(data)
     }
   },
 

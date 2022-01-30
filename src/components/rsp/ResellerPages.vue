@@ -4,7 +4,7 @@
       <v-stepper-items flat class="page-content transparent mx-auto mt-6 mb-12">
           <v-toolbar flat class="transparent mx-auto" style="width: 900px">
             <v-toolbar-title>
-              <b>{{ resellerDetails.company.name }}</b>
+              <b>{{ partnerDetails.company.name }}</b>
             </v-toolbar-title>
             <v-spacer />
             <v-btn icon @click="$emit('update:opened', false)">
@@ -15,10 +15,7 @@
           <v-divider class="mb-12 mx-auto" style="max-width: 900px" />
 
           <transition name="current-component">
-            <component
-              :is="currentComponent"
-              :details="resellerDetails"
-            />
+            <component :is="currentComponent" />
           </transition>
       </v-stepper-items>
     </v-stepper>
@@ -81,6 +78,8 @@ import CustomersList from '@/components/customers/CustomersList.vue'
 import ResellerTickets from '@/components/rsp/ResellerTickets.vue'
 import ResellerMessages from '@/components/rsp/ResellerMessages.vue'
 
+import { partnerDetailsHandler } from '@/controllers'
+
 export default {
   name: 'ResellerPages',
 
@@ -93,14 +92,11 @@ export default {
   },
 
   props: {
-    opened: Boolean,
-    resellerDetails: {
-      type: Object,
-      required: true
-    }
+    opened: Boolean
   },
 
   data: () => ({
+    partnerDetails: partnerDetailsHandler(),
     ready: false,
     step: 1,
     steps: ['RSP details', 'RSP Service list', 'RSP Customer list', 'RSP Ticket list', 'Messages'],
@@ -131,6 +127,7 @@ export default {
       return this.step === 5
     }
   },
+
   watch: {
     step (value) {
       this.currentComponent = this.pages[value - 1]
@@ -160,7 +157,12 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    this.$root.$off('go-to-parner-details', this.goToCompanyDetails)
+  },
+
   mounted () {
+    this.$root.$on('go-to-parner-details', this.goToCompanyDetails)
     this.$vuetify.goTo(0)
   }
 }

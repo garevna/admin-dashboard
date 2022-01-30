@@ -187,11 +187,9 @@ export default {
       }
       result.partners = this.partnersList || []
 
-      if (this.serviceId) {
-        this.__updateServiceDetails(this.serviceId, result, this.showResult)
-      } else {
-        this.__createNewService(result, this.showResult)
-      }
+      this.serviceId
+        ? this.__patchServiceDetails(this.serviceId, result, this.showResult)
+        : this.__createNewService(result, this.showResult)
     },
 
     saveServicePartners () {

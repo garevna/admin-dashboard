@@ -1,5 +1,5 @@
-import { get } from '../AJAX'
-import { putRecordByKey } from '../db'
+import { get } from '../../AJAX'
+import { putRecordByKey } from '../../db'
 
 const getRoute = record => record.endpoint.indexOf('/customer') !== -1 ? 'customers'
   : record.endpoint.indexOf('/ticket') !== -1 ? 'tickets'

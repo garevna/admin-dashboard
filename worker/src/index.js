@@ -3,6 +3,16 @@ import { serviceStatus } from './configs/serviceStatus'
 import { credentialsHandler } from './helpers/env'
 
 import {
+  // getNotifications,
+  getNotificationsAll,
+  getCustomerUpdates,
+  getTicketUpdates,
+  getMessagesUpdates,
+  getPartnerUpdates,
+  getRegistrationUpdates
+} from './helpers/updates'
+
+import {
   getWeekNumber,
   getWeekDay,
 
@@ -11,7 +21,7 @@ import {
   getWeekDatesByWeekNumber
 } from 'garevna-date-functions'
 
-const { updatesController } = require('./controllers').default
+// const { updatesController } = require('./controllers').default
 
 Object.assign(self, {
   getWeekNumber,
@@ -45,11 +55,22 @@ testDBVersion()
 self.initialized = false
 self.serviceStatus = serviceStatus
 self.frequency = 30000
-self.lastRequestTime = Date.now() - 1000 * 60 * 60 * 24 * 2
 
-const getUpdatesFromRemote = () => {
-  // self.postDebugMessage({ message: '=== Request for updates ===', creds: credentialsHandler() })
-  if (credentialsHandler()) updatesController.getCustomerUpdates()
+const getUpdatesFromRemote = async () => {
+  if (credentialsHandler()) {
+    const { result: fullListOfNotifications } = await getNotificationsAll()
+    // const { result: currentDateNotifications } = await getNotifications()
+
+    const response = await Promise.all([
+      getCustomerUpdates(fullListOfNotifications),
+      getTicketUpdates(fullListOfNotifications),
+      getMessagesUpdates(fullListOfNotifications),
+      getPartnerUpdates(fullListOfNotifications),
+      getRegistrationUpdates()
+    ])
+
+    self.postMessage({ status: 200, route: 'updates', action: 'get', result: response })
+  }
   setTimeout(getUpdatesFromRemote, self.frequency)
 }
 

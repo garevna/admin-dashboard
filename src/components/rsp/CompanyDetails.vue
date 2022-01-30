@@ -3,18 +3,21 @@
     <v-card flat class="transparent pa-5 mx-auto mb-12" max-width="960" outlined>
       <v-row justify="center">
         <CompanyDetailsStep
+          v-if="messageReady"
           :sourceData="schema"
           step="company"
           title="Company details"
           :approved="details.approved"
         />
         <CompanyDetailsStep
+          v-if="messageReady"
           :sourceData="schema"
           step="general"
           title="General information"
           :approved="details.approved"
         />
         <CompanyDetailsStep
+          v-if="messageReady"
           :sourceData="schema"
           step="technic"
           title="Technical information"
@@ -37,6 +40,8 @@
 
 <script>
 
+import { partnerDetailsHandler } from '@/controllers'
+
 const { schemaRSP, partnerDetailsUpdatesSchema } = require('@/configs').default
 
 export default {
@@ -46,14 +51,12 @@ export default {
   },
 
   props: {
-    opened: Boolean,
-    details: {
-      type: Object,
-      required: true
-    }
+    opened: Boolean
   },
 
   data: () => ({
+    details: partnerDetailsHandler(),
+    updated: false,
     detailsReady: false,
     messageReady: false,
     messageId: null,
@@ -81,6 +84,7 @@ export default {
 
     getData () {
       this.__getPartnerMessages(this.details._id, this.getMessages)
+      this.details = partnerDetailsHandler()
       if (!this.details) return
       for (const step of ['company', 'general', 'technic']) {
         for (const prop in this.details[step]) {
@@ -94,10 +98,6 @@ export default {
       this.messageReady && this.configSchema()
 
       this.detailsReady = true
-    },
-
-    refreshData () {
-
     },
 
     configSchema () {
@@ -126,16 +126,29 @@ export default {
     },
 
     updateRequestForUpdates () {
-      this.__updateMessage(this.messageId, this.getFieldsForRequest(), this.messageUpdated)
+      if (!this.messageId) return
+
+      const fields = this.getFieldsForRequest()
+
+      fields.length
+        ? this.__updateMessage(this.messageId, fields, this.messageUpdated)
+        : this.__deleteMessage(this.messageId, partnerDetailsHandler()._id, this.messageUpdated)
+      this.messageId = fields.length ? this.messageId : null
     },
 
     sendRequestForUpdates () {
+      if (this.messageId) return
+
+      const fields = this.getFieldsForRequest()
+
+      if (!fields.length) return
+
       this.__sendMessage({
         type: 'update-company-details',
         resellerId: this.details._id,
         subject: 'Update company details',
         propmt: 'Update please the next data in company details',
-        fields: this.getFieldsForRequest()
+        fields
       }, this.messageTransmitted)
     },
 
@@ -143,8 +156,9 @@ export default {
       // console.log('Message updated:\n', data)
     },
 
-    messageTransmitted (data) {
-      this.messageId = data
+    messageTransmitted (response) {
+      this.messageId = response.data
+      this.$emit('update:opened', false)
     },
 
     saveData () {
@@ -179,12 +193,27 @@ export default {
       Object.assign(this.updatesNeeded.find(item => item.section === section && item.field === field), {
         updated: false
       })
+    },
+
+    getUpdates (updates) {
+      if (!updates) return
+      const updated = updates.find(item => item._id === this.details._id)
+
+      if (!updated) return
+
+      this.detailsReady = false
+
+      partnerDetailsHandler(updated)
+
+      this.getData()
     }
   },
 
   beforeDestroy () {
     this.$root.$off('confirm-update', this.confirmUpdate)
     this.$root.$off('reject-update', this.rejectUpdate)
+
+    this.$root.$off('partners-updates-received', this.getUpdates)
   },
 
   mounted () {
@@ -193,6 +222,8 @@ export default {
 
     this.$root.$on('confirm-update', this.confirmUpdate)
     this.$root.$on('reject-update', this.rejectUpdate)
+
+    this.$root.$on('partners-updates-received', this.getUpdates)
   }
 }
 </script>

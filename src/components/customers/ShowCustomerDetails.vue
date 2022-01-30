@@ -204,7 +204,6 @@ export default {
 
     getPartnerMessages () {
       this.__getPartnerMessages(this.customer.resellerId, this.getMessages)
-      setTimeout(this.getPartnerMessages, 30000)
     },
 
     getMessages (messages) {
@@ -225,7 +224,6 @@ export default {
     },
 
     getMessageId (messageId) {
-      // console.log('Message has been sent:\n', messageId)
       this.messageId = messageId
     },
 
@@ -258,8 +256,8 @@ export default {
           field: key
         }))
 
-      const list = commercial.concat(selected).reduce((res, item) => `${res}, ${item.title}`, '')
-      const content = `Details should be updated: ${list}`
+      // const list = commercial.concat(selected).reduce((res, item) => `${res}, ${item.title}`, '')
+      // const content = `Details should be updated: ${list}`
 
       const message = {
         resellerId: this.customer.resellerId,
@@ -267,22 +265,21 @@ export default {
         subject: this.customerDetails.address.value,
         propmt: `Please update customer ${this.customerDetails.uniqueCode.value} detals`,
         customerId: this.customer._id,
-        fields: commercial.concat(selected),
-        content
+        fields: commercial.concat(selected)
+        // content
       }
       return message
     },
 
     updateMessageToPartner () {
       this.message = this.createMessage()
-      this.__updateMessage(this.messageId, this.message.fields, this.getResponse)
-      this.updateCustomer()
+      if (this.message.fields.length) this.__updateMessage(this.messageId, this.message.fields, this.getResponse)
+      else this.__deleteMessage(this.messageId, this.message.resellerId, this.getResponse)
     },
 
     sendMessageToPartner () {
       this.message = this.createMessage()
       this.__sendMessage(this.message, this.getMessageId)
-      this.updateCustomer()
     },
 
     getMessageField (propName) {

@@ -89,6 +89,21 @@ export default {
     }
   },
 
+  watch: {
+    sourceData: {
+      deep: true,
+      handler (data) {
+        console.log('SOURCE DATA CHANGED:\n', data)
+      }
+    },
+    schema: {
+      deep: true,
+      handler (data) {
+        console.log('SCHEMA CHANGED:\n', data)
+      }
+    }
+  },
+
   methods: {
     rejectUpdates (propName) {
       this.ready = false

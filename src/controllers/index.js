@@ -3,6 +3,7 @@ import {
   loginHandler,
   passwordHandler,
   credentialsHandler,
+  partnerDetailsHandler,
   messageHandler,
   errorMessageHandler
 } from '@/controllers/data-handlers'
@@ -18,6 +19,7 @@ export {
   loginHandler,
   passwordHandler,
   credentialsHandler,
+  partnerDetailsHandler,
   createMapWorker,
   createAdminWorker,
   createController,

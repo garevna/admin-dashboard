@@ -37,6 +37,10 @@ class ServicesController {
     self.postMessage(await self.patchService(request.key, request.data))
   }
 
+  async patchGroup (request) {
+    self.postMessage(await self.patchServices(request.partnerId, request.data))
+  }
+
   async readLocalFile (request) {
     self.postMessage(Object.assign(await readLocalFile(request.file), {
       route: 'sla',

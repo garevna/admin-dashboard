@@ -1,24 +1,27 @@
-import { get } from '../AJAX/get'
+import { get } from '../AJAX'
 import { putRecordByKey } from '../db'
 
-import { remoteServerError } from '../../errors'
+// import { remoteServerError } from '../../errors'
 
 const [route, action] = ['updates', 'customers']
-const remoteError = Object.assign(remoteServerError, { route, action })
 
-export const getCustomerUpdates = async () => {
-  let currentPage = 1
-  const updates = []
-  do {
-    const { status, pages, result } = await get(`customer?changed=true&per_page=50&page=${currentPage++}`)
-    if (status !== 200) return remoteError
-    var done = currentPage > pages || !result || !result.length
-    updates.push(...result)
-  } while (!done)
+// const remoteError = Object.assign(remoteServerError, { route, action })
 
-  await Promise.all(updates.map(customer => putRecordByKey('customers', customer._id, customer)))
+export const getCustomerUpdates = async (notifications) => {
+  if (!notifications || !Array.isArray(notifications)) return { status: 204, route, action, result: [] }
 
-  self.lastRequestTime = Date.now()
+  let promises = notifications
+    .filter(item => item.target === 'customer')
+    .map(note => note.id)
+    .map(id => get(`customer/${id}`))
 
-  return { status: 200, route, action, result: updates.length }
+  const responses = await Promise.all(promises)
+
+  const customers = responses.map(response => response.result)
+
+  promises = customers.map(customer => putRecordByKey('customers', customer._id, customer))
+
+  await Promise.all(promises)
+
+  return { status: 200, route, action, result: customers }
 }

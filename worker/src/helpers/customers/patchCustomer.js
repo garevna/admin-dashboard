@@ -1,15 +1,26 @@
 import { putRecordByKey } from '../db'
 import { patch } from '../AJAX'
+import { sendNotification } from '../updates'
 
 const [route, action] = ['customers', 'patch']
 
+const response = {
+  route,
+  action,
+  message: true,
+  messageText: 'Customer details updated'
+}
+
 export const patchCustomer = async function (customerId, customerDetails) {
-  const response = await patch(`customer/${customerId}`, customerDetails)
+  const { status, result } = await patch(`customer/${customerId}`, customerDetails)
 
-  if (response.status !== 200) return self.errorMessage('putCustomerDataError')
+  if (status !== 200) return self.errorMessage('putCustomerDataError')
 
-  const { status } = await putRecordByKey('customers', customerId, response.result.data)
+  const { resellerId, uniqueCode } = result.data
 
-  return status !== 200 ? self.errorMessage('putCustomerDataError')
-    : { status, route, action, key: customerId, result: response.result.data }
+  await sendNotification(resellerId, 'customer', customerId, Object.keys(customerDetails))
+
+  await putRecordByKey('customers', customerId, result.data)
+
+  return Object.assign(response, { status, key: customerId, result: result.data, messageType: uniqueCode })
 }

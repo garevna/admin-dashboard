@@ -6,5 +6,5 @@ const [route, action] = ['customers', 'excel']
 export const getCustomersForExcel = function (data, callback) {
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({ route, action, data })
 
-  eventsTable[customers.excel] = callback
+  eventsTable[customers[action]] = callback
 }

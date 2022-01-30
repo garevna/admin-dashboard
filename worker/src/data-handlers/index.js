@@ -10,6 +10,8 @@ import { availableServiceStatusHandler } from './availableServiceStatusHandler'
 import { pendingConnectionStatusHandler } from './pendingConnectionStatusHandler'
 import { serviceStatusIconsHandler } from './serviceStatusIconsHandler'
 
+import { messagesHandler } from './messagesHandler'
+
 export {
   estimatedServiceDeliveryTimeHandler,
   ticketCategoriesHandler,
@@ -21,5 +23,7 @@ export {
   serviceStatusIconsHandler,
 
   uniqueCodeListHandler,
-  uniqueCodesHandler
+  uniqueCodesHandler,
+
+  messagesHandler
 }

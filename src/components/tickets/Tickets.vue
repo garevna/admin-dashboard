@@ -143,6 +143,7 @@ export default {
       const { source, read = false } = ticket.history.slice(-1)[0]
       return source === 'partner' && !read
     },
+
     getTickets (data) {
       const getDate = date => date.indexOf('-') !== -1 ? date : new Date(date - 0).toISOString().slice(0, 10)
 
@@ -182,6 +183,14 @@ export default {
 
   beforeMount () {
     this.__getTicketCategories(this.refresh)
+  },
+
+  beforeDestroy () {
+    this.$root.$off('tickets-updates-received', this.sendRequestForTickets)
+  },
+
+  mounted () {
+    this.$root.$on('tickets-updates-received', this.sendRequestForTickets)
   }
 }
 </script>

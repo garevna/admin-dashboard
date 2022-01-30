@@ -30,11 +30,13 @@ export default {
     ],
     wscols: []
   }),
+
   methods: {
     sendRequestForData () {
-      this.__getCustomersForExcel(this.fields.filter(field => field.selected).map(field => field.prop))
+      this.__getCustomersForExcel(this.fields.filter(field => field.selected).map(field => field.prop), this.createExcel)
       this.wscols = this.fields.filter(field => field.selected).map(field => ({ width: field.width }))
     },
+
     createExcel (data) {
       const sheet = XLSX.utils.json_to_sheet(data)
       sheet['!cols'] = this.wscols
@@ -42,14 +44,6 @@ export default {
       XLSX.utils.book_append_sheet(wb, sheet, 'customers')
       XLSX.writeFile(wb, 'customers.xlsx')
     }
-  },
-
-  mounted () {
-    this.$root.$on('customers-for-excel-received', this.createExcel)
-  },
-
-  beforeDestroy () {
-    this.$root.$off('customers-for-excel-received', this.createExcel)
   }
 }
 </script>

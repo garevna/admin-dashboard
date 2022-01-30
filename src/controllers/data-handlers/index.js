@@ -3,6 +3,7 @@ import { loginHandler } from './loginHandler'
 import { passwordHandler } from './passwordHandler'
 import { credentialsHandler } from './credentialsHandler'
 import { roleHandler } from './roleHandler'
+import { partnerDetailsHandler } from './partnerDetailsHandler'
 import { messageHandler } from './messageHandler'
 import { errorMessageHandler } from './errorMessageHandler'
 import { buildingStatusHandler } from './buildingStatusHandler'
@@ -20,6 +21,7 @@ export {
   passwordHandler,
   credentialsHandler,
   roleHandler,
+  partnerDetailsHandler,
   messageHandler,
   errorMessageHandler,
   buildingStatusHandler,

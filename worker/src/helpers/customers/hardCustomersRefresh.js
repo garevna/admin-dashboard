@@ -25,7 +25,5 @@ export const hardCustomersRefresh = async function () {
     }
   }
 
-  self.lastRequestTime = Date.now()
-
   return { status: 200, route, action, result: (await self.getAllCustomers()).result }
 }

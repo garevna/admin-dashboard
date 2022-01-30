@@ -1,4 +1,5 @@
 import { patch } from '../AJAX'
+import { sendNotification } from '../updates'
 
 const [route, action] = ['messages', 'update']
 
@@ -20,4 +21,16 @@ const updateMessageResponse = {
   messageText: 'Message has been updated'
 }
 
-export const patchMessage = async (messageId, fields) => (await patch(`messages/${messageId}`, { fields })).status !== 200 ? updateMessageError : updateMessageResponse
+export const patchMessage = async (messageId, fields) => {
+  if (!fields.length) return self.postMessage(await self.deleteMessage(messageId))
+
+  const { status, result } = await patch(`messages/${messageId}`, { fields })
+
+  const message = result.data
+
+  if (status !== 200) return updateMessageError
+
+  if (message.resellerId) await sendNotification(message.resellerId, 'message', messageId, fields.map(item => item.field))
+
+  return updateMessageResponse
+}
