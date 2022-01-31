@@ -2,6 +2,14 @@ import { get, post } from '../helpers/AJAX'
 
 // const sections = ['design', 'inspect', 'approoval', 'scope', 'install']
 
+const sectionNames = {
+  design: 'Design',
+  inspect: 'Inspect',
+  approoval: 'Approval',
+  scope: 'Scope',
+  install: 'Install'
+}
+
 // const uploadError = {
 //   error: true,
 //   errorType: 'Building files'
@@ -38,7 +46,7 @@ class BuildingController {
       buildingId,
       message: true,
       messageType: 'Upload file',
-      messageText: `File ${section} has been uploaded`
+      messageText: `File ${sectionNames[section]} has been uploaded`
     })
 
     self.postMessage(Object.assign(response, response))

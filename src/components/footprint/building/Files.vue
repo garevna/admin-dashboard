@@ -9,7 +9,7 @@
           <v-tabs-slider color="primary"></v-tabs-slider>
 
           <v-tab v-for="item of endpoints" :key="item">
-            {{ item }}
+            {{ tabs[item] }}
           </v-tab>
         </v-tabs>
       </template>
@@ -69,6 +69,13 @@ export default {
       scope: false
     },
     endpoints: ['approoval', 'design', 'inspect', 'install', 'scope'],
+    tabs: {
+      approoval: 'Approval',
+      design: 'Design',
+      inspect: 'Inspect',
+      install: 'Install',
+      scope: 'Scope'
+    },
     content: {
       design: pdf404,
       approoval: pdf404,
@@ -83,11 +90,11 @@ export default {
       Object.assign(this.content, { [section]: data?.indexOf('data:application/pdf;base64') !== 0 ? pdf404 : data })
       Object.assign(this.ready, { [section]: true })
     },
-    getDesign (data) {
-      this.getData('design', data)
-    },
     getApprooval (data) {
       this.getData('approoval', data)
+    },
+    getDesign (data) {
+      this.getData('design', data)
     },
     getScope (data) {
       this.getData('scope', data)
@@ -121,8 +128,6 @@ export default {
   created () {
     if (this.buildingData) {
       this.buildingId = this.buildingData._id
-      // this.files = this.buildingData.files
-      // console.log(this.files)
       for (const section of this.endpoints) {
         this.__getFile(this.buildingId, section, this[`get${section[0].toUpperCase()}${section.slice(1)}`])
       }

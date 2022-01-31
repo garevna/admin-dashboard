@@ -145,7 +145,7 @@ export default {
   data: () => ({
     ready: false,
     step: 1,
-    steps: ['General', 'Corporation', 'Access', 'Levels', 'Infrastructure', 'Stakeholdes', 'Files', 'Other'],
+    steps: ['General', 'Corporation', 'Access', 'Levels', 'Infrastructure', 'Stakeholders', 'Files', 'Other'],
     pages: [
       GeneralInfo,
       Corporation,
