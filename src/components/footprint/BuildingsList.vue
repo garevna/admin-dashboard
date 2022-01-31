@@ -100,6 +100,7 @@ export default {
     footprintOptions,
     selectedBuildingId: undefined,
     headers: [
+      { text: 'Building name', align: 'start', sortable: true, value: 'buildingName' },
       { text: 'Building address', align: 'start', sortable: true, value: 'address' },
       { text: 'Building unique code', value: 'uniqueCode' },
       { text: 'Footprint', value: 'status' },
@@ -151,6 +152,7 @@ export default {
     getBuildings (data) {
       this.$root.$emit('progress-event', false)
       this.buildings = data.map(building => ({
+        buildingName: building.buildingName,
         address: building.address,
         uniqueCode: building.uniqueCode || getBuildingUniqueCode(building.addressComponents),
         status: data.buildingStatus,
