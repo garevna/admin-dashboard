@@ -1,6 +1,6 @@
 {
   "name": "admin-worker",
-  "version": "1.1.1",
+  "version": "1.1.4",
   "scripts": {
     "worker-dev": "yarn add crypto-js && yarn add tokml && webpack --config webpack.config.worker.js --mode development -w && yarn remove crypto-js && yarn remove tokml",
     "worker-prod": "yarn add crypto-js && yarn add tokml && webpack --config webpack.config.worker.js --mode production && yarn remove crypto-js && yarn remove tokml"

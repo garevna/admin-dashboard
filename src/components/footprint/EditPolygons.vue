@@ -1,7 +1,14 @@
 <template>
   <v-card flat class="transparent">
     <v-toolbar flat class="transparent">
-      <v-btn outlined @click="convertToKML">
+      <span class="pa-3 mr-2" style="background-color: #0909"></span>
+      <span class="mx-2">Service available</span>
+      <span class="pa-3 mx-2" style="background-color: #0007"></span>
+      <span class="mx-2">Build commenced</span>
+      <span class="pa-3 mr-x" style="background-color: #fa07"></span>
+      <span class="mx-2">Coming soon</span>
+      <!-- <v-spacer /> -->
+      <v-btn class="ml-10" outlined @click="convertToKML">
         Convert DGtek polygons to KML format
       </v-btn>
       <a v-if="readyKML" download="dgtek-polygons.kml" :href="href"> Download </a>
