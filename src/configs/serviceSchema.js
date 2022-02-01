@@ -85,11 +85,11 @@ export const serviceSchema = {
     type: 'checkbox',
     value: false
   },
-  serviceSLA: {
-    title: 'Service SLA',
-    type: 'sla',
-    value: ''
-  },
+  // serviceSLA: {
+  //   title: 'Service SLA',
+  //   type: 'sla',
+  //   value: ''
+  // },
   promo: {
     title: 'Promo',
     type: 'simple-text',

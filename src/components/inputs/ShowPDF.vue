@@ -2,30 +2,28 @@
   <v-container>
     <v-row justify="center">
       <v-toolbar flat dense class="transparent mb-4">
-        <h5 v-if="!edit">
+        <h5>
           <small>{{ record.title }}</small>
-          <v-icon @click="edit = true" class="ml-2" color="primary">
-            mdi-form-select
-          </v-icon>
         </h5>
 
-        <v-combobox
-          v-else
-          v-model="record.title"
-          :items="listOfSLA.map(item => item.title)"
+        <v-spacer />
+
+        <v-select
+          v-model="selectedId"
+          :items="listOfSLA"
+          item-text="title"
+          item-value="_id"
           label="Service SLA"
-          append-outer-icon="mdi-check-bold"
+          single-line
           outlined
-          dense
-          hide-details
           class="ml-4"
-          @click:append-outer="save"
-          @change="changeContent"
-        ></v-combobox>
+          style="max-width: 320px"
+          hide-details
+        ></v-select>
       </v-toolbar>
     </v-row>
 
-    <v-row justify="center">
+    <v-row justify="center" v-if="ready">
       <object
         :data="record.content"
         type="application/pdf"
@@ -35,7 +33,7 @@
     </v-row>
 
     <v-row justify="end">
-      <v-btn dark color="primary" @click="saveUpdates">
+      <v-btn dark color="primary" @click="$emit('update:save', true)" v-if="changed">
         Save updates
       </v-btn>
     </v-row>
@@ -49,13 +47,10 @@ const { pdf404 } = require('@/configs').default
 export default {
   name: 'ShowPDF',
 
-  props: ['id', 'title'],
+  props: ['id', 'save'],
 
   data: () => ({
     listOfSLA: [],
-    selected: null,
-    selectedTitle: '',
-    edit: false,
     dialog: false,
     record: {
       _id: null,
@@ -63,18 +58,17 @@ export default {
       content: pdf404
     },
     ready: false,
-    disabled: false,
-    file: null
+    selectedId: null,
+    changed: false
   }),
 
-  // watch: {
-  //   selected (val) {
-  //     if (!val) return
-  //     console.log(val)
-  //     console.log(this.selected.title)
-  //     console.log(this.listOfSLA)
-  //   }
-  // },
+  watch: {
+    selectedId (val) {
+      val ? this.__getSLAContent(val, this.getContent) : this.newSLA()
+      this.$emit('update:id', val)
+      this.changed = true
+    }
+  },
 
   methods: {
     searchById (id) {
@@ -86,20 +80,12 @@ export default {
     },
 
     getSLAList (data) {
-      // for (const item of data) this.listOfSLA.push(item)
       this.listOfSLA = data
-      const selected = this.searchById(item => item._id === this.record._id)
-      this.record.title = selected ? selected.title : ''
     },
 
     getContent (data) {
       this.record = data
       this.ready = true
-    },
-
-    changeContent (val) {
-      this.selected = this.listOfSLA.find(item => item.title === val)._id
-      this.__getSLAContent(this.selected)
     },
 
     newSLA () {
@@ -108,29 +94,16 @@ export default {
         title: 'Not defined',
         content: pdf404
       }
-      this.dialog = true
-    },
-
-    save () {
-      this.$emit('update:id', this.record._id)
-      this.edit = !this.selected
+      this.ready = true
     }
   },
 
-  beforeDestroy () {
-    this.$root.$off('sla-list-received', this.getSLAList)
-    this.$root.$off('sla-content-received', this.getContent)
-  },
-
   beforeMount () {
-    this.$root.$on('sla-list-received', this.getSLAList)
-    this.$root.$on('sla-content-received', this.getContent)
+    this.__getSLAList(this.getSLAList)
 
-    this.__getSLAList()
-    this.__getSLAContent(this.id)
+    // this.id ? this.__getSLAContent(this.id, this.getContent) : this.newSLA()
 
-    this.selected = this.id
-    this.edit = !this.id
+    this.selectedId = this.id
 
     this.ready = false
   }

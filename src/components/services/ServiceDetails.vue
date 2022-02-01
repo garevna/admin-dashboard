@@ -29,7 +29,7 @@
       <v-card v-if="ready" flat class="transparent mt-0 mx-auto" min-width="700">
         <table width="100%">
           <tbody>
-            <tr v-for="(prop, propName) in service" :key="propName">
+            <tr v-for="(prop, propName) in schema" :key="propName">
               <td width="280">
                 <p class="right-title mr-4"><small>{{ prop.title }}</small></p>
               </td>
@@ -94,19 +94,22 @@
 
     <v-container  v-if="tab === 'sla'">
       <v-row justify="center">
-        <ShowPDF
-          :id.sync="selectedId"
-          :title.sync="serviceSLA"
-        />
+        <ShowPDF :id.sync="serviceSLA" :save.sync="updateSLA" />
       </v-row>
 
-      <v-row justify="start" class="mt-12 mr-12">
+      <!-- <v-row justify="start" class="mt-12 mr-12">
         <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
         <v-spacer />
-        <v-btn v-if="selectedId !== service.serviceSLA" text dark class="primary" @click="saveServiceSLA">
+        <v-btn
+          v-if="serviceSLA !== service.serviceSLA"
+          text
+          dark
+          class="primary"
+          @click="saveServiceSLA"
+        >
           UPDATE SLA
         </v-btn>
-      </v-row>
+      </v-row> -->
     </v-container>
   </v-container>
 </template>
@@ -132,28 +135,46 @@ export default {
 
   data: () => ({
     service: null,
-    partnersList: [],
-    serviceSLA: '',
-    selectedId: null,
+    schema: JSON.parse(JSON.stringify(serviceSchema)),
+    updateSLA: false,
+    // partnersList: [],
+    // serviceSLA: '',
+    // selectedId: null,
     rules: rules,
     ready: false,
 
     tab: 'serviceDetails'
   }),
 
-  watch: {
-    service: {
-      deep: true,
-      handler (data) {
-        this.selectedId = data.serviceSLA.value
+  computed: {
+    serviceSLA: {
+      get () {
+        return this.service?.serviceSLA || null
+      },
+      set (value) {
+        this.service.serviceSLA = value
       }
     },
+
+    partnersList: {
+      get () {
+        return this.service?.partners || []
+      },
+      set (data) {
+        this.service.partners = data
+      }
+    }
+  },
+
+  watch: {
     partnersList: {
       deep: true,
-      immediate: true,
       handler (data) {
-        if (data) data.forEach(item => console.log(item))
+        this.service.partners = data || []
       }
+    },
+    updateSLA (val) {
+      if (val) this.saveServiceSLA()
     }
   },
 
@@ -171,33 +192,33 @@ export default {
     },
 
     getData (data) {
+      this.service = data
       this.partnersList = data.partners
-      for (const prop in this.service) {
-        if (prop === 'partners') continue
-        this.service[prop].value = data[prop]
+      for (const prop in this.schema) {
+        this.schema[prop].value = data[prop]
       }
 
       this.ready = true
     },
 
     saveServiceDetails () {
-      const result = {}
-      for (const prop in this.service) {
-        result[prop] = this.service[prop].value
+      for (const prop in this.schema) {
+        this.service[prop] = this.schema[prop].value
       }
-      result.partners = this.partnersList || []
 
       this.serviceId
-        ? this.__patchServiceDetails(this.serviceId, result, this.showResult)
-        : this.__createNewService(result, this.showResult)
+        ? this.__patchServiceDetails(this.serviceId, this.service, this.showResult)
+        : this.__createNewService(this.service, this.showResult)
     },
 
     saveServicePartners () {
+      this.service.partners = this.partnersList
       this.__patchServiceDetails(this.serviceId, { partners: this.partnersList }, this.showResult)
     },
 
     saveServiceSLA () {
-      this.__patchServiceDetails(this.serviceId, { serviceSLA: this.selectedId }, this.showResult)
+      this.service.serviceSLA = this.serviceSLA
+      this.__patchServiceDetails(this.serviceId, { serviceSLA: this.serviceSLA }, this.showResult)
     },
 
     showResult (data) {
@@ -207,25 +228,14 @@ export default {
   },
 
   beforeDestroy () {
-    // this.$root.$off('service-data-received', this.getData)
-
-    // this.$root.$off('service-data-updated', this.showResult)
-    // this.$root.$off('new-service-created', this.showResult)
+    //
   },
 
   mounted () {
     this.service = JSON.parse(JSON.stringify(serviceSchema))
 
-    if (this.serviceId) {
-      // this.$root.$on('service-data-received', this.getData)
-
-      this.__getServiceDetails(this.serviceId, this.getData)
-    } else {
-      this.ready = true
-    }
-
-    // this.$root.$on('service-data-updated', this.showResult)
-    // this.$root.$on('new-service-created', this.showResult)
+    this.serviceId && this.__getServiceDetails(this.serviceId, this.getData)
+    this.ready = Boolean(this.serviceId)
 
     this.$vuetify.goTo(0)
   }

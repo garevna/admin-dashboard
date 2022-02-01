@@ -104,16 +104,12 @@ export default {
   },
 
   beforeDestroy () {
-    // this.$root.$off('services-list-received', this.getData)
     this.$root.$off('operation-confirmed', this.confirmationReceived)
-    // this.$root.$off('service-deleted', this.serviceDeleted)
   },
 
   mounted () {
     this.$vuetify.goTo(0)
-    // this.$root.$on('services-list-received', this.getData)
     this.$root.$on('operation-confirmed', this.confirmationReceived)
-    // this.$root.$on('service-deleted', this.serviceDeleted)
   }
 }
 </script>
