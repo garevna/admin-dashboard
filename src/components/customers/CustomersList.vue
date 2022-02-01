@@ -90,10 +90,12 @@ import {
   customersListPageNumberHandler
 } from '@/helpers/data-handlers'
 
+import { partnerDetailsHandler } from '@/controllers'
+
 export default {
   name: 'CustomersList',
 
-  props: ['details'],
+  props: ['details', 'partner'],
 
   components: {
     CustomersFilters: () => import('@/components/customers/CustomersFilters.vue'),
@@ -226,11 +228,10 @@ export default {
     },
 
     sendRequest () {
-      !this.details ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(this.details._id, this.getCustomersList)
+      !this.partner ? this.__getCustomers(this.getCustomersList) : this.__getCustomersByResellerId(partnerDetailsHandler()._id, this.getCustomersList)
     },
 
     updatesCallback (data) {
-      console.log('CUSTOMERS LIST UPDATES CALLBACK:\n', data)
       if (Array.isArray(data) && data.length) {
         this.ready = false
         this.sendRequest()
@@ -245,14 +246,11 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('customers-updated', this.sendRequest)
-    // this.$root.$off('customers-updated-remotely', this.customersUpdatedRemotely)
     this.$root.$off('customers-updates-received', this.updatesCallback)
   },
 
   mounted () {
     this.$root.$on('customers-updated', this.sendRequest)
-    // this.$root.$on('customers-updated-remotely', this.customersUpdatedRemotely)
-    // this.$root.$on('updates-received', this.updatesCallback)
     this.$root.$on('customers-updates-received', this.updatesCallback)
     this.$vuetify.goTo(0)
   }

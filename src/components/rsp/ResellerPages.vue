@@ -15,7 +15,7 @@
           <v-divider class="mb-12 mx-auto" style="max-width: 900px" />
 
           <transition name="current-component">
-            <component :is="currentComponent" />
+            <component :is="currentComponent" :partner="true" />
           </transition>
       </v-stepper-items>
     </v-stepper>
