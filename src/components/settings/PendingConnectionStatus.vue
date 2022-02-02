@@ -70,11 +70,11 @@ export default {
 
   methods: {
     updatePartnerSettings (item, index) {
-      console.log(index, item.name, item.selected)
+      // console.log(index, item.name, item.selected)
     },
 
     updateAdminSettings (item, index) {
-      console.log(index, item.name, item.selected)
+      // console.log(index, item.name, item.selected)
     },
 
     getAvailable (data) {
@@ -87,7 +87,7 @@ export default {
     },
 
     showAnswer (response) {
-      console.log('Pending connection status:\n', response)
+      // console.log('Pending connection status:\n', response)
     },
 
     save () {

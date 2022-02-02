@@ -143,10 +143,7 @@ export default {
     },
 
     edit (sla) {
-      console.log(sla)
-      console.log(this.selected)
       this.editing = this.listOfSLA.findIndex(item => item._id === sla._id)
-      console.log(this.editing)
     },
 
     remove (item) {
@@ -155,9 +152,7 @@ export default {
     },
 
     finishRemoving () {
-      console.log('REMOVE FINISHED: ', this.toBeRemoved)
       const index = this.listOfSLA.findIndex(item => item._id === this.toBeRemoved)
-      console.log(index)
       index !== -1 && this.listOfSLA.splice(index, 1)
       this.toBeRemoved = null
       this.selected = null
@@ -174,28 +169,16 @@ export default {
     },
 
     saveNewSLA () {
-      console.log(this.listOfSLA[this.editing].title)
-      console.log(this.content)
       this.__createNewSLA({ title: this.listOfSLA[this.editing].title, content: this.content }, this.finishCreation)
     }
   },
 
   beforeDestroy () {
-    // this.$root.$off('sla-list-received', this.getSLAList)
-    // this.$root.$off('sla-content-received', this.getSLAContent)
     this.$root.$off('local-file-content-loaded', this.getLocalFileContent)
-
-    // this.$root.$off('new-sla-created', this.finishCreation)
-    // this.$root.$off('sla-removed', this.finishRemoving)
   },
 
   beforeMount () {
-    // this.$root.$on('sla-list-received', this.getSLAList)
-    // this.$root.$on('sla-content-received', this.getSLAContent)
     this.$root.$on('local-file-content-loaded', this.getLocalFileContent)
-
-    // this.$root.$on('sla-removed', this.finishRemoving)
-    // this.$root.$on('new-sla-created', this.finishCreation)
 
     this.__getSLAList(this.getSLAList)
 

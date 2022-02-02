@@ -2,9 +2,11 @@ import { put } from '../AJAX'
 
 import { scheduleCalendarSettingsHandler } from '../../data-handlers'
 
+const [route, action] = ['lots', 'add']
+
 const error = {
-  route: 'slots',
-  action: 'create',
+  route,
+  action,
   error: true,
   errorType: 'Create new schedule lot'
 }
@@ -18,7 +20,7 @@ export const createNewScheduleLot = async function (date, period = 'am') {
   const currentDate = new Date().toISOString().slice(0, 10)
   if (date < currentDate) return error422
 
-  const { result: lots } = (await self.getScheduleLots())
+  const { result: lots } = await self.getScheduleLots()
 
   Object.keys(lots).filter(date => date >= currentDate)
 
@@ -35,5 +37,5 @@ export const createNewScheduleLot = async function (date, period = 'am') {
 
   lots[date][period].push(true)
 
-  return Object.assign(await put('slot', lots), { route: 'lots', action: 'put' })
+  return Object.assign(await put('slot', lots), { route, action })
 }

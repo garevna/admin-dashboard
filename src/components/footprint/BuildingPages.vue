@@ -207,7 +207,6 @@ export default {
     },
 
     getData (data) {
-      console.log(data)
       this.buildingData = data
       this.ready = true
     },

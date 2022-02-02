@@ -20,7 +20,6 @@ class ScheduleController {
   }
 
   async createNewScheduleLot (request) {
-    self.postDebugMessage({ action: 'createNewScheduleLot', request })
     self.postMessage(await self.createNewScheduleLot(request.date, request.period))
   }
 
@@ -36,7 +35,6 @@ class ScheduleController {
   }
 
   async putRecordToJobQueue (data) {
-    self.postDebugMessage({ data })
     self.postMessage(await self.moveRecordToJobQueue(data.request))
   }
 

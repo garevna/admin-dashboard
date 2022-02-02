@@ -70,11 +70,6 @@ export default {
   data: () => ({
     pdf404: pdf404,
     content: pdf404,
-    // record: {
-    //   id: null,
-    //   title: '',
-    //   content: pdf404
-    // },
     ready: false,
     disabled: false,
     file: null
@@ -99,38 +94,14 @@ export default {
     }
   },
 
-  // watch: {
-  //   id: {
-  //     immediate: true,
-  //     handler (val) {
-  //       if (val) {
-  //         this.ready = false
-  //         this.__getSLAContent(val)
-  //       } else {
-  //         this.content = pdf404
-  //         // this.record = {
-  //         //   id: null,
-  //         //   title: '',
-  //         //   content: pdf404
-  //         // }
-  //         this.ready = true
-  //       }
-  //     }
-  //   }
-  // },
-
   methods: {
     getContent (data) {
-      const { _id, title, content } = data
-      console.log(_id, title, content)
-      // this.$emit('update:record', { _id, title, content })
-      this.content = content
-      // this.record = data
+      // const { _id, title, content } = data
+      this.content = data.content
       this.ready = true
     },
 
     getLocalFileContent (data) {
-      console.log(data)
       this.content = data || pdf404
       this.ready = true
     },
@@ -169,7 +140,7 @@ export default {
     },
 
     setNewSLA (data) {
-      console.log(data)
+      //
     }
   },
 

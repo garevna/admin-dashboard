@@ -90,7 +90,7 @@ export default {
     },
 
     callback (response) {
-      console.log('MESSAGE DELETED', response)
+      // console.log('MESSAGE DELETED', response)
     },
 
     goto (item) {

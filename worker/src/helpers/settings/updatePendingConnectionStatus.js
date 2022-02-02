@@ -25,13 +25,9 @@ export const updatePendingConnectionStatus = async (data) => {
 
   const partners = list.map(item => item.id)
 
-  self.postDebugMessage({ partners })
-
   const promises = partners.map(partnerId => sendNotification(partnerId, 'settings', 'pendingConnectionStatus'))
 
-  const responses = await Promise.all(promises)
-
-  self.postDebugMessage({ responses })
+  await Promise.all(promises)
 
   return status !== 200 ? Object.assign(response, error) : Object.assign(response, message)
 }

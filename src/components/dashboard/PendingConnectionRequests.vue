@@ -41,7 +41,6 @@ export default {
 
     getSchedule (data) {
       this.requests = data.map(request => Object.assign(request, { date: this.getDate(request), uniqueCode: request.customer.uniqueCode }))
-      console.log(this.requests)
       this.ready = true
     },
 
@@ -52,14 +51,8 @@ export default {
     },
 
     sendRequestForData () {
-      console.log('customers-updates-received')
       this.__getPendingRequests(this.getSchedule)
     }
-  },
-
-  updated () {
-    // console.log('SCHEDULE UPDATED!')
-    // this.__getPendingRequests(this.getSchedule)
   },
 
   beforeDestroy () {

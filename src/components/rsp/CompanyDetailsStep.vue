@@ -93,13 +93,13 @@ export default {
     sourceData: {
       deep: true,
       handler (data) {
-        console.log('SOURCE DATA CHANGED:\n', data)
+        // console.log('SOURCE DATA CHANGED:\n', data)
       }
     },
     schema: {
       deep: true,
       handler (data) {
-        console.log('SCHEMA CHANGED:\n', data)
+        // console.log('SCHEMA CHANGED:\n', data)
       }
     }
   },

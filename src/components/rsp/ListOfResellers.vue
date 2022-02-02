@@ -100,7 +100,7 @@ export default {
     },
 
     refreshed (data) {
-      console.log('RSP LIST REFRESHED')
+      // console.log('RSP LIST REFRESHED')
     },
 
     showDetails (partnerDetails) {
