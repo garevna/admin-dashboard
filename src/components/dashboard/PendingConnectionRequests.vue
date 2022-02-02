@@ -12,21 +12,6 @@
         :sort-desc.sync="sortDesc"
         @click:row="gotoSchedule"
       />
-      <!-- <table v-if="!goToSchedule">
-        <tbody>
-          <tr v-for="(request, index) of requests" :key="index" @click="gotoSchedule(request)">
-            <td>
-              <small><sup>{{ (new Date(request.modified - 0)).toISOString().slice(0, 10) }}</sup></small>
-            </td>
-            <td class="px-4">
-              <small><strong>{{ request.customer.uniqueCode }}</strong></small>
-            </td>
-            <td>
-              <small>{{ request.status }}</small>
-            </td>
-          </tr>
-        </tbody>
-      </table> -->
     </v-card>
   </v-container>
 </template>
@@ -53,8 +38,10 @@ export default {
     getDate (request) {
       return new Date(request.modified - 0).toISOString().slice(0, 10)
     },
+
     getSchedule (data) {
       this.requests = data.map(request => Object.assign(request, { date: this.getDate(request), uniqueCode: request.customer.uniqueCode }))
+      console.log(this.requests)
       this.ready = true
     },
 
@@ -65,6 +52,7 @@ export default {
     },
 
     sendRequestForData () {
+      console.log('customers-updates-received')
       this.__getPendingRequests(this.getSchedule)
     }
   },
@@ -75,12 +63,12 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('customers-updated-remotely', this.sendRequestForData)
+    this.$root.$off('customers-updates-received', this.sendRequestForData)
   },
 
   mounted () {
     this.__getPendingRequests(this.getSchedule)
-    this.$root.$on('customers-updated-remotely', this.sendRequestForData)
+    this.$root.$on('customers-updates-received', this.sendRequestForData)
   }
 }
 </script>

@@ -23,5 +23,7 @@ export const getCustomerUpdates = async (notifications) => {
 
   await Promise.all(promises)
 
+  await self.refreshSchedule()
+
   return { status: 200, route, action, result: customers }
 }

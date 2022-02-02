@@ -18,7 +18,9 @@ export const patchCustomer = async function (customerId, customerDetails) {
 
   const { resellerId, uniqueCode } = result.data
 
-  await sendNotification(resellerId, 'customer', customerId, Object.keys(customerDetails))
+  const notified = await sendNotification(resellerId, 'customer', customerId, Object.keys(customerDetails))
+
+  self.postDebugMessage({ resellerId, uniqueCode, notified })
 
   await putRecordByKey('customers', customerId, result.data)
 

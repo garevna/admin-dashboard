@@ -43,7 +43,8 @@ export default {
       this.$root.$emit('open-customer-info-popup', {
         name: record.customer.name,
         address: record.customer.address,
-        phone: record.customer.phone
+        phone: record.customer.phone,
+        message: record.lots.filter(item => item.date === this.date && item.period === this.period)[0].message
       })
     },
 
@@ -52,6 +53,9 @@ export default {
         Active: '#999',
         'Awaiting for connection': '#999',
         'Awaiting for confirmation': 'primary',
+        'Awaiting for cancelation': 'primary',
+        'Awaiting to be resumed': 'primary',
+        'Awaiting to be suspended': 'primary',
         'Awaiting confirmation': 'primary',
         'Awaiting for scheduling': '#999',
         'In job queue': '#999',

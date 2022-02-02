@@ -11,21 +11,22 @@ class ScheduleController {
     self.postMessage(await self.buildSchedule())
   }
 
-  async getLots () {
+  async getLotsFromRemote () {
     self.postMessage(await self.getScheduleLots())
   }
 
-  async updateLots () {
+  async updateLotsToCurrentDate () {
     self.postMessage(await self.updateScheduleLots())
+  }
+
+  async createNewScheduleLot (request) {
+    self.postDebugMessage({ action: 'createNewScheduleLot', request })
+    self.postMessage(await self.createNewScheduleLot(request.date, request.period))
   }
 
   async getPendingRequests () {
     self.postMessage(await self.getPendingRequests())
   }
-
-  // async updateScheduleSettings (record) {
-  //   self.postMessage(await self.updateScheduleSettings(record.settings))
-  // }
 
   async updateRecord (record) {
     self.postMessage(Object.assign(await self.updateCustomerServiceStatus(record), {
@@ -35,6 +36,7 @@ class ScheduleController {
   }
 
   async putRecordToJobQueue (data) {
+    self.postDebugMessage({ data })
     self.postMessage(await self.moveRecordToJobQueue(data.request))
   }
 

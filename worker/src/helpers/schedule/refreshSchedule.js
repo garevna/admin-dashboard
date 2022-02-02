@@ -1,5 +1,7 @@
 import { clearStore, iterateCustomers } from '../db'
 
+const [route, action] = ['schedule', 'refresh']
+
 export const refreshSchedule = async function () {
   clearStore('schedule')
 
@@ -7,8 +9,8 @@ export const refreshSchedule = async function () {
 
   return {
     status: 200,
-    route: 'schedule',
-    action: 'refresh',
+    route,
+    action,
     result: {
       booking: (await self.getBooking()).result,
       schedule: (await self.buildSchedule()).result

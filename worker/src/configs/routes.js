@@ -166,8 +166,9 @@ export const routes = {
   },
 
   lots: {
-    get: scheduleController.getLots,
-    update: scheduleController.updateLots
+    get: scheduleController.getLotsFromRemote,
+    update: scheduleController.updateLotsToCurrentDate,
+    put: scheduleController.createNewScheduleLot
   },
 
   documents: {
