@@ -2,30 +2,15 @@ import { messagesHandler } from '../../helpers/data-handlers'
 
 const updateMessages = messages => messagesHandler(messages)
 
-const updatesKeys = [
-  'customers',
-  'tickets',
-  'messages',
-  'registration',
-  'partners'
-]
-
-const updates = {
-  customers: [],
-  tickets: [],
-  messages: [],
-  registration: [],
-  partners: []
-}
-
 export function updatesCallback (event) {
   event.stopPropagation()
-  const { status, route, action, ...data } = event.data
 
-  Object.assign(updates, ...updatesKeys.map(key => ({ [key]: data.result.find(item => item.action === key) || [] })))
+  const { result: updates } = event.data
 
-  updateMessages(updates.messages.result)
+  // console.log(updates)
 
-  updatesKeys
-    .forEach(name => window[Symbol.for('vue.instance')].$emit(`${name}-updates-received`, updates[name]?.result))
+  updateMessages(updates.messages)
+
+  Object.keys(updates)
+    .forEach(key => window[Symbol.for('vue.instance')].$emit(`${key}-updates-received`, updates[key]))
 }

@@ -9,7 +9,8 @@ import {
   getTicketUpdates,
   getMessagesUpdates,
   getPartnerUpdates,
-  getRegistrationUpdates
+  getRegistrationUpdates,
+  getBuildingUpdates
 } from './helpers/updates'
 
 import {
@@ -66,10 +67,13 @@ const getUpdatesFromRemote = async () => {
       getTicketUpdates(fullListOfNotifications),
       getMessagesUpdates(fullListOfNotifications),
       getPartnerUpdates(fullListOfNotifications),
-      getRegistrationUpdates()
+      getRegistrationUpdates(),
+      getBuildingUpdates(fullListOfNotifications)
     ])
 
-    self.postMessage({ status: 200, route: 'updates', action: 'get', result: response })
+    const updates = Object.assign({}, ...response.map(item => ({ [item.action]: item.result })))
+
+    self.postMessage({ status: 200, route: 'updates', action: 'get', result: updates })
   }
   setTimeout(getUpdatesFromRemote, self.frequency)
 }

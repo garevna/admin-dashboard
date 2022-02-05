@@ -164,10 +164,13 @@ export default {
       this.ready = true
     },
 
+    backgroundRefresh (updates) {
+      updates.length && this.worker.refresh(this.requestBuildingList)
+    },
+
     refresh () {
       this.$root.$emit('progress-event', true)
       this.ready = false
-      this.buildings = []
       this.worker.refresh(this.getRefreshedBuildings)
     },
 
@@ -218,12 +221,15 @@ export default {
   beforeDestroy () {
     this.$root.$off('operation-confirmed', this.confirmationReceived)
     this.$root.$off('settings-updated', this.buildingsGroupUpdated)
+    this.$root.$off('buildings-updates-received', this.backgroundRefresh)
   },
 
   mounted () {
     this.page = buildingsListPageNumberHandler()
     this.$root.$on('operation-confirmed', this.confirmationReceived)
     this.$root.$on('settings-updated', this.buildingsGroupUpdated)
+
+    this.$root.$on('buildings-updates-received', this.backgroundRefresh)
     this.requestBuildingList()
   }
 }
