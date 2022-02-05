@@ -173,9 +173,9 @@ export default {
   background: transparent;
 }
 
-.v-application--is-ltr .v-data-footer__select {
+/* .v-application--is-ltr .v-data-footer__select {
   visibility: hidden;
-}
+} */
 
 .clickable {
   cursor: pointer;

@@ -36,7 +36,7 @@
               hide-details
               style="display: inline-block; width: 280px"
             ></v-text-field>
-            <span class="ml-12">Total selected customers: {{ selectedCustomersNumber }}</span>
+            <span class="mx-4">Total selected customers: {{ selectedCustomersNumber }}</span>
           </template>
 
           <template v-slot:expanded-item="{ headers, item }">

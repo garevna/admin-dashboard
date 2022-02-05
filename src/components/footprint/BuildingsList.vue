@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="ready" style="max-width: 960px">
+  <v-container v-if="ready" class="mb-12" style="max-width: 960px">
     <v-data-table
       v-model="selects"
       :headers="headers"
@@ -23,7 +23,8 @@
           dense
           outlined
           hide-details
-          style="display: inline-block; width: 240px"
+          class="mr-4"
+          style="display: inline-block; width: 200px"
         ></v-text-field>
       </template>
 
@@ -55,12 +56,12 @@
 
       <template v-slot:item.actions="{ item }">
         <v-btn text @click.stop="deleteBuilding(item)">
-          <v-icon samll color="primary">mdi-delete</v-icon>
+          <v-icon small color="primary">mdi-delete</v-icon>
         </v-btn>
       </template>
     </v-data-table>
 
-    <span class="ml-12"><small>Total selected buildings: {{ selectedBuildingsNumber }}</small></span>
+    <span class="mx-3"><small>Total selected buildings: {{ selectedBuildingsNumber }}</small></span>
 
     <GroupUpdate
       v-if="selects.length"

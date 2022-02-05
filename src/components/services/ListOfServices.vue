@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mb-12">
     <v-card flat class="transparent mx-auto" max-width="1200">
       <v-card-title class="my-5">
         <h5><small>Services list</small></h5>
@@ -33,12 +33,12 @@
       >
         <template v-slot:item.actions="{ item }">
           <v-btn text @click.stop="deleteItem(item)">
-            <v-icon samll color="primary">mdi-delete</v-icon>
+            <v-icon small color="primary">mdi-delete</v-icon>
           </v-btn>
         </template>
       </v-data-table>
 
-      <span class="ml-12"><small>Total selected services: {{ selectedServicesNumber }}</small></span>
+      <span class="mx-4"><small>Total selected services: {{ selectedServicesNumber }}</small></span>
     </v-card>
   </v-container>
 </template>
@@ -50,7 +50,6 @@ export default {
   data: () => ({
     items: [],
     search: '',
-    selectedServicesNumber: undefined,
     headers: [
       { text: 'Actions', value: 'actions', sortable: false },
       { text: 'Service name', align: 'start', sortable: true, value: 'serviceName' },
@@ -63,6 +62,12 @@ export default {
       { text: 'Trial (months)', value: 'freeTrial' }
     ]
   }),
+
+  computed: {
+    selectedServicesNumber () {
+      return this.items.length
+    }
+  },
 
   methods: {
     getData (data) {
