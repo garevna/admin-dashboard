@@ -176,6 +176,10 @@ img {
   margin-top: -64px;
 }
 
+.v-list-item__title {
+  font-size: 0.8rem !important;
+}
+
 /* .main-content {
   padding-top: 64px;
 } */

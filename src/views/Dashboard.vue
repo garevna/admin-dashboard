@@ -28,7 +28,7 @@
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title v-if="refreshed[item.refresh]">
-                <v-icon small>{{ item.icon }}</v-icon> <small> {{ item.title }} </small>
+                <v-icon small>{{ item.icon }}</v-icon> {{ item.title }}
               </v-list-item-title>
             </v-list-item-content>
           </template>
@@ -44,7 +44,7 @@
             <v-list-item-content v-if="!child.children">
               <v-list-item-title>
                 <v-icon small>{{ child.icon }}</v-icon>
-                <small>{{ child.title }}</small>
+                {{ child.title }}
               </v-list-item-title>
             </v-list-item-content>
 

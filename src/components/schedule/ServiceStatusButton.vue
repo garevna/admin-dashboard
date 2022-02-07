@@ -15,6 +15,7 @@
             {{ record.status }}
           </v-btn>
         </v-expansion-panel-header>
+
         <v-expansion-panel-content>
           <v-list dense>
             <v-list-item
@@ -35,13 +36,58 @@
               </v-list-item-title>
             </v-list-item>
 
-            <v-list-item v-if="record.status !== 'Active'" @click="activation = true">
+            <v-list-item v-if="record.status !== 'Active' && record.status !== 'Awaiting to be suspended' && record.status !== 'Awaiting for cancelation'" @click="activation = true">
               <v-list-item-title>
                 <v-icon color="#f50">mdi-alert</v-icon>
                 Set active from <b>{{ record.activationDate }}</b>
               </v-list-item-title>
             </v-list-item>
           </v-list>
+
+          <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspend = true">
+            <v-list-item-title>
+              <v-icon color="#f50">mdi-alert</v-icon>
+              Suspend from <b>{{ record.suspendDate }}</b>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
+            <v-list-item-title>
+              <v-icon color="#f50">mdi-alert</v-icon>
+              Canceled from <b>{{ record.cancelDate }}</b>
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-if="record.status === 'Awaiting to be resumed'" @click="resume = true">
+            <v-list-item-title>
+              <v-icon color="#f50">mdi-alert</v-icon>
+              Resumed from <b>{{ record.resumeDate }}</b>
+            </v-list-item-title>
+          </v-list-item>
+
+          <div v-if="suspend">
+            <SelectDateOfStatusChanging
+              title="Suspension date"
+              :date.sync="record.suspendDate"
+              :action.sync="suspendSubmitted"
+            />
+          </div>
+
+          <div v-if="cancel">
+            <SelectDateOfStatusChanging
+              title="Cancelation date"
+              :date.sync="record.cancelDate"
+              :action.sync="cancelSubmitted"
+            />
+          </div>
+
+          <div v-if="resume">
+            <SelectDateOfStatusChanging
+              title="Service resume date"
+              :date.sync="record.resumeDate"
+              :action.sync="resumeSubmitted"
+            />
+          </div>
 
           <div v-if="activation">
             <SelectDateOfStatusChanging
@@ -92,12 +138,21 @@ export default {
 
   data: () => ({
     activation: false,
+    suspend: false,
+    resume: false,
+    cancel: false,
     activationSubmitted: false,
+    suspendSubmitted: false,
+    resumeSubmitted: false,
+    cancelSubmitted: false,
     icons: serviceStatusIconsHandler(),
     colors: {
       Active: '#09b',
       'Awaiting for connection': 'primary',
       'Awaiting for confirmation': 'primary',
+      'Awaiting to be suspended': 'primary',
+      'Awaiting to be resumed': 'primary',
+      'Awaiting for cancelation': 'primary',
       'Awaiting confirmation': 'primary',
       'Awaiting for scheduling': '#888',
       'In job queue': '#888',
@@ -122,6 +177,30 @@ export default {
         this.activation = false
         this.activationSubmitted = false
       }
+    },
+
+    suspendSubmitted (value) {
+      if (value) {
+        this.changeRecordStatus('Suspended')
+        this.suspend = false
+        this.suspendSubmitted = false
+      }
+    },
+
+    resumeSubmitted (value) {
+      if (value) {
+        this.changeRecordStatus('Active')
+        this.resume = false
+        this.resumeSubmitted = false
+      }
+    },
+
+    cancelSubmitted (value) {
+      if (value) {
+        this.changeRecordStatus('Canceled')
+        this.cancel = false
+        this.cancelSubmitted = false
+      }
     }
   },
 
@@ -142,7 +221,7 @@ export default {
     },
 
     statusChanged (response) {
-      // console.log('STATUS UPDATED:\n', response)
+      console.log('STATUS UPDATED:\n', response)
     }
   }
 }

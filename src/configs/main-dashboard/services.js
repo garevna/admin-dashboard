@@ -1,11 +1,12 @@
 export const services = {
   title: 'Services',
   refresh: 'services',
+  icon: 'mdi-ballot-outline',
   children: [
     {
       title: 'Service list',
       route: 'services-list',
-      icon: 'mdi-ballot-outline',
+      icon: 'mdi-format-list-bulleted-square',
       access: {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
@@ -14,7 +15,7 @@ export const services = {
     {
       title: 'SLA',
       route: 'sla',
-      icon: 'mdi-ballot-outline',
+      icon: 'mdi-file-cog-outline',
       access: {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']

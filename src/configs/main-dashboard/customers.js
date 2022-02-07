@@ -1,12 +1,13 @@
 export const customers = {
   title: 'Customers',
+  icon: 'mdi-account-multiple',
   callbackName: '__refreshCustomersWithPagination',
   refresh: 'customers',
   children: [
     {
       title: 'Customers list',
       route: 'customers',
-      icon: 'mdi-ballot-outline',
+      icon: 'mdi-table-account',
       access: {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']

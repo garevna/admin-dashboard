@@ -115,6 +115,10 @@ export default {
 
     scheduleRefreshed (data) {
       this.getScheduleData(data.schedule)
+    },
+
+    getUpdates (data) {
+      if (data.length) this.refresh()
     }
   },
 
@@ -128,7 +132,7 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('customers-updates-received', this.refresh)
+    this.$root.$off('customers-updates-received', this.getUpdates)
 
     this.$root.$off('service-activated', this.scheduleRefreshed)
     this.$root.$off('move-record-to-job-queue', this.moveRecordToJobQueue)
@@ -137,7 +141,7 @@ export default {
   },
 
   mounted () {
-    this.$root.$on('customers-updates-received', this.refresh)
+    this.$root.$on('customers-updates-received', this.getUpdates)
     this.$vuetify.goTo(0)
   }
 }

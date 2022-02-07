@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mb-12 pb-12">
     <v-card flat class="transparent pb-12 px-12" v-if="ready && !details">
       <v-card-title>
         <strong>DGtek partners list</strong>
@@ -15,6 +15,16 @@
         :items="resellers"
         :search="search"
         @click:row="showDetails"
+        fixed-header
+        :footer-props="{
+          showFirstLastPage: true,
+          itemsPerPage: 10,
+          itemsPerPageOptions: [10, 20, 50, 100, -1],
+          firstIcon: 'mdi-skip-previous',
+          lastIcon: 'mdi-skip-next',
+          prevIcon: 'mdi-chevron-left',
+          nextIcon: 'mdi-chevron-right'
+        }"
       >
         <template v-slot:item.actions="{ item }">
           <v-icon @click.stop="getPartnerCredentials(item)">
@@ -31,9 +41,13 @@
         dense
         outlined
         hide-details
-        style="display: inline-block; width: 280px"
+        class="bottom-search-input"
       ></v-text-field>
-      <span class="ml-12"><small>Total number of RSP: {{ resellers.length }}</small></span>
+      <span class="bottom-info-span">
+        <small>
+          Total number of partners: {{ resellers.length }}
+        </small>
+      </span>
     </v-card>
 
     <ResellerPages v-if="details" :opened.sync="details" />
@@ -128,5 +142,20 @@ export default {
 <style scoped>
 td {
   cursor: pointer;
+}
+
+.bottom-search-input {
+  position: fixed;
+  bottom: 36px;
+  left: 16px;
+  z-index: 55;
+  width: 360px;
+}
+
+.bottom-info-span {
+  position: fixed;
+  bottom: 44px;
+  left: 420px;
+  z-index: 55;
 }
 </style>

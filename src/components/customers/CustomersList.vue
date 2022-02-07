@@ -20,7 +20,17 @@
           :height="tableHeight"
           @click:row="editItem"
           fixed-header
-          :items-per-page="10"
+          :footer-props="{
+            showFirstLastPage: true,
+            itemsPerPage: rowsPerPage,
+            itemsPerPageOptions: [10, 20, 50, 100, -1],
+            firstIcon: 'mdi-skip-previous',
+            lastIcon: 'mdi-skip-next',
+            prevIcon: 'mdi-chevron-left',
+            nextIcon: 'mdi-chevron-right'
+          }"
+          @pagination="pagination"
+          :items-per-page.sync="rowsPerPage"
           single-expand
           :expanded.sync="expanded"
           show-expand
@@ -34,7 +44,7 @@
               dense
               outlined
               hide-details
-              style="display: inline-block; width: 280px"
+              style="display: inline-block; max-width: 360px"
             ></v-text-field>
             <span class="mx-4">Total selected customers: {{ selectedCustomersNumber }}</span>
           </template>
@@ -128,7 +138,9 @@ export default {
       { text: 'Address', value: 'address' },
       { text: 'Customer name', align: 'start', sortable: false, value: 'name' },
       { text: 'Services', value: 'data-table-expand' }
-    ]
+    ],
+
+    rowsPerPage: 10
   }),
 
   watch: {
@@ -175,6 +187,12 @@ export default {
   },
 
   methods: {
+    pagination (options) {
+      // console.log(options)
+      this.tablePage = options.page
+      this.tablePages = options.pageCount
+    },
+
     refreshUpdatedCustomers () {
       this.__refreshUpdatedCustomers(this.getUpdatedCustomers)
       setTimeout(this.refreshUpdatedCustomers, 40000)

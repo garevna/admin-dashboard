@@ -121,6 +121,10 @@ export default {
 
     scheduleRefreshed (data) {
       this.getData(data.booking)
+    },
+
+    getUpdates (data) {
+      if (data.length) this.__getBookingRequests(this.getData)
     }
   },
 
@@ -129,12 +133,12 @@ export default {
   },
 
   beforeDestroy () {
-    this.$root.$off('customers-updates-received', this.refresh)
+    this.$root.$off('customers-updates-received', this.getUpdates)
     this.$root.$off('service-delivery-status-updated', this.updated)
   },
 
   mounted () {
-    this.$root.$on('customers-updates-received', this.refresh)
+    this.$root.$on('customers-updates-received', this.getUpdates)
     this.$root.$on('service-delivery-status-updated', this.updated)
     this.$vuetify.goTo(0)
   }
