@@ -2,6 +2,8 @@ import { hash, encrypt } from '../crypto'
 import { loginHandler, passwordHandler, credentialsHandler } from '../env'
 import { post } from '../AJAX'
 
+const [route, action] = ['rsp', 'change-password']
+
 export const passwordChange = async function (request) {
   const { login, newPass, userPhone } = request.data
 
@@ -35,8 +37,8 @@ export const passwordChange = async function (request) {
 
   return {
     status,
-    route: 'rsp',
-    action: 'change-password',
+    route,
+    action,
     result: 'Password changed',
     message: true,
     messageType: 'Company credentials',

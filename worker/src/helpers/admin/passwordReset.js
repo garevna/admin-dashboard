@@ -2,11 +2,9 @@ import { hostHandler, apiKeyHandler } from '../env'
 
 import { encrypt } from '../crypto'
 
+const [route, action] = ['admin', 'reset']
+
 export const passwordReset = async (login) => {
-  const action = 'reset'
-
-  // if (!navigator.onLine) return resetOffline()
-
   const { status, result: cryptoLogin } = encrypt(JSON.stringify({ login }))
 
   if (status !== 200) return self.errorMessage('encryptError')
@@ -26,6 +24,7 @@ export const passwordReset = async (login) => {
 
   return {
     status: response.status,
+    route,
     action,
     result
   }

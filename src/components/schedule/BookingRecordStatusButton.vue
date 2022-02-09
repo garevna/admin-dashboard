@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="transparent" width="280" height="auto">
+  <v-card flat class="transparent" width="340" height="auto">
     <v-expansion-panels flat>
       <v-expansion-panel>
         <v-expansion-panel-header hide-actions>
@@ -38,37 +38,49 @@
 
             <v-list-item v-if="record.status !== 'Active' && record.status !== 'Awaiting to be suspended' && record.status !== 'Awaiting for cancelation'" @click="activation = true">
               <v-list-item-title>
-                <v-icon color="#f50">mdi-alert</v-icon>
+                <v-icon small color="#900">mdi-connection</v-icon>
                 Set active from <b>{{ record.activationDate }}</b>
               </v-list-item-title>
             </v-list-item>
           </v-list>
 
           <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspend = true">
-            <v-list-item-title>
-              <v-icon color="#f50">mdi-alert</v-icon>
-              Suspend from <b>{{ record.suspendDate }}</b>
+            <v-list-item-title v-if="record.suspendedDate">
+              <v-icon small color="#999">mdi-cog-pause</v-icon>
+              Will be suspended <b class="ml-2">{{ record.suspendedDate }}</b>
+            </v-list-item-title>
+            <v-list-item-title v-else>
+              <v-icon small color="#f50">mdi-calendar-question</v-icon>
+              Request to suspend <b class="ml-2">{{ record.suspendDate }}</b>
             </v-list-item-title>
           </v-list-item>
 
           <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
-            <v-list-item-title>
-              <v-icon color="#f50">mdi-alert</v-icon>
-              Canceled from <b>{{ record.cancelDate }}</b>
+            <v-list-item-title v-if="record.canceledDate">
+              <v-icon small color="#999">mdi-close-network</v-icon>
+              Will be canceled <b class="ml-2">{{ record.canceledDate }}</b>
+            </v-list-item-title>
+            <v-list-item-title v-else>
+              <v-icon small color="#900">mdi-calendar-question</v-icon>
+              Request to cancel <b class="ml-2">{{ record.cancelDate }}</b>
             </v-list-item-title>
           </v-list-item>
 
           <v-list-item v-if="record.status === 'Awaiting to be resumed'" @click="resume = true">
-            <v-list-item-title>
-              <v-icon color="#f50">mdi-alert</v-icon>
-              Resumed from <b>{{ record.resumeDate }}</b>
+            <v-list-item-title v-if="record.resumedDate">
+              <v-icon small color="#999">mdi-history</v-icon>
+              Will be resumed <b class="ml-2">{{ record.resumedDate }}</b>
+            </v-list-item-title>
+            <v-list-item-title v-else>
+              <v-icon small color="#900">mdi-calendar-question</v-icon>
+              Request to resume <b class="ml-2">{{ record.resumeDate }}</b>
             </v-list-item-title>
           </v-list-item>
 
           <div v-if="suspend">
             <SelectDateOfStatusChanging
               title="Suspension date"
-              :date.sync="record.suspendDate"
+              :date.sync="record.suspendedDate"
               :action.sync="suspendSubmitted"
             />
           </div>
@@ -76,7 +88,7 @@
           <div v-if="cancel">
             <SelectDateOfStatusChanging
               title="Cancelation date"
-              :date.sync="record.cancelDate"
+              :date.sync="record.canceledDate"
               :action.sync="cancelSubmitted"
             />
           </div>
@@ -84,7 +96,7 @@
           <div v-if="resume">
             <SelectDateOfStatusChanging
               title="Service resume date"
-              :date.sync="record.resumeDate"
+              :date.sync="record.resumedDate"
               :action.sync="resumeSubmitted"
             />
           </div>
@@ -95,27 +107,6 @@
               :date.sync="record.activationDate"
               :action.sync="activationSubmitted"
             />
-            <!-- <v-date-picker
-              label="Activation date"
-              v-model="record.activationDate"
-              @input="menu = false"
-              color="primary"
-              :first-day-of-week="1"
-              no-title
-              scrollable
-              max-width="270"
-              style="margin-left: -16px"
-            />
-            <v-btn
-              outlined
-              small
-              color="primary"
-              :disabled="!record.activationDate"
-              @click="activate"
-              width="270"
-            >
-              Submit
-            </v-btn> -->
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -128,7 +119,7 @@
 import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
 
 export default {
-  name: 'ServiceStatusButton',
+  name: 'BookingRecordStatusButton',
 
   components: {
     SelectDateOfStatusChanging: () => import('@/components/schedule/SelectDateOfStatusChanging.vue')
@@ -181,7 +172,7 @@ export default {
 
     suspendSubmitted (value) {
       if (value) {
-        this.changeRecordStatus('Suspended')
+        this.__approveServiceSuspension(this.record.customerId, this.record.serviceId, this.record.suspendedDate, this.getResponse)
         this.suspend = false
         this.suspendSubmitted = false
       }
@@ -189,7 +180,7 @@ export default {
 
     resumeSubmitted (value) {
       if (value) {
-        this.changeRecordStatus('Active')
+        this.__approveServiceResuming(this.record.customerId, this.record.serviceId, this.record.resumedDate, this.getResponse)
         this.resume = false
         this.resumeSubmitted = false
       }
@@ -197,7 +188,7 @@ export default {
 
     cancelSubmitted (value) {
       if (value) {
-        this.changeRecordStatus('Canceled')
+        this.__approveServiceCancelation(this.record.customerId, this.record.serviceId, this.record.canceledDate, this.getResponse)
         this.cancel = false
         this.cancelSubmitted = false
       }
@@ -205,6 +196,22 @@ export default {
   },
 
   methods: {
+    getResponse (data) {
+      console.log('RESPONSE:\n', data)
+    },
+
+    confirmSuspension (date) {
+
+    },
+
+    confirmCancelation (date) {
+
+    },
+
+    confirmResuming (date) {
+
+    },
+
     changeRecordStatus (status) {
       this.$emit('update:record', Object.assign(this.record, { status }))
       this.__changeServiceDeliveryStatus(this.record, this.statusChanged)

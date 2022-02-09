@@ -17,9 +17,9 @@
               <thead>
                 <tr>
                   <th>Customer unique code</th>
-                  <th>Service name</th>
-                  <th>Status</th>
-                  <!-- <th>dev</th> -->
+                  <th width="240">Service name</th>
+                  <th width="360">Status</th>
+                  <!-- <th width="140"><small>Requested date</small></th> -->
                 </tr>
               </thead>
 
@@ -35,8 +35,13 @@
                     <p><small>{{ record.serviceName }}</small></p>
                   </td>
                   <td>
-                    <ServiceStatusButton :record.sync="record" :activated.sync="activated" />
+                    <BookingRecordStatusButton :record.sync="record" :activated.sync="activated" />
                   </td>
+                  <!-- <td>
+                    <p>
+                      <small>{{ getRequestedDate(record) }}</small>
+                    </p>
+                  </td> -->
                 </tr>
               </tbody>
             </table>
@@ -49,13 +54,13 @@
 
 <script>
 
-import ServiceStatusButton from '@/components/schedule/ServiceStatusButton.vue'
+import BookingRecordStatusButton from '@/components/schedule/BookingRecordStatusButton.vue'
 
 export default {
   name: 'Booking',
 
   components: {
-    ServiceStatusButton
+    BookingRecordStatusButton
   },
 
   data: () => ({
@@ -78,6 +83,14 @@ export default {
   },
 
   methods: {
+    getRequestedDate (record) {
+      return record.status === 'Awaiting for cancelation'
+        ? record.cancelDate
+        : record.status === 'Awaiting to be suspended'
+          ? record.suspendDate
+          : (record.resumeDate || '')
+    },
+
     getData (booking) {
       this.panel = Object.keys(booking).map(value => Number(value))
 

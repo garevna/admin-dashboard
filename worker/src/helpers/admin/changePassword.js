@@ -1,7 +1,7 @@
 import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
 import { encrypt, hash } from '../crypto'
 
-const type = 'Change password'
+const [route, action] = ['admin', 'change']
 
 export const changePassword = async (password) => {
   // if (!navigator.onLine) return resetOffline()
@@ -24,10 +24,11 @@ export const changePassword = async (password) => {
 
   return {
     status: response.status,
-    action: 'change',
+    route,
+    action,
     result: await response.json(),
     message: true,
-    messageType: type,
+    messageType: 'Change password',
     messageText: 'Password successfuly changed'
   }
 }

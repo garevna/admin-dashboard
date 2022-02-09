@@ -8,7 +8,10 @@ export const updateCustomerServiceStatus = async function (request) {
     activationDate,
     suspendDate,
     cancelDate,
-    resumeDate
+    resumeDate,
+    suspendedDate,
+    canceledDate,
+    resumedDate
   } = request.data ? request.data : request
 
   const response = await self.getCustomer(customerId)
@@ -30,6 +33,9 @@ export const updateCustomerServiceStatus = async function (request) {
     suspendDate,
     cancelDate,
     resumeDate,
+    suspendedDate,
+    canceledDate,
+    resumedDate,
     log: Object.assign(customer.services[index].log, { [Date.now()]: status })
   })
 

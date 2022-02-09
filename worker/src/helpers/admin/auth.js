@@ -1,6 +1,8 @@
 import { encrypt, /* decrypt, */ hash } from '../crypto'
 import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
 
+const [route, action] = ['admin', 'redirect']
+
 export const auth = async (login, password) => {
   if (!navigator.onLine) self.errorMessage('authOffline')
 
@@ -29,11 +31,11 @@ export const auth = async (login, password) => {
 
   return {
     status: 200,
-    route: 'admin',
-    action: 'redirect',
+    route,
+    action,
     result: Object.assign(result.data, { credentials: credentialsHandler() }),
     message: true,
-    messageType: 'DGtek Admin authorization',
+    messageType: 'DGtek admin portal authorization',
     messageText: `Role: ${result.data.role}`
   }
 }

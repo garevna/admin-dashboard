@@ -65,7 +65,9 @@ const { rules } = require('@/configs').default
 
 export default {
   name: 'ResetPassword',
+
   props: ['opened'],
+
   data: () => ({
     step: 1,
     codeDialog: false,
@@ -75,6 +77,7 @@ export default {
     showPass: false,
     rules: [rules.required, rules.password]
   }),
+
   computed: {
     dialog: {
       get () { return this.opened },
@@ -86,14 +89,15 @@ export default {
     sendCode () {
       codeHandler(this.code)
       this.__worker.addEventListener('message', this.codeCallback)
-      this.$root.sendMessageToWorker({ action: 'code', code: codeHandler() })
+      this.$root.$sendMessageToWorker({ route: 'admin', action: 'code', code: codeHandler() })
       this.step = 2
     },
 
     sendPassword () {
       passwordHandler(this.password)
       this.__worker.addEventListener('message', this.changeCallback)
-      this.$root.sendMessageToWorker({
+      this.$root.$sendMessageToWorker({
+        route: 'admin',
         action: 'change',
         password: passwordHandler()
       })
@@ -124,7 +128,8 @@ export default {
 
   mounted () {
     this.__worker.addEventListener('message', this.resetCallback)
-    this.$root.sendMessageToWorker({
+    this.$root.$sendMessageToWorker({
+      route: 'admin',
       action: 'reset',
       login: loginHandler()
     })

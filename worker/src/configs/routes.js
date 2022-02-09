@@ -102,6 +102,14 @@ export const routes = {
     patch: customersController.patchCustomer,
     delete: customersController.deleteCustomer,
 
+    'cancelation-date': customersController.updateServiceCancelationDate,
+    'suspension-date': customersController.updateServiceSuspensionDate,
+    'resuming-date': customersController.updateServiceResumingDate,
+
+    cancel: customersController.cancelService,
+    suspend: customersController.suspendService,
+    resume: customersController.resumeService,
+
     excel: customersController.getCustomersForExcel,
 
     'hard-refresh': customersController.hardRefresh

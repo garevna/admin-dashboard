@@ -1,6 +1,6 @@
 import { openDB } from '../db/openDB'
 
-import { uniqueCodeList } from '../data-handlers'
+// import { uniqueCodeList } from '../data-handlers'
 
 export const getAllCustomers = async function () {
   const [route, action] = ['customers', 'list']
@@ -31,7 +31,8 @@ export const getAllCustomers = async function () {
           resellerId,
           customerCreationDate,
           name: `${firstName} ${lastName}`,
-          uniqueCode: `${uniqueCodeList(resellerId)}${uniqueCode.slice(2)}`,
+          // uniqueCode: uniqueCode || `${uniqueCodeList(resellerId)}${uniqueCode.slice(2)}`,
+          uniqueCode,
           address: `${apartmentNumber}/${address}`,
           services: []
         }

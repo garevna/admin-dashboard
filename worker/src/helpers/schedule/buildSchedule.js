@@ -21,11 +21,16 @@ export const buildSchedule = async function () {
   for (const index in records) {
     const record = records[index]
 
-    const weekNumbers = record.status === 'In job queue' ? [self.getWeekNumber(record.installation.date)]
+    const weekNumbers = record.status === 'In job queue'
+      ? [self.getWeekNumber(record.installation.date)]
       : [self.getWeekNumber(record.lots[0].date), self.getWeekNumber(record.lots[1].date)]
-    const dates = record.status === 'In job queue' ? [record.installation.date]
+
+    const dates = record.status === 'In job queue'
+      ? [record.installation.date]
       : [record.lots[0].date, record.lots[1].date]
-    const periods = record.status === 'In job queue' ? [record.installation.period]
+
+    const periods = record.status === 'In job queue'
+      ? [record.installation.period]
       : [record.lots[0].period, record.lots[1].period]
 
     weekNumbers.forEach((number, index) => {

@@ -72,10 +72,13 @@ import { patterns } from '@/configs/validation'
 
 export default {
   name: 'SignIn',
+
   components: {
     ResetPassword: () => import('@/components/auth/ResetPassword.vue')
   },
-  props: ['reset', 'success'],
+
+  props: ['resetPassword', 'success'],
+
   data () {
     return {
       step: 1,
@@ -89,11 +92,24 @@ export default {
       }
     }
   },
+
+  computed: {
+    reset: {
+      get () {
+        return this.resetPassword
+      },
+      set (val) {
+        this.$emit('update:resetPassword', val)
+      }
+    }
+  },
+
   watch: {
     email (val) {
       loginHandler(val)
     }
   },
+
   methods: {
     updatePassword (value) {
       passwordHandler(value)

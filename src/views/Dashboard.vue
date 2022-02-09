@@ -194,4 +194,30 @@ export default {
   margin-right: 8px!important;
 }
 
+.bottom-info {
+  position: fixed;
+  bottom: 42px;
+  left: 16px;
+  z-index: 55;
+}
+.v-application--is-ltr .v-data-table--fixed-header .v-data-footer {
+  margin-right: -8px!important;
+  bottom: 24px;
+  position: fixed;
+  background: #ddd;
+  left: 0;
+  right: 0;
+  padding: 0 16px;
+  z-index: 18;
+}
+
+.v-menu__content--fixed {
+  top: calc(100% - 340px) !important;
+  bottom: 80px !important;
+}
+
+.v-list-item__title {
+  font-size: 0.8rem !important;
+}
+
 </style>

@@ -203,6 +203,7 @@ export default {
     },
 
     getCustomersList (data) {
+      console.log(data.filter(item => !item.uniqueCode.indexOf('undefined')).map(item => item.id))
       this.customers = data
       this.ready = true
     },
@@ -282,7 +283,4 @@ export default {
 .theme--light.v-data-table.v-data-table--fixed-header thead th {
   background: #f5f5f5;
 }
-/* .v-data-footer__select {
-  visibility: hidden;
-} */
 </style>

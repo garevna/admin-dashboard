@@ -1,5 +1,7 @@
 import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
 
+const [route, action] = ['admin', 'code']
+
 export const sendPasswordResetCode = async (code) => {
   // if (!navigator.onLine) return resetOffline()
 
@@ -18,8 +20,5 @@ export const sendPasswordResetCode = async (code) => {
 
   credentialsHandler(result.data)
 
-  return {
-    status: response.status,
-    action: 'code'
-  }
+  return { status: response.status, route, action }
 }

@@ -49,6 +49,18 @@ class CustomersController {
     self.postMessage(await self.patchCustomer(request.key, request.data))
   }
 
+  async updateServiceCancelationDate (request) {
+    self.postMessage(await self.updateCustomerServiceCancelationDate(request.customerId, request.serviceId, request.date))
+  }
+
+  async updateServiceSuspensionDate (request) {
+    self.postMessage(await self.updateCustomerServiceSuspensionDate(request.customerId, request.serviceId, request.date))
+  }
+
+  async updateServiceResumingDate (request) {
+    self.postMessage(await self.updateCustomerServiceResumingDate(request.customerId, request.serviceId, request.date))
+  }
+
   async createCustomer (request) {
     self.postMessage(await self.createCustomer(request.data))
   }

@@ -12,7 +12,7 @@ export const createScheduleRecordsForCustomer = (customer, services) => {
   const result = []
 
   for (const record of records) {
-    const { id, status, modified, lots, installation } = record
+    const { id, status, modified, suspendDate, resumeDate, cancelDate, lots, installation } = record
 
     const service = services.find(item => item ? item._id === id : false)
 
@@ -27,6 +27,9 @@ export const createScheduleRecordsForCustomer = (customer, services) => {
       serviceType,
       status,
       modified,
+      suspendDate,
+      resumeDate,
+      cancelDate,
       lots,
       installation,
       request: requestType(record),

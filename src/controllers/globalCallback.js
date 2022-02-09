@@ -8,6 +8,7 @@ import {
   errorCallback,
   messageCallback,
   updatesCallback
+  // adminCallback
 } from '@/controllers/callbacks'
 
 import * as events from './events'
@@ -20,6 +21,8 @@ export const globalCallback = function (event) {
   if (error || message) error ? errorCallback(event) : messageCallback(event)
 
   if (action === 'init') return initCallback(event)
+
+  // if (route === 'admin') return adminCallback(event)
 
   if (action === 'initial-refresh') return refreshCallback(event)
 
