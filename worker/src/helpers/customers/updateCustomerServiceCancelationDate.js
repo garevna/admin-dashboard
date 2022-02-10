@@ -3,7 +3,7 @@ const [route, action] = ['customers', 'cancelation-date']
 export const updateCustomerServiceCancelationDate = async function (customerId, serviceId, canceledDate) {
   const response = await self.getCustomer(customerId)
 
-  if (response.status !== 200) return Object.assign(response, { errorMessage: 'Customer not found' })
+  if (response.status !== 200) return self.errorMessage('getCustomerDataError')
 
   const customer = response.result
 
@@ -13,11 +13,11 @@ export const updateCustomerServiceCancelationDate = async function (customerId, 
 
   Object.assign(customer.services[index], { modified: Date.now() }, { canceledDate })
 
-  self.postDebugMessage({ service: customer.services[index] })
+  const { status, result } = canceledDate <= new Date().toISOString().slice(0, 10)
+    ? await self.updateCustomerServiceStatus({ customerId, serviceId, canceledDate, status: 'Canceled' })
+    : await self.updateCustomerServiceStatus({ customerId, serviceId, canceledDate })
 
-  const { status, result } = await self.patchCustomer(customerId, { services: customer.services })
-
-  self.postDebugMessage({ route, action, result })
+  // const { status, result } = await self.patchCustomer(customerId, { services: customer.services })
 
   return { status, route, action, result }
 }

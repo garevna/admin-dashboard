@@ -15,7 +15,5 @@ export const updateCustomerServiceResumingDate = async function (customerId, ser
 
   const { status, result } = await self.patchCustomer(customerId, { services: customer.services })
 
-  self.postDebugMessage({ route, action, result })
-
   return { status, route, action, result }
 }

@@ -1,42 +1,32 @@
+const serviceProps = [
+  'id',
+  'status',
+  'lots',
+  'installation',
+  'activationDate',
+  'suspendDate',
+  'cancelDate',
+  'resumeDate',
+  'suspendedDate',
+  'canceledDate',
+  'resumedDate'
+]
+
+const getProps = (request, customerService) => serviceProps.map(key => ({ [key]: request[key] || customerService[key] || null }))
+
 export const updateCustomerServiceStatus = async function (request) {
-  const {
-    customerId,
-    serviceId,
-    status,
-    lots,
-    installation,
-    activationDate,
-    suspendDate,
-    cancelDate,
-    resumeDate,
-    suspendedDate,
-    canceledDate,
-    resumedDate
-  } = request.data ? request.data : request
+  const { customerId, serviceId } = request
 
-  const response = await self.getCustomer(customerId)
-
-  if (response.status !== 200) return Object.assign(response, { errorMessage: 'Customer not found' })
-
-  const customer = response.result
+  const { status, result: customer } = await self.getCustomer(customerId)
+  if (status !== 200) return self.errorMessage('getCustomerDataError')
 
   const index = customer.services.findIndex(service => service.id === serviceId)
-
   if (index === -1) return self.errorMessage('getCustomerServiceError')
 
-  Object.assign(customer.services[index], {
-    modified: Date.now(),
-    status,
-    lots,
-    installation,
-    activationDate,
-    suspendDate,
-    cancelDate,
-    resumeDate,
-    suspendedDate,
-    canceledDate,
-    resumedDate,
-    log: Object.assign(customer.services[index].log, { [Date.now()]: status })
+  const data = Object.assign({}, ...getProps(request, customer.services[index]))
+
+  Object.assign(customer.services[index], { modified: Date.now() }, data, {
+    log: Object.assign(customer.services[index].log, { [Date.now()]: data.status })
   })
 
   return await self.patchCustomer(customerId, { services: customer.services })

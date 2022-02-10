@@ -26,6 +26,8 @@
             v-model="localDate"
             scrollable
             color="primary"
+            :min="localMin"
+            :max="localMax"
           >
 
             <v-spacer />
@@ -62,7 +64,7 @@
 export default {
   name: 'SelectDateOfStatusChanging',
 
-  props: ['title', 'date', 'action'],
+  props: ['title', 'date', 'action', 'min', 'max'],
 
   data: () => ({
     menu: false,
@@ -70,6 +72,22 @@ export default {
   }),
 
   computed: {
+    localMin () {
+      return this.min
+        ? typeof this.min === 'string'
+          ? this.min
+          : new Date().toISOString().slice(0, 10)
+        : null
+    },
+
+    localMax () {
+      return this.max
+        ? typeof this.max === 'string'
+          ? this.max
+          : new Date().toISOString().slice(0, 10)
+        : null
+    },
+
     localDate: {
       get () {
         return this.date

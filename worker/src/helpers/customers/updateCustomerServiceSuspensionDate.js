@@ -1,7 +1,6 @@
 const [route, action] = ['customers', 'suspension-date']
 
 export const updateCustomerServiceSuspensionDate = async function (customerId, serviceId, suspendedDate) {
-  self.postDebugMessage({ customerId, serviceId, suspendedDate })
   const response = await self.getCustomer(customerId)
 
   if (response.status !== 200) return Object.assign(response, { errorMessage: 'Customer not found' })
@@ -15,8 +14,6 @@ export const updateCustomerServiceSuspensionDate = async function (customerId, s
   Object.assign(customer.services[index], { modified: Date.now() }, { suspendedDate })
 
   const { status, result } = await self.patchCustomer(customerId, { services: customer.services })
-
-  self.postDebugMessage({ route, action, result })
 
   return { status, route, action, result }
 }

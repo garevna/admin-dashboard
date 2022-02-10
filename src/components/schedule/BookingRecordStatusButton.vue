@@ -42,40 +42,49 @@
                 Set active from <b>{{ record.activationDate }}</b>
               </v-list-item-title>
             </v-list-item>
+
+            <!-- <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
+              <v-list-item-title>
+                {{ record.canceledDate }}/{{ record.cancelDate }}
+                <v-icon small color="#999">{{ record.canceledDate ? 'mdi-cog-pause' : 'mdi-calendar-question' }}</v-icon>
+                {{ record.canceledDate ? 'Will be canceled' : 'Request to cancel' }} <b class="ml-2">{{ record.canceledDate ? record.canceledDate : record.cancelDate }}</b>
+              </v-list-item-title>
+            </v-list-item> -->
+
+            <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspend = true">
+              <v-list-item-title v-if="record.suspendedDate">
+                <v-icon small color="#999">mdi-cog-pause</v-icon>
+                Will be suspended <b class="ml-2">{{ record.suspendedDate }}</b>
+              </v-list-item-title>
+              <v-list-item-title v-else>
+                <v-icon small color="#f50">mdi-calendar-question</v-icon>
+                Request to suspend <b class="ml-2">{{ record.suspendDate }}</b>
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
+              <v-list-item-title v-if="record.canceledDate">
+                <v-icon small color="#999">mdi-close-network</v-icon>
+                Will be canceled <b class="ml-2">{{ record.canceledDate }}</b>
+              </v-list-item-title>
+
+              <v-list-item-title v-else>
+                <v-icon small color="#900">mdi-calendar-question</v-icon>
+                Request to cancel <b class="ml-2">{{ record.cancelDate }}</b>
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item v-if="record.status === 'Awaiting to be resumed'" @click="resume = true">
+              <v-list-item-title v-if="record.resumedDate">
+                <v-icon small color="#999">mdi-history</v-icon>
+                Will be resumed <b class="ml-2">{{ record.resumedDate }}</b>
+              </v-list-item-title>
+              <v-list-item-title v-else>
+                <v-icon small color="#900">mdi-calendar-question</v-icon>
+                Request to resume <b class="ml-2">{{ record.resumeDate }}</b>
+              </v-list-item-title>
+            </v-list-item>
           </v-list>
-
-          <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspend = true">
-            <v-list-item-title v-if="record.suspendedDate">
-              <v-icon small color="#999">mdi-cog-pause</v-icon>
-              Will be suspended <b class="ml-2">{{ record.suspendedDate }}</b>
-            </v-list-item-title>
-            <v-list-item-title v-else>
-              <v-icon small color="#f50">mdi-calendar-question</v-icon>
-              Request to suspend <b class="ml-2">{{ record.suspendDate }}</b>
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
-            <v-list-item-title v-if="record.canceledDate">
-              <v-icon small color="#999">mdi-close-network</v-icon>
-              Will be canceled <b class="ml-2">{{ record.canceledDate }}</b>
-            </v-list-item-title>
-            <v-list-item-title v-else>
-              <v-icon small color="#900">mdi-calendar-question</v-icon>
-              Request to cancel <b class="ml-2">{{ record.cancelDate }}</b>
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item v-if="record.status === 'Awaiting to be resumed'" @click="resume = true">
-            <v-list-item-title v-if="record.resumedDate">
-              <v-icon small color="#999">mdi-history</v-icon>
-              Will be resumed <b class="ml-2">{{ record.resumedDate }}</b>
-            </v-list-item-title>
-            <v-list-item-title v-else>
-              <v-icon small color="#900">mdi-calendar-question</v-icon>
-              Request to resume <b class="ml-2">{{ record.resumeDate }}</b>
-            </v-list-item-title>
-          </v-list-item>
 
           <div v-if="suspend">
             <SelectDateOfStatusChanging
@@ -125,7 +134,7 @@ export default {
     SelectDateOfStatusChanging: () => import('@/components/schedule/SelectDateOfStatusChanging.vue')
   },
 
-  props: ['record', 'activated'],
+  props: ['record', 'activated', 'canceled', 'suspended', 'resumed'],
 
   data: () => ({
     activation: false,
@@ -172,44 +181,43 @@ export default {
 
     suspendSubmitted (value) {
       if (value) {
-        this.__approveServiceSuspension(this.record.customerId, this.record.serviceId, this.record.suspendedDate, this.getResponse)
-        this.suspend = false
-        this.suspendSubmitted = false
+        this.__approveServiceSuspension(this.record.customerId, this.record.serviceId, this.record.suspendedDate, this.getSuspendedResponse)
       }
     },
 
     resumeSubmitted (value) {
       if (value) {
-        this.__approveServiceResuming(this.record.customerId, this.record.serviceId, this.record.resumedDate, this.getResponse)
-        this.resume = false
-        this.resumeSubmitted = false
+        this.__approveServiceResuming(this.record.customerId, this.record.serviceId, this.record.resumedDate, this.getResumedResponse)
       }
     },
 
     cancelSubmitted (value) {
       if (value) {
-        this.__approveServiceCancelation(this.record.customerId, this.record.serviceId, this.record.canceledDate, this.getResponse)
-        this.cancel = false
-        this.cancelSubmitted = false
+        this.__approveServiceCancelation(this.record.customerId, this.record.serviceId, this.record.canceledDate, this.getCanceledResponse)
       }
     }
   },
 
   methods: {
-    getResponse (data) {
-      console.log('RESPONSE:\n', data)
+    getSuspendedResponse () {
+      // this.__refreshSchedule(this.scheduleRefreshed)
+      this.$emit('update:suspended', true)
+      this.suspend = false
+      this.suspendSubmitted = false
     },
 
-    confirmSuspension (date) {
-
+    getCanceledResponse () {
+      // this.__refreshSchedule(this.scheduleRefreshed)
+      this.$emit('update:canceled', true)
+      this.cancel = false
+      this.cancelSubmitted = false
     },
 
-    confirmCancelation (date) {
-
-    },
-
-    confirmResuming (date) {
-
+    getResumedResponse (data) {
+      // this.__refreshSchedule(this.scheduleRefreshed)
+      this.$emit('update:resumed', true)
+      this.resume = false
+      this.resumeSubmitted = false
     },
 
     changeRecordStatus (status) {

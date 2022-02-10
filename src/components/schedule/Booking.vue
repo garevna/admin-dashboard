@@ -19,7 +19,6 @@
                   <th>Customer unique code</th>
                   <th width="240">Service name</th>
                   <th width="360">Status</th>
-                  <!-- <th width="140"><small>Requested date</small></th> -->
                 </tr>
               </thead>
 
@@ -35,13 +34,14 @@
                     <p><small>{{ record.serviceName }}</small></p>
                   </td>
                   <td>
-                    <BookingRecordStatusButton :record.sync="record" :activated.sync="activated" />
+                    <BookingRecordStatusButton
+                      :record.sync="record"
+                      :activated.sync="activated"
+                      :suspended.sync="suspended"
+                      :canceled.sync="canceled"
+                      :resumed.sync="resumed"
+                    />
                   </td>
-                  <!-- <td>
-                    <p>
-                      <small>{{ getRequestedDate(record) }}</small>
-                    </p>
-                  </td> -->
                 </tr>
               </tbody>
             </table>
@@ -68,6 +68,9 @@ export default {
     booking: null,
     selected: null,
     activated: false,
+    suspended: false,
+    canceled: false,
+    resumed: false,
     status: null,
     ready: false,
     icons: {}
@@ -79,18 +82,28 @@ export default {
         this.__refreshSchedule(this.scheduleRefreshed)
         this.activated = false
       }
+    },
+    canceled (val) {
+      if (val) {
+        this.__refreshSchedule(this.scheduleRefreshed)
+        this.canceled = false
+      }
+    },
+    suspended (val) {
+      if (val) {
+        this.__refreshSchedule(this.scheduleRefreshed)
+        this.suspended = false
+      }
+    },
+    resumed (val) {
+      if (val) {
+        this.__refreshSchedule(this.scheduleRefreshed)
+        this.resumed = false
+      }
     }
   },
 
   methods: {
-    getRequestedDate (record) {
-      return record.status === 'Awaiting for cancelation'
-        ? record.cancelDate
-        : record.status === 'Awaiting to be suspended'
-          ? record.suspendDate
-          : (record.resumeDate || '')
-    },
-
     getData (booking) {
       this.panel = Object.keys(booking).map(value => Number(value))
 
@@ -147,11 +160,13 @@ export default {
 
   beforeDestroy () {
     this.$root.$off('customers-updates-received', this.getUpdates)
+    this.$root.$off('schedule-updates-received', this.getUpdates)
     this.$root.$off('service-delivery-status-updated', this.updated)
   },
 
   mounted () {
     this.$root.$on('customers-updates-received', this.getUpdates)
+    this.$root.$on('schedule-updates-received', this.getUpdates)
     this.$root.$on('service-delivery-status-updated', this.updated)
     this.$vuetify.goTo(0)
   }

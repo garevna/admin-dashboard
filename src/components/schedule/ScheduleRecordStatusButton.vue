@@ -20,26 +20,16 @@
               <v-list-item-title> Confirm </v-list-item-title>
             </v-list-item>
 
-            <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel">
+            <!-- <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel">
               <v-list-item-title> Cancel </v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
 
-            <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspension = true">
+            <!-- <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspension = true">
               <v-list-item-title> Suspend from: </v-list-item-title>
               <div v-if="suspension">
                 <SelectDateOfStatusChanging title="Suspension date" :date.sync="record.suspensionDate" />
-                <!-- <v-btn
-                  outlined
-                  small
-                  color="primary"
-                  :disabled="!record.suspensionDate"
-                  @click="suspend"
-                  width="270"
-                >
-                  Submit
-                </v-btn> -->
               </div>
-            </v-list-item>
+            </v-list-item> -->
 
             <v-list-item @click="activation = true">
               <v-list-item-title> Activate from date: </v-list-item-title>
@@ -139,9 +129,13 @@ export default {
         status: 'In job queue',
         modified: Date.now(),
         installation
-      }))
+      }), this.catchJobResponse)
 
       this.$root.$emit('move-record-to-job-queue', { customerId, serviceId, lots, installation })
+    },
+
+    catchJobResponse (data) {
+      console.log(data)
     },
 
     activate () {

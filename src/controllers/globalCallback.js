@@ -27,6 +27,10 @@ export const globalCallback = function (event) {
   if (action === 'initial-refresh') return refreshCallback(event)
 
   if (route === 'updates') return updatesCallback(event)
+  if (route === 'schedule' && action === 'updated') {
+    window[Symbol.for('vue.instance')].$root.$emit('schedule-updates-received', result.booking)
+    return
+  }
 
   window[Symbol.for('vue.instance')].$root.$emit('progress-event', false)
 

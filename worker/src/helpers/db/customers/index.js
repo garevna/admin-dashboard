@@ -5,11 +5,15 @@ import { updateStatistics } from './updateStatistics'
 import { refreshStatistics } from './refreshStatistics'
 import { getCustomersForExcel } from './getCustomersForExcel'
 
+import { getServicesToUpdateStatus } from './getServicesToUpdateStatus'
+
 export {
   getRecord,
   putRecord,
   iterateCustomers,
   updateStatistics,
   getCustomersForExcel,
-  refreshStatistics
+  refreshStatistics,
+
+  getServicesToUpdateStatus
 }

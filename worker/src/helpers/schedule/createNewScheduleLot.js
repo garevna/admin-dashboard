@@ -17,6 +17,8 @@ const error422 = Object.assign({}, error, {
 })
 
 export const createNewScheduleLot = async function (date, period = 'am') {
+  self.postDebugMessage({ newScheduleLot: { date, period } })
+
   const currentDate = new Date().toISOString().slice(0, 10)
   if (date < currentDate) return error422
 
@@ -27,6 +29,8 @@ export const createNewScheduleLot = async function (date, period = 'am') {
   if (!Object.keys(lots).includes(date)) lots[date] = { am: [], pm: [] }
 
   const settings = scheduleCalendarSettingsHandler()[self.getWeekDatesByWeekNumber(self.getWeekNumber(date))]
+
+  self.postDebugMessage({ settings })
 
   if (lots[date][period].length >= settings) {
     return Object.assign({}, error, {
