@@ -17,31 +17,113 @@
         </v-expansion-panel-header>
 
         <v-expansion-panel-content>
+          <table>
+            <tbody>
+              <tr>
+                <td class="pl-4">
+                  <v-btn
+                    text
+                    small
+                    v-if="record.status === 'Awaiting for connection' || record.status === 'Unable to connect'"
+                    @click="changeRecordStatus('Awaiting for scheduling')"
+                  >
+                    Awaiting for scheduling
+                  </v-btn>
+
+                  <v-btn
+                    text
+                    small
+                    v-if="record.status === 'Awaiting for connection'"
+                    @click="changeRecordStatus('Unable to connect')"
+                  >
+                    Unable to connect
+                  </v-btn>
+
+                  <v-btn
+                    text
+                    small
+                    v-if="record.status !== 'Active' && record.status !== 'Awaiting to be suspended' && record.status !== 'Awaiting for cancelation'"
+                    @click="activation = true"
+                  >
+                    Set active from <b>{{ record.activationDate }}</b>
+                  </v-btn>
+
+                  <v-btn
+                    text
+                    small
+                    v-if="record.status === 'Awaiting to be suspended'"
+                    @click="suspend = true"
+                  >
+                    <small v-if="record.suspendedDate">
+                      <v-icon small color="#999">mdi-cog-pause</v-icon>
+                      Will be suspended: <b class="ml-2">{{ record.suspendedDate }}</b>
+                    </small>
+                    <small v-else>
+                      <v-icon small color="#f50">mdi-calendar-question</v-icon>
+                      Request to suspend <b class="ml-2">{{ record.suspendDate }}</b>
+                    </small>
+                  </v-btn>
+
+                  <v-btn
+                    text
+                    small
+                    v-if="record.status === 'Awaiting for cancelation'"
+                    @click="cancel = true"
+                  >
+                    <small v-if="record.canceledDate">
+                      <v-icon small color="#999">mdi-cog-pause</v-icon>
+                      Will be canceled: <b class="ml-2">{{ record.canceledDate }}</b>
+                    </small>
+                    <small v-else>
+                      <v-icon small color="#f50">mdi-calendar-question</v-icon>
+                      Request to cancel <b class="ml-2">{{ record.cancelDate }}</b>
+                    </small>
+                  </v-btn>
+
+                  <v-btn
+                    text
+                    small
+                    v-if="record.status === 'Awaiting to be resumed'"
+                    @click="resume = true"
+                  >
+                    <small v-if="record.resumedDate">
+                      <v-icon small color="#999">mdi-cog-pause</v-icon>
+                      Will be resumed: <b class="ml-2">{{ record.resumedDate }}</b>
+                    </small>
+                    <small v-else>
+                      <v-icon small color="#f50">mdi-calendar-question</v-icon>
+                      Request to resume <b class="ml-2">{{ record.resumeDate }}</b>
+                    </small>
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <v-list dense>
-            <v-list-item
+            <!-- <v-list-item
               v-if="record.status === 'Awaiting for connection' || record.status === 'Unable to connect'"
               @click="changeRecordStatus('Awaiting for scheduling')"
             >
               <v-list-item-title>
                 Awaiting for scheduling
               </v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
 
-            <v-list-item
+            <!-- <v-list-item
               v-if="record.status === 'Awaiting for connection'"
               @click="changeRecordStatus('Unable to connect')"
             >
               <v-list-item-title>
                 Unable to connect
               </v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
 
-            <v-list-item v-if="record.status !== 'Active' && record.status !== 'Awaiting to be suspended' && record.status !== 'Awaiting for cancelation'" @click="activation = true">
+            <!-- <v-list-item v-if="record.status !== 'Active' && record.status !== 'Awaiting to be suspended' && record.status !== 'Awaiting for cancelation'" @click="activation = true">
               <v-list-item-title>
                 <v-icon small color="#900">mdi-connection</v-icon>
                 Set active from <b>{{ record.activationDate }}</b>
               </v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
 
             <!-- <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
               <v-list-item-title>
@@ -51,7 +133,7 @@
               </v-list-item-title>
             </v-list-item> -->
 
-            <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspend = true">
+            <!-- <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspend = true">
               <v-list-item-title v-if="record.suspendedDate">
                 <v-icon small color="#999">mdi-cog-pause</v-icon>
                 Will be suspended <b class="ml-2">{{ record.suspendedDate }}</b>
@@ -60,9 +142,9 @@
                 <v-icon small color="#f50">mdi-calendar-question</v-icon>
                 Request to suspend <b class="ml-2">{{ record.suspendDate }}</b>
               </v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
 
-            <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
+            <!-- <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
               <v-list-item-title v-if="record.canceledDate">
                 <v-icon small color="#999">mdi-close-network</v-icon>
                 Will be canceled <b class="ml-2">{{ record.canceledDate }}</b>
@@ -72,9 +154,9 @@
                 <v-icon small color="#900">mdi-calendar-question</v-icon>
                 Request to cancel <b class="ml-2">{{ record.cancelDate }}</b>
               </v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
 
-            <v-list-item v-if="record.status === 'Awaiting to be resumed'" @click="resume = true">
+            <!-- <v-list-item v-if="record.status === 'Awaiting to be resumed'" @click="resume = true">
               <v-list-item-title v-if="record.resumedDate">
                 <v-icon small color="#999">mdi-history</v-icon>
                 Will be resumed <b class="ml-2">{{ record.resumedDate }}</b>
@@ -83,7 +165,7 @@
                 <v-icon small color="#900">mdi-calendar-question</v-icon>
                 Request to resume <b class="ml-2">{{ record.resumeDate }}</b>
               </v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
 
           <div v-if="suspend">
@@ -91,6 +173,8 @@
               title="Suspension date"
               :date.sync="record.suspendedDate"
               :action.sync="suspendSubmitted"
+              :min="requestMinDate"
+              :max="requestMaxDate"
             />
           </div>
 
@@ -99,6 +183,8 @@
               title="Cancelation date"
               :date.sync="record.canceledDate"
               :action.sync="cancelSubmitted"
+              :min="requestMinDate"
+              :max="requestMaxDate"
             />
           </div>
 
@@ -107,6 +193,8 @@
               title="Service resume date"
               :date.sync="record.resumedDate"
               :action.sync="resumeSubmitted"
+              :min="requestMinDate"
+              :max="requestMaxDate"
             />
           </div>
 
@@ -115,6 +203,7 @@
               title="Activation date"
               :date.sync="record.activationDate"
               :action.sync="activationSubmitted"
+              :max="new Date().toISOString().slice(0, 10)"
             />
           </div>
         </v-expansion-panel-content>
@@ -158,7 +247,9 @@ export default {
       'In job queue': '#888',
       'Unable to connect': '#555',
       'Not connected': '#f00'
-    }
+    },
+    requestMinDate: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString().slice(0, 10),
+    requestMaxDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14).toISOString().slice(0, 10)
   }),
 
   computed: {
@@ -236,7 +327,7 @@ export default {
     },
 
     statusChanged (response) {
-      console.log('STATUS UPDATED:\n', response)
+      // console.log('STATUS UPDATED:\n', response)
     }
   }
 }

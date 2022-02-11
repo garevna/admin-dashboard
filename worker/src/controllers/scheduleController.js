@@ -28,7 +28,8 @@ class ScheduleController {
   }
 
   async updateRecord (record) {
-    self.postMessage(Object.assign(await self.updateCustomerServiceStatus(record), {
+    const request = record.data ? record.data : record
+    self.postMessage(Object.assign(await self.updateCustomerServiceStatus(request), {
       route: 'booking',
       action: 'update'
     }))

@@ -15,41 +15,30 @@
           </v-btn>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-list dense>
-            <v-list-item v-if="record.status === 'Awaiting for confirmation'" @click="confirm">
-              <v-list-item-title> Confirm </v-list-item-title>
-            </v-list-item>
-
-            <!-- <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel">
-              <v-list-item-title> Cancel </v-list-item-title>
-            </v-list-item> -->
-
-            <!-- <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspension = true">
-              <v-list-item-title> Suspend from: </v-list-item-title>
-              <div v-if="suspension">
-                <SelectDateOfStatusChanging title="Suspension date" :date.sync="record.suspensionDate" />
-              </div>
-            </v-list-item> -->
-
-            <v-list-item @click="activation = true">
-              <v-list-item-title> Activate from date: </v-list-item-title>
-            </v-list-item>
-
-            <v-list-item
-              v-if="record.status === 'Awaiting for confirmation'"
-              @click="reject"
-            >
-              <v-list-item-title>
-                Reject
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
+          <table>
+            <tbody>
+              <tr>
+                <td class="pl-4">
+                  <v-btn text small v-if="record.status === 'Awaiting for confirmation'" @click="confirm">
+                    Confirm
+                  </v-btn>
+                  <v-btn text small @click="activation = true">
+                    Activate from date:
+                  </v-btn>
+                  <v-btn text small v-if="record.status === 'Awaiting for confirmation'" @click="reject">
+                    Reject
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <div v-if="activation">
             <SelectDateOfStatusChanging
               title="Activation date"
               :date.sync="record.activationDate"
               :action.sync="submitActivation"
+              :max="new Date().toISOString()"
             />
           </div>
         </v-expansion-panel-content>

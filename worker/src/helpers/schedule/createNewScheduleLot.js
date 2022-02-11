@@ -30,8 +30,6 @@ export const createNewScheduleLot = async function (date, period = 'am') {
 
   const settings = scheduleCalendarSettingsHandler()[self.getWeekDatesByWeekNumber(self.getWeekNumber(date))]
 
-  self.postDebugMessage({ settings })
-
   if (lots[date][period].length >= settings) {
     return Object.assign({}, error, {
       status: 409,

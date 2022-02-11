@@ -1,6 +1,6 @@
 <template>
-  <v-card flat class="transparent">
-    <v-row class="mt-2">
+  <v-card flat class="transparent mx-auto">
+    <v-row class="mt-2" justify="center" align="center">
       <v-col>
         <v-dialog
           ref="dialog"
@@ -13,13 +13,31 @@
             <v-text-field
               v-model="localDate"
               :label="title"
-              prepend-icon="mdi-calendar"
+              prepend-inner-icon="mdi-calendar-search"
               readonly
               outlined
+              dense
+              hide-details
               v-bind="attrs"
               v-on="on"
               color="primary"
+              style="max-width: 180px; display: inline-block"
+              @click:append-outer="$emit('update:action', true)"
             ></v-text-field>
+
+            <v-btn
+              outlined
+              small
+              color="primary"
+              :disabled="!localDate"
+              @click="$emit('update:action', true)"
+              width="80"
+              height="40"
+              class="ml-2 mb-3"
+              style="display: inline-block"
+            >
+              Submit
+            </v-btn>
           </template>
 
           <v-date-picker
@@ -42,19 +60,6 @@
           </v-date-picker>
         </v-dialog>
       </v-col>
-    </v-row>
-
-    <v-row>
-      <v-btn
-        outlined
-        small
-        color="primary"
-        :disabled="!localDate"
-        @click="$emit('update:action', true)"
-        width="270"
-      >
-        Submit
-      </v-btn>
     </v-row>
   </v-card>
 </template>

@@ -14,8 +14,8 @@ import { credentialsHandler } from './env'
 
 const frequency = 30000
 
-// let startDate = new Date().toISOString().slice(0, 10)
-let startDate = '2022-02-09'
+let startDate = new Date().toISOString().slice(0, 10)
+// let startDate = '2022-02-09'
 let dateChanged = false
 
 export const getUpdatesFromRemote = async () => {
