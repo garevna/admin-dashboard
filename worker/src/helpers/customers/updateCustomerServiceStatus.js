@@ -9,7 +9,8 @@ const serviceProps = [
   'resumeDate',
   'suspendedDate',
   'canceledDate',
-  'resumedDate'
+  'resumedDate',
+  'connectionData'
 ]
 
 const getProps = (request, customerService) => serviceProps.map(key => ({ [key]: request[key] || customerService[key] || null }))

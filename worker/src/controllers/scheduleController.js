@@ -39,8 +39,8 @@ class ScheduleController {
     self.postMessage(await self.moveRecordToJobQueue(data.request))
   }
 
-  async activateService (data) {
-    self.postMessage(await self.setRecordStatusActive(data.request))
+  async activateService (request) {
+    self.postMessage(await self.setRecordStatusActive(request.record))
   }
 }
 

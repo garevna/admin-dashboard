@@ -34,6 +34,7 @@
           single-expand
           :expanded.sync="expanded"
           show-expand
+          @item-expanded="getCustomerServices"
         >
           <template v-slot:footer.prepend>
             <v-text-field
@@ -51,31 +52,11 @@
 
           <template v-slot:expanded-item="{ headers, item }">
             <td :colspan="headers.length" v-if="item.services.length" class="pa-4">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Service type</th>
-                    <th>Service name</th>
-                    <th>Service status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(service, index) of item.services" :key="index">
-                    <td style="border: solid 1px #ddd; padding: 0 8px">
-                      <small>{{ service.type }}</small>
-                    </td>
-                    <td style="border: solid 1px #ddd; padding: 0 8px">
-                      <small>{{ service.name }}</small>
-                    </td>
-                    <td style="border: solid 1px #ddd; padding: 0 8px">
-                      <v-icon :color="getIcon(service.status).color" small class="mr-1">
-                        {{ getIcon(service.status).icon }}
-                      </v-icon>
-                      <small>{{ service.status }}</small>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <CustomerServices
+                v-if="showCustomerServices"
+                :customerId="expanded[0].id"
+                :services="customerServices"
+              />
             </td>
           </template>
         </v-data-table>
@@ -108,6 +89,8 @@ export default {
   props: ['details', 'partner'],
 
   components: {
+    // ConnectionDataForActivation: () => import('@/components/schedule/ConnectionDataForActivation.vue'),
+    CustomerServices: () => import('@/components/customers/CustomerServices.vue'),
     CustomersFilters: () => import('@/components/customers/CustomersFilters.vue'),
     ShowCustomerDetails: () => import('@/components/customers/ShowCustomerDetails.vue')
     // CustomerDetails: () => import('@/components/customers/CustomerDetails.vue')
@@ -131,6 +114,11 @@ export default {
     hardRefresh: false,
 
     expanded: [],
+    customerServices: null,
+    showCustomerServices: false,
+    selectedService: null,
+    showConnectionData: false,
+    connectionDataUpdateSubmitted: false,
 
     headers: [
       { text: 'Created', value: 'customerCreationDate' },
@@ -146,6 +134,10 @@ export default {
   watch: {
     customerUpdated (val) {
 
+    },
+
+    expanded (val) {
+      // console.log('EXPANDED: ', val)
     },
 
     refresh (val) {
@@ -164,6 +156,12 @@ export default {
     edit (newVal, oldVal) {
       if (oldVal && !newVal) {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+      }
+    },
+
+    connectionDataUpdateSubmitted (val) {
+      if (val) {
+        this.connectionDataUpdateSubmitted = false
       }
     }
   },
@@ -203,22 +201,17 @@ export default {
     },
 
     getCustomersList (data) {
-      console.log(data.filter(item => !item.uniqueCode.indexOf('undefined')).map(item => item.id))
       this.customers = data
       this.ready = true
     },
-    getIcon (status) {
-      const colors = {
-        Active: '#090',
-        'Awaiting for connection': 'primary',
-        'Awaiting for confirmation': 'primary',
-        'Awaiting confirmation': 'primary',
-        'Awaiting for scheduling': '#999',
-        'In job queue': 'primary',
-        'Unable to connect': '#777',
-        'Not connected': '#f00'
-      }
-      return { icon: this.icons[status], color: colors[status] }
+
+    getCustomerServices ({ item }) {
+      this.__getCustomerServices(item.id, this.receiveCustomerServices)
+    },
+
+    receiveCustomerServices (data) {
+      this.customerServices = data
+      this.showCustomerServices = true
     },
 
     getData (data) {
@@ -229,10 +222,6 @@ export default {
     refreshed (data) {
       // !this.details ? this.__getCustomers(this.getData) : this.__getCustomersByResellerId(this.details._id, this.getData)
       this.sendRequest()
-    },
-
-    getIcons (data) {
-      this.icons = data
     },
 
     getEstimates (data) {
@@ -256,10 +245,23 @@ export default {
         this.sendRequest()
       }
     }
+
+    // editConnectionData (service) {
+    //   // this.__getCustomerData(customerHandler(), this.receiveCustomerDetails)
+    //   console.log(this.selectedCustomerId, customerHandler(), service)
+    //   this.selectedService = service
+    // },
+
+    // receiveCustomerDetails (details) {
+    //   console.log('CUSTOMER DETAILS:\n', details)
+    //   console.log(this.selectedService)
+    //
+    //   this.showConnectionData = true
+    // }
   },
 
   created () {
-    this.__getServiceStatusIcons(this.getIcons)
+    // this.__getServiceStatusIcons(this.getIcons)
     this.sendRequest()
   },
 

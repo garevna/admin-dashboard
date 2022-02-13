@@ -99,74 +99,6 @@
               </tr>
             </tbody>
           </table>
-          <v-list dense>
-            <!-- <v-list-item
-              v-if="record.status === 'Awaiting for connection' || record.status === 'Unable to connect'"
-              @click="changeRecordStatus('Awaiting for scheduling')"
-            >
-              <v-list-item-title>
-                Awaiting for scheduling
-              </v-list-item-title>
-            </v-list-item> -->
-
-            <!-- <v-list-item
-              v-if="record.status === 'Awaiting for connection'"
-              @click="changeRecordStatus('Unable to connect')"
-            >
-              <v-list-item-title>
-                Unable to connect
-              </v-list-item-title>
-            </v-list-item> -->
-
-            <!-- <v-list-item v-if="record.status !== 'Active' && record.status !== 'Awaiting to be suspended' && record.status !== 'Awaiting for cancelation'" @click="activation = true">
-              <v-list-item-title>
-                <v-icon small color="#900">mdi-connection</v-icon>
-                Set active from <b>{{ record.activationDate }}</b>
-              </v-list-item-title>
-            </v-list-item> -->
-
-            <!-- <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
-              <v-list-item-title>
-                {{ record.canceledDate }}/{{ record.cancelDate }}
-                <v-icon small color="#999">{{ record.canceledDate ? 'mdi-cog-pause' : 'mdi-calendar-question' }}</v-icon>
-                {{ record.canceledDate ? 'Will be canceled' : 'Request to cancel' }} <b class="ml-2">{{ record.canceledDate ? record.canceledDate : record.cancelDate }}</b>
-              </v-list-item-title>
-            </v-list-item> -->
-
-            <!-- <v-list-item v-if="record.status === 'Awaiting to be suspended'" @click="suspend = true">
-              <v-list-item-title v-if="record.suspendedDate">
-                <v-icon small color="#999">mdi-cog-pause</v-icon>
-                Will be suspended <b class="ml-2">{{ record.suspendedDate }}</b>
-              </v-list-item-title>
-              <v-list-item-title v-else>
-                <v-icon small color="#f50">mdi-calendar-question</v-icon>
-                Request to suspend <b class="ml-2">{{ record.suspendDate }}</b>
-              </v-list-item-title>
-            </v-list-item> -->
-
-            <!-- <v-list-item v-if="record.status === 'Awaiting for cancelation'" @click="cancel = true">
-              <v-list-item-title v-if="record.canceledDate">
-                <v-icon small color="#999">mdi-close-network</v-icon>
-                Will be canceled <b class="ml-2">{{ record.canceledDate }}</b>
-              </v-list-item-title>
-
-              <v-list-item-title v-else>
-                <v-icon small color="#900">mdi-calendar-question</v-icon>
-                Request to cancel <b class="ml-2">{{ record.cancelDate }}</b>
-              </v-list-item-title>
-            </v-list-item> -->
-
-            <!-- <v-list-item v-if="record.status === 'Awaiting to be resumed'" @click="resume = true">
-              <v-list-item-title v-if="record.resumedDate">
-                <v-icon small color="#999">mdi-history</v-icon>
-                Will be resumed <b class="ml-2">{{ record.resumedDate }}</b>
-              </v-list-item-title>
-              <v-list-item-title v-else>
-                <v-icon small color="#900">mdi-calendar-question</v-icon>
-                Request to resume <b class="ml-2">{{ record.resumeDate }}</b>
-              </v-list-item-title>
-            </v-list-item> -->
-          </v-list>
 
           <div v-if="suspend">
             <SelectDateOfStatusChanging
@@ -202,24 +134,33 @@
             <SelectDateOfStatusChanging
               title="Activation date"
               :date.sync="record.activationDate"
-              :action.sync="activationSubmitted"
+              :action.sync="activationInfoDialog"
               :max="new Date().toISOString().slice(0, 10)"
             />
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+
+    <ConnectionDataForActivation
+      v-if="activationInfoDialog"
+      :opened.sync="activationInfoDialog"
+      :data.sync="record.connectionData"
+      :submitted.sync="activationSubmitted"
+    />
   </v-card>
 </template>
 
 <script>
 
 import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
+import { serviceIconColors } from '@/configs/serviceIconColors'
 
 export default {
   name: 'BookingRecordStatusButton',
 
   components: {
+    ConnectionDataForActivation: () => import('@/components/schedule/ConnectionDataForActivation.vue'),
     SelectDateOfStatusChanging: () => import('@/components/schedule/SelectDateOfStatusChanging.vue')
   },
 
@@ -227,6 +168,7 @@ export default {
 
   data: () => ({
     activation: false,
+    activationInfoDialog: false,
     suspend: false,
     resume: false,
     cancel: false,
@@ -235,19 +177,7 @@ export default {
     resumeSubmitted: false,
     cancelSubmitted: false,
     icons: serviceStatusIconsHandler(),
-    colors: {
-      Active: '#09b',
-      'Awaiting for connection': 'primary',
-      'Awaiting for confirmation': 'primary',
-      'Awaiting to be suspended': 'primary',
-      'Awaiting to be resumed': 'primary',
-      'Awaiting for cancelation': 'primary',
-      'Awaiting confirmation': 'primary',
-      'Awaiting for scheduling': '#888',
-      'In job queue': '#888',
-      'Unable to connect': '#555',
-      'Not connected': '#f00'
-    },
+    colors: serviceIconColors,
     requestMinDate: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString().slice(0, 10),
     requestMaxDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14).toISOString().slice(0, 10)
   }),
@@ -264,9 +194,10 @@ export default {
   watch: {
     activationSubmitted (value) {
       if (value) {
-        this.activate()
+        this.activationInfoDialog = false
         this.activation = false
         this.activationSubmitted = false
+        this.activate()
       }
     },
 
@@ -291,21 +222,18 @@ export default {
 
   methods: {
     getSuspendedResponse () {
-      // this.__refreshSchedule(this.scheduleRefreshed)
       this.$emit('update:suspended', true)
       this.suspend = false
       this.suspendSubmitted = false
     },
 
     getCanceledResponse () {
-      // this.__refreshSchedule(this.scheduleRefreshed)
       this.$emit('update:canceled', true)
       this.cancel = false
       this.cancelSubmitted = false
     },
 
     getResumedResponse (data) {
-      // this.__refreshSchedule(this.scheduleRefreshed)
       this.$emit('update:resumed', true)
       this.resume = false
       this.resumeSubmitted = false
@@ -317,17 +245,16 @@ export default {
     },
 
     activate () {
-      this.$emit('update:record', Object.assign(this.record, { status: 'Active' }))
       this.__activateService(this.record, this.serviceActivated)
     },
 
     serviceActivated (response) {
-      this.activation = false
+      this.$emit('update:record', Object.assign(this.record, { status: 'Active' }))
       this.$emit('update:activated', true)
     },
 
     statusChanged (response) {
-      // console.log('STATUS UPDATED:\n', response)
+      console.log('STATUS UPDATED:\n', response)
     }
   }
 }

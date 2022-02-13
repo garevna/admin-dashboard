@@ -8,6 +8,8 @@ export const customers = {
   put: 'customer-updated',
   pagination: 'page-of-customers-received',
 
+  services: 'customer-services-received',
+
   'cancelation-date': 'customer-service-cancelation-date-updated',
   'suspension-date': 'customer-service-suspension-date-updated',
   'resuming-date': 'customer-service-resuming-date-updated',

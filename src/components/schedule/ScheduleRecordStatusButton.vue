@@ -37,24 +37,33 @@
             <SelectDateOfStatusChanging
               title="Activation date"
               :date.sync="record.activationDate"
-              :action.sync="submitActivation"
+              :action.sync="activationInfoDialog"
               :max="new Date().toISOString()"
             />
           </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+
+    <ConnectionDataForActivation
+      v-if="activationInfoDialog"
+      :opened.sync="activationInfoDialog"
+      :data.sync="record.connectionData"
+      :submitted.sync="activationSubmitted"
+    />
   </v-card>
 </template>
 
 <script>
 
 import { serviceStatusIconsHandler } from '@/controllers/data-handlers'
+import { serviceIconColors } from '@/configs/serviceIconColors'
 
 export default {
   name: 'ScheduleRecordStatusButton',
 
   components: {
+    ConnectionDataForActivation: () => import('@/components/schedule/ConnectionDataForActivation.vue'),
     SelectDateOfStatusChanging: () => import('@/components/schedule/SelectDateOfStatusChanging.vue')
   },
 
@@ -62,20 +71,10 @@ export default {
 
   data: () => ({
     activation: false,
-    submitActivation: false,
-    suspension: false,
-    cancelation: false,
+    activationInfoDialog: false,
+    activationSubmitted: false,
     icons: serviceStatusIconsHandler(),
-    colors: {
-      Active: '#09b',
-      'Awaiting for connection': 'primary',
-      'Awaiting for confirmation': 'primary',
-      'Awaiting confirmation': 'primary',
-      'Awaiting for scheduling': '#888',
-      'In job queue': '#888',
-      'Unable to connect': '#555',
-      'Not connected': '#f00'
-    }
+    colors: serviceIconColors
   }),
 
   computed: {
@@ -88,11 +87,16 @@ export default {
   },
 
   watch: {
-    submitActivation (value) {
+    activationInfoDialog (val) {
+      // console.log('activationInfoDialog: ', val)
+    },
+
+    activationSubmitted (value) {
       if (value) {
-        this.activate()
-        this.submitActivation = false
+        this.activationInfoDialog = false
+        this.activationSubmitted = false
         this.activation = false
+        this.activate()
       }
     }
   },
@@ -124,7 +128,7 @@ export default {
     },
 
     catchJobResponse (data) {
-      console.log(data)
+      // console.log(data)
     },
 
     activate () {

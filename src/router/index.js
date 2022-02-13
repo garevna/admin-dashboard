@@ -233,7 +233,7 @@ const routes = [
       },
       {
         path: '/tickets',
-        name: 'tickets',
+        name: 'tickets-all',
         component: () => import(/* webpackChunkName: 'tickets' */ '@/components/tickets/Tickets.vue'),
         children: [
           {

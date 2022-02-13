@@ -37,6 +37,10 @@ class CustomersController {
     self.postMessage(await self.getCustomer(request.key))
   }
 
+  async getCustomerServices (request) {
+    self.postMessage(await self.getCustomerServices(request.customerId))
+  }
+
   async deleteCustomer (request) {
     self.postMessage(await self.deleteCustomer(request.key))
   }
