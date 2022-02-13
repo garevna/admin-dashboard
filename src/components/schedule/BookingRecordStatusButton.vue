@@ -106,7 +106,6 @@
               :date.sync="record.suspendedDate"
               :action.sync="suspendSubmitted"
               :min="requestMinDate"
-              :max="requestMaxDate"
             />
           </div>
 

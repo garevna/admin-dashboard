@@ -43,9 +43,12 @@
           <v-date-picker
             v-model="localDate"
             scrollable
+            no-title
             color="primary"
             :min="localMin"
             :max="localMax"
+            :first-day-of-week="1"
+            class="pt-4"
           >
 
             <v-spacer />
@@ -72,7 +75,6 @@ export default {
   props: ['title', 'date', 'action', 'min', 'max'],
 
   data: () => ({
-    menu: false,
     modal: false
   }),
 
