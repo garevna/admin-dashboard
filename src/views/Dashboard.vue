@@ -48,8 +48,8 @@
               </v-list-item-title>
             </v-list-item-content>
 
-            <v-list-item-content v-else style="margin-left: -32px!important; margin-top: -12px!important; padding-bottom: 0; padding-right: 0">
-              <v-list-group sub-group prepend-icon="" style="margin-bottom: 16px!important">
+            <v-list-item-content v-else style="margin-left: -32px!important; margin-top: -12px!important; padding-bottom: 0; margin-bottom: 0; margin-right: 0">
+              <v-list-group sub-group prepend-icon="">
                 <template v-slot:activator>
                   <v-list-item-content>
                     <v-list-item-title active-class="active-list-item">
@@ -72,6 +72,7 @@
                     <span :style="{ color: $route.name === subChild.route ? '#900' : '#777' }">{{ subChild.title }}</span>
                   </v-list-item-title>
                 </v-list-item>
+                <div class="my-4"></div>
               </v-list-group>
             </v-list-item-content>
           </v-list-item>
@@ -184,6 +185,9 @@ export default {
   border: dotted 1px #900;
   background: #9007;
 }
+/* .active-list-items-group {
+  margin-bottom: 0px !important;
+} */
 .v-application--is-ltr .v-list-group--no-action > .v-list-group__items > .v-list-item {
   padding-left: 32px!important;
   min-height: 24px!important;
