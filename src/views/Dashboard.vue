@@ -54,7 +54,7 @@
                   <v-list-item-content>
                     <v-list-item-title active-class="active-list-item">
                       <v-icon small>{{ child.icon }}</v-icon>
-                      <small>{{ child.title }}</small>
+                      {{ child.title }}
                     </v-list-item-title>
                   </v-list-item-content>
                 </template>
@@ -69,7 +69,7 @@
                 >
                   <v-list-item-title>
                     <v-icon small :color="$route.name === subChild.route ? '#900' : '#777'">{{ subChild.icon }}</v-icon>
-                    <small :style="{ color: $route.name === subChild.route ? '#900' : '#777' }">{{ subChild.title }}</small>
+                    <span :style="{ color: $route.name === subChild.route ? '#900' : '#777' }">{{ subChild.title }}</span>
                   </v-list-item-title>
                 </v-list-item>
               </v-list-group>
