@@ -7,7 +7,6 @@ import {
 
 class CryptoController {
   init (request) {
-    self.postDebugMessage({ initRequest: request })
     self.postMessage(init(request.data))
   }
 
