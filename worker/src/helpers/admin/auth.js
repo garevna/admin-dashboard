@@ -1,5 +1,5 @@
 import { encrypt, /* decrypt, */ hash } from '../crypto'
-import { hostHandler, apiKeyHandler, credentialsHandler } from '../env'
+import { hostHandler, apiKeyHandler, credentialsHandler, roleHandler } from '../env'
 
 const [route, action] = ['admin', 'redirect']
 
@@ -27,7 +27,22 @@ export const auth = async (login, password) => {
 
   const result = await response.json()
 
-  if (response.status !== 200) return self.errorMessage('authError')
+  if (response.status !== 200) {
+    credentialsHandler('reset')
+    return self.errorMessage('authError')
+  }
+
+  roleHandler(result.data.role)
+
+  self.access = {
+    updates: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
+    messages: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
+    customers: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
+    buildings: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
+    services: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
+    tickets: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
+    schedule: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor'
+  }
 
   return {
     status: 200,

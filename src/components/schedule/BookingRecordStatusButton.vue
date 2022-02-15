@@ -253,7 +253,7 @@ export default {
     },
 
     statusChanged (response) {
-      console.log('STATUS UPDATED:\n', response)
+      // console.log('STATUS UPDATED:\n', response)
     }
   }
 }

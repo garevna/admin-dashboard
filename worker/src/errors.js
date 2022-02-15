@@ -38,6 +38,7 @@ export const credentialsError = {
 export const authError = {
   status: 401,
   route: 'admin',
+  action: 'redirect',
   errorType: 'DGtek admin authorization',
   errorMessage: 'Invalid login or password'
 }
@@ -49,9 +50,11 @@ export const authOffline = {
 }
 
 export const resetError = {
+  status: 500,
   route: 'admin',
+  action: 'reset',
   errorType: 'Reset password',
-  errorMessage: 'Operation failed'
+  errorMessage: 'Operation failed. User not found.'
 }
 
 export const resetOffline = {

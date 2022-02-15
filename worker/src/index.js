@@ -1,20 +1,7 @@
 import { routes } from './configs'
 import { serviceStatus } from './configs/serviceStatus'
-// import { credentialsHandler } from './helpers/env'
-
-// import {
-//   // getNotifications,
-//   getNotificationsAll,
-//   getCustomerUpdates,
-//   getTicketUpdates,
-//   getMessagesUpdates,
-//   getPartnerUpdates,
-//   getRegistrationUpdates,
-//   getBuildingUpdates
-// } from './helpers/updates'
 
 import { getUpdatesFromRemote } from './helpers/getUpdatesFromRemote'
-// import { dateChangeCallback } from './helpers/dateChangeCallback'
 
 import {
   getWeekNumber,
@@ -24,8 +11,6 @@ import {
   getWeekEndDateByWeekNumber,
   getWeekDatesByWeekNumber
 } from 'garevna-date-functions'
-
-// const { updatesController } = require('./controllers').default
 
 Object.assign(self, {
   getWeekNumber,
@@ -58,31 +43,15 @@ testDBVersion()
 
 self.initialized = false
 self.serviceStatus = serviceStatus
-
-// self.frequency = 30000
-
-// const getUpdatesFromRemote = async () => {
-//   if (credentialsHandler()) {
-//     const { result: fullListOfNotifications } = await getNotificationsAll()
-//     // const { result: currentDateNotifications } = await getNotifications()
-
-//     const response = await Promise.all([
-//       getCustomerUpdates(fullListOfNotifications),
-//       getTicketUpdates(fullListOfNotifications),
-//       getMessagesUpdates(fullListOfNotifications),
-//       getPartnerUpdates(fullListOfNotifications),
-//       getRegistrationUpdates(),
-//       getBuildingUpdates(fullListOfNotifications)
-//     ])
-
-//     const updates = Object.assign({}, ...response.map(item => ({ [item.action]: item.result })))
-
-//     self.postMessage({ status: 200, route: 'updates', action: 'get', result: updates })
-//   }
-//   setTimeout(getUpdatesFromRemote, self.frequency)
-// }
-
-// dateChangeCallback()
+self.access = {
+  updates: false,
+  messages: false,
+  customers: false,
+  buildings: false,
+  services: false,
+  tickets: false,
+  schedule: false
+}
 
 getUpdatesFromRemote()
 

@@ -3,7 +3,9 @@ import { admin } from '@/controllers/events'
 
 import { loginHandler, passwordHandler } from '@/controllers/data-handlers'
 
-export const auth = function (callback) {
+const [route, action] = ['admin', 'auth']
+
+export const auth = function (resolve, reject) {
   if (!loginHandler() || !passwordHandler()) {
     window[Symbol.for('vue.instance')].$root.$emit('open-error-popup', {
       errorType: 'Authorization',
@@ -13,11 +15,13 @@ export const auth = function (callback) {
   }
 
   window[Symbol.for('vue.prototype')].$sendMessageToWorker({
-    route: 'admin',
-    action: 'auth',
+    route,
+    action,
     login: loginHandler(),
     password: passwordHandler()
   })
 
-  eventsTable[admin.redirect] = callback
+  eventsTable[admin.redirect] = resolve
+  eventsTable[admin.failure] = reject
+  eventsTable[admin.auth] = reject
 }

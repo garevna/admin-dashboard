@@ -5,6 +5,7 @@ import { credentialsHandler } from './credentialsHandler'
 import { passwordHandler } from './passwordHandler'
 import { idHandler } from './idHandler'
 import { loginHandler } from './loginHandler'
+import { roleHandler } from './roleHandler'
 
 export {
   secretHandler,
@@ -13,5 +14,6 @@ export {
   credentialsHandler,
   passwordHandler,
   idHandler,
-  loginHandler
+  loginHandler,
+  roleHandler
 }

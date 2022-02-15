@@ -5,8 +5,6 @@ const [route, action] = ['schedule', 'updated']
 export const dateChangeCallback = async () => {
   const { result: services } = await getServicesToUpdateStatus()
 
-  self.postDebugMessage({ services })
-
   await Promise.all(services.map(service => self.updateCustomerServiceStatus({
     customerId: service.customerId,
     serviceId: service.serviceId,

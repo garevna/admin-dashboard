@@ -105,10 +105,12 @@ export default {
     },
 
     resetCallback (event) {
-      if (event.data.action !== 'reset' || event.data.status === 300) return
-      if (event.data.status !== 200) return this.$emit('update:opened', false)
-      this.__worker.removeEventListener('message', this.resetCallback)
-      this.codeDialog = event.data.status === 200
+      this.codeDialog = true
+    },
+
+    resetFailure (event) {
+      this.codeDialog = false
+      this.dialog = false
     },
 
     codeCallback (event) {
@@ -127,12 +129,7 @@ export default {
   },
 
   mounted () {
-    this.__worker.addEventListener('message', this.resetCallback)
-    this.$root.$sendMessageToWorker({
-      route: 'admin',
-      action: 'reset',
-      login: loginHandler()
-    })
+    this.__resetPassword(loginHandler(), this.resetCallback, this.resetFailure)
   }
 }
 </script>

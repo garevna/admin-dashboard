@@ -15,11 +15,12 @@ import { credentialsHandler } from './env'
 const frequency = 30000
 
 let startDate = new Date().toISOString().slice(0, 10)
-// let startDate = '2022-02-09'
 let dateChanged = false
 
+const [route, action] = ['updates', 'get']
+
 export const getUpdatesFromRemote = async () => {
-  if (credentialsHandler()) {
+  if (credentialsHandler() && self.access.updates) {
     const currentDate = new Date().toISOString().slice(0, 10)
     dateChanged = currentDate > startDate
 
@@ -40,7 +41,7 @@ export const getUpdatesFromRemote = async () => {
 
     const updates = Object.assign({}, ...response.map(item => ({ [item.action]: item.result })))
 
-    self.postMessage({ status: 200, route: 'updates', action: 'get', result: updates })
+    self.postMessage({ status: 200, route, action, result: updates })
   }
   setTimeout(getUpdatesFromRemote, frequency)
 }

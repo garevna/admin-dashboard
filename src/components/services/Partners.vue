@@ -72,7 +72,7 @@ export default {
 
   methods: {
     getName (id) {
-      return this.partners ? this.partners.find(item => item.id === id).text : ''
+      return this.partners ? this.partners.find(item => item.id === id)?.text : 'Partner is not available.'
     },
 
     getPartnersList (data) {

@@ -34,6 +34,7 @@ class BuildingController {
   }
 
   async postFile (request) {
+    if (!self.access.buildings) return { status: 403 }
     const [route, action] = ['files', 'create']
     const { buildingId, section, data } = request
     // if (!buildingId) return self.postMessage(Object.assign(buildingIdError, { route, action, buildingId }))

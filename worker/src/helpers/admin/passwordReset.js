@@ -26,6 +26,6 @@ export const passwordReset = async (login) => {
     status: response.status,
     route,
     action,
-    result
+    result: result.data
   }
 }

@@ -7,14 +7,14 @@
 
       <v-row class="my-5 mx-2 mr-12">
         <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Search"
-            single-line
-            dense
-            outlined
-            hide-details
-            style="display: inline-block; width: 280px"
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          dense
+          outlined
+          hide-details
+          style="display: inline-block; width: 280px"
        ></v-text-field>
 
        <v-spacer />

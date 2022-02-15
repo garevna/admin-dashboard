@@ -115,7 +115,7 @@ export default {
       passwordHandler(value)
     },
 
-    showResult (result) {
+    authSuccess (result) {
       roleHandler(result.role)
       credentialsHandler(result.credentials)
 
@@ -127,8 +127,14 @@ export default {
       this.$router.push({ name: 'dash' }).catch(failure => console.warn('Router failure:\n', failure))
     },
 
+    authFailure (result) {
+      roleHandler(null)
+      credentialsHandler(null)
+      this.step = 1
+    },
+
     async signIn () {
-      this.__auth(this.showResult)
+      this.__auth(this.authSuccess, this.authFailure)
       this.step = 1
     }
   }

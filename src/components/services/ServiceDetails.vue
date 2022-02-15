@@ -227,15 +227,11 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    //
-  },
-
   mounted () {
     this.service = JSON.parse(JSON.stringify(serviceSchema))
 
-    this.serviceId && this.__getServiceDetails(this.serviceId, this.getData)
-    this.ready = Boolean(this.serviceId)
+    if (this.serviceId) this.__getServiceDetails(this.serviceId, this.getData)
+    else this.ready = true
 
     this.$vuetify.goTo(0)
   }
