@@ -1,6 +1,7 @@
 <template>
   <v-switch
     v-model="localValue"
+    :false-value="states[0]"
     inset
     :hint="`${states[0]}/${states[1]}`"
     persistent-hint

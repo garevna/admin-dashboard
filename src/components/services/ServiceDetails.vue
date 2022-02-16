@@ -37,7 +37,7 @@
               <td v-if="prop.type === 'switcher'" width="*">
                 <SwitchValues
                   label="Residential/commercial"
-                  :value.sync="service.serviceType.value"
+                  :value.sync="service.serviceType"
                   :states="['residential', 'commercial']"
                   hide-details
                   class="mb-8"
@@ -96,20 +96,6 @@
       <v-row justify="center">
         <ShowPDF :id.sync="serviceSLA" :save.sync="updateSLA" />
       </v-row>
-
-      <!-- <v-row justify="start" class="mt-12 mr-12">
-        <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
-        <v-spacer />
-        <v-btn
-          v-if="serviceSLA !== service.serviceSLA"
-          text
-          dark
-          class="primary"
-          @click="saveServiceSLA"
-        >
-          UPDATE SLA
-        </v-btn>
-      </v-row> -->
     </v-container>
   </v-container>
 </template>
@@ -137,9 +123,6 @@ export default {
     service: null,
     schema: JSON.parse(JSON.stringify(serviceSchema)),
     updateSLA: false,
-    // partnersList: [],
-    // serviceSLA: '',
-    // selectedId: null,
     rules: rules,
     ready: false,
 
@@ -195,6 +178,7 @@ export default {
       this.service = data
       this.partnersList = data.partners
       for (const prop in this.schema) {
+        if (prop === 'serviceType') continue
         this.schema[prop].value = data[prop]
       }
 
@@ -203,6 +187,7 @@ export default {
 
     saveServiceDetails () {
       for (const prop in this.schema) {
+        if (prop === 'serviceType') continue
         this.service[prop] = this.schema[prop].value
       }
 
