@@ -21,6 +21,15 @@ export const customers = {
         change: ['Account_manager', 'SuperAdmin'],
         read: ['View_only']
       }
+    },
+    {
+      title: 'Import from text file',
+      route: 'import-customers',
+      icon: 'mdi-database-import',
+      access: {
+        change: ['Account_manager', 'SuperAdmin'],
+        read: ['View_only']
+      }
     }
   ]
 }

@@ -17,6 +17,14 @@ class ServicesController {
     self.postMessage(await self.getServiceDetails(request.key))
   }
 
+  async search (request) {
+    self.postMessage(await self.getServiceIdByServiceName(request.serviceName))
+  }
+
+  async groupSearch (request) {
+    self.postMessage(await self.getServicesByNames(request.serviceNames))
+  }
+
   async createNewSLA (request) {
     self.postMessage(await self.createNewSLA(request.record))
   }

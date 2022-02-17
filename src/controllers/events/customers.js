@@ -5,6 +5,7 @@ export const customers = {
   'filtered-short-list': 'customers-filtered-short-list-received',
   get: 'customer-data-received',
   post: 'customer-created',
+  save: 'group-of-customers-saved',
   put: 'customer-updated',
   pagination: 'page-of-customers-received',
 

@@ -3,9 +3,11 @@ export const services = {
   list: 'services-full-list-received',
   names: 'list-of-service-names-received',
   get: 'service-data-received',
+  search: 'service-search-result-received',
   put: 'service-data-updated',
   patch: 'service-details-updated',
   'patch-group': 'group-of-services-updated',
+  'group-search': 'group-search-result-received',
   post: 'new-service-created',
   delete: 'service-deleted'
 }

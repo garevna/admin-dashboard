@@ -23,6 +23,8 @@ import { deleteRecordByKey } from './deleteRecordByKey'
 
 import { countRecords } from './countRecords'
 
+import { searchServiceByName } from './searchServiceByName'
+
 export {
   dbName,
   storeNames,
@@ -34,6 +36,8 @@ export {
   testDBVersion,
   upgradeNeededEventHandler,
   upgradeDB,
+
+  searchServiceByName,
 
   clearStore,
   putRecordByKey,

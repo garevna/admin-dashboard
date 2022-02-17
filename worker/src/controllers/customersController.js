@@ -69,6 +69,10 @@ class CustomersController {
     self.postMessage(await self.createCustomer(request.data))
   }
 
+  async saveCustomers (request) {
+    self.postMessage(await self.saveGroupOfCustomers(request.customers))
+  }
+
   async hardRefresh () {
     self.postMessage(await self.hardCustomersRefresh())
   }
