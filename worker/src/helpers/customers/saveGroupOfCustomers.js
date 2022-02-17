@@ -1,4 +1,4 @@
-import { post } from '../AJAX'
+import { post, patch } from '../AJAX'
 import { putRecordByKey } from '../db'
 import { sendNotification } from '../updates'
 
@@ -11,13 +11,13 @@ export const saveGroupOfCustomers = async function (customers) {
 
   customers.forEach((customer, index) => Object.assign(customer, { _id: result[index] }))
 
-  // self.postDebugMessage({ customers })
+  self.postDebugMessage({ resellerId: customers.map(item => item.resellerId) })
+
+  await Promise.all(customers.map(customer => patch(`customer/${customer._id}`, { resellerId: customer.resellerId })))
 
   await Promise.all(customers.map(customer => putRecordByKey('customers', customer._id, customer)))
 
   await Promise.all(customers.map(customer => sendNotification(customer.resellerId, 'customer', customer._id)))
-
-  // self.postDebugMessage({ notifications: await Promise.all(promises) })
 
   return {
     status: 200,
