@@ -8,7 +8,7 @@ export const searchBuildingsByAddress = async function (addressList, resolve) {
   for (const address of addressList) {
     const index = addressList.indexOf(address)
     const building = await createPromise(index, address)
-    result[index] = building._id
+    result[index] = building ? building._id : null
   }
 
   resolve(result)

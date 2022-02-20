@@ -11,8 +11,6 @@ export const saveGroupOfCustomers = async function (customers) {
 
   customers.forEach((customer, index) => Object.assign(customer, { _id: result[index] }))
 
-  self.postDebugMessage({ resellerId: customers.map(item => item.resellerId) })
-
   await Promise.all(customers.map(customer => patch(`customer/${customer._id}`, { resellerId: customer.resellerId })))
 
   await Promise.all(customers.map(customer => putRecordByKey('customers', customer._id, customer)))

@@ -1,57 +1,65 @@
 <template>
-  <v-card flat class="transparent mx-auto" max-width="600" v-if="ready">
-    <table class="mb-12">
-      <thead>
-        <tr>
-          <th width="320">Partner</th>
-          <th colspan="2">PWD</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <v-select
-              :items="partners"
-              label="Select partner"
-              v-model="partnerId"
-              item-text="name"
-              item-value="id"
-              outlined
-              hide-details
-            />
-          </td>
-          <td>
-            <v-text-field label="PPPOE" v-model="PWD.PPPOE" hide-details outlined />
-          </td>
-          <td>
-            <v-text-field label="IPoE" v-model="PWD.IPoE" hide-details outlined />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <v-card flat class="transparent mx-auto" max-width="480" v-if="ready">
+    <h5><small>Partner</small></h5>
+    <v-select
+      :items="partners"
+      label="Select partner"
+      v-model="partnerId"
+      item-text="name"
+      item-value="id"
+      outlined
+      hide-details
+      :disabled="partnerSelectDisabled"
+    />
 
-    <v-card-text class="text-center" v-if="partnerId">
+    <v-card-text class="text-center">
       <h5><small>Pick the text file with customer data</small></h5>
-      <v-file-input @change="readFile" hide-details outlined dense  />
+      <v-file-input :disabled="fileSelectDisabled" @change="readFile" hide-details outlined dense  />
     </v-card-text>
 
-    <v-card-text class="my-12" v-if="readyToShow">
-      <v-btn dark color="primary" @click="show = true"> Test result </v-btn>
-      <v-btn v-if="!fatal" outlined color="primary" @click="save"> Save results </v-btn>
+    <v-card-text class="text-center my-12" v-if="readyToShow">
+      <v-btn
+        v-if="!Object.keys(fatalErrors).length && !Object.keys(errors).length"
+        dark
+        class="mr-12"
+        color="primary"
+        @click="save"
+      >
+        Save results
+      </v-btn>
+
+      <v-btn
+        outlined
+        class="ml-12"
+        color="primary"
+        @click="exit"
+      >
+        Exit
+      </v-btn>
+    </v-card-text>
+
+    <v-card-text class="text-center my-12" v-if="readyToShow">
       <div v-if="show">
-        <div v-if="fatal">
-          <h5 class="my-4" v-if="fatal"><small style="color: #f00">Fatal errors:</small></h5>
-          <div v-for="(error, index) of fatalErrors" :key="index">
-            {{ error }}
-          </div>
-          <h5 class="my-4"><small style="color: #f50">Warnings:</small></h5>
-          <div v-for="(error, index) of errors" :key="index">
-            {{ error }}
-          </div>
-        </div>
-        <h5 class="my-4" v-else>
-          <small style="color: #09b">OK</small>
-        </h5>
+        <ImportCustomersErrorsList
+          v-if="fatalErrors.length"
+          title="Fatal errors:"
+          type="fatal"
+          :items="fatalErrors"
+        />
+
+        <ImportCustomersErrorsList
+          v-if="errors.length"
+          title="Errors:"
+          type="error"
+          :items="errors"
+        />
+
+        <ImportCustomersErrorsList
+          v-if="warnings.length"
+          title="Warnings:"
+          type="warning"
+          :items="warnings"
+        />
       </div>
     </v-card-text>
   </v-card>
@@ -62,6 +70,10 @@
 export default {
   name: 'ImportCustomers',
 
+  components: {
+    ImportCustomersErrorsList: () => import('@/components/customers/ImportCustomersErrorsList.vue')
+  },
+
   data: () => ({
     ready: false,
     buildingsReady: false,
@@ -71,24 +83,32 @@ export default {
     partnerId: null,
     customers: null,
     PWD: { PPPOE: '', IPoE: '' },
-    errors: [],
-    fatalErrors: []
+
+    errors: {},
+    fatalErrors: {},
+    warnings: {},
+
+    fileSelectDisabled: true,
+    partnerSelectDisabled: false
   }),
 
   computed: {
     readyToShow () {
       return this.buildingsReady && this.servicesReady
-    },
-
-    fatal () {
-      return !!(this.fatalErrors.length || this.errors.length)
     }
   },
 
   watch: {
+    partnerId (val) {
+      this.fileSelectDisabled = !val
+    },
+
     readyToShow (val) {
-      this.$root.$dispatchProgressEvent(false)
+      if (!val) return
+      this.$root.$emit('progress-event', false)
       this.testForErrors()
+      this.testForWarnings()
+      this.show = true
     }
   },
 
@@ -99,11 +119,13 @@ export default {
     },
 
     getBuildingsData (data) {
+      this.$root.$dispatchProgressEvent(true)
       this.customers.forEach((customer, index) => Object.assign(customer, { buildingId: data[index] }))
       this.buildingsReady = true
     },
 
     servicesReceived (data) {
+      this.$root.$dispatchProgressEvent(true)
       this.customers.forEach((customer, index) => Object.assign(customer.services[0], { id: data[index] }))
       this.servicesReady = true
     },
@@ -148,6 +170,8 @@ export default {
     },
 
     async readFile (file) {
+      this.fileSelectDisabled = true
+      this.partnerSelectDisabled = true
       this.$root.$dispatchProgressEvent(true)
       this.customers = []
 
@@ -175,35 +199,59 @@ export default {
           phoneMobile: customer.phoneMobile || '',
           phoneWork: customer.phoneWork || '',
           postCode: customer.postCode || '',
-          services: this.getServices(customer)
+          services: this.getServices(customer),
+          serviceName: customer.serviceName
         })
       }
 
       this.__searchBuildingsByAddress(customers.map(customer => customer.address), this.getBuildingsData)
       this.__searchServicesByNames(customers.map(customer => customer.serviceName), this.servicesReceived)
+      this.$root.$dispatchProgressEvent(true)
     },
 
     testForErrors () {
       this.fatalErrors = []
       this.errors = []
+
       this.customers.forEach(customer => {
         const errors = ['uniqueCode', 'firstName', 'lastName', 'primaryEmail', 'phoneMobile', 'postCode']
           .filter(key => !customer[key])
-          .map(key => `${customer.address} error: ${key} required`)
+          .map(key => ({ address: customer.address, error: `${key} required` }))
 
         this.errors.push(...errors)
 
-        if (!customer.services[0].id) this.fatalErrors.push(`${customer.address} fatal error: service ${customer.serviceName} not found!`)
-        if (!customer.buildingId) this.fatalErrors.push(`${customer.address} fatal error: building not found!`)
+        if (!customer.services[0].id) this.fatalErrors.push({ address: customer.address, error: `Service ${customer.serviceName} not found!` })
+        if (!customer.buildingId) this.fatalErrors.push({ address: customer.address, error: 'building not found!' })
+      })
+    },
+
+    testForWarnings () {
+      this.warnings = []
+
+      this.customers.forEach(customer => {
+        const warnings = ['customerCreationDate', 'IP', 'Speed In', 'Speed Out', 'Routed subnet', 'VLAN DGtek', 'VLAN RSP']
+          .filter(key => !customer[key])
+          .map(key => ({ address: customer.address, warning: `${key} not defined` }))
+
+        this.warnings.push(...warnings)
       })
     },
 
     save () {
-      this.__saveCustomers(this.customers, this.showResult)
+      this.customers.forEach(customer => { delete customer.serviceName })
+      this.__saveCustomers(this.customers, this.exit)
     },
 
-    showResult (data) {
-      console.log(data)
+    newImport () {
+      [this.buildingsReady, this.servicesReady, this.show] = [false, false, false];
+      [this.customers, this.partners, this.partnerId] = [null, null, null];
+      [this.errors, this.fatalErrors, this.warnings] = [[], [], []]
+      this.PWD = { PPPOE: '', IPoE: '' };
+      [this.fileSelectDisabled, this.partnerSelectDisabled] = [true, false]
+    },
+
+    exit (data) {
+      this.$router.push({ name: 'customers' })
     }
   },
 

@@ -31,9 +31,9 @@
           }"
           @pagination="pagination"
           :items-per-page.sync="rowsPerPage"
+          show-expand
           single-expand
           :expanded.sync="expanded"
-          show-expand
           @item-expanded="getCustomerServices"
         >
           <template v-slot:footer.prepend>
@@ -132,14 +132,6 @@ export default {
   }),
 
   watch: {
-    customerUpdated (val) {
-
-    },
-
-    expanded (val) {
-      // console.log('EXPANDED: ', val)
-    },
-
     refresh (val) {
       if (!val) return
       this.__refreshCustomersWithPagination(this.refreshed)
@@ -205,8 +197,10 @@ export default {
       this.ready = true
     },
 
-    getCustomerServices ({ item }) {
-      this.__getCustomerServices(item.id, this.receiveCustomerServices)
+    getCustomerServices ({ item, value }) {
+      this.showCustomerServices = value
+      if (!value) return
+      value && this.__getCustomerServices(item.id, this.receiveCustomerServices)
     },
 
     receiveCustomerServices (data) {
@@ -245,23 +239,9 @@ export default {
         this.sendRequest()
       }
     }
-
-    // editConnectionData (service) {
-    //   // this.__getCustomerData(customerHandler(), this.receiveCustomerDetails)
-    //   console.log(this.selectedCustomerId, customerHandler(), service)
-    //   this.selectedService = service
-    // },
-
-    // receiveCustomerDetails (details) {
-    //   console.log('CUSTOMER DETAILS:\n', details)
-    //   console.log(this.selectedService)
-    //
-    //   this.showConnectionData = true
-    // }
   },
 
   created () {
-    // this.__getServiceStatusIcons(this.getIcons)
     this.sendRequest()
   },
 
