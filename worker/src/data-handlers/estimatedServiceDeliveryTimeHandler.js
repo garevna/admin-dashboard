@@ -1,7 +1,6 @@
-export const estimatedServiceDeliveryTimeHandler = (function () {
-  let estimatedServiceDeliveryTime = {}
-  return function (data) {
-    if (data) estimatedServiceDeliveryTime = data
-    else return estimatedServiceDeliveryTime
-  }
-})()
+let estimatedServiceDeliveryTime = {}
+
+export const estimatedServiceDeliveryTimeHandler = function (data) {
+  if (!data) return estimatedServiceDeliveryTime
+  estimatedServiceDeliveryTime = data
+}

@@ -9,6 +9,7 @@ import { uniqueCodesHandler } from './uniqueCodesHandler'
 import { availableServiceStatusHandler } from './availableServiceStatusHandler'
 import { pendingConnectionStatusHandler } from './pendingConnectionStatusHandler'
 import { serviceStatusIconsHandler } from './serviceStatusIconsHandler'
+import { buildingSettingsHandler } from './buildingSettingsHandler'
 
 import { messagesHandler } from './messagesHandler'
 
@@ -21,6 +22,7 @@ export {
   availableServiceStatusHandler,
   pendingConnectionStatusHandler,
   serviceStatusIconsHandler,
+  buildingSettingsHandler,
 
   uniqueCodeListHandler,
   uniqueCodesHandler,

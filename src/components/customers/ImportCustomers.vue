@@ -38,7 +38,7 @@
       </v-btn>
     </v-card-text>
 
-    <v-card-text class="text-center my-12" v-if="readyToShow">
+    <v-card-text class="my-12" v-if="readyToShow">
       <div v-if="show">
         <ImportCustomersErrorsList
           v-if="fatalErrors.length"
@@ -67,6 +67,23 @@
 
 <script>
 
+const connectionDataFields = {
+  Login: {
+    PPPOE: 'login_PPPOE',
+    IPoE: 'login_IPoE'
+  },
+  PWD: {
+    PPPOE: 'pwd_PPPOE',
+    IPoE: 'pwd_IPoE'
+  },
+  IP: 'IP',
+  'Speed In': 'Speed in',
+  'Speed Out': 'Speed out',
+  'Routed subnet': 'Routed subnet',
+  'VLAN DGtek': 'VLAN DGtek',
+  'VLAN RSP': 'VLAN RSP'
+}
+
 export default {
   name: 'ImportCustomers',
 
@@ -82,7 +99,6 @@ export default {
     partners: null,
     partnerId: null,
     customers: null,
-    PWD: { PPPOE: '', IPoE: '' },
 
     errors: {},
     fatalErrors: {},
@@ -138,19 +154,20 @@ export default {
     },
 
     getConnectionData (customer) {
-      return {
-        Login: {
-          PPPOE: 'CRN@RSP',
-          IPoE: 'port@fttp.dgtek.net'
-        },
-        PWD: customer.PPPOE ? Object.assign({}, this.PWD, { PPPOE: customer.PPPOE }) : this.PWD,
-        'Speed In': customer['Speed in'] || '',
-        'Speed Out': customer['Speed Out'] || '',
-        IP: customer.IP || '',
-        'Routed subnet': customer['Routed subnet'] || '',
-        'VLAN DGtek': customer['VLAN DGtek'] || '',
-        'VLAN RSP': customer['VLAN RSP'] || ''
+      const result = {}
+
+      for (const field in connectionDataFields) {
+        if (typeof connectionDataFields[field] === 'string') {
+          Object.assign(result, { [field]: customer[connectionDataFields[field]] })
+        } else {
+          for (const prop in connectionDataFields[field]) {
+            if (!result[field]) result[field] = {}
+            Object.assign(result[field], { [prop]: customer[connectionDataFields[field][prop]] })
+          }
+        }
       }
+
+      return result
     },
 
     getServices (customer) {
@@ -214,9 +231,11 @@ export default {
       this.errors = []
 
       this.customers.forEach(customer => {
+        const address = `${customer.apartmentNumber}/${customer.address}`
+
         const errors = ['uniqueCode', 'firstName', 'lastName', 'primaryEmail', 'phoneMobile', 'postCode']
           .filter(key => !customer[key])
-          .map(key => ({ address: customer.address, error: `${key} required` }))
+          .map(key => ({ address, error: `${key} required` }))
 
         this.errors.push(...errors)
 
@@ -225,29 +244,33 @@ export default {
       })
     },
 
+    createWarning (address, propName) {
+      this.warnings.push({ address, warning: `${propName} not defined` })
+    },
+
     testForWarnings () {
       this.warnings = []
 
-      this.customers.forEach(customer => {
-        const warnings = ['customerCreationDate', 'IP', 'Speed In', 'Speed Out', 'Routed subnet', 'VLAN DGtek', 'VLAN RSP']
-          .filter(key => !customer[key])
-          .map(key => ({ address: customer.address, warning: `${key} not defined` }))
+      for (const customer of this.customers) {
+        const address = `${customer.apartmentNumber}/${customer.address}`
 
-        this.warnings.push(...warnings)
-      })
+        if (!customer.customerCreationDate) this.createWarning(address, 'customerCreationDate')
+
+        for (const propName in connectionDataFields) {
+          if (propName === 'Login' || propName === 'PWD') {
+            ['PPPOE', 'IPoE']
+              .filter(key => !customer.services[0].connectionData[propName][key])
+              .forEach(key => this.createWarning(address, connectionDataFields[propName][key]))
+          } else {
+            !customer.services[0].connectionData[propName] && this.createWarning(address, connectionDataFields[propName])
+          }
+        }
+      }
     },
 
     save () {
       this.customers.forEach(customer => { delete customer.serviceName })
       this.__saveCustomers(this.customers, this.exit)
-    },
-
-    newImport () {
-      [this.buildingsReady, this.servicesReady, this.show] = [false, false, false];
-      [this.customers, this.partners, this.partnerId] = [null, null, null];
-      [this.errors, this.fatalErrors, this.warnings] = [[], [], []]
-      this.PWD = { PPPOE: '', IPoE: '' };
-      [this.fileSelectDisabled, this.partnerSelectDisabled] = [true, false]
     },
 
     exit (data) {

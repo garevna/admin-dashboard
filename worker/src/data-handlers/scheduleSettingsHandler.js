@@ -1,7 +1,6 @@
-export const scheduleSettingsHandler = (function () {
-  let settings = []
-  return function (value) {
-    if (!value) return settings
-    settings = Array.isArray(value) ? value : settings
-  }
-})()
+let settings = []
+
+export const scheduleSettingsHandler = function (value) {
+  if (!value) return settings
+  settings = Array.isArray(value) ? value : settings
+}

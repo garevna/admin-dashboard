@@ -5,5 +5,8 @@ export const availableSections = [
   'serviceProductTypes',
   'availableServiceStatus',
   'pendingConnectionStatus',
-  'serviceStatusIcons'
+  'serviceStatusIcons',
+  'buildingCategory',
+  'buildingClass',
+  'buildingType'
 ]

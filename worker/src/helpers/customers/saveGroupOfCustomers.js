@@ -4,26 +4,65 @@ import { sendNotification } from '../updates'
 
 const [route, action] = ['customers', 'save']
 
+const error = {
+  route,
+  action,
+  error: true,
+  errorType: 'Import customers'
+}
+
+const remoteError = Object.assign({}, error, {
+  status: 409,
+  errorMessage: 'Operation failed. Duplicated customers were found.'
+})
+
 export const saveGroupOfCustomers = async function (customers) {
-  const response = await Promise.all(customers.map(customer => post('customer', customer)))
+  let response = await Promise.all(customers.map(customer => post('customer', customer)))
 
-  const result = response.map(item => item.result.data)
+  // self.postDebugMessage({ operation: 'POST', response })
 
-  customers.forEach((customer, index) => Object.assign(customer, { _id: result[index] }))
+  const errors = []
 
-  await Promise.all(customers.map(customer => patch(`customer/${customer._id}`, { resellerId: customer.resellerId })))
+  response.forEach((item, index) => item.status !== 200
+    ? errors.push(index)
+    : Object.assign(customers[index], { _id: item.result.data })
+  )
 
-  await Promise.all(customers.map(customer => putRecordByKey('customers', customer._id, customer)))
+  if (errors.length === customers.length) return remoteError
+  if (errors.length) {
+    self.postMessage(Object.assign({}, error, {
+      status: 409,
+      errorMessage: `Operation failed for ${errors.length} customers.`
+    }))
+  }
 
-  await Promise.all(customers.map(customer => sendNotification(customer.resellerId, 'customer', customer._id)))
+  const promises = customers
+    .filter((customer, index) => !errors.includes(index))
+    .map(customer => patch(`customer/${customer._id}`, { resellerId: customer.resellerId }))
+
+  response = await Promise.all(promises)
+
+  // self.postDebugMessage({ operation: 'PATCH', response })
+
+  const result = response
+    .filter(item => item.status === 200)
+    .map(item => item.result.data)
+
+  response = await Promise.all(result.map(customer => putRecordByKey('customers', customer._id, customer)))
+
+  // self.postDebugMessage({ operation: 'putRecordByKey', response })
+
+  response = await Promise.all(customers.map(customer => sendNotification(customer.resellerId, 'customer', customer._id)))
+
+  // self.postDebugMessage({ action: 'sendNotification', response })
 
   return {
     status: 200,
     route,
     action,
-    result: customers,
+    result,
     message: true,
     messageType: 'Import customers',
-    messageText: 'Customers saved'
+    messageText: `Operation completed with ${errors.length} errors`
   }
 }

@@ -1,7 +1,6 @@
-export const availableServiceStatusHandler = (function () {
-  let availableServiceStatus = []
-  return function (value) {
-    if (!value) return availableServiceStatus
-    availableServiceStatus = Array.isArray(value) ? value : availableServiceStatus
-  }
-})()
+let availableServiceStatus = []
+
+export const availableServiceStatusHandler = function (data) {
+  if (!data) return availableServiceStatus
+  availableServiceStatus = Array.isArray(data) ? data : availableServiceStatus
+}
