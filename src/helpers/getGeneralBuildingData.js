@@ -10,8 +10,6 @@ export const getGeneralBuildingData = function (data) {
     estimatedServiceDeliveryTime,
     inductionRequired,
     customerInstallApprovalRequired,
-    buildingName,
-    buildingType,
     numberOfDwellings,
     infrastructure,
     marketing
@@ -26,8 +24,6 @@ export const getGeneralBuildingData = function (data) {
     estimatedServiceDeliveryTime,
     inductionRequired,
     customerInstallApprovalRequired,
-    buildingName,
-    buildingType,
     numberOfDwellings,
     infrastructure,
     marketing

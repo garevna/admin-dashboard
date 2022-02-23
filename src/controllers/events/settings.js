@@ -6,7 +6,8 @@ export const settings = {
     estimatedServiceDeliveryTime: 'estimated-service-delivery-time-received',
     availableServiceStatus: 'available-service-status-received',
     pendingConnectionStatus: 'pending-connection-status-received',
-    serviceStatusIcons: 'service-status-icons-received'
+    serviceStatusIcons: 'service-status-icons-received',
+    buildingSettings: 'building-settings-received'
   },
   update: 'settings-data-updated'
 }

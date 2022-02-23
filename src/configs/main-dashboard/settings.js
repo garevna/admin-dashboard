@@ -52,15 +52,15 @@ export const settings = {
         change: ['SuperAdmin'],
         read: ['View_only']
       }
+    },
+    {
+      title: 'Building type',
+      route: 'building-settings',
+      icon: 'mdi-greenhouse',
+      access: {
+        change: ['SuperAdmin'],
+        read: ['View_only']
+      }
     }
-    // {
-    //   title: 'Available service status list',
-    //   route: 'available-service-status-settings',
-    //   icon: 'mdi-access-point',
-    //   access: {
-    //     change: ['SuperAdmin'],
-    //     read: ['View_only']
-    //   }
-    // }
   ]
 }

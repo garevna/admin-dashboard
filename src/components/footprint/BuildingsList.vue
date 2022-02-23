@@ -211,7 +211,8 @@ export default {
     },
 
     selectItem (item) {
-      this.selects = this.buildings.filter(item => item.selected)
+      this.selects = this.buildings
+        .filter(item => item.selected)
         .map(item => ({ id: item.id, status: item.status, estimatedServiceDeliveryTime: item.estimatedServiceDeliveryTime, address: item.address }))
     },
 
@@ -219,6 +220,7 @@ export default {
       this.worker.getBuildingsListForTable(this.selectedStatus, this.getBuildings)
     }
   },
+
   beforeDestroy () {
     this.$root.$off('operation-confirmed', this.confirmationReceived)
     this.$root.$off('settings-updated', this.buildingsGroupUpdated)

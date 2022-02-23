@@ -6,7 +6,8 @@ import {
   serviceProductTypesHandler,
   availableServiceStatusHandler,
   pendingConnectionStatusHandler,
-  serviceStatusIconsHandler
+  serviceStatusIconsHandler,
+  buildingSettingsHandler
 } from '../../data-handlers'
 
 import {
@@ -16,7 +17,8 @@ import {
   getAvailableServiceStatus,
   getPendingConnectionStatus,
   getServiceStatusIcons,
-  getServiceProductTypes
+  getServiceProductTypes,
+  getBuildingSettings
 } from './methods'
 
 const [route, action] = ['settings', 'get']
@@ -29,6 +31,7 @@ const availableMethods = {
   availableServiceStatus: getAvailableServiceStatus,
   pendingConnectionStatus: getPendingConnectionStatus,
   serviceStatusIcons: getServiceStatusIcons,
+  buildingSettings: getBuildingSettings,
   all: () => ({
     status: 200,
     route,
@@ -41,7 +44,8 @@ const availableMethods = {
       serviceProductTypes: serviceProductTypesHandler(),
       availableServiceStatus: availableServiceStatusHandler(),
       pendingConnectionStatus: pendingConnectionStatusHandler(),
-      serviceStatusIcons: serviceStatusIconsHandler()
+      serviceStatusIcons: serviceStatusIconsHandler(),
+      buildingSettings: buildingSettingsHandler()
     }
   })
 }

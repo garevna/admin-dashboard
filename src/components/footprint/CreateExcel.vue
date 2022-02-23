@@ -17,7 +17,7 @@
       <v-col cols="4" v-for="(section, sectionName) of sections" :key="sectionName" max-width="360">
         <v-card class="transparent py-2 px-4" min-height="480">
           <h5>
-            <small>{{ sectionName }}</small>
+            <small>{{ getSectionTitle(sectionName) }}</small>
           </h5>
           <div v-for="(prop, propName) in section" :key="propName">
             <v-checkbox
@@ -57,6 +57,7 @@
 <script>
 
 import {
+  addressComponents,
   access,
   concierge,
   corporation,
@@ -73,8 +74,9 @@ export default {
   data: () => ({
     simple: simpleFields,
 
-    sectionNames: ['access', 'concierge', 'corporation', 'management', 'owner', 'marketing'],
+    sectionNames: ['addressComponents', 'access', 'concierge', 'corporation', 'management', 'owner', 'marketing'],
     schema: [
+      addressComponents,
       access,
       concierge,
       corporation,
@@ -87,11 +89,28 @@ export default {
   }),
 
   methods: {
+    getSectionTitle (sectionName) {
+      return sectionName === 'addressComponents'
+        ? 'Address details'
+        : sectionName.replace(sectionName[0], sectionName[0].toUpperCase())
+    },
+
     createExcelTable () {
       const request = [
         { header: 'Address', width: 45, key: 'address' },
         { header: 'Status', width: 15, key: 'status' }
       ]
+
+      for (const key in this.addressComponents) {
+        if (this.addressComponents[key].selected) {
+          request.push({
+            header: this.addressComponents[key].header,
+            key: `addressComponents.${key}`,
+            width: this.addressComponents[key].width || 12
+          })
+        }
+      }
+
       for (const key in this.simple) {
         if (this.simple[key].selected) {
           request.push({
@@ -101,6 +120,7 @@ export default {
           })
         }
       }
+
       for (const section in this.sections) {
         for (const key in this.sections[section]) {
           if (this.sections[section][key].selected) {

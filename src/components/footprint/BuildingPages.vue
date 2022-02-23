@@ -196,12 +196,14 @@ export default {
 
   methods: {
     exit () {
-      const { address, uniqueCode, status, estimatedServiceDeliveryTime } = this.buildingData
+      const { address, uniqueCode, status, estimatedServiceDeliveryTime, buildingClass, buildingType, buildingCategory } = this.buildingData
 
       buildingStatusHandler(status)
       const routeName = getRouteByBuildingStatus(status)
 
-      this.generalInfoUpdated && this.$root.$emit('building-general-data-changed', { address, uniqueCode, status, estimatedServiceDeliveryTime })
+      const general = { address, uniqueCode, status, estimatedServiceDeliveryTime, buildingClass, buildingType, buildingCategory }
+
+      this.generalInfoUpdated && this.$root.$emit('building-general-data-changed', general)
 
       this.$route.name !== routeName && this.$router.push({ name: routeName }).catch(failure => console.warn('Router failure:\n', failure))
     },

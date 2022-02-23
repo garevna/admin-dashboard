@@ -1,3 +1,4 @@
+import { addressComponents } from './addressComponents'
 import { access } from './access'
 import { corporation } from './corporation'
 import { management } from './management'
@@ -15,6 +16,7 @@ import { infrastructureEquipmentTitles } from './infrastructureEquipmentTitles'
 import { infrastructureEquipment } from './infrastructureEquipment'
 
 export {
+  addressComponents,
   access,
   corporation,
   management,

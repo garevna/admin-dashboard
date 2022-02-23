@@ -7,7 +7,8 @@ import {
   serviceProductTypesHandler,
   availableServiceStatusHandler,
   pendingConnectionStatusHandler,
-  serviceStatusIconsHandler
+  serviceStatusIconsHandler,
+  buildingSettingsHandler
 } from '../../data-handlers'
 
 const [route, action, section] = ['settings', 'refresh', 'all']
@@ -24,7 +25,10 @@ export const refreshSettings = async function () {
     serviceProductTypes,
     availableServiceStatus,
     pendingConnectionStatus,
-    serviceStatusIcons
+    serviceStatusIcons,
+    buildingCategory,
+    buildingClass,
+    buildingType
   } = result
 
   estimatedServiceDeliveryTimeHandler(estimatedServiceDeliveryTime)
@@ -34,6 +38,7 @@ export const refreshSettings = async function () {
   availableServiceStatusHandler(availableServiceStatus)
   pendingConnectionStatusHandler(pendingConnectionStatus)
   serviceStatusIconsHandler(serviceStatusIcons)
+  buildingSettingsHandler({ buildingCategory, buildingClass, buildingType })
 
   return {
     status,
@@ -47,7 +52,8 @@ export const refreshSettings = async function () {
       serviceProductTypes,
       availableServiceStatus,
       pendingConnectionStatus,
-      serviceStatusIcons
+      serviceStatusIcons,
+      buildingSettings: buildingSettingsHandler()
     }
   }
 }

@@ -280,6 +280,11 @@ const routes = [
         component: () => import(/* webpackChunkName: 'pending-connection-status-settings' */ '@/components/settings/PendingConnectionStatus.vue')
       },
       {
+        path: '/building-settings',
+        name: 'building-settings',
+        component: () => import(/* webpackChunkName: 'building-settings' */ '@/components/settings/BuildingSettings.vue')
+      },
+      {
         path: '/documents',
         name: 'documents',
         component: () => import(/* webpackChunkName: 'documents' */ '@/components/documents/Documents.vue'),

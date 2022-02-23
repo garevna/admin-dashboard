@@ -6,11 +6,13 @@ export const newBuilding = {
     state: '',
     street: '',
     streetType: '',
-    number: ''
+    number: '',
+    buildingClass: '',
+    buildingType: '',
+    buildingCategory: ''
   },
   buildingUniqueCode: '',
   buildingName: '',
-  buildingType: '',
   coordinates: [0, 0],
   status: 'Other',
   type: '',

@@ -53,6 +53,51 @@
         </table>
       </v-row>
 
+      <v-row justify="center" class="outlined-row mt-0">
+        <table style="width: 600px">
+          <tr>
+            <td width="280">Building class</td>
+            <td width="280">Building type</td>
+            <td width="280">Established/new</td>
+          </tr>
+          <tr>
+            <td width="180">
+              <v-select
+                v-if="ready"
+                :items="buildingClassOptions"
+                v-model="generalBuildingData.addressComponents.buildingClass"
+                outlined
+                dense
+                hide-details
+                :menu-props="{ bottom: true, offsetY: true }"
+              />
+            </td>
+            <td width="180">
+              <v-select
+                v-if="ready"
+                :items="buildingTypeOptions"
+                v-model="generalBuildingData.addressComponents.buildingType"
+                outlined
+                dense
+                hide-details
+                :menu-props="{ bottom: true, offsetY: true }"
+              />
+            </td>
+            <td width="180">
+              <v-select
+                v-if="ready"
+                :items="buildingCategoryOptions"
+                v-model="generalBuildingData.addressComponents.buildingCategory"
+                outlined
+                dense
+                hide-details
+                :menu-props="{ bottom: true, offsetY: true }"
+              />
+            </td>
+          </tr>
+        </table>
+      </v-row>
+
       <v-card-actions class="my-8">
         <v-btn outlined color="buttons" @click="exit">Exit</v-btn>
         <v-spacer />
@@ -125,6 +170,9 @@ export default {
       { text: 'Coming soon', value: 'ComingSoon' },
       { text: 'N/A', value: 'Other' }
     ],
+    buildingClassOptions: null,
+    buildingTypeOptions: null,
+    buildingCategoryOptions: null,
     generalInfoUpdated: false,
     panel: null
   }),
@@ -174,6 +222,13 @@ export default {
   },
 
   methods: {
+    getBuildingSettings (data) {
+      this.buildingClassOptions = data.buildingClass
+      this.buildingTypeOptions = data.buildingType
+      this.buildingCategoryOptions = data.buildingCategory
+      this.ready = true
+    },
+
     saveBuildingDetails () {
       this.$dispatchProgressEvent(true)
       this.worker.patchBuildingDetails(this.buildingData._id, this.generalBuildingData, this.sendMessage)
@@ -192,6 +247,10 @@ export default {
       this.$router.push({ name: 'buildings' }).catch(failure => console.warn('Router failure:\n', failure))
       this.generalInfoUpdated && this.$root.$emit('building-general-data-changed', this.generalBuildingData)
     }
+  },
+
+  created () {
+    this.__getBuildingSettings(this.getBuildingSettings)
   },
 
   mounted () {

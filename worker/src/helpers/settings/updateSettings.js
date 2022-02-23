@@ -4,6 +4,7 @@ import { updateScheduleCalendarSettings } from './updateScheduleCalendarSettings
 import { updateServiceProductTypes } from './updateServiceProductTypes'
 // import { updateAvailableServiceStatus } from './updateAvailableServiceStatus'
 import { updatePendingConnectionStatus } from './updatePendingConnectionStatus'
+import { updateBuildingSettings } from './updateBuildingSettings'
 
 import { updateError } from './updateError'
 import { availableSections } from './availableSections'
@@ -13,12 +14,9 @@ import {
   ticketCategoriesHandler,
   scheduleCalendarSettingsHandler,
   serviceProductTypesHandler,
-  availableServiceStatusHandler
+  availableServiceStatusHandler,
+  buildingSettingsHandler
 } from '../../data-handlers'
-
-// const [route, action] = ['settings', 'update']
-
-// const availableSections = ['estimatedServiceDeliveryTime', 'ticketCategories', 'schedule', 'serviceProductTypes']
 
 const availableMethods = {
   estimatedServiceDeliveryTime: async (data) => {
@@ -40,6 +38,10 @@ const availableMethods = {
   pendingConnectionStatus: async (data) => {
     availableServiceStatusHandler(data)
     return await updatePendingConnectionStatus(data)
+  },
+  buildingSettings: async (data) => {
+    buildingSettingsHandler(data)
+    return await updateBuildingSettings(data)
   }
 }
 
