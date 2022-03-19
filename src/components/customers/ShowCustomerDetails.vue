@@ -48,12 +48,12 @@
             <small color="#777" v-if="item.updated"> {{  item.updated || '' }} </small>
           </td>
           <td>
-            <v-btn text v-if="item.updated" color="#777" @click="confirmUpdate(propName)">
+            <v-btn text v-if="item.updated && accessRights === 2" color="#777" @click="confirmUpdate(propName)">
               OK
             </v-btn>
           </td>
           <td>
-            <v-btn text v-if="item.updated" color="#aaa" @click="rejectUpdate(propName)">
+            <v-btn text v-if="item.updated && accessRights === 2" color="#aaa" @click="rejectUpdate(propName)">
               <v-icon small>mdi-close</v-icon>
             </v-btn>
           </td>
@@ -78,7 +78,7 @@
             </div>
           </td>
           <td>
-            <v-btn icon v-if="propName === 'uniqueCode'" @click="updateCustomerUniqueCode">
+            <v-btn icon v-if="propName === 'uniqueCode' && accessRights === 2" @click="updateCustomerUniqueCode">
               <v-icon color="primary"> mdi-content-save </v-icon>
             </v-btn>
             <div v-else class="text-center">
@@ -94,7 +94,7 @@
             <small color="#777" v-if="item.updated"> {{  item.updated || '' }} </small>
           </td>
           <td>
-            <v-btn text v-if="item.updated" color="#777" @click="confirmUpdate(propName)">
+            <v-btn text v-if="item.updated" :disabled="accessRights === 2" color="#777" @click="confirmUpdate(propName)">
               OK
             </v-btn>
           </td>
@@ -106,7 +106,7 @@
         </tr>
       </tbody>
     </table>
-    <v-row justify="end" class="mt-12 mr-12">
+    <v-row justify="end" class="mt-12 mr-12" v-if="accessRights === 2">
       <v-btn v-if="messageId" outlined color="primary" @click="updateMessageToPartner">
         Update request
         <v-icon small class="ml-4">mdi-update</v-icon>
@@ -120,6 +120,8 @@
 </template>
 
 <script>
+
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 
 const { customerSchema } = require('@/configs').default
 
@@ -136,6 +138,7 @@ export default {
 
   data: () => ({
     ready: false,
+    accessRights: accessRightsHandler().access[roleHandler()].customers,
     customer: null,
     message: null,
     messageId: null,

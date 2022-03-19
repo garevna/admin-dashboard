@@ -18,7 +18,7 @@
             </v-tabs>
           </td>
           <td>
-            <v-btn dark class="primary ml-12" @click="save()" text>
+            <v-btn v-if="accessRights === 2" dark class="primary ml-12" @click="save()" text>
               Save
             </v-btn>
           </td>
@@ -36,6 +36,8 @@
 
 <script>
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'BuildingSettings',
 
@@ -44,6 +46,7 @@ export default {
   },
 
   data: () => ({
+    accessRights: accessRightsHandler().access[roleHandler()].settings,
     tab: 0,
     items: [
       {

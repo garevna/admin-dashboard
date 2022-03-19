@@ -57,13 +57,19 @@ const partnerCabinetLinkHandler = (function () {
   }
 })()
 
+const defaultAdminCredsHandler = (function () {
+  const credentials = process.env.VUE_APP_DEFAULT_ADMIN_CREDENTIALS
+  return () => credentials
+})()
+
 const config = {
   apiSecret: secretHandler,
   apiKey: apiKeyHandler,
   apiHost: hostHandler,
   geoscapeKey: geoscapeKeyHandler,
   buildingsHost: buildingsHostHandler,
-  partnerCabinetLink: partnerCabinetLinkHandler
+  partnerCabinetLink: partnerCabinetLinkHandler,
+  defaultAdmin: defaultAdminCredsHandler
 }
 
 export {
@@ -80,6 +86,8 @@ export default {
     Vue.buildingsHost = buildingsHostHandler
     Vue.partnerCabinetLink = partnerCabinetLinkHandler
 
+    Vue.defaultAdmin = defaultAdminCredsHandler
+
     Vue.prototype.$appConfig = config
     Vue.prototype.$apiSecret = secretHandler
     Vue.prototype.$apiKey = apiKeyHandler
@@ -87,5 +95,7 @@ export default {
     Vue.prototype.$geoscapeKey = geoscapeKeyHandler
     Vue.prototype.$buildingsHost = buildingsHostHandler
     Vue.prototype.$partnerCabinetLink = partnerCabinetLinkHandler
+
+    Vue.prototype.$defaultAdmin = defaultAdminCredsHandler
   }
 }

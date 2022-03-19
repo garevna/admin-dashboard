@@ -33,7 +33,7 @@
     </v-row>
 
     <v-row justify="end">
-      <v-btn dark color="primary" @click="$emit('update:save', true)" v-if="changed">
+      <v-btn v-if="access && changed" dark color="primary" @click="$emit('update:save', true)">
         Save updates
       </v-btn>
     </v-row>
@@ -47,7 +47,7 @@ const { pdf404 } = require('@/configs').default
 export default {
   name: 'ShowPDF',
 
-  props: ['id', 'save'],
+  props: ['id', 'save', 'access'],
 
   data: () => ({
     listOfSLA: [],

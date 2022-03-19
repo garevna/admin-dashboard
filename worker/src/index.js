@@ -43,15 +43,16 @@ testDBVersion()
 
 self.initialized = false
 self.serviceStatus = serviceStatus
-self.access = {
-  updates: false,
-  messages: false,
-  customers: false,
-  buildings: false,
-  services: false,
-  tickets: false,
-  schedule: false
-}
+// self.access = {
+//   updates: false,
+//   messages: false,
+//   customers: false,
+//   buildings: false,
+//   services: false,
+//   tickets: false,
+//   schedule: false,
+//   access: false
+// }
 
 getUpdatesFromRemote()
 
@@ -60,8 +61,15 @@ self.onmessage = (event) => {
 
   const { route, action, ...data } = event.data
 
+  if (!routes[route]) {
+    return event.target.postMessage({ status: 422, route, action, result: `${route}/${action} Invalid request for ${route}` })
+  }
+
   if (!routes[route][action] || typeof routes[route][action] !== 'function') {
     return event.target.postMessage({ status: 422, route, action, result: `${route}/${action} Invalid request for ${route}` })
   }
+
+  // if (action === 'init') self.postDebugMessage({ route, action, data })
+
   routes[route][action](data)
 }

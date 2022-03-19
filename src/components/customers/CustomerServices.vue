@@ -54,6 +54,7 @@
 <script>
 
 import { serviceIconColors } from '@/configs/serviceIconColors'
+import { accessRightsHandler } from '@/controllers/data-handlers'
 
 export default {
   name: 'CustomerServices',
@@ -69,12 +70,13 @@ export default {
     opened: false,
     submitted: false,
     service: null,
-    icons: null
+    icons: null,
+    accessRights: accessRightsHandler().access.services
   }),
 
   watch: {
     submitted (val) {
-      if (val) {
+      if (val && this.accessRights === 2) {
         this.save()
         this.submitted = false
       }

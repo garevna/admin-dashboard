@@ -37,7 +37,7 @@
               <td v-if="prop.type === 'switcher'" width="*">
                 <SwitchValues
                   label="Residential/commercial"
-                  :value.sync="service.serviceType"
+                  :value.sync="prop.value"
                   :states="['residential', 'commercial']"
                   hide-details
                   class="mb-8"
@@ -71,7 +71,7 @@
         <v-row justify="start" class="mt-8 mb-12">
           <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
           <v-spacer />
-          <v-btn dark class="buttons" @click="saveServiceDetails">
+          <v-btn v-if="access" dark class="buttons" @click="saveServiceDetails">
             Update/save details
           </v-btn>
         </v-row>
@@ -86,7 +86,7 @@
       <v-row justify="start" class="mt-8 mr-12">
         <v-btn outlined text color="buttons" @click="$router.push({ name: 'services-list' })">Exit</v-btn>
         <v-spacer />
-        <v-btn text dark class="primary" @click="saveServicePartners">
+        <v-btn v-if="access" text dark class="primary" @click="saveServicePartners">
           UPDATE PARTNERS
         </v-btn>
       </v-row>
@@ -94,7 +94,7 @@
 
     <v-container  v-if="tab === 'sla'">
       <v-row justify="center">
-        <ShowPDF :id.sync="serviceSLA" :save.sync="updateSLA" />
+        <ShowPDF :id.sync="serviceSLA" :save.sync="updateSLA" :access="access" />
       </v-row>
     </v-container>
   </v-container>
@@ -104,6 +104,7 @@
 
 import { SwitchValues } from '@/components/inputs'
 import { testTextField } from '@/helpers'
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 
 import Partners from '@/components/services/Partners.vue'
 
@@ -125,6 +126,7 @@ export default {
     updateSLA: false,
     rules: rules,
     ready: false,
+    access: 0,
 
     tab: 'serviceDetails'
   }),
@@ -178,7 +180,6 @@ export default {
       this.service = data
       this.partnersList = data.partners
       for (const prop in this.schema) {
-        if (prop === 'serviceType') continue
         this.schema[prop].value = data[prop]
       }
 
@@ -187,7 +188,6 @@ export default {
 
     saveServiceDetails () {
       for (const prop in this.schema) {
-        if (prop === 'serviceType') continue
         this.service[prop] = this.schema[prop].value
       }
 
@@ -213,6 +213,7 @@ export default {
   },
 
   mounted () {
+    this.access = accessRightsHandler().access[roleHandler()].services === 2
     this.service = JSON.parse(JSON.stringify(serviceSchema))
 
     if (this.serviceId) this.__getServiceDetails(this.serviceId, this.getData)

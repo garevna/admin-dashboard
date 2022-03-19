@@ -285,6 +285,33 @@ const routes = [
         component: () => import(/* webpackChunkName: 'building-settings' */ '@/components/settings/BuildingSettings.vue')
       },
       {
+        path: '/admins-list',
+        name: 'admins-list',
+        component: () => import(/* webpackChunkName: 'admins-list' */ '@/components/settings/AdminsList.vue')
+      },
+      {
+        path: '/create-admin',
+        name: 'create-admin',
+        component: () => import(/* webpackChunkName: 'access-rights' */ '@/components/settings/CreateNewAdmin.vue')
+      },
+      // {
+      //   path: '/access-rights',
+      //   name: 'access-rights',
+      //   // component: () => import(/* webpackChunkName: 'access-rights' */ '@/components/settings/CreateNewAdmin.vue'),
+      //   children: [
+      //     {
+      //       path: '/admins-list',
+      //       name: 'admins-list',
+      //       component: () => import(/* webpackChunkName: 'admins-list' */ '@/components/settings/AdminsList.vue')
+      //     },
+      //     {
+      //       path: '/create-admin',
+      //       name: 'create-admin',
+      //       component: () => import(/* webpackChunkName: 'access-rights' */ '@/components/settings/CreateNewAdmin.vue')
+      //     }
+      //   ]
+      // },
+      {
         path: '/documents',
         name: 'documents',
         component: () => import(/* webpackChunkName: 'documents' */ '@/components/documents/Documents.vue'),

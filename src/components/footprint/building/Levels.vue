@@ -95,11 +95,11 @@
     </v-expansion-panels>
 
     <v-row justify="end" class="mt-8">
-      <v-btn outlined color="primary" class="mr-2" @click="addLevel">
+      <v-btn v-if="accessRights === 2" outlined color="primary" class="mr-2" @click="addLevel">
         <v-icon>mdi-plus</v-icon>
         Add level
       </v-btn>
-      <v-btn dark color="primary" @click="updateDetails">
+      <v-btn v-if="accessRights === 2" dark color="primary" @click="updateDetails">
         <v-icon>mdi-content-save</v-icon>
         Save updates
       </v-btn>
@@ -110,6 +110,7 @@
 <script>
 
 import { levelSchema, equipmentNames } from '@/configs/buildingSchemaSections'
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 
 export default {
   name: 'Levels',
@@ -118,6 +119,7 @@ export default {
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     buildingId: '',
     address: '',
     levels: [],

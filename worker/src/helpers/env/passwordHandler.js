@@ -1,6 +1,5 @@
-export const passwordHandler = (function () {
-  let password = ''
-  return function (value) {
-    if (value) { password = value } else return password
-  }
-})()
+let password = ''
+
+export const passwordHandler = function (value) {
+  if (value) { password = value } else return password
+}

@@ -101,7 +101,9 @@
       <v-card-actions class="my-8">
         <v-btn outlined color="buttons" @click="exit">Exit</v-btn>
         <v-spacer />
-        <v-btn dark class="buttons" @click="saveBuildingDetails">Save updates</v-btn>
+        <v-btn v-if="accessRights === 2" dark class="buttons" @click="saveBuildingDetails">
+          Save updates
+        </v-btn>
       </v-card-actions>
 
       <v-row justify="center" class="mt-8">
@@ -145,6 +147,8 @@ import {
   getGeneralBuildingData
 } from '@/helpers'
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
+
 import Marketing from '@/components/footprint/building/Marketing.vue'
 import Concierge from '@/components/footprint/building/Concierge.vue'
 
@@ -161,6 +165,7 @@ export default {
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     ready: false,
     generalBuildingData: null,
     footprintOptions: [

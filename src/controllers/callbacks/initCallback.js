@@ -4,7 +4,5 @@ export function initCallback (event) {
   event.stopImmediatePropagation()
   const { status } = event.data
 
-  if (status === 200) {
-    // window[Symbol.for('admin.worker')].removeEventListener('message', initCallback)
-  } else initError()
+  status !== 200 && initError()
 }

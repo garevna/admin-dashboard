@@ -1,66 +1,65 @@
 export const settings = {
   title: 'Settings',
   refresh: 'settings',
+  disabled: 'settings',
   component: 'Settings',
   icon: 'mdi-cog',
-  access: {
-    change: ['SuperAdmin'],
-    read: ['View_only']
-  },
   children: [
     {
       title: 'Edit ticket categories',
       route: 'ticket-categories',
-      icon: 'mdi-ballot-outline',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      disabled: 'settings',
+      icon: 'mdi-ballot-outline'
     },
     {
       title: 'Calendar Settings',
       route: 'schedule-settings',
-      icon: 'mdi-calendar-edit',
-      access: {
-        change: ['SuperAdmin'],
-        read: ['View_only']
-      }
+      disabled: 'settings',
+      icon: 'mdi-calendar-edit'
     },
     {
       title: 'Service delivery time',
       route: 'estimated-service-delivery-time-settings',
-      icon: 'mdi-map-clock',
-      access: {
-        change: ['SuperAdmin'],
-        read: ['View_only']
-      }
+      disabled: 'settings',
+      icon: 'mdi-map-clock'
     },
     {
       title: 'Pending connection status',
       route: 'pending-connection-status-settings',
-      icon: 'mdi-lan-pending',
-      access: {
-        change: ['SuperAdmin'],
-        read: ['View_only']
-      }
+      disabled: 'settings',
+      icon: 'mdi-lan-pending'
     },
     {
       title: 'Available service status updates',
       route: 'available-service-status-updates-settings',
-      icon: 'mdi-access-point',
-      access: {
-        change: ['SuperAdmin'],
-        read: ['View_only']
-      }
+      disabled: 'settings',
+      icon: 'mdi-access-point'
     },
     {
       title: 'Building type',
       route: 'building-settings',
-      icon: 'mdi-greenhouse',
-      access: {
-        change: ['SuperAdmin'],
-        read: ['View_only']
-      }
+      disabled: 'settings',
+      icon: 'mdi-greenhouse'
+    },
+    {
+      title: 'Access rights',
+      // route: 'access-rights',
+      // disabled: 'access',
+      icon: 'mdi-key',
+      children: [
+        {
+          title: 'Admins list',
+          route: 'admins-list',
+          disabled: 'access',
+          icon: 'mdi-table-account'
+        },
+        {
+          title: 'Create new admin',
+          route: 'create-admin',
+          disabled: 'access',
+          icon: 'mdi-table-account'
+        }
+      ]
     }
   ]
 }

@@ -73,7 +73,7 @@
     </v-row>
 
     <v-row justify="end" class="my-8">
-      <v-btn dark color="primary" @click="updateAccess" class="mt-8">
+      <v-btn v-if="accessRights === 2" dark color="primary" @click="updateAccess" class="mt-8">
         Save updates
       </v-btn>
     </v-row>
@@ -82,6 +82,7 @@
 
 <script>
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 import TimePicker from '@/components/inputs/TimePicker.vue'
 
 export default {
@@ -95,6 +96,7 @@ export default {
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     access: {
       toRiser: '',
       toMDF: '',

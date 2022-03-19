@@ -42,7 +42,7 @@
               </v-btn>
             </td>
             <td style="text-align: right">
-              <v-btn dark class="buttons my-10" @click="updateItems">
+              <v-btn v-if="accessRights === 2" dark class="buttons my-10" @click="updateItems">
                 Save updates
               </v-btn>
             </td>
@@ -55,8 +55,7 @@
 
 <script>
 
-// import { convertBuildingStatus } from '@/helpers'
-import { buildingStatusHandler } from '@/controllers/data-handlers'
+import { roleHandler, accessRightsHandler, buildingStatusHandler } from '@/controllers/data-handlers'
 
 const { footprintOptions } = require('@/configs').default
 
@@ -67,6 +66,7 @@ export default {
 
   data: () => ({
     buildings: null,
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     status: null,
     estimatedServiceDeliveryTime: null,
     footprintOptions: [

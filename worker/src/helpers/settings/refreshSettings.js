@@ -1,4 +1,11 @@
-import { get } from '../AJAX'
+// import { get } from '../AJAX'
+
+import {
+  hostHandler,
+  apiKeyHandler,
+  // credentialsHandler
+  defaultAdminCredsHandler
+} from '../env'
 
 import {
   estimatedServiceDeliveryTimeHandler,
@@ -8,15 +15,26 @@ import {
   availableServiceStatusHandler,
   pendingConnectionStatusHandler,
   serviceStatusIconsHandler,
-  buildingSettingsHandler
+  buildingSettingsHandler,
+  accessSettingsHandler
 } from '../../data-handlers'
 
 const [route, action, section] = ['settings', 'refresh', 'all']
 
 export const refreshSettings = async function () {
-  const { status, result } = await get('settings')
+  // const { status, result } = await get('settings')
 
-  if (status !== 200) return self.errorMessage('refreshSettingsError')
+  const response = await fetch(`${hostHandler()}/settings`, {
+    method: 'GET',
+    headers: {
+      Authorization: apiKeyHandler(),
+      Credentials: defaultAdminCredsHandler()
+    }
+  })
+
+  if (response.status !== 200) return self.errorMessage('refreshSettingsError')
+
+  const result = await response.json()
 
   const {
     estimatedServiceDeliveryTime,
@@ -28,8 +46,11 @@ export const refreshSettings = async function () {
     serviceStatusIcons,
     buildingCategory,
     buildingClass,
-    buildingType
-  } = result
+    buildingType,
+    access,
+    dashboard,
+    roles
+  } = result.data
 
   estimatedServiceDeliveryTimeHandler(estimatedServiceDeliveryTime)
   ticketCategoriesHandler(ticketCategories)
@@ -39,9 +60,10 @@ export const refreshSettings = async function () {
   pendingConnectionStatusHandler(pendingConnectionStatus)
   serviceStatusIconsHandler(serviceStatusIcons)
   buildingSettingsHandler({ buildingCategory, buildingClass, buildingType })
+  accessSettingsHandler({ access, roles, dashboard })
 
   return {
-    status,
+    status: 200,
     route,
     action,
     section,
@@ -53,7 +75,8 @@ export const refreshSettings = async function () {
       availableServiceStatus,
       pendingConnectionStatus,
       serviceStatusIcons,
-      buildingSettings: buildingSettingsHandler()
+      buildingSettings: buildingSettingsHandler(),
+      accessSettings: accessSettingsHandler()
     }
   }
 }

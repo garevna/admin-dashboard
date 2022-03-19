@@ -19,7 +19,7 @@ const remoteError = Object.assign({}, error, {
 export const saveGroupOfCustomers = async function (customers) {
   let response = await Promise.all(customers.map(customer => post('customer', customer)))
 
-  // self.postDebugMessage({ operation: 'POST', response })
+  self.postDebugMessage({ operation: 'POST', response })
 
   const errors = []
 

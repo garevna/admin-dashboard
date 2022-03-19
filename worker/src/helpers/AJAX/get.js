@@ -1,7 +1,8 @@
 import {
   hostHandler,
   apiKeyHandler,
-  credentialsHandler
+  // credentialsHandler,
+  defaultAdminCredsHandler
 } from '../env'
 
 export const get = async function (path) {
@@ -11,7 +12,7 @@ export const get = async function (path) {
     method: 'GET',
     headers: {
       Authorization: apiKeyHandler(),
-      Credentials: credentialsHandler()
+      Credentials: defaultAdminCredsHandler()
     }
   })
 

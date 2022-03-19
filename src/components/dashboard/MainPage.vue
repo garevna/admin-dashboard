@@ -1,5 +1,5 @@
 <template>
-  <v-container class="homefone">
+  <v-container class="homefone" v-if="available">
     <v-row v-if="!showTicketDetails">
       <v-col cols="6">
         <Fieldset legend="Pending tickets">
@@ -26,12 +26,18 @@
     </v-row>
 
     <v-row  v-if="showTicketDetails">
-      <TicketDetails :ticket="selectedTicket" :category="selectedTicket.category" :edit.sync="showTicketDetails" />
+      <TicketDetails
+        :ticket="selectedTicket"
+        :category="selectedTicket.category"
+        :edit.sync="showTicketDetails"
+      />
     </v-row>
   </v-container>
 </template>
 
 <script>
+
+import { roleHandler } from '@/controllers/data-handlers'
 
 import Fieldset from '@/components/Fieldset.vue'
 import PendingTickets from '@/components/dashboard/PendingTickets.vue'
@@ -50,8 +56,14 @@ export default {
   },
 
   data: () => ({
+    available: false,
+    role: roleHandler(),
     showTicketDetails: false,
     selectedTicket: null
-  })
+  }),
+
+  beforeMount () {
+    this.available = roleHandler() === 'SuperAdmin' || roleHandler() === 'admin'
+  }
 }
 </script>

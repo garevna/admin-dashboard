@@ -2,6 +2,7 @@ import { eventsTable } from './events-table'
 
 import {
   initCallback,
+  settingsRefreshCallback,
   refreshCallback,
   debuggerCallback,
   startRefreshing,
@@ -16,11 +17,14 @@ import * as events from './events'
 export const globalCallback = function (event) {
   const { route, action, section, status, result, error, message } = event.data
 
+  if (route === 'rsp' && action === 'refresh') console.log(event.data)
+
   if (status === 300) return debuggerCallback(event)
 
   if (error || message) error ? errorCallback(event) : messageCallback(event)
 
   if (action === 'init') return initCallback(event)
+  if (route === 'settings' && action === 'refresh') return settingsRefreshCallback(event)
 
   // if (route === 'admin') return adminCallback(event)
 
@@ -38,12 +42,13 @@ export const globalCallback = function (event) {
     : route === 'settings' && action === 'get' ? events[route][action][section] : events[route][action]
 
   if (!eventsTable[eventName]) {
-    console.log(eventsTable)
+    console.log(...Object.keys(eventsTable))
     return console.warn('Unknown event', route, action, event.data)
   }
   if (typeof eventsTable[eventName] !== 'function') return console.warn('Error: callback is not a function', eventName, event.data)
 
   eventsTable[eventName](result)
+
   if (action === 'redirect') startRefreshing(event, refreshCallback)
 
   delete eventsTable[eventName]

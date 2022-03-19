@@ -59,7 +59,7 @@
 
 <script>
 
-import { loginHandler, codeHandler, passwordHandler } from '@/controllers/data-handlers'
+import { /* loginHandler, */ codeHandler, passwordHandler } from '@/controllers/data-handlers'
 
 const { rules } = require('@/configs').default
 
@@ -129,7 +129,7 @@ export default {
   },
 
   mounted () {
-    this.__resetPassword(loginHandler(), this.resetCallback, this.resetFailure)
+    this.__resetPassword(this.resetCallback, this.resetFailure)
   }
 }
 </script>

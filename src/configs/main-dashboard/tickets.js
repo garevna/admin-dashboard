@@ -3,5 +3,6 @@ export const tickets = {
   icon: 'mdi-inbox-multiple',
   callbackName: '__refreshTickets',
   refresh: 'tickets',
+  disabled: 'tickets',
   children: []
 }

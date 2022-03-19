@@ -21,11 +21,25 @@
           </p>
         </v-card-text>
 
-        <v-card-text text-center v-if="showButtons">
-          <v-btn v-if="!buildingDetails.buildingId" outlined color="buttons" class="mx-2" @click="createNewBuilding">
+        <v-card-text text-center v-if="showButtons && statusToDisplay !== 'Not available'">
+          <v-btn
+            v-if="!buildingDetails.buildingId"
+            outlined
+            color="buttons"
+            class="mx-2"
+            :disabled="accessRights !== 2"
+            @click="createNewBuilding"
+          >
             Add new building
           </v-btn>
-          <v-btn v-else outlined color="buttons" class="mx-2" @click="editSelectedBuilding">
+
+          <v-btn
+            v-else
+            outlined
+            color="buttons"
+            class="mx-2"
+            @click="editSelectedBuilding"
+          >
             Edit selected building details
           </v-btn>
         </v-card-text>
@@ -37,6 +51,8 @@
 </template>
 
 <script>
+
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 
 import MapSearch from '@/components/footprint/search-address/MapSearch.vue'
 import GoogleAutocomplete from '@/components/footprint/search-address/GoogleAutocomplete.vue'
@@ -53,6 +69,7 @@ export default {
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     buildingDetails: {},
     statusToDisplay: '',
     showButtons: false,

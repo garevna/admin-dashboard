@@ -155,7 +155,7 @@ export const getCustomerServiceError = {
 export const getCustomersListError = {
   route: 'customers',
   errorType: 'Customers',
-  errorMessage: 'Failed to get customers list from local DB'
+  errorMessage: 'Failed to get customer list from local DB'
 }
 
 export const postNewCustomerError = {
@@ -173,7 +173,7 @@ export const putCustomerDataError = {
 export const refreshCustomersListError = {
   route: 'customers',
   errorType: 'Customers',
-  errorMessage: 'Failed to get customers list from remote server'
+  errorMessage: 'Failed to get customer list from remote server'
 }
 
 export const deleteCustomerError = {

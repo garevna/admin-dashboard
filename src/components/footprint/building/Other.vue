@@ -10,10 +10,12 @@
 
 <script>
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'OtherBuildingDetails',
   data: () => ({
-    //
+    accessRights: accessRightsHandler().access[roleHandler()].buildings
   }),
   methods: {
     //

@@ -31,7 +31,7 @@
       <v-divider class="my-4" />
     </v-container>
     <v-row justify="end" class="mt-12">
-      <v-btn dark color="primary" @click="saveDetails">
+      <v-btn v-if="accessRights === 2" dark color="primary" @click="saveDetails">
         Save updates
       </v-btn>
     </v-row>
@@ -41,6 +41,7 @@
 <script>
 
 import { testTextField } from '@/helpers'
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 
 const { buildingSchema, rules } = require('@/configs').default
 
@@ -51,6 +52,7 @@ export default {
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     ready: false,
     address: '',
     schema: {

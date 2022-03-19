@@ -91,7 +91,7 @@
       <tr>
         <td></td>
         <td style="text-align: right">
-          <v-btn dark color="primary" @click="updateMarketing" class="mt-8">
+          <v-btn v-if="accessRights === 2" dark color="primary" @click="updateMarketing" class="mt-8">
             Save updates
           </v-btn>
         </td>
@@ -102,6 +102,8 @@
 
 <script>
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'Marketing',
 
@@ -109,6 +111,7 @@ export default {
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     buildingId: null,
     marketing: {
       foyer: false,

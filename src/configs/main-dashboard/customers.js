@@ -3,31 +3,34 @@ export const customers = {
   icon: 'mdi-account-multiple',
   callbackName: '__refreshCustomersWithPagination',
   refresh: 'customers',
+  disabled: 'customers',
   children: [
     {
-      title: 'Customers list',
+      title: 'Customer list',
       route: 'customers',
+      disabled: 'customers',
       icon: 'mdi-table-account',
       access: {
-        change: ['Account_manager', 'SuperAdmin'],
+        change: ['Account_manager', 'SuperAdmin', 'supervisor', 'admin'],
         read: ['View_only']
       }
     },
     {
       title: 'Export to Excel',
       route: 'customers-to-excel',
+      disabled: 'customers',
       icon: 'mdi-microsoft-excel',
       access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
+        change: ['Account_manager', 'SuperAdmin', 'supervisor', 'admin']
       }
     },
     {
       title: 'Import from text file',
       route: 'import-customers',
+      disabled: 'customers',
       icon: 'mdi-database-import',
       access: {
-        change: ['Account_manager', 'SuperAdmin'],
+        change: ['Account_manager', 'SuperAdmin', 'supervisor', 'admin'],
         read: ['View_only']
       }
     }

@@ -12,6 +12,7 @@ import { buildingsListPageNumberHandler } from './buildingsListPageNumberHandler
 import { serviceStatusIconsHandler } from './serviceStatusIconsHandler'
 
 import { refreshHandler } from './refreshHandler'
+import { accessRightsHandler } from './accessRightsHandler'
 
 import { mapComponent } from './mapComponent'
 
@@ -21,6 +22,7 @@ export {
   passwordHandler,
   credentialsHandler,
   roleHandler,
+  accessRightsHandler,
   partnerDetailsHandler,
   messageHandler,
   errorMessageHandler,

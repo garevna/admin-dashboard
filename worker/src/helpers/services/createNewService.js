@@ -1,13 +1,21 @@
 import { post } from '../AJAX'
 import { putRecordByKey } from '../db'
 import { serviceSchema } from '../../configs'
+import { testAccessError } from './testAccessError'
+
+const [route, action] = ['services', 'post']
 
 export const createNewService = async function (data) {
-  const [route, action] = ['services', 'post']
+  const access = testAccessError()
+  self.postDebugMessage({ route, action, access, data })
+
+  if (access) return Object.assign({}, access, { route, action })
 
   const service = Object.assign({}, serviceSchema, data)
 
   const { status, result } = await post('service', service)
+
+  self.postDebugMessage({ result })
 
   if (status !== 200) return self.errorMessage('postServiceDetailsError')
 

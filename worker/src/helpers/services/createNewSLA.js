@@ -1,4 +1,5 @@
 import { post } from '../AJAX'
+import { testAccessError } from './testAccessError'
 
 const [route, action] = ['sla', 'create']
 
@@ -12,6 +13,8 @@ const invalidRequest = {
 }
 
 export const createNewSLA = async (record) => {
+  if (testAccessError()) return Object.assign({}, testAccessError(), { route, action })
+
   if (!record.title || !record.content) return invalidRequest
 
   const success = {

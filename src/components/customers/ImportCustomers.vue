@@ -19,7 +19,7 @@
 
     <v-card-text class="text-center my-12" v-if="readyToShow">
       <v-btn
-        v-if="!Object.keys(fatalErrors).length && !Object.keys(errors).length"
+        v-if="!Object.keys(fatalErrors).length && !Object.keys(errors).length && accessRights === 2"
         dark
         class="mr-12"
         color="primary"
@@ -67,6 +67,8 @@
 
 <script>
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
+
 const connectionDataFields = {
   Login: {
     PPPOE: 'login_PPPOE',
@@ -93,6 +95,7 @@ export default {
 
   data: () => ({
     ready: false,
+    accessRights: accessRightsHandler().access[roleHandler()].customers,
     buildingsReady: false,
     servicesReady: false,
     show: false,
@@ -135,6 +138,7 @@ export default {
     },
 
     getBuildingsData (data) {
+      console.log(data)
       this.$root.$dispatchProgressEvent(true)
       this.customers.forEach((customer, index) => Object.assign(customer, { buildingId: data[index] }))
       this.buildingsReady = true

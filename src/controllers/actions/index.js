@@ -4,7 +4,10 @@ import {
   auth,
   changePassword,
   resetPassword,
-  sendPasswordResetCode
+  sendPasswordResetCode,
+  getAdmins,
+  createAdmin,
+  getAdminDetails
 } from './admin'
 
 import rsp from './rsp'
@@ -26,7 +29,10 @@ const result = Object.assign({}, rsp, services, customers, tickets, schedule, do
   auth,
   changePassword,
   resetPassword,
-  sendPasswordResetCode
+  sendPasswordResetCode,
+  getAdmins,
+  createAdmin,
+  getAdminDetails
 })
 
 export default result

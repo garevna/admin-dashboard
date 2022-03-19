@@ -84,7 +84,7 @@
     </v-row>
 
     <v-row justify="end">
-      <v-btn dark color="primary" @click="updateInfrastructure" class="mt-8">
+      <v-btn v-if="accessRights === 2" dark color="primary" @click="updateInfrastructure" class="mt-8">
         Save updates
       </v-btn>
     </v-row>
@@ -98,6 +98,8 @@ import {
   infrastructureEquipment
 } from '@/configs/buildingSchemaSections'
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
+
 export default {
   name: 'Infrasructure',
 
@@ -105,6 +107,7 @@ export default {
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     numberOfDwellings: '',
     customerInstallApprovalRequired: false,
     inductionRequired: false,

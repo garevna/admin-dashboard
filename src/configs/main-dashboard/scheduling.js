@@ -1,6 +1,7 @@
 export const scheduling = {
   title: 'Scheduling',
   component: 'Scheduling',
+  disabled: 'schedule',
   callbackName: '__refreshSchedule',
   refresh: 'schedule',
   icon: 'mdi-calendar-month',
@@ -8,6 +9,7 @@ export const scheduling = {
     {
       title: 'Unattended booking requests',
       route: 'booking',
+      disabled: 'schedule',
       icon: 'mdi-table-network',
       access: {
         change: ['Account_manager', 'SuperAdmin'],
@@ -17,6 +19,7 @@ export const scheduling = {
     {
       title: 'Installation Schedule',
       route: 'schedule',
+      disabled: 'schedule',
       icon: 'mdi-table-network',
       access: {
         change: ['Account_manager', 'SuperAdmin'],

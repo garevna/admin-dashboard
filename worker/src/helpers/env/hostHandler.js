@@ -1,6 +1,5 @@
-export const hostHandler = (function () {
-  let host = ''
-  return function (value) {
-    if (value) { host = value } else return host
-  }
-})()
+let host = ''
+
+export const hostHandler = function (value) {
+  if (value) { host = value } else return host
+}

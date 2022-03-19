@@ -13,6 +13,8 @@ import { buildingSettingsHandler } from './buildingSettingsHandler'
 
 import { messagesHandler } from './messagesHandler'
 
+import { accessSettingsHandler } from './accessSettingsHandler'
+
 export {
   estimatedServiceDeliveryTimeHandler,
   ticketCategoriesHandler,
@@ -27,5 +29,7 @@ export {
   uniqueCodeListHandler,
   uniqueCodesHandler,
 
-  messagesHandler
+  messagesHandler,
+
+  accessSettingsHandler
 }

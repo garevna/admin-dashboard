@@ -61,7 +61,6 @@ import '@/sass/main.scss'
 import 'dgtek-styles'
 
 import { credentialsHandler, roleHandler } from '@/controllers/data-handlers'
-// import { startRefreshing } from '@/controllers/callbacks'
 
 const servicesImage = require('@/assets/images/melbourne-2-1.svg')
 const homeImage = require('@/assets/images/Webb-Bridge-Melbourne-Drawing-effect.svg')
@@ -71,7 +70,6 @@ export default {
 
   data: () => ({
     ready: false,
-    // signIn: false,
     progress: false,
     snackbar: false,
     message: 'Welcome to DGtek Admin provisioning portal',
@@ -133,9 +131,6 @@ export default {
     roleHandler(localStorage.getItem('admin'))
     credentialsHandler(localStorage.getItem('refresh'))
 
-    // this.signIn = Boolean(roleHandler() && credentialsHandler())
-    // if (this.signIn) startRefreshing()
-
     this.$root.$on('show-snackbar', this.showSnackbar)
     this.$root.$on('hide-snackbar', this.hideSnackbar)
 
@@ -150,7 +145,6 @@ export default {
   },
 
   errorCaptured (err, instance, info) {
-    // console.log(err === 'TypeError: Cannot read properties of undefined (reading \'lang\')')
     console.warn('ERROR:\n', err, info, instance.$options._componentTag)
     return false
   }

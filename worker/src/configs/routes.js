@@ -1,5 +1,9 @@
+import { roleHandler } from '../helpers/env'
+import { accessSettingsHandler } from '../data-handlers'
+
 const {
   authController,
+  adminController,
   cryptoController,
   buildingController,
   rspController,
@@ -16,29 +20,30 @@ const {
 export const routes = {
   '*': {
     refresh: async () => {
-      const actions = [
-        self.refreshServicesList,
-        self.getResellersFromRemoteServer,
-        self.getTicketsFromRemoteServer,
-        self.refreshDocumentsList,
-        self.downloadAllCustomers
-      ]
-
       const response = await self.refreshSettings()
 
       self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
+
+      const rights = accessSettingsHandler().access[roleHandler()]
+
+      const actions = [
+        rights.services ? self.refreshServicesList : null,
+        rights.partners || rights.rsp ? self.getResellersFromRemoteServer : null,
+        rights.tickets ? self.getTicketsFromRemoteServer : null,
+        rights.documents ? self.refreshDocumentsList : null,
+        rights.customers ? self.downloadAllCustomers : null
+      ].filter(item => !!item)
 
       for (const action of actions) {
         action().then(response => self.postMessage(Object.assign(response, { action: 'initial-refresh' })))
       }
 
-      self.downloadAllCustomers().then(response => {
-        self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
-        self.refreshSchedule()
-          .then(response => {
-            self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
-          })
-      })
+      if (rights.customers) {
+        self.downloadAllCustomers().then(response => {
+          self.postMessage(Object.assign(response, { action: 'initial-refresh' }))
+          self.refreshSchedule().then(response => self.postMessage(Object.assign(response, { action: 'initial-refresh' })))
+        })
+      }
     }
   },
 
@@ -47,7 +52,10 @@ export const routes = {
     auth: authController.auth,
     reset: authController.passwordReset,
     code: authController.sendPasswordResetCode,
-    change: authController.changePassword
+    change: authController.changePassword,
+    admins: adminController.getAdmins,
+    create: adminController.createAdmin,
+    details: adminController.getAdminDetails
   },
 
   building: {

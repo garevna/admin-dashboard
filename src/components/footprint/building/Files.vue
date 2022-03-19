@@ -21,6 +21,7 @@
           <v-toolbar flat class="transparent">
             <v-spacer />
             <v-file-input
+              v-if="accessRights === 2"
               accept="application/pdf"
               placeholder="Click here to choose a file"
               prepend-icon="mdi-file-upload"
@@ -31,7 +32,7 @@
               @change="upload(item, $event)"
             />
 
-            <v-btn dark @click="save(item)" color="primary" class="ml-4">
+            <v-btn v-if="accessRights === 2" dark @click="save(item)" color="primary" class="ml-4">
               <v-icon class="mr-4"> mdi-file-upload </v-icon>
               UPLOAD
             </v-btn>
@@ -50,6 +51,8 @@
 
 <script>
 
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
+
 const { pdf404 } = require('@/configs').default
 
 export default {
@@ -58,6 +61,7 @@ export default {
   props: ['buildingData'],
 
   data: () => ({
+    accessRights: accessRightsHandler().access[roleHandler()].buildings,
     buildingId: null,
     files: null,
     tab: null,

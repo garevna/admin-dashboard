@@ -3,7 +3,6 @@
     <v-row align="start" justify="center" justify-md="end">
       <SignIn :resetPassword.sync="resetPassword" :success.sync="success" />
     </v-row>
-    <!-- <ResetPassword v-if="resetPassword" /> -->
   </v-container>
 </template>
 
@@ -13,7 +12,6 @@ export default {
 
   components: {
     SignIn: () => import('@/components/auth/SignIn.vue')
-    // ResetPassword: () => import('@/components/auth/ResetPassword.vue')
   },
 
   data: () => ({

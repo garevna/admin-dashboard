@@ -27,21 +27,26 @@ export const auth = async (login, password) => {
 
   const result = await response.json()
 
-  if (response.status !== 200) {
+  const role = result.data.role
+
+  if (response.status !== 200 || role === 'RSP') {
     credentialsHandler('reset')
     return self.errorMessage('authError')
   }
 
-  roleHandler(result.data.role)
+  roleHandler(role)
+
+  const test = role === 'SuperAdmin' || role === 'admin' || role === 'supervisor'
 
   self.access = {
-    updates: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
-    messages: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
-    customers: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
-    buildings: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
-    services: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
-    tickets: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor',
-    schedule: result.data.role === 'SuperAdmin' || result.data.role === 'admin' || result.data.role === 'supervisor'
+    updates: test,
+    messages: test,
+    customers: test,
+    buildings: test,
+    services: test,
+    tickets: test,
+    schedule: test,
+    settings: test
   }
 
   return {
@@ -51,6 +56,6 @@ export const auth = async (login, password) => {
     result: Object.assign(result.data, { credentials: credentialsHandler() }),
     message: true,
     messageType: 'DGtek admin portal authorization',
-    messageText: `Role: ${result.data.role}`
+    messageText: `Role: ${role}`
   }
 }

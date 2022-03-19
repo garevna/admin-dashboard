@@ -1,5 +1,5 @@
 import { routes } from './routes'
-import { emptyData, secretError, encryptError, decryptError } from './errors'
+import { emptyData, secretError, encryptError, decryptError, accessError } from './errors'
 import { serviceSchema } from './serviceSchema'
 
 import { polygonColors } from './polygonColors'
@@ -20,6 +20,7 @@ export {
   secretError,
   encryptError,
   decryptError,
+  accessError,
   serviceSchema,
   uploads,
   invalidRoute,

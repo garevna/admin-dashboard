@@ -2,7 +2,6 @@ import { initError } from './'
 
 export function adminCallback (event) {
   event.stopImmediatePropagation()
-  console.log(event.data)
   const { status } = event.data
 
   if (status === 200) {

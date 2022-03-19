@@ -19,15 +19,15 @@
 
       <v-divider></v-divider>
 
-      <v-list>
+      <v-list v-if="disabledRoutes">
         <v-list-group
           v-for="item in items"
           :key="item.title"
           v-model="item.active"
         >
           <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title v-if="refreshed[item.refresh]">
+            <v-list-item-content v-if="refreshed[item.refresh]">
+              <v-list-item-title :class="disabledRoutes[item.disabled] ? 'disabled-item' : ''">
                 <v-icon small>{{ item.icon }}</v-icon> {{ item.title }}
               </v-list-item-title>
             </v-list-item-content>
@@ -38,8 +38,8 @@
             :key="child.title"
             class="clickable"
             style="margin-left: 16px!important; margin-top: -16px!important"
-            :disabled="$route.name !== 'tickets' ? $route.name === child.route : false"
-            @click="jumpTo(child)"
+            :disabled="disabledRoutes[child.disabled] || disabledRoutes[item.disabled]"
+            @click="disabledRoutes[child.disabled] ? null : jumpTo(child)"
           >
             <v-list-item-content v-if="!child.children">
               <v-list-item-title>
@@ -62,17 +62,18 @@
                 <v-list-item
                   v-for="(subChild, i) in child.children"
                   :key="i"
-                  @click="jumpTo(subChild)"
+                  @click="disabledRoutes[subChild.disabled] ? null : jumpTo(subChild)"
                   class="my-0 py-0"
+                  :disabled="disabledRoutes[subChild.disabled]"
                   active-class="active-list-item"
                   style="min-height: 24px!important; max-height: 32px!important; padding-left: 48px"
                 >
-                  <v-list-item-title>
+                  <v-list-item-title :disabled="disabledRoutes[subChild.disabled]">
                     <v-icon small :color="$route.name === subChild.route ? '#900' : '#777'">{{ subChild.icon }}</v-icon>
                     <span :style="{ color: $route.name === subChild.route ? '#900' : '#777' }">{{ subChild.title }}</span>
                   </v-list-item-title>
                 </v-list-item>
-                <div class="my-4"></div>
+                <!-- <div class="my-4"><small>{{ disabledRoutes[child.disabled] }}</small></div> -->
               </v-list-group>
             </v-list-item-content>
           </v-list-item>
@@ -90,7 +91,7 @@
 
 <script>
 
-import { roleHandler } from '@/controllers/data-handlers'
+import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 
 const { mainDashboard } = require('@/configs').default
 
@@ -99,20 +100,13 @@ export default {
 
   data: () => ({
     items: mainDashboard,
-    refreshed: {
-      rsp: false,
-      footprint: false,
-      customers: false,
-      tickets: false,
-      services: false,
-      schedule: false,
-      documents: false,
-      settings: true
-    }
+    disabledRoutes: null,
+    refreshed: {}
   }),
 
   methods: {
     setRefreshed (event) {
+      console.log('EVENT: REFRESHED\n', event)
       this.refreshed[event] = true
     },
 
@@ -128,6 +122,10 @@ export default {
 
     refreshTicketCategories (data) {
       //
+    },
+
+    getAdmins (data) {
+      // console.log(data)
     }
   },
 
@@ -147,20 +145,45 @@ export default {
     this.$root.$off('ticket-categories-updated', this.refreshTicketCategories)
   },
 
-  mounted () {
-    [
-      'footprint-refreshed',
-      'rsp-refreshed',
-      'customers-refreshed',
-      'tickets-refreshed',
-      'services-refreshed',
-      'schedule-refreshed',
-      'documents-refreshed'
-    ].forEach((event) => {
-      this.$root.$on(event, this.setRefreshed)
-    })
-
+  beforeMount () {
     if (!roleHandler()) this.$router.push({ name: 'home' }).catch(failure => console.warn('Router failure:\n', failure))
+  },
+
+  mounted () {
+    console.log('DASHBOARD - ACCESS RIGHTS:\n', accessRightsHandler())
+    const rights = accessRightsHandler().access[roleHandler()]
+    const dashboard = accessRightsHandler().dashboard
+
+    const [partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings] = [
+      !rights.partners,
+      !rights.partners,
+      !rights.polygons && !rights.buildings,
+      !rights.polygons,
+      !rights.buildings,
+      !rights.customers,
+      !rights.tickets,
+      !rights.services,
+      !rights.schedule,
+      !rights.documents,
+      !rights.settings
+    ]
+
+    this.disabledRoutes = { partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings }
+
+    console.log('DISABLED:\n', this.disabledRoutes)
+
+    this.refreshed = { rsp, footprint: true, customers, tickets, services, schedule, documents, settings: true }
+
+    dashboard
+      .map(item => `${item === 'partners' ? 'rsp' : item}-refreshed`)
+      .forEach((event) => {
+        console.log(event)
+        this.$root.$on(event, this.setRefreshed)
+      })
+
+    console.log('DASHBOARD ITEMS:\n', this.items)
+
+    // this.__getAdmins(this.getAdmins)
 
     this.$root.$on('ticket-categories-updated', this.refreshTicketCategories)
     this.$router.push({ name: 'main-dash' })
@@ -174,10 +197,6 @@ export default {
   background: transparent;
 }
 
-/* .v-application--is-ltr .v-data-footer__select {
-  visibility: hidden;
-} */
-
 .clickable {
   cursor: pointer;
 }
@@ -185,9 +204,10 @@ export default {
   border: dotted 1px #900;
   background: #9007;
 }
-/* .active-list-items-group {
-  margin-bottom: 0px !important;
-} */
+.disabled-item {
+  color: #bbb;
+}
+
 .v-application--is-ltr .v-list-group--no-action > .v-list-group__items > .v-list-item {
   padding-left: 32px!important;
   min-height: 24px!important;
