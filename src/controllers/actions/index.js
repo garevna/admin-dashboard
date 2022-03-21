@@ -1,15 +1,6 @@
-// import { init } from './init'
+import { init } from './init'
 
-import {
-  auth,
-  changePassword,
-  resetPassword,
-  sendPasswordResetCode,
-  getAdmins,
-  createAdmin,
-  getAdminDetails
-} from './admin'
-
+import admin from './admin'
 import rsp from './rsp'
 import services from './services'
 import customers from './customers'
@@ -24,15 +15,6 @@ import files from './files'
 
 import messages from './messages'
 
-const result = Object.assign({}, rsp, services, customers, tickets, schedule, documents, settings, buildings, files, messages, {
-  // init,
-  auth,
-  changePassword,
-  resetPassword,
-  sendPasswordResetCode,
-  getAdmins,
-  createAdmin,
-  getAdminDetails
-})
+const result = Object.assign({}, init, admin, rsp, services, customers, tickets, schedule, documents, settings, buildings, files, messages)
 
 export default result

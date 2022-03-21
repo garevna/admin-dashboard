@@ -7,15 +7,12 @@ const [route, action] = ['services', 'post']
 
 export const createNewService = async function (data) {
   const access = testAccessError()
-  self.postDebugMessage({ route, action, access, data })
 
   if (access) return Object.assign({}, access, { route, action })
 
   const service = Object.assign({}, serviceSchema, data)
 
   const { status, result } = await post('service', service)
-
-  self.postDebugMessage({ result })
 
   if (status !== 200) return self.errorMessage('postServiceDetailsError')
 

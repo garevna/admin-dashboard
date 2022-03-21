@@ -77,14 +77,14 @@ export default {
       this.items[2].list = data.buildingCategory
     },
 
-    showAnswer (response) {
-      // console.log('Building settings:\n', response)
+    callback (response) {
+      //
     },
 
     save () {
       const [buildingClass, buildingType, buildingCategory] = this.items.map(item => item.list)
 
-      this.__updateBuildingSettings({ buildingClass, buildingType, buildingCategory }, this.showAnswer)
+      this.__updateBuildingSettings({ buildingClass, buildingType, buildingCategory }, this.callback)
     }
   },
 

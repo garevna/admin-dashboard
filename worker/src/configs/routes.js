@@ -55,7 +55,9 @@ export const routes = {
     change: authController.changePassword,
     admins: adminController.getAdmins,
     create: adminController.createAdmin,
-    details: adminController.getAdminDetails
+    details: adminController.getAdminDetails,
+    update: adminController.updateAdmin,
+    remove: adminController.removeAdmin
   },
 
   building: {

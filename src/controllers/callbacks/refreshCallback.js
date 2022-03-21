@@ -1,5 +1,5 @@
 import { refreshError } from './'
-import { refreshHandler, serviceStatusIconsHandler, roleHandler } from '../data-handlers'
+import { refreshHandler, serviceStatusIconsHandler } from '../data-handlers'
 import { setCategories } from '../../helpers'
 
 export function refreshCallback (event) {
@@ -10,11 +10,8 @@ export function refreshCallback (event) {
   refreshHandler(route, true)
 
   if (route === 'settings') {
-    console.log('REFRESH SETTINGS\n', data)
     serviceStatusIconsHandler(data.result.serviceStatusIcons)
     setCategories(data.result.ticketCategories)
-    const accessRights = data.result.accessSettings.access[roleHandler()]
-    console.log('ACCESS RIGHTS:\n', accessRights)
   }
 
   window[Symbol.for('vue.instance')].$root.$emit(`${route}-refreshed`, route)

@@ -24,7 +24,9 @@ const {
   passwordReset,
   sendPasswordResetCode,
   getAdmins,
-  createAdmin
+  createAdmin,
+  getUserDetails,
+  updateAdmin
 } = require('./admin').default
 
 const result = Object.assign({}, building, rsp, customers, services, tickets, schedule, documents, settings, polygons, messages, updates, {
@@ -39,7 +41,9 @@ const result = Object.assign({}, building, rsp, customers, services, tickets, sc
   changePassword,
   passwordChange,
   getAdmins,
-  createAdmin
+  createAdmin,
+  getUserDetails,
+  updateAdmin
 })
 
 Object.keys(result).forEach((key) => { self[key] = result[key] })

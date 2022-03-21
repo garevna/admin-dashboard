@@ -14,10 +14,10 @@ const message = {
   messageText: 'Access rights updated'
 }
 
-export const updateBuildingSettings = async ({ access, roles, dashboard }) => {
-  accessSettingsHandler({ access, roles, dashboard })
+export const updateAccessSettings = async ({ access, roles }) => {
+  accessSettingsHandler({ access, roles })
 
-  const { status, result } = await patch('settings', { access, roles, dashboard })
+  const { status, result } = await patch('settings', { access, roles })
 
   const response = { status, route, action, section, result }
 

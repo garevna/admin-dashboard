@@ -5,6 +5,6 @@ export const getError = section => ({
   section,
   data: null,
   error: true,
-  errorType: 'Invalid request',
-  errorMessage: `Requst for ${section} is ivalid`
+  errorType: 'Get settings',
+  errorMessage: `Request for ${section} is invalid`
 })

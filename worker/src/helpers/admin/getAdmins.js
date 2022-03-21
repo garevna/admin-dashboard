@@ -25,16 +25,12 @@ export const getAdmins = async function () {
       continue
     }
 
-    self.postDebugMessage({ [role]: result })
-
     for (const user of result) {
       const { login, password, phoneNumber } = user.userInfo
 
       const { result: credentials } = await encrypt(JSON.stringify({ login, password }))
 
       response.push({ id: user._id, role, login, password, phoneNumber, credentials })
-
-      self.postDebugMessage({ id: user._id, role, login, password, phoneNumber, credentials })
     }
   }
 

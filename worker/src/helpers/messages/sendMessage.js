@@ -24,12 +24,6 @@ const sendMessageResponse = {
 export const sendMessage = async message => {
   const { status, result } = await post('messages', message)
 
-  // self.postDebugMessage({
-  //   resellerId: message.resellerId,
-  //   mesageId: message._id,
-  //   fields: message.fields.map(item => item.field)
-  // })
-
   if (message.resellerId) await sendNotification(message.resellerId, 'message', message._id, message.fields.map(item => item.field))
 
   return status !== 200 ? sendMessageError : Object.assign(sendMessageResponse, { result })

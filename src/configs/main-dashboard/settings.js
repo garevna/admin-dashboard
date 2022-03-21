@@ -57,7 +57,13 @@ export const settings = {
           title: 'Create new admin',
           route: 'create-admin',
           disabled: 'access',
-          icon: 'mdi-table-account'
+          icon: 'mdi-account-plus'
+        },
+        {
+          title: 'Available roles',
+          route: 'available-roles',
+          disabled: 'access',
+          icon: 'mdi-account-edit'
         }
       ]
     }

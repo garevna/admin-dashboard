@@ -185,7 +185,8 @@ export default {
           status,
           activationDate,
           connectionData: this.getConnectionData(customer),
-          log: { [logDate]: status }
+          log: { [logDate]: status },
+          modified: logDate
         }
       ]
     },

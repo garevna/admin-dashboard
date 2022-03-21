@@ -292,7 +292,12 @@ const routes = [
       {
         path: '/create-admin',
         name: 'create-admin',
-        component: () => import(/* webpackChunkName: 'access-rights' */ '@/components/settings/CreateNewAdmin.vue')
+        component: () => import(/* webpackChunkName: 'create-admin' */ '@/components/settings/CreateNewAdmin.vue')
+      },
+      {
+        path: '/available-roles',
+        name: 'available-roles',
+        component: () => import(/* webpackChunkName: 'available-roles' */ '@/components/settings/AvailableRoles.vue')
       },
       // {
       //   path: '/access-rights',

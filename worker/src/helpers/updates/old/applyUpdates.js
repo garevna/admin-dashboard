@@ -12,7 +12,5 @@ export const applyUpdates = async updates => {
 
   await Promise.all(response.map((record, index) => putRecordByKey(routes[index], record.result._id, record.result)))
 
-  const events = Array.from(new Set(routes)).map(route => `${route}-updated`)
-
-  self.postDebugMessage({ events })
+  // self.postDebugMessage({ events: Array.from(new Set(routes)).map(route => `${route}-updated`) })
 }

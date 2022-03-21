@@ -87,10 +87,6 @@ export default {
   },
 
   watch: {
-    activationInfoDialog (val) {
-      // console.log('activationInfoDialog: ', val)
-    },
-
     activationSubmitted (value) {
       if (value) {
         this.activationInfoDialog = false

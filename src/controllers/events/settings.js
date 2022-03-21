@@ -7,7 +7,8 @@ export const settings = {
     availableServiceStatus: 'available-service-status-received',
     pendingConnectionStatus: 'pending-connection-status-received',
     serviceStatusIcons: 'service-status-icons-received',
-    buildingSettings: 'building-settings-received'
+    buildingSettings: 'building-settings-received',
+    accessSettings: 'access-settings-received'
   },
   update: 'settings-data-updated'
 }

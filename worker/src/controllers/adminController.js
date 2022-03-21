@@ -38,6 +38,14 @@ class AdminController {
   async getAdminDetails (request) {
     self.postMessage(await self.getUserDetails(request.id))
   }
+
+  async updateAdmin (request) {
+    self.postMessage(await self.updateAdmin(request.data))
+  }
+
+  async removeAdmin (request) {
+    self.postMessage(await self.deleteUser(request.id))
+  }
 }
 
 export const adminController = new AdminController()

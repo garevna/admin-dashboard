@@ -1,10 +1,21 @@
-import { updateEstimatedServiceDeliveryTime } from './updateEstimatedServiceDeliveryTime'
-import { updateTicketCategories } from './updateTicketCategories'
-import { updateScheduleCalendarSettings } from './updateScheduleCalendarSettings'
-import { updateServiceProductTypes } from './updateServiceProductTypes'
+// import { updateEstimatedServiceDeliveryTime } from './updateEstimatedServiceDeliveryTime'
+// import { updateTicketCategories } from './updateTicketCategories'
+// import { updateScheduleCalendarSettings } from './updateScheduleCalendarSettings'
+// import { updateServiceProductTypes } from './updateServiceProductTypes'
 // import { updateAvailableServiceStatus } from './updateAvailableServiceStatus'
-import { updatePendingConnectionStatus } from './updatePendingConnectionStatus'
-import { updateBuildingSettings } from './updateBuildingSettings'
+// import { updatePendingConnectionStatus } from './updatePendingConnectionStatus'
+// import { updateBuildingSettings } from './updateBuildingSettings'
+// import { updateAccessSettings } from './updateAccessSettings'
+
+import {
+  updateEstimatedServiceDeliveryTime,
+  updateTicketCategories,
+  updateScheduleCalendarSettings,
+  updateServiceProductTypes,
+  updatePendingConnectionStatus,
+  updateBuildingSettings,
+  updateAccessSettings
+} from './methods'
 
 import { updateError } from './updateError'
 import { availableSections } from './availableSections'
@@ -15,7 +26,8 @@ import {
   scheduleCalendarSettingsHandler,
   serviceProductTypesHandler,
   availableServiceStatusHandler,
-  buildingSettingsHandler
+  buildingSettingsHandler,
+  accessSettingsHandler
 } from '../../data-handlers'
 
 const availableMethods = {
@@ -42,6 +54,11 @@ const availableMethods = {
   buildingSettings: async (data) => {
     buildingSettingsHandler(data)
     return await updateBuildingSettings(data)
+  },
+
+  accessSettings: async (data) => {
+    accessSettingsHandler(data)
+    return await updateAccessSettings(data)
   }
 }
 

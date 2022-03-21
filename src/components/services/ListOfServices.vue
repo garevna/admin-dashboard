@@ -90,8 +90,8 @@ export default {
 
     createNewService () {
       this.$router.push({ name: 'create-new-service' }).catch(failure => {
-        console.log(this.$router.options)
-        console.log(failure)
+        console.warn(this.$router.options)
+        console.warn(failure)
       })
     },
 

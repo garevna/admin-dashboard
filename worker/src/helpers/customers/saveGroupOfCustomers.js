@@ -19,8 +19,6 @@ const remoteError = Object.assign({}, error, {
 export const saveGroupOfCustomers = async function (customers) {
   let response = await Promise.all(customers.map(customer => post('customer', customer)))
 
-  self.postDebugMessage({ operation: 'POST', response })
-
   const errors = []
 
   response.forEach((item, index) => item.status !== 200
@@ -42,19 +40,13 @@ export const saveGroupOfCustomers = async function (customers) {
 
   response = await Promise.all(promises)
 
-  // self.postDebugMessage({ operation: 'PATCH', response })
-
   const result = response
     .filter(item => item.status === 200)
     .map(item => item.result.data)
 
   response = await Promise.all(result.map(customer => putRecordByKey('customers', customer._id, customer)))
 
-  // self.postDebugMessage({ operation: 'putRecordByKey', response })
-
   response = await Promise.all(customers.map(customer => sendNotification(customer.resellerId, 'customer', customer._id)))
-
-  // self.postDebugMessage({ action: 'sendNotification', response })
 
   return {
     status: 200,

@@ -14,5 +14,8 @@ export const getUserDetails = async function (userId) {
 
   if (status !== 200) return self.errorMessage(Object.assign(getUserDetailsError, { route, action }))
 
-  return { status: 200, route, action, result }
+  const { role, userInfo } = result
+  const { login, password, phoneNumber } = userInfo
+
+  return { status: 200, route, action, result: { role, login, password, phoneNumber } }
 }

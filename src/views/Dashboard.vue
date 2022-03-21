@@ -106,7 +106,6 @@ export default {
 
   methods: {
     setRefreshed (event) {
-      console.log('EVENT: REFRESHED\n', event)
       this.refreshed[event] = true
     },
 
@@ -150,7 +149,6 @@ export default {
   },
 
   mounted () {
-    console.log('DASHBOARD - ACCESS RIGHTS:\n', accessRightsHandler())
     const rights = accessRightsHandler().access[roleHandler()]
     const dashboard = accessRightsHandler().dashboard
 
@@ -170,20 +168,11 @@ export default {
 
     this.disabledRoutes = { partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings }
 
-    console.log('DISABLED:\n', this.disabledRoutes)
-
     this.refreshed = { rsp, footprint: true, customers, tickets, services, schedule, documents, settings: true }
 
     dashboard
       .map(item => `${item === 'partners' ? 'rsp' : item}-refreshed`)
-      .forEach((event) => {
-        console.log(event)
-        this.$root.$on(event, this.setRefreshed)
-      })
-
-    console.log('DASHBOARD ITEMS:\n', this.items)
-
-    // this.__getAdmins(this.getAdmins)
+      .forEach(event => this.$root.$on(event, this.setRefreshed))
 
     this.$root.$on('ticket-categories-updated', this.refreshTicketCategories)
     this.$router.push({ name: 'main-dash' })

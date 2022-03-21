@@ -17,8 +17,6 @@ import * as events from './events'
 export const globalCallback = function (event) {
   const { route, action, section, status, result, error, message } = event.data
 
-  if (route === 'rsp' && action === 'refresh') console.log(event.data)
-
   if (status === 300) return debuggerCallback(event)
 
   if (error || message) error ? errorCallback(event) : messageCallback(event)
