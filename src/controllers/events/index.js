@@ -13,6 +13,8 @@ import { schedule, booking, lots } from './schedule'
 import { settings } from './settings'
 import { messages } from './messages'
 
+import { reports } from './reports'
+
 import { building } from './building'
 
 const polygons = {
@@ -34,6 +36,8 @@ export {
   settings,
   messages,
   building,
+
+  reports,
 
   files,
   polygons

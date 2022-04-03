@@ -10,29 +10,13 @@ export const scheduling = {
       title: 'Unattended booking requests',
       route: 'booking',
       disabled: 'schedule',
-      icon: 'mdi-table-network',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-table-network'
     },
     {
       title: 'Installation Schedule',
       route: 'schedule',
       disabled: 'schedule',
-      icon: 'mdi-table-network',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-table-network'
     }
-    // {
-    //   title: 'Calendar Settings',
-    //   icon: 'mdi-calendar-edit',
-    //   access: {
-    //     change: ['Account_manager', 'SuperAdmin'],
-    //     read: ['View_only']
-    //   }
-    // }
   ]
 }

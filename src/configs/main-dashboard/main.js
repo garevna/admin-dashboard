@@ -6,11 +6,7 @@ export const main = {
     {
       title: 'Dashboard',
       route: 'main-dash',
-      icon: 'mdi-ballot-outline',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-ballot-outline'
     }
   ]
 }

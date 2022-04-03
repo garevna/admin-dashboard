@@ -7,6 +7,7 @@ import { scheduling } from './scheduling'
 import { tickets } from './tickets'
 import { documents } from './documents'
 import { settings } from './settings'
+import { reports } from './reports'
 
 export {
   main,
@@ -17,5 +18,6 @@ export {
   scheduling,
   tickets,
   documents,
-  settings
+  settings,
+  reports
 }

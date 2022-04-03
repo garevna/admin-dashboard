@@ -151,6 +151,7 @@ export default {
     },
 
     getBuildings (data) {
+      if (!data || !Array.isArray(data)) return
       this.$root.$emit('progress-event', false)
       this.buildings = data.map(building => ({
         buildingName: building.buildingName,

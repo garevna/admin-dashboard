@@ -1,21 +1,26 @@
 import { roleHandler } from '../helpers/env'
 import { accessSettingsHandler } from '../data-handlers'
 
-const {
-  authController,
-  adminController,
-  cryptoController,
-  buildingController,
-  rspController,
-  customersController,
-  servicesController,
-  ticketsController,
-  scheduleController,
-  documentsController,
-  settingsController,
-  updatesController,
-  messageController
-} = require('../controllers').default
+import { admin } from './routes/admin'
+import { building } from './routes/building'
+import { files } from './routes/files'
+import { polygons } from './routes/polygons'
+import { rsp } from './routes/rsp'
+import { customers } from './routes/customers'
+import { services } from './routes/services'
+import { sla } from './routes/sla'
+import { tickets } from './routes/tickets'
+import { documents } from './routes/documents'
+import { schedule } from './routes/schedule'
+import { booking } from './routes/booking'
+import { lots } from './routes/lots'
+import { messages } from './routes/messages'
+import { settings } from './routes/settings'
+import { updates } from './routes/updates'
+
+import { reports } from './routes/reports'
+
+const { cryptoController } = require('../controllers').default
 
 export const routes = {
   '*': {
@@ -47,185 +52,27 @@ export const routes = {
     }
   },
 
-  admin: {
-    init: authController.init,
-    auth: authController.auth,
-    reset: authController.passwordReset,
-    code: authController.sendPasswordResetCode,
-    change: authController.changePassword,
-    admins: adminController.getAdmins,
-    create: adminController.createAdmin,
-    details: adminController.getAdminDetails,
-    update: adminController.updateAdmin,
-    remove: adminController.removeAdmin
-  },
-
-  building: {
-    post: buildingController.post,
-    patch: buildingController.patch,
-    delete: buildingController.delete,
-    excel: buildingController.excel
-  },
-
-  polygons: {
-    kml: buildingController.convertToKML
-  },
-
-  files: {
-    get: buildingController.getFileContent,
-    create: buildingController.postFile,
-    remove: buildingController.deleteFile
-  },
-
-  rsp: {
-    refresh: rspController.refresh,
-    create: rspController.create,
-    list: rspController.list,
-    short: rspController.short,
-    get: rspController.get,
-    credentials: rspController.getPartnerCredentials,
-
-    'refresh-partners-list': rspController.refreshPartnersList,
-
-    registration: rspController.registrationRequests,
-    reject: rspController.rejectRegistration,
-    'refresh-registration-requests': rspController.refreshRegistration,
-    'registration-request-details': rspController.registrationRequestDetails,
-    'confirm-registration-request': rspController.confirmRegistration,
-
-    customers: customersController.getCustomersByResellerId,
-
-    'get-unique-code-list': rspController.getUniqueCodeList
-  },
-
-  customers: {
-    // refresh: customersController.refresh,
-    refresh: customersController.getCustomersFromRemote,
-    updated: customersController.refreshUpdatedCustomersOnly,
-    pagination: customersController.refreshByPageNumber,
-    list: customersController.getAllCustomers,
-    'short-list': customersController.getShortListOfCustomers,
-    'filtered-short-list': customersController.getFilteredShortListOfCustomers,
-    get: customersController.getCustomer,
-    post: customersController.createCustomer,
-    save: customersController.saveCustomers,
-    put: customersController.updateCustomer,
-    patch: customersController.patchCustomer,
-    delete: customersController.deleteCustomer,
-
-    services: customersController.getCustomerServices,
-
-    'cancelation-date': customersController.updateServiceCancelationDate,
-    'suspension-date': customersController.updateServiceSuspensionDate,
-    'resuming-date': customersController.updateServiceResumingDate,
-
-    cancel: customersController.cancelService,
-    suspend: customersController.suspendService,
-    resume: customersController.resumeService,
-
-    excel: customersController.getCustomersForExcel,
-
-    'hard-refresh': customersController.hardRefresh
-  },
+  admin,
+  building,
+  files,
+  polygons,
+  rsp,
+  customers,
+  services,
+  sla,
+  tickets,
+  documents,
+  schedule,
+  booking,
+  lots,
+  settings,
+  updates,
+  messages,
+  reports,
 
   crypto: {
     init: cryptoController.init,
     encrypt: cryptoController.encrypt,
     decrypt: cryptoController.decrypt
-  },
-
-  services: {
-    refresh: servicesController.refresh,
-    list: servicesController.list,
-    names: servicesController.names,
-    get: servicesController.get,
-    search: servicesController.search,
-    post: servicesController.post,
-    put: servicesController.put,
-    patch: servicesController.patch,
-    'group-search': servicesController.groupSearch,
-    'patch-group': servicesController.patchGroup,
-    delete: servicesController.deleteService
-  },
-
-  sla: {
-    list: servicesController.getSLAList,
-    get: servicesController.getSLAContent,
-    put: servicesController.updateSLA,
-    update: servicesController.updateSLA,
-    upload: servicesController.uploadSLA,
-    create: servicesController.createNewSLA,
-    post: servicesController.uploadNewSLA,
-    remove: servicesController.removeSLA,
-    read: servicesController.readLocalFile
-  },
-
-  tickets: {
-    refresh: ticketsController.refresh,
-    list: ticketsController.list,
-    pending: ticketsController.pending,
-    archived: ticketsController.archived,
-    details: ticketsController.getArchivedTicketDetails,
-    rsp: ticketsController.listForPartner,
-    get: ticketsController.get,
-    put: ticketsController.put
-  },
-
-  schedule: {
-    refresh: scheduleController.refresh,
-    get: scheduleController.getFullSchedule,
-    week: scheduleController.getByWeekNumber,
-    update: scheduleController.updateRecord,
-    // settings: scheduleController.getScheduleSettings,
-    config: scheduleController.updateScheduleSettings,
-    job: scheduleController.putRecordToJobQueue,
-    activate: scheduleController.activateService,
-    pending: scheduleController.getPendingRequests
-  },
-
-  booking: {
-    get: scheduleController.getBookingList,
-    update: scheduleController.updateRecord
-  },
-
-  lots: {
-    get: scheduleController.getLotsFromRemote,
-    update: scheduleController.updateLotsToCurrentDate,
-    put: scheduleController.createNewScheduleLot
-  },
-
-  documents: {
-    refresh: documentsController.refresh,
-    folders: documentsController.folders,
-    list: documentsController.list,
-    dir: documentsController.folderContent,
-    rsp: documentsController.listForPartner,
-    get: documentsController.get,
-    read: documentsController.read,
-    post: documentsController.post,
-    update: documentsController.update,
-    patch: documentsController.patch
-  },
-
-  settings: {
-    refresh: settingsController.refresh,
-    get: settingsController.get,
-    update: settingsController.update
-  },
-
-  updates: {
-    customers: updatesController.getCustomerUpdates,
-    tickets: updatesController.getTicketUpdates,
-    schedule: updatesController.getScheduleUpdates,
-    get: updatesController.getLastUpdates
-  },
-
-  messages: {
-    updated: messageController.getUpdated,
-    get: messageController.getMessages,
-    partner: messageController.getMessagesByResellerId,
-    send: messageController.sendMessage,
-    remove: messageController.deleteMessage,
-    update: messageController.updateMessage
   }
 }

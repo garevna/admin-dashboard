@@ -21,6 +21,14 @@ const sectionNames = {
 // const testSection = section => section && sections.indexOf(section)
 
 class BuildingController {
+  async getGroupOfBuildingsDetails (request) {
+    self.postMessage(await self.getGroupOfBuildingsDetails(request.list, request.props))
+  }
+
+  async getMasterList (request) {
+    self.postMessage(await self.getMasterBuildingsList(request.list))
+  }
+
   async getFileContent (request) {
     const [route, action] = ['files', 'get']
     const { buildingId, section } = request

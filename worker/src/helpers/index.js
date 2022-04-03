@@ -15,6 +15,8 @@ import messages from './messages'
 
 import * as updates from './updates'
 
+import reports from './reports'
+
 import { testDBVersion } from './db'
 
 const {
@@ -29,7 +31,7 @@ const {
   updateAdmin
 } = require('./admin').default
 
-const result = Object.assign({}, building, rsp, customers, services, tickets, schedule, documents, settings, polygons, messages, updates, {
+const result = Object.assign({}, building, rsp, customers, services, tickets, schedule, documents, settings, polygons, messages, updates, reports, {
   testDBVersion,
   init,
   hash,

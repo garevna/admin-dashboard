@@ -3,40 +3,23 @@ export const footprint = {
   refresh: 'footprint',
   disabled: 'footprint',
   icon: 'mdi-map',
-  access: {
-    change: ['SuperAdmin', 'Map_editor'],
-    read: ['View_only']
-  },
   children: [
     {
       title: 'Search address',
       route: 'footprint',
       disabled: 'buildings',
-      icon: 'mdi-map-search',
-      access: {
-        change: ['SuperAdmin', 'Map_editor'],
-        read: ['View_only']
-      }
+      icon: 'mdi-map-search'
     },
     {
       title: 'Edit polygons',
       route: 'polygons',
       disabled: 'polygons',
-      icon: 'mdi-map-marker-path',
-      access: {
-        change: ['Map_editor', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-map-marker-path'
     },
     {
       title: 'Edit building list',
       disabled: 'buildings',
-      // route: 'buildings',
       icon: 'mdi-home-city-outline',
-      access: {
-        change: ['Map_editor', 'SuperAdmin'],
-        read: ['View_only']
-      },
       children: [
         {
           title: 'On-net buildings',
@@ -74,11 +57,7 @@ export const footprint = {
       title: 'Create Excel file',
       route: 'excel',
       disabled: 'buildings',
-      icon: 'mdi-microsoft-excel',
-      access: {
-        change: ['Map_editor', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-microsoft-excel'
     }
   ]
 }

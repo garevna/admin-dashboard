@@ -29,12 +29,16 @@ window[Symbol.for('api.host')] = (() => {
     case 'production':
       return 'https://portal.dgtek.net'
     case 'staging':
+    case 'development':
+      return 'https://portal.staging.dgtek.net'
     case 'master':
       return `https://portal.${process.env.NODE_ENV}.dgtek.net`
     default:
-      return 'https://dgtek-staging.herokuapp.com'
+      return 'https://portal.staging.dgtek.net'
   }
 })()
+
+console.log(window[Symbol.for('api.host')])
 
 window[Symbol.for('global.addressData')] = {
   address: '',

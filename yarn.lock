@@ -3376,10 +3376,10 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
-dgtek-portal-map-package@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.4.tgz#5b74bf37f0fe04bf07fd441f78af72e357333ded"
-  integrity sha512-7+agCxMFtP5TWMWudRUNoIJw+sSgrCtHDYPBi1rWTixltpREPIab6bPB1gVH+ctyeM+oy6S7ajTuD87ixgUR/A==
+dgtek-portal-map-package@^1.1.84:
+  version "1.1.84"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.84.tgz#5776d1bad6885e031a3b0bc5ab73f93cdbab34c8"
+  integrity sha512-Gwtkn9eGVw8PMUc7vjb53wGSvOaPAbGUF+UNixsCk2fHSf8PD7EteprgQmteYu+51n+AD4EJCoF+0aT2jbDK+A==
 
 dgtek-portal-polygons-editor@^1.1.5:
   version "1.1.5"

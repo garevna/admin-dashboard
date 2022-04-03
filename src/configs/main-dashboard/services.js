@@ -8,21 +8,13 @@ export const services = {
       title: 'Service list',
       route: 'services-list',
       disabled: 'services',
-      icon: 'mdi-format-list-bulleted-square',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-format-list-bulleted-square'
     },
     {
       title: 'SLA',
       route: 'sla',
       disabled: 'services',
-      icon: 'mdi-file-cog-outline',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-file-cog-outline'
     }
   ]
 }

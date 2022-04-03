@@ -43,8 +43,6 @@ export const settings = {
     },
     {
       title: 'Access rights',
-      // route: 'access-rights',
-      // disabled: 'access',
       icon: 'mdi-key',
       children: [
         {

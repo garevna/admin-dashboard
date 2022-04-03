@@ -145,16 +145,6 @@ const routes = [
         },
         component: () => import(/* webpackChunkName: 'polygons' */ '@/components/footprint/EditPolygons.vue')
       },
-      // {
-      //   path: '/buildings',
-      //   name: 'buildings',
-      //   beforeEnter (to, from, next) {
-      //     if (!roleHandler()) next({ name: 'home' })
-      //     if (from.name === 'buildings') next(false)
-      //     next()
-      //   },
-      //   component: () => import(/* webpackChunkName: 'building-list' */ '@/components/footprint/BuildingsList.vue')
-      // },
       {
         path: '/lit-buildings',
         name: 'lit-buildings',
@@ -299,23 +289,6 @@ const routes = [
         name: 'available-roles',
         component: () => import(/* webpackChunkName: 'available-roles' */ '@/components/settings/AvailableRoles.vue')
       },
-      // {
-      //   path: '/access-rights',
-      //   name: 'access-rights',
-      //   // component: () => import(/* webpackChunkName: 'access-rights' */ '@/components/settings/CreateNewAdmin.vue'),
-      //   children: [
-      //     {
-      //       path: '/admins-list',
-      //       name: 'admins-list',
-      //       component: () => import(/* webpackChunkName: 'admins-list' */ '@/components/settings/AdminsList.vue')
-      //     },
-      //     {
-      //       path: '/create-admin',
-      //       name: 'create-admin',
-      //       component: () => import(/* webpackChunkName: 'access-rights' */ '@/components/settings/CreateNewAdmin.vue')
-      //     }
-      //   ]
-      // },
       {
         path: '/documents',
         name: 'documents',
@@ -328,6 +301,12 @@ const routes = [
             // props: true
           }
         ]
+      },
+
+      {
+        path: '/reports',
+        name: 'reports',
+        component: () => import(/* webpackChunkName: 'reports' */ '@/components/reports/MainReportPage.vue')
       }
     ]
   }

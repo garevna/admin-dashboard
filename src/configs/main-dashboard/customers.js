@@ -9,30 +9,19 @@ export const customers = {
       title: 'Customer list',
       route: 'customers',
       disabled: 'customers',
-      icon: 'mdi-table-account',
-      access: {
-        change: ['Account_manager', 'SuperAdmin', 'supervisor', 'admin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-table-account'
     },
     {
       title: 'Export to Excel',
       route: 'customers-to-excel',
       disabled: 'customers',
-      icon: 'mdi-microsoft-excel',
-      access: {
-        change: ['Account_manager', 'SuperAdmin', 'supervisor', 'admin']
-      }
+      icon: 'mdi-microsoft-excel'
     },
     {
       title: 'Import from text file',
       route: 'import-customers',
       disabled: 'customers',
-      icon: 'mdi-database-import',
-      access: {
-        change: ['Account_manager', 'SuperAdmin', 'supervisor', 'admin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-database-import'
     }
   ]
 }

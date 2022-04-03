@@ -136,7 +136,8 @@ export default {
       'tickets-refreshed',
       'services-refreshed',
       'schedule-refreshed',
-      'documents-refreshed'
+      'documents-refreshed',
+      'reports-refreshed'
     ].forEach((event) => {
       this.$root.$off(event, this.setRefreshed)
     })
@@ -152,7 +153,7 @@ export default {
     const rights = accessRightsHandler().access[roleHandler()]
     const dashboard = accessRightsHandler().dashboard
 
-    const [partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings] = [
+    const [partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings, reports] = [
       !rights.partners,
       !rights.partners,
       !rights.polygons && !rights.buildings,
@@ -163,12 +164,13 @@ export default {
       !rights.services,
       !rights.schedule,
       !rights.documents,
-      !rights.settings
+      !rights.settings,
+      !rights.reports
     ]
 
-    this.disabledRoutes = { partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings }
+    this.disabledRoutes = { partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings, reports }
 
-    this.refreshed = { rsp, footprint: true, customers, tickets, services, schedule, documents, settings: true }
+    this.refreshed = { rsp, footprint: true, customers, tickets, services, schedule, documents, settings: true, reports: true }
 
     dashboard
       .map(item => `${item === 'partners' ? 'rsp' : item}-refreshed`)

@@ -8,17 +8,7 @@ export const documents = {
       title: 'Document list',
       route: 'documents',
       disabled: 'documents',
-      icon: 'mdi-file-document-multiple',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-file-document-multiple'
     }
   ]
-  // component: 'Documents',
-  // icon: 'mdi-file-document-multiple',
-  // access: {
-  //   change: ['Account_manager', 'SuperAdmin'],
-  //   read: ['View_only']
-  // }
 }

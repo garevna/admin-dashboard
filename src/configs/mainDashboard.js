@@ -6,7 +6,8 @@ import {
   scheduling,
   tickets,
   documents,
-  settings
+  settings,
+  reports
 } from './main-dashboard'
 
 export const mainDashboard = [
@@ -17,5 +18,6 @@ export const mainDashboard = [
   scheduling,
   tickets,
   documents,
-  settings
+  settings,
+  reports
 ]

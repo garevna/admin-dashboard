@@ -8,31 +8,19 @@ export const partners = {
       title: 'RSP list',
       route: 'rsp-list',
       disabled: 'partners',
-      icon: 'mdi-account-multiple',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-account-multiple'
     },
     {
       title: 'Leads requests',
       route: 'leads-request',
       disabled: 'partners',
-      icon: 'mdi-account-question',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-account-question'
     },
     {
       title: 'Create partner',
       route: 'create-partner',
       disabled: 'partners',
-      icon: 'mdi-account-plus',
-      access: {
-        change: ['Account_manager', 'SuperAdmin'],
-        read: ['View_only']
-      }
+      icon: 'mdi-account-plus'
     }
   ]
 }
