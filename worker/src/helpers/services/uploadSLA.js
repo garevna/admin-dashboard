@@ -2,6 +2,10 @@ import { readLocalFile, put } from '../AJAX'
 
 import { invalidFileType, uploadFailed } from '../../configs'
 
+// const [route, action] = ['sla', 'upload']
+
+const [route, action] = ['files', 'read']
+
 export const uploadSLA = async (id, title, file) => {
   const success = {
     message: true,
@@ -13,10 +17,17 @@ export const uploadSLA = async (id, title, file) => {
 
   const loaded = await readLocalFile(file)
 
-  if (loaded.status !== 200) return loaded
+  self.postDebugMessage({ route, action, loaded })
+
+  if (loaded.status !== 200) return Object.assign(loaded, { route, action })
 
   const response = await put(`sla/${id}`, { title, content: loaded.result })
 
-  return response.status !== 200 ? Object.assign(response, uploadFailed)
-    : Object.assign(success, { status: 200, result: response.data, route: 'sla', action: 'upload' })
+  self.postDebugMessage({ route, action, response })
+
+  return response.status !== 200 ? Object.assign(response, uploadFailed, {
+    route,
+    action
+  })
+    : Object.assign(success, { status: 200, route, action, result: response.data })
 }

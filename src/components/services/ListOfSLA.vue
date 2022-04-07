@@ -1,46 +1,37 @@
 <template>
   <v-container>
-    <v-row align="start" justify="start">
-      <v-subheader>
-        <h5>SLA</h5>
-      </v-subheader>
-    </v-row>
     <v-row align="start" justify="center">
-      <v-col cols="12" md="5" lg="4" xl="3">
-        <v-list dense max-height="600" style="overflow-y: auto" outlined class="mb-5">
-          <v-list-item-group>
-            <v-list-item
-              v-for="(item, index) of listOfSLA"
-              :key="item._id"
-            >
-              <v-list-item-content style="padding: 0 !important">
-                <v-row justify="space-between" align="center">
-                  <v-col cols="8">
-                    <v-text-field
-                      v-if="index === editing"
-                      v-model="item.title"
-                      dense
-                      hide-details
-                      outlined
-                      append-outer-icon="mdi-check-bold"
-                      @click:append-outer="saveItemTitle"
-                    />
-                    <span v-else @dblclick.stop="edit(item)">
-                      <v-icon small @click.stop="remove(item)">mdi-delete</v-icon>
-                      <small>{{ item.title }}</small>
-                      <v-icon small @click.stop="edit(item)">mdi-pencil</v-icon>
-                    </span>
-                  </v-col>
-                  <v-col cols="3">
-                    <v-btn icon @click.stop="selected = index" class="ml-5">
-                      <v-icon small>mdi-eye</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
+      <v-col class="ml-12">
+        <h5>SLA list</h5>
+        <div class="pa-4" style="height: 480px; width: 480px; border: solid 1px #ddd; padding: 16px; overflow-y: auto">
+          <table>
+            <tbody>
+              <tr v-for="item of listOfSLA" :key="item._id">
+                <td width="420">
+                  <v-text-field
+                    v-if="item._id === editing"
+                    v-model="item.title"
+                    dense
+                    hide-details
+                    outlined
+                    append-outer-icon="mdi-check-bold"
+                    @click:append-outer="saveItemTitle"
+                  />
+                  <span v-else @dblclick.stop="edit(item)">
+                    <v-icon small color="primary" @click.stop="remove(item)">mdi-delete</v-icon>
+                    {{ item.title }}
+                    <v-icon small color="#09b" @click.stop="edit(item)">mdi-pencil</v-icon>
+                  </span>
+                </td>
+                <td width="60">
+                  <v-btn icon @click.stop="selected = item._id" class="ml-5">
+                    <v-icon small color="#09b">mdi-eye</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <v-row justify="space-between" class="mx-4 mt-2">
           <v-btn text @click="addNewSLA">
@@ -50,9 +41,9 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" md="5" lg="5" xl="4">
+      <v-col class="mr-12">
         <v-card flat class="transparent mx-auto" style="margin-top: -40px">
-          <h5><small>{{ typeof selected === 'number' ? listOfSLA[selected].title : '...' }}</small></h5>
+          <h5><small>{{ selected ? listOfSLA[selectedIndex].title : '...' }}</small></h5>
           <object
             :data="content"
             type="application/pdf"
@@ -99,9 +90,18 @@ export default {
     content: pdf404
   }),
 
+  computed: {
+    selectedIndex () {
+      return this.listOfSLA.findIndex(item => item._id === this.selected)
+    },
+    editingIndex () {
+      return this.listOfSLA.findIndex(item => item._id === this.editing)
+    }
+  },
+
   watch: {
-    selected (index) {
-      if (index) this.__getSLAContent(this.listOfSLA[index]._id, this.getSLAContent)
+    selected (id) {
+      if (id) this.__getSLAContent(id, this.getSLAContent)
       else this.content = pdf404
     }
   },
@@ -126,32 +126,30 @@ export default {
     },
 
     addNewSLA () {
-      this.listOfSLA.push({
-        _id: null,
-        title: 'New SLA'
-      })
-
-      this.content = pdf404
-
-      this.selected = this.listOfSLA.length - 1
-
-      this.__createSLA({ title: 'New SLA', content: this.content }, this.finishCreation)
+      this.__createSLA({ title: 'New SLA', content: pdf404 }, this.created)
     },
 
-    finishCreation (data) {
-      this.listOfSLA[this.selected]._id = data
+    created (data) {
+      const newSLA = {
+        _id: data,
+        title: 'New SLA',
+        content: pdf404
+      }
+      this.listOfSLA.push(newSLA)
+      this.selected = data
+      this.content = pdf404
     },
 
     edit (sla) {
-      this.editing = this.listOfSLA.findIndex(item => item._id === sla._id)
+      this.editing = sla._id
     },
 
     remove (item) {
-      this.__removeSLA(item._id, this.finishRemoving)
+      this.__removeSLA(item._id, this.removed)
       this.toBeRemoved = item._id
     },
 
-    finishRemoving () {
+    removed () {
       const index = this.listOfSLA.findIndex(item => item._id === this.toBeRemoved)
       index !== -1 && this.listOfSLA.splice(index, 1)
       this.toBeRemoved = null
@@ -159,17 +157,21 @@ export default {
     },
 
     saveItemTitle () {
-      if (!this.listOfSLA[this.editing]._id) return
-      this.__updateSLA({ id: this.listOfSLA[this.editing]._id, title: this.listOfSLA[this.editing].title })
+      if (!this.editing) return
+      this.__updateSLA({ id: this.editing, title: this.listOfSLA[this.editingIndex].title }, this.saved)
       this.editing = null
     },
 
     saveItemContent () {
-      this.__updateSLA({ id: this.listOfSLA[this.selected]._id, content: this.content })
+      this.__updateSLA({ id: this.selected, content: this.content }, this.saved)
     },
 
     saveNewSLA () {
-      this.__createNewSLA({ title: this.listOfSLA[this.editing].title, content: this.content }, this.finishCreation)
+      this.__createNewSLA({ title: this.listOfSLA[this.editingIndex].title, content: this.content }, this.finishCreation)
+    },
+
+    saved (data) {
+      // console.log(data)
     }
   },
 

@@ -12,6 +12,12 @@ export const customers = {
       icon: 'mdi-table-account'
     },
     {
+      title: 'IP list',
+      route: 'customers-ip-list',
+      disabled: 'customers',
+      icon: 'mdi-ip-network'
+    },
+    {
       title: 'Export to Excel',
       route: 'customers-to-excel',
       disabled: 'customers',

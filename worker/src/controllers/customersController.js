@@ -17,6 +17,10 @@ class CustomersController {
     self.postMessage(await self.getAllCustomers())
   }
 
+  async getCustomersEngineeringData () {
+    self.postMessage(await self.getCustomersEngineeringData())
+  }
+
   async getShortListOfCustomers () {
     self.postMessage(await self.getShortListOfCustomers())
   }
@@ -51,6 +55,10 @@ class CustomersController {
 
   async patchCustomer (request) {
     self.postMessage(await self.patchCustomer(request.key, request.data))
+  }
+
+  async patchCustomersGroupService (request) {
+    self.postMessage(await self.patchCustomersGroupService(request.data))
   }
 
   async updateServiceCancelationDate (request) {

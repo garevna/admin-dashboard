@@ -12,21 +12,23 @@ const invalidRequest = {
 }
 
 export const updateSLA = async (record) => {
-  if (!record.id || (!record.title && !record.content)) return invalidRequest
+  const { id, ...data } = record
+
+  if (!id || (!data.title && !data.content)) return invalidRequest
 
   const success = {
     message: true,
     messageType: 'SLA update',
-    messageText: `${record.title || 'SLA'} has been updated`
+    messageText: `${data.title || 'SLA'} has been updated`
   }
 
   const updateSLAFailed = {
     error: true,
     errorType: 'SLA update',
-    errorMessage: `Failed to update ${record.title || 'SLA'}`
+    errorMessage: `Failed to update ${data.title || 'SLA'}`
   }
 
-  const response = await patch(`sla/${record.id}`, record)
+  const response = await patch(`sla/${id}`, data)
 
   return response.status !== 200 ? Object.assign(response, updateSLAFailed)
     : Object.assign(success, { status: 200, result: response.result.data, route, action })

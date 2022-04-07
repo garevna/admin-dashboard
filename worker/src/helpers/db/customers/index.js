@@ -1,6 +1,7 @@
 import { getRecord } from './getRecord'
 import { putRecord } from './putRecord'
 import { iterateCustomers } from './iterateCustomers'
+import { getEngineering } from './getEngineering'
 import { updateStatistics } from './updateStatistics'
 import { refreshStatistics } from './refreshStatistics'
 import { getCustomersForExcel } from './getCustomersForExcel'
@@ -11,6 +12,7 @@ export {
   getRecord,
   putRecord,
   iterateCustomers,
+  getEngineering,
   updateStatistics,
   getCustomersForExcel,
   refreshStatistics,

@@ -3,6 +3,7 @@ const { servicesController } = require('../../controllers').default
 export const services = {
   refresh: servicesController.refresh,
   list: servicesController.list,
+  short: servicesController.shortList,
   names: servicesController.names,
   get: servicesController.get,
   search: servicesController.search,

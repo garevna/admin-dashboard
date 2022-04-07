@@ -23,7 +23,9 @@ export const calculate = async function () {
       const cursor = event.target.result
       if (cursor) {
         const customer = cursor.value
-        const { buildingId, services } = customer
+        const { buildingId, services, commercial } = customer
+
+        self.postDebugMessage({ commercial })
 
         const activeServices = services.filter(item => item.status === 'Active')
         const pendingServices = services.filter(item => pendingConnectionStatusHandler().admin.includes(item.status))
@@ -36,12 +38,28 @@ export const calculate = async function () {
               if (!record) return
 
               Object.assign(record, {
-                activeConnections: record.activeConnections + (activeServices.length ? 1 : 0),
-                pendingConnections: record.pendingConnections + (pendingServices.length ? 1 : 0),
-                activeServices: record.activeServices + activeServices.length,
-                pendingServices: record.pendingServices + pendingServices.length,
-                newActiveConnectionsLastMoth: record.newActiveConnectionsLastMoth + activeServices.filter(item => lastMonth(item)).length > 0,
-                newActiveConnectionsCurrentMoth: record.newActiveConnectionsCurrentMoth + activeServices.filter(item => currentMonth(item)).length > 0
+                customers: {
+                  residential: record.customers.residential + (customer.commercial ? 0 : 1),
+                  commercial: record.customers.commercial + (customer.commercial ? 1 : 0)
+                },
+                connections: {
+                  active: record.connections.active + (activeServices.length ? 1 : 0),
+                  pending: record.connections.pending + (pendingServices.length ? 1 : 0),
+                  pendingLastMonth: record.connections.pendingLastMonth + (pendingServices.filter(item => currentMonth(item)).length > 0)
+                },
+                services: {
+                  active: record.services.active + activeServices.length,
+                  pending: record.services.pending + pendingServices.length,
+                  pendingLastMonth: record.connections.pendingLastMonth + (pendingServices.filter(item => currentMonth(item)).length)
+                },
+                newActiveConnections: {
+                  lastMoth: record.newActiveConnections.lastMoth + activeServices.filter(item => lastMonth(item)).length > 0,
+                  currentMoth: record.newActiveConnections.currentMoth + activeServices.filter(item => currentMonth(item)).length > 0
+                },
+                newActiveServices: {
+                  lastMoth: record.newActiveServices.lastMoth + activeServices.filter(item => lastMonth(item)).length,
+                  currentMoth: record.newActiveServices.currentMoth + activeServices.filter(item => currentMonth(item)).length
+                }
               })
 
               !record.active && Object.assign(record, { active: {} })

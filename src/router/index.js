@@ -116,6 +116,16 @@ const routes = [
         component: () => import(/* webpackChunkName: 'customers-list' */ '@/components/customers/CustomersList.vue')
       },
       {
+        path: '/customers-ip-list',
+        name: 'customers-ip-list',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'customers-ip-list') next(false)
+          next()
+        },
+        component: () => import(/* webpackChunkName: 'customers-ip-list' */ '@/components/customers/CustomersForEngineer.vue')
+      },
+      {
         path: '/customers-to-excel',
         name: 'customers-to-excel',
         component: () => import(/* webpackChunkName: 'customers-to-excel' */ '@/components/customers/ExportToExcel.vue')

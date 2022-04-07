@@ -48,7 +48,7 @@
               </v-list-item-title>
             </v-list-item-content>
 
-            <v-list-item-content v-else style="margin-left: -32px!important; margin-top: -12px!important; padding-bottom: 0; margin-bottom: 0; margin-right: 0">
+            <v-list-item-content v-else class="pb-0 mb-0 mr-0" style="margin-left: -32px!important; margin-top: -12px!important;">
               <v-list-group sub-group prepend-icon="">
                 <template v-slot:activator>
                   <v-list-item-content>
@@ -63,7 +63,7 @@
                   v-for="(subChild, i) in child.children"
                   :key="i"
                   @click="disabledRoutes[subChild.disabled] ? null : jumpTo(subChild)"
-                  class="my-0 py-0"
+                  class="mt-0 mb-2 py-0"
                   :disabled="disabledRoutes[subChild.disabled]"
                   active-class="active-list-item"
                   style="min-height: 24px!important; max-height: 32px!important; padding-left: 48px"

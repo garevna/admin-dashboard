@@ -20,11 +20,15 @@ export const createReport = async (list) => {
       'buildingConnectionCosts'
     ]) : null)
 
-  const result = response.map(record => Object.assign(record, initialValues, {
-    residentialPremisesPassed: record.buildingType === 'Residential' ? record.numberOfDwellings : 0,
-    commercialPremisesPassed: record.buildingType === 'Commercial' ? record.numberOfDwellings : 0,
-    mixedPremisesPassed: record.buildingType === 'Mixed' ? record.numberOfDwellings : 0
-  }))
+  const result = response.map(record => Object.assign(record, initialValues))
+
+  // const result = response.map(record => Object.assign(record, initialValues, {
+  //   premisesPassed: {
+  //     residential: record.buildingType === 'Residential' ? record.numberOfDwellings : 0,
+  //     commercial: record.buildingType === 'Commercial' ? record.numberOfDwellings : 0,
+  //     mixed: record.buildingType === 'Mixed' ? record.numberOfDwellings : 0
+  //   }
+  // }))
 
   await Promise.all(response.map(record => putRecordByKey('reports', record._id, record)))
 

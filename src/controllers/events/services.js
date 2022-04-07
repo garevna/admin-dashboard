@@ -1,6 +1,7 @@
 export const services = {
   refresh: 'services-refreshed',
   list: 'services-full-list-received',
+  short: 'services-short-list-received',
   names: 'list-of-service-names-received',
   get: 'service-data-received',
   search: 'service-search-result-received',

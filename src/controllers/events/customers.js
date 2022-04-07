@@ -1,12 +1,14 @@
 export const customers = {
   refresh: 'customers-refreshed',
   list: 'customers-list-received',
+  engineering: 'engineering-data-received',
   'short-list': 'customers-short-list-received',
   'filtered-short-list': 'customers-filtered-short-list-received',
   get: 'customer-data-received',
   post: 'customer-created',
   save: 'group-of-customers-saved',
   put: 'customer-updated',
+  'patch-group': 'group-of-customer-services-updated',
   pagination: 'page-of-customers-received',
 
   services: 'customer-services-received',

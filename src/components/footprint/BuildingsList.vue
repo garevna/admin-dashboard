@@ -14,6 +14,18 @@
         <v-checkbox v-model="item.selected" hide-details label="" dense @click.stop="selectItem" />
       </template>
 
+      <template v-slot:item.isMaster="{ item }">
+        <v-icon small color="primary" v-if="item.isMaster">
+          mdi-alpha-m-box
+        </v-icon>
+      </template>
+
+      <template v-slot:item.isSlave="{ item }">
+        <v-icon small color="#999" v-if="item.isSlave">
+          mdi-alpha-s-box
+        </v-icon>
+      </template>
+
       <template v-slot:footer.prepend>
         <v-text-field
           v-model="search"
@@ -105,6 +117,9 @@ export default {
       { text: 'Building address', align: 'start', sortable: true, value: 'address' },
       { text: 'Building unique code', value: 'uniqueCode' },
       { text: 'Footprint', value: 'status' },
+      { text: 'Master', value: 'isMaster' },
+      { text: 'Slave', value: 'isSlave' },
+      { text: 'Type', value: 'buildingType' },
       { text: 'Estimated service delivery time', value: 'estimatedServiceDeliveryTime' },
       { text: '', value: 'actions', sortable: false }
 
@@ -154,6 +169,9 @@ export default {
       if (!data || !Array.isArray(data)) return
       this.$root.$emit('progress-event', false)
       this.buildings = data.map(building => ({
+        isMaster: building.addressComponents.isMaster,
+        isSlave: building.addressComponents.isSlave,
+        buildingType: building.addressComponents.buildingType,
         buildingName: building.buildingName,
         address: building.address,
         uniqueCode: building.uniqueCode || getBuildingUniqueCode(building.addressComponents),

@@ -6,6 +6,7 @@ export const customers = {
   updated: customersController.refreshUpdatedCustomersOnly,
   pagination: customersController.refreshByPageNumber,
   list: customersController.getAllCustomers,
+  engineering: customersController.getCustomersEngineeringData,
   'short-list': customersController.getShortListOfCustomers,
   'filtered-short-list': customersController.getFilteredShortListOfCustomers,
   get: customersController.getCustomer,
@@ -13,6 +14,7 @@ export const customers = {
   save: customersController.saveCustomers,
   put: customersController.updateCustomer,
   patch: customersController.patchCustomer,
+  'patch-group': customersController.patchCustomersGroupService,
   delete: customersController.deleteCustomer,
 
   services: customersController.getCustomerServices,
