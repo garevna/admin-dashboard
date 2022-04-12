@@ -1,25 +1,6 @@
 <template>
-  <v-card flat class="transparent mx-auto" max-width="1080">
-    <v-row justify="start">
-      <v-col cols="3" v-for="(item, index) of mainMenuItems" :key="index">
-        <v-card
-          max-width="240"
-          height="80"
-          class="pa-4"
-        >
-          <table>
-            <tbody>
-              <tr style="height: 100%; vertical-align: middle">
-                <td width="180" style="border-right: solid 1px #999"> {{ item.title }}</td>
-                <td class="px-2">
-                  <b style="font-size: 24px">{{ item.value }}</b>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </v-card>
-      </v-col>
-    </v-row>
+  <v-card flat class="transparent mx-auto" width="90%" v-if="ready">
+    <TopOfPage :overviewData="overviewData" />
 
     <v-row justify="center" class="mt-12">
       <v-btn
@@ -65,6 +46,7 @@
         <ARPU style="position: absolute; left: -12px" />
         <b class="ml-8"> ARPU </b>
       </v-btn>
+
       <v-btn
         :dark="active[4]"
         :class="active[4] ? 'primary mx-2 text-left' : 'transparent mx-2 text-left'"
@@ -78,39 +60,20 @@
     </v-row>
 
     <v-row class="mb-12">
-      <v-col cols="6">
-        <v-card dark class="mt-12 pa-8 dark-blue" height="480">
-          Lorem ipsum...
+      <v-col cols="5">
+        <v-card dark class="mt-12 pa-8" color="#003" width="600">
+          <OverviewDash :overviewData="overviewData" :clicked.sync="overviewClickedItem" />
         </v-card>
       </v-col>
-      <v-col cols="6">
-        <v-sheet color="transparent">
-          <v-sparkline
-            fill
-            :gradient="['#9007']"
-            :value="graphPoints"
-            color="primary"
-            height="160"
-            padding="24"
-            smooth
-            auto-draw
-            class="mt-12"
-          >
-            <template v-slot:label="item">
-              ${{ item.value }}
-            </template>
-          </v-sparkline>
+      <v-col cols="7">
+        <v-sheet color="transparent" height="480" class="mt-8" v-if="showDiagram">
+          <DiagramMRR
+            v-if="overviewClickedItem === 'MRR-active' || overviewClickedItem === 'MRR-pending'"
+            :overviewData="overviewData"
+            :collectionName="collectionName"
+          />
+          <Diagram v-else :diagramType="diagramType" :title="diagramTitle" :values="diagramData" />
         </v-sheet>
-        <!-- <v-sparkline
-          fill
-          :gradient="['#09b']"
-          :line-width="1"
-          :padding="0"
-          :smooth="10"
-          :value="graphPoints"
-          auto-draw
-          class="mt-12"
-        /> -->
       </v-col>
     </v-row>
   </v-card>
@@ -119,11 +82,13 @@
 
 <script>
 
-import Overview from '@/components/icons/Overview.vue'
-import Financials from '@/components/icons/Financials.vue'
-import Forecast from '@/components/icons/Forecast.vue'
-import ARPU from '@/components/icons/ARPU.vue'
-import Buildings from '@/components/icons/Buildings.vue'
+import {
+  Overview,
+  Financials,
+  Forecast,
+  ARPU,
+  Buildings
+} from '@/components/icons'
 
 export default {
   name: 'MainReportPage',
@@ -133,58 +98,70 @@ export default {
     Financials,
     Forecast,
     ARPU,
-    Buildings
+    Buildings,
+    TopOfPage: () => import('@/components/reports/TopOfPage.vue'),
+    OverviewDash: () => import('@/components/reports/OverviewDash.vue'),
+    Diagram: () => import('@/components/reports/diagrams/Diagram.vue'),
+    DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue')
   },
 
   data: () => ({
-    active: [false, false, true, false, false],
-    graphPoints: [210, 420, 510, 575, 589],
-    mainMenuItems: [
-      {
-        title: 'Total premises passed',
-        value: 1245
-      },
-      {
-        title: 'Total residential customers',
-        value: 1578
-      },
-      {
-        title: 'Current month new connections',
-        value: 10
-      },
-      {
-        title: 'Total monthly recuring revenew',
-        value: 7854
-      },
-      {
-        title: 'Total on-net buildings',
-        value: 5478
-      },
-      {
-        title: 'Total commercial customers',
-        value: 574
-      },
-      {
-        title: 'Current month MRC increase',
-        value: 1879
-      }
-    ]
+    ready: false,
+    active: [true, false, false, false, false],
+    diagram: '',
+    diagramType: 'bars',
+    diagramTitle: 'Diagram title',
+    diagramData: null,
+    showDiagram: false,
+    overviewData: null,
+    overviewClickedItem: null,
+    collectionName: 'active'
   }),
+
+  watch: {
+    overviewClickedItem (val) {
+      if (val === 'MRR-active' || val === 'MRR-pending') {
+        this.collectionName = val.slice(4)
+      }
+    }
+  },
 
   methods: {
     setActive (index) {
       this.active = [false, false, false, false, false]
       this.active[index] = true
+      if (index < 3) {
+        this.overviewClickedItem = 'MRR'
+        this.collectionName = index < 2 ? 'active' : 'pending'
+      }
     },
 
     calcReport (response) {
-      console.log('CREATE:\n', response)
-      this.__calculateReports(response => console.log(response))
+      this.__calculateReports(this.getOverview)
+    },
+
+    getOverview () {
+      this.__getOverview(this.showOverview)
+    },
+
+    showOverview (data) {
+      this.overviewData = data
+
+      this.diagramData = [
+        ['MRR(+)', 'Year and month'],
+        ...Object.keys(data.active.residential).map(key => ([key, data.active.residential[key]])),
+        ...Object.keys(data.active.commercial).map(key => ([key, data.active.commercial[key]]))
+      ]
+
+      this.showDiagram = true
+      this.ready = true
     }
   },
 
   created () {
     this.__createReport(this.calcReport)
+    this.diagramType = 'bars'
+    this.diagramTitle = 'New connections (MRR+)'
   }
 }
 </script>

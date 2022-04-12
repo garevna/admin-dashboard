@@ -1,18 +1,33 @@
 import { calculate } from './calculate'
 import { overview } from './overview'
 
-import { getDate } from './getDate'
-import { currentMonthYear } from './currentMonthYear'
-import { lastMonthYear } from './lastMonthYear'
+import { getServiceDate } from './getServiceDate'
 import { lastMonth } from './lastMonth'
 import { currentMonth } from './currentMonth'
 
+import { getActiveServices } from './getActiveServices'
+import { getPendingServices } from './getPendingServices'
+
+import { calculateServices } from './calculateServices'
+import { calculateMRR } from './calculateMRR'
+
+import { updateRecord } from './updateRecord'
+
+import { overviewTemplate } from './overviewTemplate'
+
 export {
-  getDate,
-  currentMonthYear,
-  lastMonthYear,
+  getServiceDate,
   lastMonth,
   currentMonth,
+
+  getActiveServices,
+  getPendingServices,
+
+  calculateServices,
+  calculateMRR,
+
+  updateRecord,
   calculate,
-  overview
+  overview,
+  overviewTemplate
 }

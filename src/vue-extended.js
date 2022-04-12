@@ -38,8 +38,6 @@ window[Symbol.for('api.host')] = (() => {
   }
 })()
 
-console.log(window[Symbol.for('api.host')])
-
 window[Symbol.for('global.addressData')] = {
   address: '',
   coordinates: null,

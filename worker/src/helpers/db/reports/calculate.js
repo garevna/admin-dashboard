@@ -1,8 +1,6 @@
 import { openDB } from '../openDB'
 
-import { pendingConnectionStatusHandler } from '../../../data-handlers'
-
-import { getDate, currentMonth, lastMonth } from './'
+import { updateRecord } from './'
 
 const [route, action] = ['reports', 'calculate']
 
@@ -18,77 +16,73 @@ export const calculate = async function () {
     transaction.objectStore('reports')
   ]
 
+  const getServiceFee = serviceId => new Promise((resolve, reject) => {
+    Object.assign(serviceStore.get(serviceId), {
+      onsuccess: ev => resolve({ subscriptionFee: ev.target.result.subscriptionFee, serviceType: ev.target.result.serviceType }),
+      onerror: ev => {
+        self.postDebugMessage({ serviceError: ev.target.error })
+        reject(ev.target.error)
+      }
+    })
+  })
+
+  const putRecord = async record => new Promise((resolve, reject) => {
+    Object.assign(reportStore.put(record), {
+      onsuccess: evnt => {
+        // self.postDebugMessage({ SAVED_RECORD: record })
+        resolve(evnt.target.result)
+      },
+      onerror: evnt => {
+        // self.postDebugMessage({ ERROR: evnt.target.error })
+        reject(evnt.target.error)
+      }
+    })
+  })
+
   return new Promise((resolve) => {
     customerStore.openCursor().onsuccess = async (event) => {
       const cursor = event.target.result
+
       if (cursor) {
         const customer = cursor.value
+
         const { buildingId, services, commercial } = customer
 
-        self.postDebugMessage({ commercial })
-
-        const activeServices = services.filter(item => item.status === 'Active')
-        const pendingServices = services.filter(item => pendingConnectionStatusHandler().admin.includes(item.status))
+        const type = commercial ? 'commercial' : 'residential'
 
         if (Array.isArray(services) && services.length > 0) {
           Object.assign(reportStore.get(buildingId), {
-            onsuccess: event => {
+            onsuccess: async event => {
               const record = event.target.result
 
-              if (!record) return
+              if (!record) return self.postDebugMessage({ ERROR: `Building ${buildingId} not found`, customer })
 
-              Object.assign(record, {
-                customers: {
-                  residential: record.customers.residential + (customer.commercial ? 0 : 1),
-                  commercial: record.customers.commercial + (customer.commercial ? 1 : 0)
-                },
-                connections: {
-                  active: record.connections.active + (activeServices.length ? 1 : 0),
-                  pending: record.connections.pending + (pendingServices.length ? 1 : 0),
-                  pendingLastMonth: record.connections.pendingLastMonth + (pendingServices.filter(item => currentMonth(item)).length > 0)
-                },
-                services: {
-                  active: record.services.active + activeServices.length,
-                  pending: record.services.pending + pendingServices.length,
-                  pendingLastMonth: record.connections.pendingLastMonth + (pendingServices.filter(item => currentMonth(item)).length)
-                },
-                newActiveConnections: {
-                  lastMoth: record.newActiveConnections.lastMoth + activeServices.filter(item => lastMonth(item)).length > 0,
-                  currentMoth: record.newActiveConnections.currentMoth + activeServices.filter(item => currentMonth(item)).length > 0
-                },
-                newActiveServices: {
-                  lastMoth: record.newActiveServices.lastMoth + activeServices.filter(item => lastMonth(item)).length,
-                  currentMoth: record.newActiveServices.currentMoth + activeServices.filter(item => currentMonth(item)).length
-                }
-              })
+              record.customers[type] += 1
 
-              !record.active && Object.assign(record, { active: {} })
-              !record.pending && Object.assign(record, { pending: {} })
+              const { activeServices, pendingServices } = updateRecord(record, customer)
 
-              const active = activeServices
-                .map(service => ({ serviceId: service.id, activationDate: getDate(service) }))
+              const { active, pending } = record
 
-              for (const service of active) {
-                const activationDate = getDate(service)
-
-                Object.assign(serviceStore.get(service.serviceId), {
-                  onsuccess: ev => {
-                    const { subscriptionFee } = ev.target.result
-                    const sum = record.active[activationDate] ? record.active[activationDate] + subscriptionFee : subscriptionFee
-
-                    Object.assign(record.active, { [activationDate]: sum })
-
-                    Object.assign(reportStore.put(record), {
-                      onsuccess: evnt => self.postDebugMessage({ record })
-                    })
-                  },
-                  onerror: ev => self.postDebugMessage({ serviceError: ev.target.error })
-                })
+              for (const service of pendingServices) {
+                const { subscriptionFee, serviceType } = await getServiceFee(service.serviceId)
+                if (!pending[serviceType][service.date]) pending[serviceType][service.date] = 0
+                pending[serviceType][service.date] += subscriptionFee
               }
+
+              for (const service of activeServices) {
+                const { subscriptionFee, serviceType } = await getServiceFee(service.serviceId)
+                if (!active[serviceType][service.date]) active[serviceType][service.date] = 0
+                active[serviceType][service.date] += subscriptionFee
+              }
+
+              Object.assign(record, { active, pending })
+
+              await putRecord(record)
             },
             onerror: event => self.postDebugMessage({ reportRecordAbsent: event.target.error })
           })
         }
+
         cursor.continue()
       } else {
         resolve({ status: 200, route, action })

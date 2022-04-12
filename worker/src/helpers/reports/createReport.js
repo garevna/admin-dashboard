@@ -22,14 +22,6 @@ export const createReport = async (list) => {
 
   const result = response.map(record => Object.assign(record, initialValues))
 
-  // const result = response.map(record => Object.assign(record, initialValues, {
-  //   premisesPassed: {
-  //     residential: record.buildingType === 'Residential' ? record.numberOfDwellings : 0,
-  //     commercial: record.buildingType === 'Commercial' ? record.numberOfDwellings : 0,
-  //     mixed: record.buildingType === 'Mixed' ? record.numberOfDwellings : 0
-  //   }
-  // }))
-
   await Promise.all(response.map(record => putRecordByKey('reports', record._id, record)))
 
   return Object.assign({ route, action, status: 200, result })

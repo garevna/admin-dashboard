@@ -1,6 +1,6 @@
 {
   "name": "dgtek-admin-dash",
-  "version": "5.5.0",
+  "version": "5.7.0",
   "license": "MIT",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
@@ -26,6 +26,7 @@
     "portal-google-autocomplete": "^1.0.8",
     "tokml": "^0.4.0",
     "vue": "2.6.11",
+    "vue-google-charts": "^0.3.3",
     "vue-router": "^3.5.1",
     "vuetify": "^2.5.7",
     "winston": "^3.3.3",

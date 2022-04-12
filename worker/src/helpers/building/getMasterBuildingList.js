@@ -19,7 +19,5 @@ export async function getMasterBuildingList (list, props) {
   const result = response
     .map(item => item.status === 200 ? getSelectedFields(item.result, props) : null)
 
-  self.postDebugMessage({ result })
-
   return Object.assign({ route, action, status: 200, result })
 }

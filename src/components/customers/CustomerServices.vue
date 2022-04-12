@@ -1,42 +1,42 @@
 <template>
   <v-card flat class="transparent" v-if="ready">
-    <table>
+    <table class="my-5">
       <thead>
         <tr>
-          <th>Service type</th>
-          <th>Product type</th>
-          <th>Service name</th>
-          <th>Subscription fee</th>
-          <th>Service status</th>
-          <th>Activation date</th>
+          <th class="text-center px-2">Service type</th>
+          <th class="text-center px-2">Product type</th>
+          <th class="text-center px-2">Service name</th>
+          <th class="text-center px-2">Subscription fee</th>
+          <th class="text-center px-2">Service status</th>
+          <th class="text-center px-2">Activation date</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(service, index) of services" :key="service.id">
-          <td style="border: solid 1px #ddd; padding: 4px 12px">
+          <td class="text-center px-2" style="border: solid 1px #ddd; padding: 4px 12px">
             {{ service.serviceType }}
           </td>
 
-          <td style="border: solid 1px #ddd; padding: 4px 12px">
+          <td class="text-center px-2" style="border: solid 1px #ddd; padding: 4px 12px">
             {{ service.productType }}
           </td>
 
-          <td style="border: solid 1px #ddd; padding: 4px 12px">
+          <td class="text-center px-2" style="border: solid 1px #ddd; padding: 4px 12px">
             {{ service.serviceName }}
           </td>
 
-          <td style="border: solid 1px #ddd; padding: 4px 12px">
+          <td class="text-center px-2" style="border: solid 1px #ddd; padding: 4px 12px">
             {{ service.subscriptionFee }}
           </td>
 
-          <td style="border: solid 1px #ddd; padding: 4px 12px">
+          <td class="text-center px-2" style="border: solid 1px #ddd; padding: 4px 12px">
             <v-icon :color="getIcon(service.status).color" small class="mr-1">
               {{ getIcon(service.status).icon }}
             </v-icon>
             <span :style="getStyle(service)" @click="editConnectionData(index)">{{ service.status }}</span>
           </td>
 
-          <td style="border: solid 1px #ddd; padding: 4px 12px">
+          <td class="text-center px-2" style="border: solid 1px #ddd; padding: 4px 12px">
             {{ service.activationDate || '' }}
           </td>
         </tr>

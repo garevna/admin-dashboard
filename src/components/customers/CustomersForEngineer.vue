@@ -12,25 +12,25 @@
           />
         </v-card-title> -->
 
-        <table>
+        <table class="table-relative">
           <thead>
             <tr>
-              <th rowspan="2"> <small>Unique code, address and<br>service name</small> </th>
-              <th rowspan="2"> <small>Partner</small> </th>
-              <th colspan="2"> PPPOE </th>
-              <th colspan="2"> IPoE </th>
-              <th rowspan="2"> <small>Speed In</small> </th>
-              <th rowspan="2"> <small>Speed Out</small> </th>
-              <th rowspan="2"> IP </th>
-              <th rowspan="2"> <small>Routed subnet</small> </th>
-              <th rowspan="2"> <small>VLAN DGtek</small> </th>
-              <th rowspan="2"> <small>VLAN RSP</small> </th>
+              <th rowspan="2" class="th-sticky"> <small>Unique code, address and<br>service name</small> </th>
+              <th rowspan="2" class="th-sticky"> <small>Partner</small> </th>
+              <th colspan="2" class="th-sticky"> PPPOE </th>
+              <th colspan="2" class="th-sticky"> IPoE </th>
+              <th rowspan="2" class="th-sticky"> <small>Speed In</small> </th>
+              <th rowspan="2" class="th-sticky"> <small>Speed Out</small> </th>
+              <th rowspan="2" class="th-sticky"> IP </th>
+              <th rowspan="2" class="th-sticky"> <small>Routed subnet</small> </th>
+              <th rowspan="2" class="th-sticky"> <small>VLAN DGtek</small> </th>
+              <th rowspan="2" class="th-sticky"> <small>VLAN RSP</small> </th>
             </tr>
             <tr>
-              <th style="top: 96px !important;"> <small>Login</small> </th>
-              <th style="top: 96px !important;"> <small>PWD</small> </th>
-              <th style="top: 96px !important;"> <small>Login</small> </th>
-              <th style="top: 96px !important;"><small>PWD</small></th>
+              <th style="top: 96px !important;" class="th-sticky"> <small>Login</small> </th>
+              <th style="top: 96px !important;" class="th-sticky"> <small>PWD</small> </th>
+              <th style="top: 96px !important;" class="th-sticky"> <small>Login</small> </th>
+              <th style="top: 96px !important;" class="th-sticky"><small>PWD</small></th>
             </tr>
           </thead>
           <tbody>
@@ -38,9 +38,10 @@
               v-for="(service, index) of filteredRecords"
               :key="index"
               :class="service.selected ? 'selected-row' : ''"
-              style="padding-bottom: 16px;"
+              style="padding-bottom: 16px; text-align: center"
+              @click="clickCallback(service)"
             >
-              <td @click="selectRow(index)">
+              <td>
                 <b> {{ customers[service.customerId].uniqueCode }} </b><br>
                 <small> {{ customers[service.customerId].address }} </small><br>
                 <small> <b style="color: #09b">{{ serviceList[service.id] }}</b> </small>
@@ -48,95 +49,118 @@
               <td class="text-center">
                 {{ partners[customers[service.customerId].resellerId].uniqueCode }}
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service.Login.PPPOE"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @input="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service.Login.PPPOE }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service.PWD.PPPOE"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @input="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service.PWD.PPPOE }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service.Login.IPoE"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service.Login.IPoE }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service.PWD.IPoE"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service.PWD.IPoE }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service['Speed In']"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service['Speed In'] }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service['Speed Out']"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service['Speed Out'] }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service.IP"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service.IP }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service['Routed subnet']"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service['Routed subnet'] }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service['VLAN DGtek']"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service['VLAN DGtek'] }} </span>
               </td>
-              <td>
+              <td class="small-td">
                 <v-text-field
+                  v-if="service.selected"
                   v-model="service['VLAN RSP']"
                   outlined
                   hide-details
                   dense
-                  @change="service.edited = true"
+                  @input="service.edited = true"
+                  @change="changeCallback(service)"
                 />
+                <span v-else> {{ service['VLAN RSP'] }} </span>
               </td>
             </tr>
           </tbody>
@@ -200,9 +224,20 @@ export default {
   },
 
   methods: {
-    selectRow (index) {
+    getServiceIndex (service) {
+      return this.services.findIndex(record => record.customerId === service.customerId && record.id === service.id)
+    },
+
+    getRecordIndex (service) {
+      return this.filteredRecords.findIndex(record => record.customerId === service.customerId && record.id === service.id)
+    },
+
+    selectRow (service) {
       for (const service of this.services) Object.assign(service, { selected: false, edited: false })
-      Object.assign(this.services[index], { selected: true })
+      for (const service of this.filteredRecords) Object.assign(service, { selected: false, edited: false })
+
+      Object.assign(this.filteredRecords[this.getRecordIndex(service)], { selected: true })
+      Object.assign(this.services[this.getServiceIndex(service)], { selected: true })
     },
 
     getPartners (data) {
@@ -222,6 +257,14 @@ export default {
       this.ready = true
     },
 
+    clickCallback (record) {
+      this.selectRow(record)
+    },
+
+    changeCallback (record) {
+      Object.assign(record, { edited: true })
+    },
+
     save () {
       const result = this.services.filter(service => service.edited)
 
@@ -229,7 +272,7 @@ export default {
     },
 
     callback (data) {
-      // console.log('Updated', data)
+      console.log('Updated', data)
     },
 
     sendRequest () {
@@ -256,12 +299,12 @@ export default {
 </script>
 
 <style>
-table {
+.table-relative {
   /* text-align: left; */
   position: relative !important;
   border-collapse: collapse;
 }
-th {
+.th-sticky {
   position: sticky !important;
   top: 64px !important; /* Don't forget this, required for the stickiness */
   height: 32px;
@@ -270,11 +313,11 @@ th {
   z-index: 100;
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
-td input {
+.small-td input {
   font-size: 12px !important;
 }
 .selected-row {
-  background: #e0e0e0;
+  background: #efefef;
 }
 /* .theme--light.v-data-table {
   background: #fbfbfb;
