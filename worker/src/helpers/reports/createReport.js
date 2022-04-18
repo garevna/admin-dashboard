@@ -15,6 +15,8 @@ export const createReport = async (list) => {
       '_id',
       'address',
       'addressComponents.buildingType',
+      'addressComponents.city',
+      'coordinates',
       'numberOfDwellings',
       'internalInstallationCosts',
       'buildingConnectionCosts'

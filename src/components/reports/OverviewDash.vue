@@ -105,7 +105,7 @@ export default {
   },
 
   created () {
-    const { totalOnNetBuildings, premisesPassed, customers, connections, MRR } = this.overviewData
+    const { totalOnNetBuildings, premisesPassed, connections, MRR } = this.overviewData
 
     this.titleValues = [
       MRR.lastMonth.residential + MRR.lastMonth.commercial,
@@ -114,8 +114,8 @@ export default {
       connections.active,
       totalOnNetBuildings,
       premisesPassed.total,
-      (MRR.lastMonth.residential + MRR.lastMonth.commercial) / (customers.residential + customers.commercial) + ' USD',
-      Math.ceil(100 * (connections.active * 100 / (customers.residential + customers.commercial))) / 100 + ' %'
+      (MRR.lastMonth.residential + MRR.lastMonth.commercial) / (connections.residential + connections.commercial) + ' USD',
+      Math.ceil(100 * (connections.active * 100 / (connections.residential + connections.commercial))) / 100 + ' %'
     ]
     this.subtitleValues = [
       [MRR.lastMonth.residential, MRR.lastMonth.commercial],

@@ -36,7 +36,9 @@ Object.assign(window[Symbol.for('vue.prototype')], {
     window.open(url, '_blank')
   },
   __removeGoogleMaps: function () {
-    Array.from(document.getElementsByTagName('script')).filter(script => script.src.indexOf('https://maps.googleapis.com') === 0).forEach(script => script.remove())
+    Array.from(document.getElementsByTagName('script'))
+      .filter(script => script.src.indexOf('https://maps.googleapis.com') === 0)
+      .forEach(script => script.remove())
     window.google = null
   }
 })

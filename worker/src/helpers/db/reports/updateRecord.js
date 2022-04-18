@@ -13,7 +13,7 @@ export const updateRecord = function (record, customer) {
   } = calculateServices(services)
 
   Object.assign(record.connections, {
-    active: record.connections.active + (active ? 1 : 0),
+    // active: record.connections.active + (active ? 1 : 0),
     newCurrentMonth: record.connections.newCurrentMonth + (newCurrentMonth ? 1 : 0),
     newLastMonth: record.connections.newLastMonth + (newLastMonth ? 1 : 0),
     pending: record.connections.pending + (pending ? 1 : 0)

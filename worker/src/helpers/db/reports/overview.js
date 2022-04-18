@@ -51,12 +51,14 @@ export const overview = async function () {
             commercial: result.premisesPassed.commercial + premises.commercial,
             mixed: result.premisesPassed.mixed + premises.mixed
           },
-          customers: {
-            residential: result.customers.residential + (record.customers.residential),
-            commercial: result.customers.commercial + (record.customers.commercial)
-          },
+          // customers: {
+          //   residential: result.customers.residential + (record.customers.residential),
+          //   commercial: result.customers.commercial + (record.customers.commercial)
+          // },
           connections: {
             active: result.connections.active + record.connections.active,
+            residential: result.connections.residential + (record.connections.residential),
+            commercial: result.connections.commercial + (record.connections.commercial),
             newLastMonth: result.connections.newLastMonth + record.connections.newLastMonth,
             newCurrentMonth: result.connections.newCurrentMonth + record.connections.newCurrentMonth,
             pending: result.connections.pending + record.connections.pending

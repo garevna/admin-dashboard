@@ -1,12 +1,12 @@
 {
   "name": "dgtek-admin-dash",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "license": "MIT",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
     "worker-prod": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode production && yarn remove crypto-js",
-    "serve": "yarn polygons-editor && vue-cli-service serve",
-    "build": "yarn polygons-editor && vue-cli-service build",
+    "serve": "yarn polygons-editor && yarn pits-editor && vue-cli-service serve",
+    "build": "yarn polygons-editor && yarn pits-editor && vue-cli-service build",
     "build-staging": "yarn polygons-editor && vue-cli-service build --mode staging",
     "build-master": "yarn polygons-editor && vue-cli-service build --mode master",
     "lint": "vue-cli-service lint",
@@ -14,10 +14,13 @@
     "map-package": "yarn add dgtek-portal-map-package && mv node_modules/dgtek-portal-map-package/dist/map.worker.js public",
     "clear-vue": "rm -r node_modules/dgtek-portal-polygons-editor/node_modules/vue",
     "clear-vuetify": "rm -r node_modules/dgtek-portal-polygons-editor/node_modules/vuetify",
-    "polygons-editor": "yarn add dgtek-portal-polygons-editor && yarn clear-vue && yarn clear-vuetify"
+    "polygons-editor": "yarn add dgtek-portal-polygons-editor && yarn clear-vue && yarn clear-vuetify",
+    "pits-editor-clear": "rm -r  node_modules/dgtek-portal-pits-editor/node_modules/vuetify && rm -r  node_modules/dgtek-portal-pits-editor/node_modules/vue",
+    "pits-editor": "yarn add dgtek-portal-pits-editor && yarn pits-editor-clear"
   },
   "dependencies": {
-    "dgtek-portal-map-package": "^1.1.84",
+    "dgtek-portal-map-package": "^1.1.87",
+    "dgtek-portal-pits-editor": "^1.0.8",
     "dgtek-portal-polygons-editor": "^1.1.5",
     "dgtek-styles": "^0.0.8",
     "express": "^4.17.1",

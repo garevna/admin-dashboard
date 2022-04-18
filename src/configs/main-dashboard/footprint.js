@@ -17,6 +17,12 @@ export const footprint = {
       icon: 'mdi-map-marker-path'
     },
     {
+      title: 'Pits',
+      route: 'pits',
+      disabled: 'pits',
+      icon: 'mdi-minecraft'
+    },
+    {
       title: 'Edit building list',
       disabled: 'buildings',
       icon: 'mdi-home-city-outline',

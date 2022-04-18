@@ -72,6 +72,7 @@
             :overviewData="overviewData"
             :collectionName="collectionName"
           />
+          <DiagramBuildings v-if="overviewClickedItem === 'buildings'" title="On-net buildings" :overviewData="diagramData" />
           <Diagram v-else :diagramType="diagramType" :title="diagramTitle" :values="diagramData" />
         </v-sheet>
       </v-col>
@@ -102,7 +103,8 @@ export default {
     TopOfPage: () => import('@/components/reports/TopOfPage.vue'),
     OverviewDash: () => import('@/components/reports/OverviewDash.vue'),
     Diagram: () => import('@/components/reports/diagrams/Diagram.vue'),
-    DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue')
+    DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue'),
+    DiagramBuildings: () => import('@/components/reports/diagrams/DiagramBuildings.vue')
   },
 
   data: () => ({
@@ -120,6 +122,7 @@ export default {
 
   watch: {
     overviewClickedItem (val) {
+      console.log(val)
       if (val === 'MRR-active' || val === 'MRR-pending') {
         this.collectionName = val.slice(4)
       }
@@ -146,6 +149,8 @@ export default {
 
     showOverview (data) {
       this.overviewData = data
+
+      console.log(this.overviewData)
 
       this.diagramData = [
         ['MRR(+)', 'Year and month'],

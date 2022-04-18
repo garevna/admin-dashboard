@@ -60,7 +60,7 @@
 import '@/sass/main.scss'
 import 'dgtek-styles'
 
-import { credentialsHandler, roleHandler } from '@/controllers/data-handlers'
+// import { credentialsHandler, roleHandler } from '@/controllers/data-handlers'
 
 const servicesImage = require('@/assets/images/melbourne-2-1.svg')
 const homeImage = require('@/assets/images/Webb-Bridge-Melbourne-Drawing-effect.svg')
@@ -128,8 +128,8 @@ export default {
   },
 
   mounted () {
-    roleHandler(localStorage.getItem('admin'))
-    credentialsHandler(localStorage.getItem('refresh'))
+    // roleHandler(localStorage.getItem('admin'))
+    // credentialsHandler(localStorage.getItem('refresh'))
 
     this.$root.$on('show-snackbar', this.showSnackbar)
     this.$root.$on('hide-snackbar', this.hideSnackbar)

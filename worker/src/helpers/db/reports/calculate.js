@@ -48,6 +48,8 @@ export const calculate = async function () {
 
         const { buildingId, services, commercial } = customer
 
+        const connection = services && services.filter(service => service.status === 'Active').length > 0 ? 1 : 0
+
         const type = commercial ? 'commercial' : 'residential'
 
         if (Array.isArray(services) && services.length > 0) {
@@ -57,9 +59,15 @@ export const calculate = async function () {
 
               if (!record) return self.postDebugMessage({ ERROR: `Building ${buildingId} not found`, customer })
 
-              record.customers[type] += 1
+              record.connections.active += connection
+
+              record.connections[type] += connection
+
+              // record.customers[type] += 1
 
               const { activeServices, pendingServices } = updateRecord(record, customer)
+
+              self.postDebugMessage(record)
 
               const { active, pending } = record
 

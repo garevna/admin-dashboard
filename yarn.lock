@@ -3381,10 +3381,20 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
-dgtek-portal-map-package@^1.1.84:
-  version "1.1.84"
-  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.84.tgz#5776d1bad6885e031a3b0bc5ab73f93cdbab34c8"
-  integrity sha512-Gwtkn9eGVw8PMUc7vjb53wGSvOaPAbGUF+UNixsCk2fHSf8PD7EteprgQmteYu+51n+AD4EJCoF+0aT2jbDK+A==
+dgtek-portal-map-package@^1.1.87:
+  version "1.1.87"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.87.tgz#8d01778f875c3baae5837c2ab92eb8cdd6b73721"
+  integrity sha512-Y2EZ4b6EeRwPpHgvNgnXxmE4ja5Mnu/YoFhk0gjva+DGDDeiSCtz7NziTeKhiHP5i+OsJjOni1e4HE0uGZ/RGg==
+
+dgtek-portal-pits-editor@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-pits-editor/-/dgtek-portal-pits-editor-1.0.8.tgz#01dac41c301fc44342b968255bc36df56bc74d64"
+  integrity sha512-WC993R9LxfH6VTDbI7cd/QIRz6uv3KpAIWMaZpUHGrG14RDLZIS8ZPVwO1nnR4846DGW6CHqkaqUEZOllSlrKg==
+  dependencies:
+    core-js "^3.6.5"
+    vue "^2.6.11"
+    vue-select "^3.16.0"
+    vuetify "^2.2.11"
 
 dgtek-portal-polygons-editor@^1.1.5:
   version "1.1.5"

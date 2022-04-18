@@ -156,6 +156,16 @@ const routes = [
         component: () => import(/* webpackChunkName: 'polygons' */ '@/components/footprint/EditPolygons.vue')
       },
       {
+        path: '/pits',
+        name: 'pits',
+        beforeEnter (to, from, next) {
+          if (!roleHandler()) next({ name: 'home' })
+          if (from.name === 'pits') next(false)
+          next()
+        },
+        component: () => import(/* webpackChunkName: 'pits' */ '@/components/footprint/EditPits.vue')
+      },
+      {
         path: '/lit-buildings',
         name: 'lit-buildings',
         beforeEnter (to, from, next) {

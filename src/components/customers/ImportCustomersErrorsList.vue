@@ -6,7 +6,7 @@
     </h5>
     <div v-for="(address, index) of filterAddressList()" :key="index">
       <span :style="{ color, marginRight: '16px' }">{{ address }}</span>
-      <li v-for="item of filterErrors(address)" :key="item">
+      <li v-for="(item, num) of filterErrors(address)" :key="num">
         {{ item }}
       </li>
     </div>

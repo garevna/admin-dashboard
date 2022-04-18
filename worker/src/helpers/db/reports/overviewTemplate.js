@@ -6,12 +6,14 @@ export const overviewTemplate = {
     commercial: 0,
     mixed: 0
   },
-  customers: {
-    residential: 0,
-    commercial: 0
-  },
+  // customers: {
+  //   residential: 0,
+  //   commercial: 0
+  // },
   connections: {
     active: 0,
+    residential: 0,
+    commercial: 0,
     newLastMonth: 0,
     newCurrentMonth: 0,
     pending: 0
