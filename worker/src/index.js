@@ -43,16 +43,6 @@ testDBVersion()
 
 self.initialized = false
 self.serviceStatus = serviceStatus
-// self.access = {
-//   updates: false,
-//   messages: false,
-//   customers: false,
-//   buildings: false,
-//   services: false,
-//   tickets: false,
-//   schedule: false,
-//   access: false
-// }
 
 getUpdatesFromRemote()
 

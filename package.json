@@ -15,7 +15,7 @@
     "clear-vue": "rm -r node_modules/dgtek-portal-polygons-editor/node_modules/vue",
     "clear-vuetify": "rm -r node_modules/dgtek-portal-polygons-editor/node_modules/vuetify",
     "polygons-editor": "yarn add dgtek-portal-polygons-editor && yarn clear-vue && yarn clear-vuetify",
-    "pits-editor-clear": "rm -r  node_modules/dgtek-portal-pits-editor/node_modules/vuetify && rm -r  node_modules/dgtek-portal-pits-editor/node_modules/vue",
+    "pits-editor-clear": "rm -r node_modules/dgtek-portal-pits-editor/node_modules/vuetify && rm -r  node_modules/dgtek-portal-pits-editor/node_modules/vue",
     "pits-editor": "yarn add dgtek-portal-pits-editor && yarn pits-editor-clear"
   },
   "dependencies": {

@@ -37,7 +37,7 @@ export default {
   beforeMount () {
     const { premisesPassed, connections, MRR, totalOnNetBuildings } = this.overviewData
 
-    const totalMRR = MRR.currentMonth.residential + MRR.currentMonth.commercial
+    const totalMRR = MRR.residential + MRR.commercial
 
     const values = [
       premisesPassed.total,

@@ -8,6 +8,8 @@ import {
   getBuildingUpdates
 } from './updates'
 
+import { access } from '../configs'
+
 import { dateChangeCallback } from './dateChangeCallback'
 
 import { credentialsHandler } from './env'
@@ -20,7 +22,7 @@ let dateChanged = false
 const [route, action] = ['updates', 'get']
 
 export const getUpdatesFromRemote = async () => {
-  if (credentialsHandler() && self.access.updates) {
+  if (credentialsHandler() && access.updates) {
     const currentDate = new Date().toISOString().slice(0, 10)
     dateChanged = currentDate > startDate
 

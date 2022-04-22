@@ -1,28 +1,20 @@
 export const initialValues = {
-  // customers: {
-  //   residential: 0,
-  //   commercial: 0
-  // },
+  active: [],
+  pending: [],
   connections: {
     active: 0,
     residential: 0,
     commercial: 0,
     newCurrentMonth: 0,
     newLastMonth: 0,
-    pending: 0
+    pending: 0,
+    pendingResidential: 0,
+    pendingCommercial: 0
   },
   services: {
     active: 0,
+    pending: 0,
     newCurrentMonth: 0,
-    newLastMonth: 0,
-    pending: 0
-  },
-  active: {
-    residential: {},
-    commercial: {}
-  },
-  pending: {
-    residential: {},
-    commercial: {}
+    newLastMonth: 0
   }
 }

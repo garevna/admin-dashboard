@@ -1,4 +1,4 @@
-export const lastMonth = service => {
+export const testLastMonth = service => {
   let [year, month] = [new Date().getFullYear(), new Date().getMonth()]
   if (!month) {
     year -= 1

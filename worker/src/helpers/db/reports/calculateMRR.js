@@ -1,30 +1,45 @@
-export const calculateMRR = record => {
-  const currentMonth = new Date().toISOString().slice(0, 7)
+export const calculateMRR = (active, pending) => {
+  const [activeResidential, activeCommercial, pendingResidential, pendingCommercial] = [
+    active.filter(service => service.serviceType === 'residential'),
+    active.filter(service => service.serviceType === 'commercial'),
+    pending.filter(service => service.serviceType === 'residential'),
+    pending.filter(service => service.serviceType === 'commercial')
+  ]
 
-  const { active, pending } = record
+  const [
+    residentialMRR,
+    commercialMRR,
+    lastMonthResidentialMRR,
+    lastMonthCommercialMRR,
+    currentMonthResidentialMRR,
+    currentMonthCommercialMRR,
+    pendingResidentialMRR,
+    pendingCommercialMRR
+  ] = [
+    activeResidential.reduce((res, item) => res + item.subscriptionFee, 0),
+    activeCommercial.reduce((res, item) => res + item.subscriptionFee, 0),
+    activeResidential.filter(item => item.lastMonth).reduce((res, item) => res + item.subscriptionFee, 0),
+    activeCommercial.filter(item => item.lastMonth).reduce((res, item) => res + item.subscriptionFee, 0),
+    activeResidential.filter(item => item.currentMonth).reduce((res, item) => res + item.subscriptionFee, 0),
+    activeCommercial.filter(item => item.currentMonth).reduce((res, item) => res + item.subscriptionFee, 0),
+    pendingResidential.reduce((res, item) => res + item.subscriptionFee, 0),
+    pendingCommercial.reduce((res, item) => res + item.subscriptionFee, 0)
+  ]
 
   return {
-    active: {
-      residential: {
-        lastMonth: Object.keys(active.residential)
-          .filter(key => key < currentMonth)
-          .reduce((res, key) => res + active.residential[key], 0),
-        currentMonth: Object.keys(active.residential)
-          .reduce((res, key) => res + active.residential[key], 0)
-      },
-      commercial: {
-        lastMonth: Object.keys(active.commercial)
-          .filter(key => key < currentMonth)
-          .reduce((res, key) => res + active.commercial[key], 0),
-        currentMonth: Object.keys(active.commercial)
-          .reduce((res, key) => res + active.commercial[key], 0)
-      }
+    residential: residentialMRR,
+    commercial: commercialMRR,
+    lastMonth: {
+      residential: lastMonthResidentialMRR,
+      commercial: lastMonthCommercialMRR
+    },
+    currentMonth: {
+      residential: currentMonthResidentialMRR,
+      commercial: currentMonthCommercialMRR
     },
     pending: {
-      residential: Object.keys(pending.residential)
-        .reduce((res, key) => res + pending.residential[key], 0),
-      commercial: Object.keys(pending.commercial)
-        .reduce((res, key) => res + pending.commercial[key], 0)
+      residential: pendingResidentialMRR,
+      commercial: pendingCommercialMRR
     }
   }
 }

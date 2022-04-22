@@ -14,7 +14,6 @@
     </table>
 
     <GChart
-      v-if="ready"
       type="AreaChart"
       :data="filteredItems"
       :options="chartOptions"
@@ -28,7 +27,7 @@
 import { GChart } from 'vue-google-charts'
 
 export default {
-  name: 'DiagramMRR',
+  name: 'DiagramMRRTotal',
 
   components: {
     GChart
@@ -40,6 +39,7 @@ export default {
     ready: false,
     from: undefined,
     to: undefined,
+    collection: null,
     dates: [],
     diagramData: [
       ['Year-Month', 'Residential', 'Commercial']
@@ -49,11 +49,8 @@ export default {
       legend: { position: 'top', maxLines: 3 },
       chart: {
         title: 'MRR',
-        subtitle: 'Residential / commercial',
         height: 300
-      },
-      hAxis: { title: 'Year-month', titleTextStyle: { color: '#333' } },
-      vAxis: { minValue: 0 }
+      }
     }
   }),
 
@@ -63,54 +60,41 @@ export default {
 
       const array = this.diagramData.filter(item => item[0] < this.to && item[0] > this.from)
       array.unshift(['Year-Month', 'Residential', 'Commercial'])
-      console.log(array)
 
       return array
     }
   },
 
-  // watch: {
-  //   collectionName (val) {
-  //     this.ready = false
-  //     this.getCollection(val)
-  //   }
-  // },
-
-  methods: {
-    getCollection () {
-      // this.diagramData = [
-      //   ['Year-Month', 'Residential', 'Commercial']
-      // ]
-
-      this.dates = Object.keys(this.overviewData.dynamic).sort()
-
-      const [residential, commercial] = [this.overviewData.residentialDynamic, this.overviewData.commercialDynamic]
-
-      console.log('RESIDENTIAL:\n', residential)
-      console.log('COMMERCIAL:\n', commercial)
-
-      // this.dates = Array.from(new Set(Object.keys(residential).concat(Object.keys(commercial)))).sort()
-
-      // this.dates = Array.from(new Set(Object.keys(residential).concat(Object.keys(commercial)))).sort()
-      this.from = this.dates.slice(-7)[0]
-      this.to = this.dates.slice(-1)[0]
-
-      // const result = { residential: 0, commercial: 0 }
-
-      for (const date of this.dates) {
-        this.diagramData.push([date, residential[date], commercial[date]])
-      }
-
-      console.log(this.diagramData)
-
-      this.ready = true
+  watch: {
+    collectionName (val) {
+      this.ready = false
+      this.getCollection(val)
     }
   },
 
-  mounted () {
-    console.log('MOUNTED!!!')
-    console.log(this.overviewData)
-    this.getCollection()
+  methods: {
+    getCollection () {
+      this.diagramData = [
+        ['Year-Month', 'Residential', 'Commercial']
+      ]
+
+      const dynamic = this.overviewData.dynamic
+
+      console.log(dynamic)
+
+      this.dates = Array.from(new Set(Object.keys(dynamic))).sort()
+      this.from = this.dates.slice(-7)[0]
+      this.to = this.dates.slice(-1)[0]
+
+      let result = 0
+
+      for (const date of this.dates) {
+        result += dynamic[date] || 0
+        this.diagramData.push([date, result])
+      }
+
+      this.ready = true
+    }
   }
 }
 </script>

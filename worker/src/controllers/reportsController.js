@@ -10,6 +10,14 @@ class ReportsController {
   async getOverview () {
     self.postMessage(await self.getReportsOverview())
   }
+
+  async getLocations () {
+    self.postMessage(await self.getLocations())
+  }
+
+  async getRecord (request) {
+    self.postMessage(await self.getRecord(request.recordId))
+  }
 }
 
 export const reportsController = new ReportsController()

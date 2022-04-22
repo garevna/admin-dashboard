@@ -1,5 +1,6 @@
 import { encrypt, /* decrypt, */ hash } from '../crypto'
 import { hostHandler, apiKeyHandler, credentialsHandler, roleHandler } from '../env'
+import { access } from '../../configs'
 
 const [route, action] = ['admin', 'redirect']
 
@@ -38,7 +39,7 @@ export const auth = async (login, password) => {
 
   const test = role === 'SuperAdmin' || role === 'admin' || role === 'supervisor'
 
-  self.access = {
+  Object.assign(access, {
     updates: test,
     messages: test,
     customers: test,
@@ -47,7 +48,7 @@ export const auth = async (login, password) => {
     tickets: test,
     schedule: test,
     settings: test
-  }
+  })
 
   return {
     status: 200,

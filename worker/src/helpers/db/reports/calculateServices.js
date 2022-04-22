@@ -1,25 +1,27 @@
 import {
-  lastMonth,
-  currentMonth,
+  testLastMonth,
+  testCurrentMonth,
   getActiveServices,
-  getPendingServices
+  getPendingServices,
+  getServiceFee
 } from './'
 
-export const calculateServices = services => {
+export const calculateServices = async (store, services) => {
   const [activeServices, pendingServices] = [getActiveServices(services), getPendingServices(services)]
-  const [active, newCurrentMonth, newLastMonth, pending] = [
-    activeServices.length,
-    activeServices.filter(service => currentMonth(service)).length,
-    activeServices.filter(service => lastMonth(service)).length,
-    pendingServices.length
-  ]
 
-  return {
-    activeServices,
-    pendingServices,
-    active,
-    newCurrentMonth,
-    newLastMonth,
-    pending
+  const [active, pending] = [[], []]
+
+  for (const service of pendingServices) {
+    const [date, lastMonth, currentMonth] = [service.date, testLastMonth(service), testCurrentMonth(service)]
+    const { subscriptionFee, serviceType } = await getServiceFee(store, service.serviceId)
+    pending.push({ date, lastMonth, currentMonth, subscriptionFee, serviceType })
   }
+
+  for (const service of activeServices) {
+    const [date, lastMonth, currentMonth] = [service.date, testLastMonth(service), testCurrentMonth(service)]
+    const { subscriptionFee, serviceType } = await getServiceFee(store, service.serviceId)
+    active.push({ date, lastMonth, currentMonth, subscriptionFee, serviceType })
+  }
+
+  return { active, pending }
 }

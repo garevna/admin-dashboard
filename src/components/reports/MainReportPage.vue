@@ -62,19 +62,32 @@
     <v-row class="mb-12">
       <v-col cols="5">
         <v-card dark class="mt-12 pa-8" color="#003" width="600">
-          <OverviewDash :overviewData="overviewData" :clicked.sync="overviewClickedItem" />
+          <OverviewDash
+            :overviewData="overviewData"
+            :clicked.sync="overviewClickedItem"
+          />
         </v-card>
       </v-col>
       <v-col cols="7">
-        <v-sheet color="transparent" height="480" class="mt-8" v-if="showDiagram">
+        <v-sheet
+          v-if="overviewClickedItem !== 'buildings' && showDiagram"
+          color="transparent"
+          height="480"
+          class="mt-8"
+        >
           <DiagramMRR
-            v-if="overviewClickedItem === 'MRR-active' || overviewClickedItem === 'MRR-pending'"
+            v-if="overviewClickedItem === 'MRR-active'"
             :overviewData="overviewData"
-            :collectionName="collectionName"
           />
-          <DiagramBuildings v-if="overviewClickedItem === 'buildings'" title="On-net buildings" :overviewData="diagramData" />
-          <Diagram v-else :diagramType="diagramType" :title="diagramTitle" :values="diagramData" />
+
+          <Diagram
+            v-if="overviewClickedItem !== 'MRR-active' && overviewClickedItem !== 'buildings'"
+            :diagramType="diagramType"
+            :title="diagramTitle"
+            :values="diagramData"
+          />
         </v-sheet>
+        <Locations v-if="overviewClickedItem === 'buildings'" />
       </v-col>
     </v-row>
   </v-card>
@@ -104,7 +117,8 @@ export default {
     OverviewDash: () => import('@/components/reports/OverviewDash.vue'),
     Diagram: () => import('@/components/reports/diagrams/Diagram.vue'),
     DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue'),
-    DiagramBuildings: () => import('@/components/reports/diagrams/DiagramBuildings.vue')
+    // DiagramLocations: () => import('@/components/reports/diagrams/DiagramLocations.vue'),
+    Locations: () => import('@/components/reports/Locations.vue')
   },
 
   data: () => ({
@@ -116,16 +130,14 @@ export default {
     diagramData: null,
     showDiagram: false,
     overviewData: null,
-    overviewClickedItem: null,
-    collectionName: 'active'
+    locations: null,
+    locationsReady: false,
+    overviewClickedItem: null
   }),
 
   watch: {
     overviewClickedItem (val) {
       console.log(val)
-      if (val === 'MRR-active' || val === 'MRR-pending') {
-        this.collectionName = val.slice(4)
-      }
     }
   },
 
@@ -154,9 +166,14 @@ export default {
 
       this.diagramData = [
         ['MRR(+)', 'Year and month'],
-        ...Object.keys(data.active.residential).map(key => ([key, data.active.residential[key]])),
-        ...Object.keys(data.active.commercial).map(key => ([key, data.active.commercial[key]]))
+        ...Object.keys(data.dynamic).map(key => ([key, data.dynamic[key]]))
       ]
+
+      // this.diagramData = [
+      //   ['MRR(+)', 'Year and month'],
+      //   ...Object.keys(data.active.residential).map(key => ([key, data.active.residential[key]])),
+      //   ...Object.keys(data.active.commercial).map(key => ([key, data.active.commercial[key]]))
+      // ]
 
       this.showDiagram = true
       this.ready = true

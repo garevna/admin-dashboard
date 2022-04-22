@@ -1,4 +1,5 @@
 import { routes } from './routes'
+import { access } from './access'
 import { emptyData, secretError, encryptError, decryptError, accessError } from './errors'
 import { serviceSchema } from './serviceSchema'
 
@@ -16,6 +17,7 @@ import pdf404 from './pdf404'
 
 export {
   routes,
+  access,
   emptyData,
   secretError,
   encryptError,

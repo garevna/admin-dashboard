@@ -105,21 +105,35 @@ export default {
   },
 
   created () {
-    const { totalOnNetBuildings, premisesPassed, connections, MRR } = this.overviewData
+    const {
+      totalOnNetBuildings,
+      premisesPassed,
+      connections,
+      MRR,
+      dynamic,
+      residentialDynamic,
+      commercialDynamic
+    } = this.overviewData
+
+    const averagePerCustomer = (MRR.residential + MRR.commercial) / (connections.residential + connections.commercial)
+
+    const dates = Object.keys(dynamic).sort()
+
+    const [lastMonthDate, currentMonthDate] = [dates.slice(-2)[0], dates.slice(-1)[0]]
 
     this.titleValues = [
-      MRR.lastMonth.residential + MRR.lastMonth.commercial,
-      MRR.currentMonth.residential + MRR.currentMonth.commercial,
+      dynamic[lastMonthDate],
+      dynamic[currentMonthDate],
       MRR.pending.residential + MRR.pending.commercial,
       connections.active,
       totalOnNetBuildings,
       premisesPassed.total,
-      (MRR.lastMonth.residential + MRR.lastMonth.commercial) / (connections.residential + connections.commercial) + ' USD',
-      Math.ceil(100 * (connections.active * 100 / (connections.residential + connections.commercial))) / 100 + ' %'
+      Math.round((averagePerCustomer + Number.EPSILON) * 100) / 100 + ' USD',
+      Math.ceil(100 * (connections.active * 100 / (connections.residential + connections.commercial))) / 10000 + ' %'
     ]
     this.subtitleValues = [
-      [MRR.lastMonth.residential, MRR.lastMonth.commercial],
-      [MRR.currentMonth.residential, MRR.currentMonth.commercial],
+      [residentialDynamic[lastMonthDate], commercialDynamic[lastMonthDate]],
+      [residentialDynamic[currentMonthDate], commercialDynamic[currentMonthDate]],
       [MRR.pending.residential, MRR.pending.commercial],
       [connections.newLastMonth, connections.newCurrentMonth, connections.pending],
       [],

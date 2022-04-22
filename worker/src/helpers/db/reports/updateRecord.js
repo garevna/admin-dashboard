@@ -1,30 +1,32 @@
-import { calculateServices } from './'
+// const countByStatus = (array, status) => array.filter(item => item.status === status).length
+const countByType = (array, type) => array.filter(item => item.serviceType === type).length
+const countByMonth = (array, monthName) => array.filter(item => item[monthName]).length
 
-export const updateRecord = function (record, customer) {
-  const { services } = customer
+export const updateRecord = function (record, activeServices, pendingServices) {
+  const services = {
+    residential: countByType(activeServices, 'residential'),
+    commercial: countByType(activeServices, 'commercial'),
+    newLastMonth: countByMonth(activeServices, 'lastMonth'),
+    newCurrentMonth: countByMonth(activeServices, 'currentMonth'),
+    pendingResidential: countByType(pendingServices, 'residential'),
+    pendingCommercial: countByType(pendingServices, 'commercial')
+  }
 
-  const {
-    activeServices,
-    pendingServices,
-    active,
-    newCurrentMonth,
-    newLastMonth,
-    pending
-  } = calculateServices(services)
+  const connections = Object.assign({}, ...Object.keys(services)
+    .map(key => ({ [key]: services[key] ? 1 : 0 })))
 
-  Object.assign(record.connections, {
-    // active: record.connections.active + (active ? 1 : 0),
-    newCurrentMonth: record.connections.newCurrentMonth + (newCurrentMonth ? 1 : 0),
-    newLastMonth: record.connections.newLastMonth + (newLastMonth ? 1 : 0),
-    pending: record.connections.pending + (pending ? 1 : 0)
-  })
+  for (const key of Object.keys(connections)) {
+    record.connections[key] += connections[key] ? 1 : 0
+  }
+
+  record.connections.active = record.connections.residential + record.connections.commercial
 
   Object.assign(record.services, {
-    active: record.services.active + active,
-    newCurrentMonth: record.services.newCurrentMonth + newCurrentMonth,
-    newLastMonth: record.services.newLastMonth + newLastMonth,
-    pending: record.services.pending + pending
+    active: record.services.active + activeServices.length,
+    newCurrentMonth: record.services.newCurrentMonth + services.currentMonth,
+    newLastMonth: record.services.newLastMonth + services.lastMonth,
+    pending: record.services.pending + services.pendingResidential + services.pendingCommercial
   })
 
-  return { record, activeServices, pendingServices }
+  return record
 }
