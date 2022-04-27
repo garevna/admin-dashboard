@@ -9,7 +9,11 @@ export const newBuilding = {
     number: '',
     buildingClass: '',
     buildingType: '',
-    buildingCategory: ''
+    buildingCategory: '',
+    isMaster: false,
+    isSlave: false,
+    masterBuildingId: '',
+    slaves: []
   },
   buildingUniqueCode: '',
   buildingName: '',

@@ -80,8 +80,20 @@
             :overviewData="overviewData"
           />
 
+          <DiagramPendingMRR
+            v-if="overviewClickedItem === 'MRR-pending'"
+            :values="overviewData.MRR.pending"
+          />
+
+          <DiagramConnections
+            v-if="overviewClickedItem === 'connections'"
+            diagramType="pie"
+            title="Connections"
+            :values="overviewData.connections"
+          />
+
           <Diagram
-            v-if="overviewClickedItem !== 'MRR-active' && overviewClickedItem !== 'buildings'"
+            v-if="overviewClickedItem !== 'MRR-active' && overviewClickedItem !== 'buildings' && overviewClickedItem !== 'connections'"
             :diagramType="diagramType"
             :title="diagramTitle"
             :values="diagramData"
@@ -116,6 +128,8 @@ export default {
     TopOfPage: () => import('@/components/reports/TopOfPage.vue'),
     OverviewDash: () => import('@/components/reports/OverviewDash.vue'),
     Diagram: () => import('@/components/reports/diagrams/Diagram.vue'),
+    DiagramPendingMRR: () => import('@/components/reports/diagrams/DiagramPendingMRR.vue'),
+    DiagramConnections: () => import('@/components/reports/diagrams/DiagramConnections.vue'),
     DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue'),
     // DiagramLocations: () => import('@/components/reports/diagrams/DiagramLocations.vue'),
     Locations: () => import('@/components/reports/Locations.vue')
@@ -135,11 +149,11 @@ export default {
     overviewClickedItem: null
   }),
 
-  watch: {
-    overviewClickedItem (val) {
-      console.log(val)
-    }
-  },
+  // watch: {
+  //   overviewClickedItem (val) {
+  //     console.log(val)
+  //   }
+  // },
 
   methods: {
     setActive (index) {
@@ -162,18 +176,12 @@ export default {
     showOverview (data) {
       this.overviewData = data
 
-      console.log(this.overviewData)
+      // console.log(this.overviewData)
 
       this.diagramData = [
-        ['MRR(+)', 'Year and month'],
+        ['MRR', 'Year and month'],
         ...Object.keys(data.dynamic).map(key => ([key, data.dynamic[key]]))
       ]
-
-      // this.diagramData = [
-      //   ['MRR(+)', 'Year and month'],
-      //   ...Object.keys(data.active.residential).map(key => ([key, data.active.residential[key]])),
-      //   ...Object.keys(data.active.commercial).map(key => ([key, data.active.commercial[key]]))
-      // ]
 
       this.showDiagram = true
       this.ready = true

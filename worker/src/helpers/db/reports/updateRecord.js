@@ -23,8 +23,8 @@ export const updateRecord = function (record, activeServices, pendingServices) {
 
   Object.assign(record.services, {
     active: record.services.active + activeServices.length,
-    newCurrentMonth: record.services.newCurrentMonth + services.currentMonth,
-    newLastMonth: record.services.newLastMonth + services.lastMonth,
+    newCurrentMonth: record.services.newCurrentMonth + services.newCurrentMonth,
+    newLastMonth: record.services.newLastMonth + services.newLastMonth,
     pending: record.services.pending + services.pendingResidential + services.pendingCommercial
   })
 

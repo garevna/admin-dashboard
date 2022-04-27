@@ -5,5 +5,6 @@ export const reports = {
   calculate: reportsController.calculateReport,
   overview: reportsController.getOverview,
   locations: reportsController.getLocations,
+  'location-dynamic': reportsController.getLocationDynamicMRR,
   record: reportsController.getRecord
 }

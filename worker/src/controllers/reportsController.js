@@ -15,6 +15,10 @@ class ReportsController {
     self.postMessage(await self.getLocations())
   }
 
+  getLocationDynamicMRR (request) {
+    self.postMessage(self.getLocationDynamic(request.location))
+  }
+
   async getRecord (request) {
     self.postMessage(await self.getRecord(request.recordId))
   }

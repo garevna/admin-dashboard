@@ -4,6 +4,7 @@ import { overview } from './overview'
 import { getServiceDate } from './getServiceDate'
 import { testLastMonth } from './testLastMonth'
 import { testCurrentMonth } from './testCurrentMonth'
+import { generateDates } from './generateDates'
 
 import { getRecord } from './getRecord'
 import { putRecord } from './putRecord'
@@ -19,6 +20,7 @@ import { calculateServices } from './calculateServices'
 import { calculateMRR } from './calculateMRR'
 
 import { calculateLocations } from './calculateLocations'
+import { locationDynamicHolder } from './locationDynamicHolder'
 
 import { updateRecord } from './updateRecord'
 
@@ -28,6 +30,8 @@ export {
   getServiceDate,
   testLastMonth,
   testCurrentMonth,
+
+  generateDates,
 
   getActiveServices,
   getPendingServices,
@@ -43,6 +47,7 @@ export {
   calculateMRR,
 
   calculateLocations,
+  locationDynamicHolder,
 
   updateRecord,
   calculate,

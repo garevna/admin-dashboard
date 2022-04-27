@@ -27,13 +27,13 @@
 import { GChart } from 'vue-google-charts'
 
 export default {
-  name: 'DiagramMRRTotal',
+  name: 'DiagramDynamicMRR',
 
   components: {
     GChart
   },
 
-  props: ['overviewData'],
+  props: ['title', 'dynamic'],
 
   data: () => ({
     ready: false,
@@ -42,14 +42,18 @@ export default {
     collection: null,
     dates: [],
     diagramData: [
-      ['Year-Month', 'Residential', 'Commercial']
+      ['Year-Month', '']
     ],
 
     chartOptions: {
-      legend: { position: 'top', maxLines: 3 },
+      backgroundColor: '#fbfbfb',
+      legend: { position: 'none' },
       chart: {
         title: 'MRR',
         height: 300
+      },
+      vAxis: {
+        minValue: 0
       }
     }
   }),
@@ -59,7 +63,7 @@ export default {
       if (!this.from || !this.to || this.from > this.to) return this.diagramData
 
       const array = this.diagramData.filter(item => item[0] < this.to && item[0] > this.from)
-      array.unshift(['Year-Month', 'Residential', 'Commercial'])
+      array.unshift(['Year-Month', this.title])
 
       return array
     }
@@ -75,26 +79,28 @@ export default {
   methods: {
     getCollection () {
       this.diagramData = [
-        ['Year-Month', 'Residential', 'Commercial']
+        ['Year-Month', this.title]
       ]
 
-      const dynamic = this.overviewData.dynamic
-
-      console.log(dynamic)
-
-      this.dates = Array.from(new Set(Object.keys(dynamic))).sort()
-      this.from = this.dates.slice(-7)[0]
+      this.dates = Object.keys(this.dynamic).sort()
+      this.from = this.dates.slice(-8)[0]
       this.to = this.dates.slice(-1)[0]
 
       let result = 0
 
       for (const date of this.dates) {
-        result += dynamic[date] || 0
+        result += this.dynamic[date] || 0
         this.diagramData.push([date, result])
       }
 
       this.ready = true
     }
+  },
+
+  mounted () {
+    console.log(this.title)
+    this.chartOptions.title = this.title
+    this.getCollection()
   }
 }
 </script>

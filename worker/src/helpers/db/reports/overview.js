@@ -1,6 +1,7 @@
 import { openDB } from '../openDB'
 
 import {
+  generateDates,
   overviewTemplate,
   getPremises,
   createDynamic,
@@ -51,7 +52,9 @@ export const overview = async function () {
 
         cursor.continue()
       } else {
-        const dates = Array.from(new Set(active.map(service => service.date)))
+        const minDate = Array.from(new Set(active.map(service => service.date))).sort()[0]
+
+        const dates = generateDates(minDate)
 
         Object.assign(result, {
           dynamic: createDynamic(dates, active),

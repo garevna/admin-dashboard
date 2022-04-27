@@ -117,7 +117,7 @@ export default {
 
     const averagePerCustomer = (MRR.residential + MRR.commercial) / (connections.residential + connections.commercial)
 
-    const dates = Object.keys(dynamic).sort()
+    const dates = Object.keys(dynamic).sort((a, b) => a > b)
 
     const [lastMonthDate, currentMonthDate] = [dates.slice(-2)[0], dates.slice(-1)[0]]
 

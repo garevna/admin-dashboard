@@ -64,16 +64,27 @@
                 <td><b> {{ locationData.connections.pendingResidential + locationData.connections.pendingCommercial }} </b></td>
               </tr>
               <tr class="hovered-row">
-                <td></td>
-                <td><b> {{  }} </b></td>
+                <td colspan="2"> Total services </td>
+                <td class="ml-12"><b> {{ locationData.services.active }} </b></td>
               </tr>
               <tr class="hovered-row">
                 <td></td>
-                <td><b> {{  }} </b></td>
+                <td> New last month </td>
+                <td><b> {{ locationData.services.newLastMonth }} </b></td>
               </tr>
               <tr class="hovered-row">
                 <td></td>
-                <td><b> {{  }} </b></td>
+                <td> New current month </td>
+                <td><b> {{ locationData.services.newCurrentMonth }} </b></td>
+              </tr>
+              <tr class="hovered-row">
+                <td></td>
+                <td> Pending</td>
+                <td><b> {{ locationData.services.pending }} </b></td>
+              </tr>
+              <tr class="hovered-row clicable-row" @click="$emit('update:locationName', locationName)">
+                <td colspan="2"> MRR </td>
+                <td class="ml-12"><b> {{ locationData.MRR }} </b></td>
               </tr>
             </tbody>
           </table>
@@ -88,7 +99,7 @@
 export default {
   name: 'LocationList',
 
-  props: [],
+  props: ['locationName'],
 
   data: () => ({
     worker: window[Symbol.for('map.worker')],
@@ -99,13 +110,8 @@ export default {
 
   computed: {
     selectedItem () {
+      this.$emit('update:locationName', null)
       return this.list && typeof this.selected === 'number' ? Object.keys(this.list)[this.selected] : null
-    }
-  },
-
-  watch: {
-    selected (val) {
-      console.log(val)
     }
   },
 
@@ -119,18 +125,16 @@ export default {
     },
 
     receiveBuildingList (data) {
-      console.log(data)
+      // console.log(data)
     },
 
     dataReceivedCallback (data) {
-      console.log(data)
       this.list = data
       this.ready = true
     }
   },
 
   created () {
-    // this.sendRequestForBuildings()
     this.__getLocations(this.dataReceivedCallback)
   }
 }
@@ -145,6 +149,12 @@ export default {
 .hovered-row td {
   padding-left: 16px;
   padding-right: 16px;
+}
+
+.clicable-row:hover {
+  background: #9004;
+  color: #900;
+  cursor: pointer;
 }
 
 /* .hovered-row:hover td {

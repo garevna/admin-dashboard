@@ -19,31 +19,11 @@
       </div>
     </v-row>
 
-    <!-- <v-row justify="end" text-right>
-      <v-btn icon @click="open = !open" style="display: block; margin-bottom: 16px">
-        <v-icon> mdi-dots-vertical </v-icon>
-      </v-btn>
-    </v-row>
-    <v-row v-if="open" align="start" justify="end">
-      <v-list dense class="mb-12" style="border: solid 1px #ddd">
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-          @click="getSelected(item)"
-          style="cursor: pointer;"
-        >
-          <v-list-item-title>
-            {{ item.text }}
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-row> -->
-
     <GChart
       type="BarChart"
       :data="chartData"
       :options="options"
-      style="height: 480px"
+      :style="{ height: diagramHeight + 'px' }"
     />
   </v-container>
 </template>
@@ -67,7 +47,8 @@ export default {
       { text: 'Total on-net buildings', propName: 'totalOnNetBuildings' },
       { text: 'Total premises passed', propName: 'premises' },
       { text: 'Total connections', propName: 'connections.active' },
-      { text: 'Total services', propName: 'services.active' }
+      { text: 'Total services', propName: 'services.active' },
+      { text: 'MRR', propName: 'MRR' }
     ],
     chart: null,
     chartData: [
@@ -76,10 +57,11 @@ export default {
     options: {
       title: '',
       height: 480,
+      // isStacked: 'absolute',
+
       backgroundColor: '#fbfbfb',
       fontSize: '10px',
-      chartArea: { left: 160, top: 0, width: '95%', height: '85%' },
-      bar: { groupWidth: '50%' },
+      chartArea: { left: 160, top: 0, width: '95%' },
       legend: { position: 'none' },
       animation: {
         startup: true,
@@ -87,17 +69,39 @@ export default {
       },
       colors: ['#900'],
       hAxis: {
-        title: 'connections',
+        title: 'Connections',
+        textStyle: {
+          fontSize: 10,
+          fontName: 'Gilroy'
+        },
+        titleTextStyle: {
+          fontSize: 11,
+          bold: true,
+          fontName: 'Gilroy'
+        },
         minValue: 0
       },
       vAxis: {
         title: 'Location',
+        viewWindowMode: 'maximized',
         textStyle: {
-          fontSize: '10px'
+          fontSize: 10,
+          fontName: 'Gilroy'
+        },
+        titleTextStyle: {
+          fontSize: 11,
+          bold: true,
+          fontName: 'Gilroy'
         }
       }
     }
   }),
+
+  computed: {
+    diagramHeight () {
+      return this.sourceData.length * 24
+    }
+  },
 
   methods: {
     getSelected (item) {
@@ -117,6 +121,8 @@ export default {
         if (props.length > 1) this.chartData.push([location, this.sourceData[location][props[0]][props[1]]])
         else this.chartData.push([location, this.sourceData[location][props[0]]])
       }
+
+      this.options.height = Object.keys(this.sourceData).length * 24
     }
   },
 

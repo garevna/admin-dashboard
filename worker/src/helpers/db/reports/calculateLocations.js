@@ -1,13 +1,9 @@
 import { openDB } from '../openDB'
 
-// import {
-//   overviewTemplate,
-//   getPremises,
-//   createDynamic,
-//   calculateMRR
-// } from './'
+import { initialValues } from '../../reports/initialValues'
+import { generateDates, createDynamic, locationDynamicHolder } from './'
 
-const [route, action] = ['reports', 'overview']
+const [route, action] = ['reports', 'locations']
 
 export const calculateLocations = async function () {
   const { status, result: db } = await openDB()
@@ -18,6 +14,8 @@ export const calculateLocations = async function () {
   const store = transaction.objectStore('reports')
 
   const result = {}
+  const locationDynamic = {}
+  const [active, pending] = [{}, {}]
 
   return new Promise((resolve) => {
     store.openCursor().onsuccess = async (event) => {
@@ -31,45 +29,44 @@ export const calculateLocations = async function () {
           result[location] = {
             totalOnNetBuildings: 0,
             premises: 0,
-            connections: {
-              active: 0,
-              residential: 0,
-              commercial: 0,
-              newLastMonth: 0,
-              newCurrentMonth: 0,
-              pendingResidential: 0,
-              pendingCommercial: 0
-            },
-            services: {
-              active: 0,
-              newLastMonth: 0,
-              newCurrentMonth: 0,
-              pending: 0
-            }
+            connections: JSON.parse(JSON.stringify(initialValues.connections)),
+            services: JSON.parse(JSON.stringify(initialValues.services))
+          }
+        }
+        if (!active[location]) active[location] = []
+        if (!pending[location]) pending[location] = []
+
+        result[location].totalOnNetBuildings += 1
+        result[location].premises += record.numberOfDwellings
+
+        active[location].push(...record.active)
+        pending[location].push(...record.pending)
+
+        for (const section of ['connections', 'services']) {
+          for (const key in result[location][section]) {
+            result[location][section][key] += record[section][key]
           }
         }
 
-        Object.assign(result[location], {
-          totalOnNetBuildings: result[location].totalOnNetBuildings + 1,
-          premises: result[location].premises + record.numberOfDwellings,
-          connections: {
-            active: result[location].connections.active + record.connections.active,
-            residential: result[location].connections.residential + record.connections.residential,
-            commercial: result[location].connections.commercial + record.connections.commercial,
-            newLastMonth: result[location].connections.newLastMonth + record.connections.newLastMonth,
-            newCurrentMonth: result[location].connections.newCurrentMonth + record.connections.newCurrentMonth,
-            pendingResidential: result[location].connections.pendingResidential + record.connections.pendingResidential,
-            pendingCommercial: result[location].connections.pendingCommercial + record.connections.pendingCommercial
-          },
-          services: {
-            active: result[location].services.active + record.services.active,
-            newLastMonth: result[location].services.newLastMonth + record.services.newLastMonth,
-            newCurrentMonth: result[location].services.newCurrentMonth + record.services.newCurrentMonth,
-            pending: result[location].services.pending + record.services.pending
-          }
-        })
         cursor.continue()
-      } else resolve({ status: 200, route, action, result })
+      } else {
+        const tmp = Object.keys(active)
+          .flatMap(location => Array.from(new Set(active[location].map(item => item.date))))
+        const sortedDates = Array.from(new Set(tmp)).sort()
+
+        const [minDate, maxDate] = [sortedDates[0], sortedDates.slice(-1)[0]]
+
+        const dates = generateDates(minDate)
+
+        for (const location in active) {
+          Object.assign(locationDynamic, { [location]: createDynamic(dates, active[location]) })
+          Object.assign(result[location], { MRR: locationDynamic[location][maxDate] })
+        }
+
+        locationDynamicHolder(locationDynamic)
+
+        resolve({ status: 200, route, action, result })
+      }
     }
   })
 }

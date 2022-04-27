@@ -46,6 +46,7 @@ export default {
     ],
 
     chartOptions: {
+      backgroundColor: '#fbfbfb',
       legend: { position: 'top', maxLines: 3 },
       chart: {
         title: 'MRR',
@@ -63,53 +64,29 @@ export default {
 
       const array = this.diagramData.filter(item => item[0] < this.to && item[0] > this.from)
       array.unshift(['Year-Month', 'Residential', 'Commercial'])
-      console.log(array)
 
       return array
     }
   },
 
-  // watch: {
-  //   collectionName (val) {
-  //     this.ready = false
-  //     this.getCollection(val)
-  //   }
-  // },
-
   methods: {
     getCollection () {
-      // this.diagramData = [
-      //   ['Year-Month', 'Residential', 'Commercial']
-      // ]
-
       this.dates = Object.keys(this.overviewData.dynamic).sort()
 
       const [residential, commercial] = [this.overviewData.residentialDynamic, this.overviewData.commercialDynamic]
 
-      console.log('RESIDENTIAL:\n', residential)
-      console.log('COMMERCIAL:\n', commercial)
-
-      // this.dates = Array.from(new Set(Object.keys(residential).concat(Object.keys(commercial)))).sort()
-
-      // this.dates = Array.from(new Set(Object.keys(residential).concat(Object.keys(commercial)))).sort()
       this.from = this.dates.slice(-7)[0]
       this.to = this.dates.slice(-1)[0]
-
-      // const result = { residential: 0, commercial: 0 }
 
       for (const date of this.dates) {
         this.diagramData.push([date, residential[date], commercial[date]])
       }
-
-      console.log(this.diagramData)
 
       this.ready = true
     }
   },
 
   mounted () {
-    console.log('MOUNTED!!!')
-    console.log(this.overviewData)
     this.getCollection()
   }
 }

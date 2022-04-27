@@ -36,7 +36,6 @@
           </tr>
           <tr v-if="isSlave">
             <td colspan="2">
-              {{ isSlave }}
               <v-select
                 v-model="masterBuildingId"
                 :items="items"
@@ -109,36 +108,6 @@ export default {
   }),
 
   computed: {
-    // isMaster: {
-    //   get () {
-    //     console.log(this.buildingData.addressComponents.isMaster, this.buildingData.addressComponents.isSlave)
-    //     return this.buildingData.addressComponents.isMaster
-    //   },
-    //   set (val) {
-    //     const { addressComponents } = this.buildingData
-    //     Object.assign(addressComponents, { isMaster: val, isSlave: this.isSlave && val ? !val : this.isSlave })
-    //     this.$emit('update:buildingData', Object.assign(this.buildingData, { addressComponents }))
-    //
-    //     if (!this.slaves.length) {
-    //       this.worker.getSlavesForMaster(this.buildingData._id, this.getSlavesList)
-    //     }
-    //   }
-    // },
-
-    // isSlave: {
-    //   get () {
-    //     console.log(this.buildingData.addressComponents.isMaster, this.buildingData.addressComponents.isSlave)
-    //     return this.buildingData.addressComponents.isSlave || false
-    //   },
-    //   set (val) {
-    //     const { addressComponents } = this.buildingData
-    //     Object.assign(addressComponents, { isMaster: this.isMaster && val ? !val : this.isMaster, isSlave: val })
-    //     this.$emit('update:buildingData', Object.assign(this.buildingData, { addressComponents }))
-    //
-    //     val && !this.items.length && this.worker.getMasterBuildingsList(this.getMasterList)
-    //   }
-    // },
-
     masterBuildingId: {
       get () {
         return this.ready ? this.buildingData.addressComponents.masterBuildingId : null
@@ -180,7 +149,23 @@ export default {
 
     saveBuildingDetails () {
       this.$dispatchProgressEvent(true)
+      const masterId = this.buildingData.addressComponents.masterBuildingId
+      console.log(masterId)
       this.worker.patchBuildingDetails(this.buildingData._id, { addressComponents: this.buildingData.addressComponents }, this.sendMessage)
+      if (masterId) {
+        this.worker
+          .getBuildingDetailsById(masterId, this.saveMaster)
+        this.worker.patchBuildingDetails(this.buildingData._id, { addressComponents: this.buildingData.addressComponents }, this.sendMessage)
+      }
+    },
+
+    saveMaster (masterDetails) {
+      console.log(masterDetails)
+      const addressComponents = masterDetails.addressComponents
+
+      console.log(addressComponents.slaves)
+      addressComponents.slaves.push(this.buildingData._id)
+      this.worker.patchBuildingDetails(masterDetails._id, { addressComponents }, this.sendMessage)
     },
 
     sendMessage (event) {
