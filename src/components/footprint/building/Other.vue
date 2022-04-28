@@ -149,23 +149,29 @@ export default {
 
     saveBuildingDetails () {
       this.$dispatchProgressEvent(true)
-      const masterId = this.buildingData.addressComponents.masterBuildingId
-      console.log(masterId)
       this.worker.patchBuildingDetails(this.buildingData._id, { addressComponents: this.buildingData.addressComponents }, this.sendMessage)
-      if (masterId) {
-        this.worker
-          .getBuildingDetailsById(masterId, this.saveMaster)
-        this.worker.patchBuildingDetails(this.buildingData._id, { addressComponents: this.buildingData.addressComponents }, this.sendMessage)
-      }
+
+      const masterId = this.buildingData.addressComponents.masterBuildingId
+      if (masterId) this.worker.getBuildingDetailsById(masterId, this.updateMaster)
     },
 
-    saveMaster (masterDetails) {
-      console.log(masterDetails)
-      const addressComponents = masterDetails.addressComponents
+    updateMaster (masterDetails) {
+      const { addressComponents } = masterDetails
 
-      console.log(addressComponents.slaves)
-      addressComponents.slaves.push(this.buildingData._id)
-      this.worker.patchBuildingDetails(masterDetails._id, { addressComponents }, this.sendMessage)
+      if (!Array.isArray(addressComponents.slaves)) addressComponents.slaves = []
+
+      if (this.buildingData.isSlave) {
+        if (!addressComponents.slaves.includes(this.buildingData._id)) {
+          addressComponents.slaves.push(this.buildingData._id)
+          this.worker.patchBuildingDetails(masterDetails._id, { addressComponents }, this.sendMessage)
+        }
+      } else {
+        const index = addressComponents.slaves.indexOf(this.buildingData._id)
+        if (index !== -1) {
+          addressComponents.slaves.splice(index, 1)
+          this.worker.patchBuildingDetails(masterDetails._id, { addressComponents }, this.sendMessage)
+        }
+      }
     },
 
     sendMessage (event) {
@@ -179,6 +185,7 @@ export default {
     changeMaster (val) {
       const { addressComponents } = this.buildingData
       Object.assign(addressComponents, { isMaster: val })
+
       if (val && this.isSlave) {
         this.isSlave = false
         Object.assign(addressComponents, { isSlave: false })
@@ -189,10 +196,12 @@ export default {
     changeSlave (val) {
       const { addressComponents } = this.buildingData
       Object.assign(addressComponents, { isSlave: val })
+
       if (val && this.isMaster) {
         this.isMaster = false
         Object.assign(addressComponents, { isMaster: false })
       }
+
       this.$emit('update:buildingData', Object.assign(this.buildingData, { addressComponents }))
 
       val && !this.items.length && this.worker.getMasterBuildingsList(this.getMasterList)

@@ -87,6 +87,10 @@ export default {
   },
 
   methods: {
+    // getAllSettings (data) {
+    //   console.log('ALL SETTINGS:\n', data)
+    // },
+
     getSettings (settings) {
       const { toDisplay, estimatedServiceDeliveryTime, buildingStatus } = settings
       this.statusToDisplay = toDisplay
@@ -126,19 +130,41 @@ export default {
     catchGoogleAutocompleteEvent (event) {
       const { address, addressComponents, status, buildingId, url, coordinates, estimatedServiceDeliveryTime } = event.detail
 
+      if (addressComponents.isSlave) {
+        if (addressComponents.masterBuildingId) {
+          this.worker.getBuildingDetailsById(addressComponents.masterBuildingId, this.getMasterBuildingDetails)
+          this.$root.$emit('open-error-popup', {
+            errorType: 'Slave building found',
+            errorMessage: 'Search for master building'
+          })
+        } else {
+          this.$root.$emit('open-error-popup', {
+            errorType: 'Slave building found',
+            errorMessage: 'Master building is not defined'
+          })
+        }
+      }
+
       this.buildingDetails = { address, addressComponents, status, buildingId, estimatedServiceDeliveryTime, coordinates, url }
 
       this.__getEstimatedServiceDeliveryTime(status, this.getSettings)
+    },
+
+    errorEventListener (event) {
+      this.$root.$emit('open-error-popup', event.detail)
     }
   },
 
   beforeDestroy () {
     this.__removeGoogleMaps()
     window.removeEventListener('new-address-data', this.catchGoogleAutocompleteEvent)
+    window.removeEventListener('open-error-popup', this.errorEventListener)
   },
 
   beforeMount () {
     this.__removeGoogleMaps()
+    window.addEventListener('open-error-popup', this.errorEventListener)
+    // this.__getEstimatedServiceDeliveryTime('all', this.getAllSettings)
   },
 
   mounted () {
