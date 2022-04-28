@@ -3771,6 +3771,11 @@ eslint-config-standard@^14.1.0:
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-14.1.1.tgz#830a8e44e7aef7de67464979ad06b406026c56ea"
   integrity sha512-Z9B+VR+JIXRxz21udPTL9HpFMyoMUEeX1G251EQ6e05WD9aPVtVBn09XUmZ259wCMlCDmYDSZG62Hhm+ZTJcUg==
 
+eslint-config-standard@^16.0.3:
+  version "16.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-16.0.3.tgz#6c8761e544e96c531ff92642eeb87842b8488516"
+  integrity sha512-x4fmJL5hGqNJKGHSjnLdgA6U6h1YW/G2dW9fA+cyVur4SK6lyue8+UgNKWlZtUDTXvgKDD/Oa3GQjmB5kjtVvg==
+
 eslint-import-resolver-node@^0.3.3, eslint-import-resolver-node@^0.3.4:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.4.tgz#85ffa81942c25012d8231096ddf679c03042c717"
@@ -7087,13 +7092,14 @@ pnp-webpack-plugin@^1.6.4:
   dependencies:
     ts-pnp "^1.1.6"
 
-portal-google-autocomplete@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/portal-google-autocomplete/-/portal-google-autocomplete-1.0.8.tgz#3e93eccee2632746db9cf517399638fe3467a5ad"
-  integrity sha512-iBMrxN7yHQ3VrrPnKdI5CS1hC3s/PzFBcDvABAgkTACyj44dj+X+b2MAuVtZaym7Ubdw0QPetszefDvbbTI9bg==
+portal-google-autocomplete@^1.0.85:
+  version "1.0.85"
+  resolved "https://registry.yarnpkg.com/portal-google-autocomplete/-/portal-google-autocomplete-1.0.85.tgz#5fc43280a50cca204bf7a50a6cadcfc7cf5427d4"
+  integrity sha512-u3RGK74qHfqPJZZe1dUY1jYVQwp6TSDaFHU0LZg2IWTYw2ZFQkcTnRWwnEGFB/UQMVQbLMn4+XecWNm7mt3A8Q==
   dependencies:
     core-js "^3.6.5"
     dgtek-styles "^0.0.8"
+    eslint-config-standard "^16.0.3"
 
 portfinder@^1.0.26:
   version "1.0.28"

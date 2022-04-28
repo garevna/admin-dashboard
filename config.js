@@ -2,10 +2,10 @@ const apiHost = (() => {
   switch (process.env.NODE_ENV) {
     case 'production':
       return 'https://portal.dgtek.net'
-    case 'staging':
-    case 'master':
-    case 'development':
-      return `https://portal.${process.env.NODE_ENV}.dgtek.net`
+    // case 'staging':
+    // case 'master':
+    // case 'development':
+    //   return `https://portal.${process.env.NODE_ENV}.dgtek.net`
     default:
       return 'https://portal.staging.dgtek.net'
   }
