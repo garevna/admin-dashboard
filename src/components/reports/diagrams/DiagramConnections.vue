@@ -1,43 +1,43 @@
 <template>
   <v-sheet color="transparent" height="480" class="mt-8">
-    <table>
+    <!-- <table>
       <tbody>
         <tr>
-          <td>
+          <td> -->
             <GChart
               type="PieChart"
               :data="statusChartData"
               :options="chartOptions"
               width="320"
             />
-          </td>
-          <td>
+          <!-- </td>
+          <td> -->
             <GChart
               type="PieChart"
               :data="typeChartData"
               :options="chartOptions"
               width="320"
             />
-          </td>
+          <!-- </td>
         </tr>
-        <tr>
-          <td>
+        <tr> -->
+          <!-- <td>
             <GChart
               type="PieChart"
               :data="activeChartData"
               :options="activeChartOptions"
             />
-          </td>
-          <td>
+          </td> -->
+          <!-- <td> -->
             <GChart
               type="PieChart"
               :data="pendingChartData"
               :options="pendingChartOptions"
             />
-          </td>
+          <!-- </td>
         </tr>
       </tbody>
-    </table>
+    </table> -->
   </v-sheet>
 </template>
 
@@ -114,11 +114,11 @@ export default {
         ['Commercial', this.values.commercial]
       ]
 
-      this.activeChartData = [
-        ['Active', 'Amount'],
-        ['Residential', this.values.residential],
-        ['Commercial', this.values.pendingCommercial]
-      ]
+      // this.activeChartData = [
+      //   ['Active', 'Amount'],
+      //   ['Residential', this.values.residential],
+      //   ['Commercial', this.values.pendingCommercial]
+      // ]
 
       this.pendingChartData = [
         ['Pending', 'Amount'],
