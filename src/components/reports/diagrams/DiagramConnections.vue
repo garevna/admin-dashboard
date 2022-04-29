@@ -62,6 +62,7 @@ export default {
     chartOptions: {
       backgroundColor: '#fbfbfb',
       title: 'Connections',
+      colors: ['#900', '#004'],
       animation: {
         startup: true,
         duration: 500
@@ -74,6 +75,7 @@ export default {
     activeChartOptions: {
       backgroundColor: '#fbfbfb',
       title: 'Active connections',
+      colors: ['#900', '#004'],
       animation: {
         startup: true,
         duration: 500
@@ -85,6 +87,7 @@ export default {
     },
     pendingChartOptions: {
       backgroundColor: '#fbfbfb',
+      colors: ['#900', '#004'],
       title: 'Pending connections',
       animation: {
         startup: true,

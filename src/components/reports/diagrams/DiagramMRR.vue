@@ -48,6 +48,7 @@ export default {
     chartOptions: {
       backgroundColor: '#fbfbfb',
       legend: { position: 'top', maxLines: 3 },
+      colors: ['#900', '#004'],
       chart: {
         title: 'MRR',
         subtitle: 'Residential / commercial',

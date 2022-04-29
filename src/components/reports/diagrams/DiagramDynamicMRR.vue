@@ -48,6 +48,7 @@ export default {
     chartOptions: {
       backgroundColor: '#fbfbfb',
       legend: { position: 'none' },
+      colors: ['#900'],
       chart: {
         title: 'MRR',
         height: 300
@@ -62,7 +63,7 @@ export default {
     filteredItems () {
       if (!this.from || !this.to || this.from > this.to) return this.diagramData
 
-      const array = this.diagramData.filter(item => item[0] < this.to && item[0] > this.from)
+      const array = this.diagramData.filter(item => item[0] <= this.to && item[0] >= this.from)
       array.unshift(['Year-Month', this.title])
 
       return array
@@ -86,11 +87,8 @@ export default {
       this.from = this.dates.slice(-8)[0]
       this.to = this.dates.slice(-1)[0]
 
-      let result = 0
-
       for (const date of this.dates) {
-        result += this.dynamic[date] || 0
-        this.diagramData.push([date, result])
+        this.diagramData.push([date, this.dynamic[date] || 0])
       }
 
       this.ready = true
@@ -98,8 +96,8 @@ export default {
   },
 
   mounted () {
-    console.log(this.title)
     this.chartOptions.title = this.title
+    // this.chartOptions.vAxis.maxValue = Math.max(...Object.keys(this.dynamic).map(key => this.dynamic[key])) * 1.1
     this.getCollection()
   }
 }

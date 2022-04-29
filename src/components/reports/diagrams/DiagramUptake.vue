@@ -14,7 +14,7 @@
 import { GChart } from 'vue-google-charts'
 
 export default {
-  name: 'DiagramPendingMRR',
+  name: 'DiagramUptake',
 
   components: {
     GChart
@@ -26,14 +26,14 @@ export default {
     chartData: [],
     chartOptions: {
       backgroundColor: '#fbfbfb',
-      title: 'Pending MRR',
-      colors: ['#900', '#004'],
+      title: 'Uptake',
+      colors: ['#09b', '#900', '#f50'],
       animation: {
         startup: true,
         duration: 500
       },
       chart: {
-        title: 'Pending MRR',
+        title: 'Uptake',
         height: 320
       }
     }
@@ -41,10 +41,14 @@ export default {
 
   methods: {
     createChartData () {
+      const { residential, commercial } = this.values.connections
+      const { premisesPassed } = this.values
+
       this.chartData = [
-        ['Status', 'Amount'],
-        ['Residential', this.values.residential],
-        ['Commercial', this.values.commercial]
+        ['Type', '%'],
+        ['Premises passed', premisesPassed.total - residential - commercial],
+        ['Residential', residential],
+        ['Commercial', commercial]
       ]
     }
   },

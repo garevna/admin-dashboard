@@ -43,6 +43,7 @@ export default {
     chartOptions: {
       title: 'MRR',
       backgroundColor: '#fbfbfb',
+      colors: ['#900', '#004'],
       color: '#900',
       height: 300,
       bar: { groupWidth: '80%' },

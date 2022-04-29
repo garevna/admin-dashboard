@@ -1,9 +1,7 @@
 <template>
-  <v-card dark flat class="transparent mx-auto" width="480" height="840">
+  <v-card dark flat class="transparent mx-auto" width="480">
     <v-expansion-panels
       v-model="panel"
-      :readonly="true"
-      multiple
     >
       <v-expansion-panel
         flat
@@ -54,8 +52,8 @@ export default {
   props: ['overviewData', 'clicked'],
 
   data: () => ({
-    panel: [0, 1, 2, 3],
-    active: [false, false, false, false, false, false],
+    panel: [],
+    active: [false, false, false, false, false, false, false, false],
     titles: [
       'MRR last month',
       'MRR current month',
@@ -92,15 +90,22 @@ export default {
     }
   },
 
+  // watch: {
+  //   clickedItem (val) {
+  //     console.log('CLICKED: ', val)
+  //   }
+  // },
+
   methods: {
     titleClickHandler (index) {
+      // console.log('CLICKED: ', this.titles[index])
       this.active = [false, false, false, false, false, false]
       this.active[index] = true
       this.clickedItem = this.items[index]
     },
 
     subtitleClickHandler (index, num) {
-      console.log(index, num, this.subtitles[index][num])
+      // console.log(index, num, this.subtitles[index][num])
     }
   },
 
@@ -128,8 +133,8 @@ export default {
       connections.active,
       totalOnNetBuildings,
       premisesPassed.total,
-      Math.round((averagePerCustomer + Number.EPSILON) * 100) / 100 + ' USD',
-      Math.ceil(100 * (connections.active * 100 / (connections.residential + connections.commercial))) / 10000 + ' %'
+      `$ ${Math.round((averagePerCustomer + Number.EPSILON) * 100) / 100}`,
+      Math.round(connections.active * 10000 / premisesPassed.total) / 100 + ' %'
     ]
     this.subtitleValues = [
       [residentialDynamic[lastMonthDate], commercialDynamic[lastMonthDate]],

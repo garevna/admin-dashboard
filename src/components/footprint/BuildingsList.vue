@@ -27,21 +27,23 @@
       </template>
 
       <template v-slot:footer.prepend>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          dense
-          outlined
-          hide-details
-          class="mr-4"
-          style="display: inline-block; width: 200px"
-        ></v-text-field>
+        <span class="mx-3">Total selected buildings: {{ selectedBuildingsNumber }}</span>
       </template>
 
       <template v-slot:top>
         <v-toolbar flat class="transparent">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            dense
+            outlined
+            hide-details
+            class="mr-4"
+            style="display: inline-block; width: 200px"
+          ></v-text-field>
+
           <v-btn v-if="selects.length" text class="mb-2" @click="updateGroup" color="primary">
             <v-icon>mdi-pencil-box-multiple-outline</v-icon>
             Group update
@@ -73,8 +75,6 @@
       </template>
     </v-data-table>
 
-    <span class="mx-3"><small>Total selected buildings: {{ selectedBuildingsNumber }}</small></span>
-
     <GroupUpdate
       v-if="selects.length"
       :dialog.sync="groupUpdate"
@@ -90,6 +90,8 @@ import { getBuildingUniqueCode } from '@/helpers'
 import { buildingStatusHandler, buildingsListPageNumberHandler } from '@/controllers/data-handlers'
 
 import GroupUpdate from '@/components/footprint/GroupUpdate.vue'
+
+import { filterHandler } from '@/components/footprint/building/filterHandler'
 
 const { footprintOptions } = require('@/configs').default
 
@@ -139,6 +141,9 @@ export default {
   },
 
   watch: {
+    search (val) {
+      filterHandler(val)
+    },
     page (val) {
       buildingsListPageNumberHandler(val)
     },
@@ -247,6 +252,7 @@ export default {
   },
 
   mounted () {
+    this.search = filterHandler()
     this.page = buildingsListPageNumberHandler()
     this.$root.$on('operation-confirmed', this.confirmationReceived)
     this.$root.$on('settings-updated', this.buildingsGroupUpdated)

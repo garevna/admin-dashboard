@@ -87,13 +87,13 @@
 
           <DiagramConnections
             v-if="overviewClickedItem === 'connections'"
-            diagramType="pie"
-            title="Connections"
             :values="overviewData.connections"
           />
 
+          <DiagramUptake v-if="overviewClickedItem === 'Uptake'" :values="overviewData" />
+
           <Diagram
-            v-if="overviewClickedItem !== 'MRR-active' && overviewClickedItem !== 'buildings' && overviewClickedItem !== 'connections'"
+            v-if="overviewClickedItem === 'premises' || overviewClickedItem === 'ARPU'"
             :diagramType="diagramType"
             :title="diagramTitle"
             :values="diagramData"
@@ -131,7 +131,7 @@ export default {
     DiagramPendingMRR: () => import('@/components/reports/diagrams/DiagramPendingMRR.vue'),
     DiagramConnections: () => import('@/components/reports/diagrams/DiagramConnections.vue'),
     DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue'),
-    // DiagramLocations: () => import('@/components/reports/diagrams/DiagramLocations.vue'),
+    DiagramUptake: () => import('@/components/reports/diagrams/DiagramUptake.vue'),
     Locations: () => import('@/components/reports/Locations.vue')
   },
 
