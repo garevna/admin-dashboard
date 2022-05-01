@@ -1,6 +1,25 @@
 <template>
-  <v-container class="transparent mt-12">
-    <v-row justify="end" class="mb-4">
+  <v-container class="transparent">
+    <v-system-bar color="#eee">
+      <v-spacer></v-spacer>
+      <v-btn text v-if="!open" @click="open = !open">
+        <v-icon> mdi-dots-vertical </v-icon>
+      </v-btn>
+      <div class="this-component-menu" v-if="open">
+        <v-list dense>
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            @click="getSelected(item)"
+            style="cursor: pointer;"
+          >
+            <v-list-item-title>{{ item.text }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </div>
+    </v-system-bar>
+
+    <!-- <v-row justify="end" style="height: 32px">
       <v-btn icon @click="open = !open">
         <v-icon> mdi-dots-vertical </v-icon>
       </v-btn>
@@ -17,7 +36,7 @@
           </v-list-item>
         </v-list>
       </div>
-    </v-row>
+    </v-row> -->
 
     <GChart
       type="BarChart"
@@ -57,11 +76,9 @@ export default {
     options: {
       title: '',
       height: 480,
-      // isStacked: 'absolute',
-
       backgroundColor: '#fbfbfb',
       fontSize: '10px',
-      chartArea: { left: 160, top: 0, width: '95%' },
+      // chartArea: { left: 160, top: 0, width: '95%' },
       legend: { position: 'none' },
       animation: {
         startup: true,
@@ -133,9 +150,11 @@ export default {
 </script>
 
 <style>
-/* .my-menu .v-menu__content {
-  top: 540px !important;
-  right: 48px !important;
+.this-component-menu {
+  margin-top: 200px !important;
+  /* background: #005 !important; */
+  /* top: 540px !important;
+  right: 48px !important; */
   z-index: 100;
-} */
+}
 </style>

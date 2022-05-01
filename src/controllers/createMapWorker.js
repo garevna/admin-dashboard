@@ -8,10 +8,11 @@ window.addEventListener('dgtek-portal-map-package-error', function (event) {
 })
 
 const callback = () => {
+  window[Symbol.for('vue.instance')].$emit('buildings-refreshed', true)
   refreshCallback({
     data: {
       status: 200,
-      route: 'footprint',
+      route: 'buildings',
       action: 'refresh'
     }
   })

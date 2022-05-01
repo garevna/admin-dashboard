@@ -1,5 +1,5 @@
 <template>
-  <v-sheet color="transparent" height="480" class="mt-8">
+  <v-sheet height="480" class="transparent mt-8">
     <!-- <h5 class="text-center">
       <small>{{ title }}</small>
     </h5> -->

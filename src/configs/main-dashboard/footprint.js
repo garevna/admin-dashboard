@@ -1,6 +1,6 @@
 export const footprint = {
   title: 'Footprint',
-  refresh: 'footprint',
+  refresh: 'buildings',
   disabled: 'footprint',
   icon: 'mdi-map',
   children: [

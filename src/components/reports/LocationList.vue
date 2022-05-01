@@ -1,5 +1,5 @@
 <template>
-  <v-card flat overflow-auto class="transparent" max-height="420">
+  <v-card flat class="transparent overflow-y-auto" max-height="420">
     <v-expansion-panels
       flat
       dense

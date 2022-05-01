@@ -1,43 +1,22 @@
 <template>
   <v-sheet color="transparent" height="480" class="mt-8">
-    <!-- <table>
-      <tbody>
-        <tr>
-          <td> -->
-            <GChart
-              type="PieChart"
-              :data="statusChartData"
-              :options="chartOptions"
-              width="320"
-            />
-          <!-- </td>
-          <td> -->
-            <GChart
-              type="PieChart"
-              :data="typeChartData"
-              :options="chartOptions"
-              width="320"
-            />
-          <!-- </td>
-        </tr>
-        <tr> -->
-          <!-- <td>
-            <GChart
-              type="PieChart"
-              :data="activeChartData"
-              :options="activeChartOptions"
-            />
-          </td> -->
-          <!-- <td> -->
-            <GChart
-              type="PieChart"
-              :data="pendingChartData"
-              :options="pendingChartOptions"
-            />
-          <!-- </td>
-        </tr>
-      </tbody>
-    </table> -->
+    <GChart
+      type="PieChart"
+      :data="statusChartData"
+      :options="chartOptions"
+      width="320"
+    />
+    <GChart
+      type="PieChart"
+      :data="typeChartData"
+      :options="chartOptions"
+      width="320"
+    />
+    <GChart
+      type="PieChart"
+      :data="pendingChartData"
+      :options="pendingChartOptions"
+    />
   </v-sheet>
 </template>
 

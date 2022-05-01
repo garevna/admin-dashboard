@@ -1,6 +1,6 @@
 export const reports = {
   title: 'Reports',
-  refresh: 'reports',
+  refresh: 'buildings',
   disabled: 'reports',
   callbackName: '__refreshReports',
   icon: 'mdi-chart-tree',

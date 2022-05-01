@@ -130,14 +130,13 @@ export default {
 
   beforeDestroy () {
     [
-      'footprint-refreshed',
+      'buildings-refreshed',
       'rsp-refreshed',
       'customers-refreshed',
       'tickets-refreshed',
       'services-refreshed',
       'schedule-refreshed',
-      'documents-refreshed',
-      'reports-refreshed'
+      'documents-refreshed'
     ].forEach((event) => {
       this.$root.$off(event, this.setRefreshed)
     })
@@ -170,7 +169,7 @@ export default {
 
     this.disabledRoutes = { partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings, reports }
 
-    this.refreshed = { rsp, footprint: true, customers, tickets, services, schedule, documents, settings: true, reports: true }
+    this.refreshed = { rsp, buildings, customers, tickets, services, schedule, documents, settings: true }
 
     dashboard
       .map(item => `${item === 'partners' ? 'rsp' : item}-refreshed`)

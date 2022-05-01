@@ -14,6 +14,7 @@ export const createReport = async (list) => {
     .map(item => item.status === 200 ? getSelectedFields(item.result, [
       '_id',
       'address',
+      'addressComponents.isSlave',
       'addressComponents.buildingType',
       'addressComponents.city',
       'coordinates',
@@ -22,9 +23,11 @@ export const createReport = async (list) => {
       'buildingConnectionCosts'
     ]) : null)
 
-  const result = response.map(record => Object.assign(record, initialValues))
+  const result = response
+    .filter(item => !item.isSlave)
+    .map(record => Object.assign(record, initialValues))
 
-  await Promise.all(response.map(record => putRecordByKey('reports', record._id, record)))
+  await Promise.all(result.map(record => putRecordByKey('reports', record._id, record)))
 
   return Object.assign({ route, action, status: 200, result })
 }

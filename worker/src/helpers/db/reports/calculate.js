@@ -29,7 +29,12 @@ export const calculate = async function () {
         if (activeServices.length || pendingServices.length) {
           const record = await getRecord(reportStore, buildingId, `${apartmentNumber}/${address}`)
 
-          if (!record) return
+          if (!record) {
+            console.log('BUILDING ID: ', buildingId)
+            console.log('ADDRESS: ', address)
+            console.log('CUSTOMER ID: ', customer._id)
+            return
+          }
 
           record.active.push(...activeServices)
           record.pending.push(...pendingServices)
