@@ -25,6 +25,9 @@
     <v-tabs-items v-model="tab" class="transparent overflow-auto">
       <v-tab-item value="diagram">
         <v-card flat class="transparent" v-if="ready">
+          <DiagramLocationsBubble :sourceData="locations" />
+        </v-card>
+        <v-card flat class="transparent" v-if="ready">
           <DiagramLocations :sourceData="locations" />
         </v-card>
       </v-tab-item>
@@ -57,6 +60,7 @@ export default {
   components: {
     DiagramDynamicMRR: () => import('@/components/reports/diagrams/DiagramDynamicMRR.vue'),
     DiagramLocations: () => import('@/components/reports/diagrams/DiagramLocations.vue'),
+    DiagramLocationsBubble: () => import('@/components/reports/diagrams/DiagramLocationsBubble.vue'),
     LocationList: () => import('@/components/reports/LocationList.vue')
   },
 

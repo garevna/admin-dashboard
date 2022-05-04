@@ -1,6 +1,6 @@
 export const refreshHandler = (function () {
   const refreshed = {
-    footprint: false,
+    buildings: false,
     rsp: false,
     services: false,
     tickets: false,

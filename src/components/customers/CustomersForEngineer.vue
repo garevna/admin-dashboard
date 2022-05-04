@@ -15,22 +15,22 @@
         <table class="table-relative">
           <thead>
             <tr>
-              <th rowspan="2" class="th-sticky"> <small>Unique code, address and<br>service name</small> </th>
-              <th rowspan="2" class="th-sticky"> <small>Partner</small> </th>
-              <th colspan="2" class="th-sticky"> PPPOE </th>
-              <th colspan="2" class="th-sticky"> IPoE </th>
-              <th rowspan="2" class="th-sticky"> <small>Speed In</small> </th>
-              <th rowspan="2" class="th-sticky"> <small>Speed Out</small> </th>
-              <th rowspan="2" class="th-sticky"> IP </th>
-              <th rowspan="2" class="th-sticky"> <small>Routed subnet</small> </th>
-              <th rowspan="2" class="th-sticky"> <small>VLAN DGtek</small> </th>
-              <th rowspan="2" class="th-sticky"> <small>VLAN RSP</small> </th>
+              <th rowspan="2" class="th-sticky local-td"> <small>Unique code, address and<br>service name</small> </th>
+              <th rowspan="2" class="th-sticky local-td"> <small>Partner</small> </th>
+              <th colspan="2" class="th-sticky local-td"> PPPOE </th>
+              <th colspan="2" class="th-sticky local-td"> IPoE </th>
+              <th rowspan="2" class="th-sticky local-td"> <small>Speed In</small> </th>
+              <th rowspan="2" class="th-sticky local-td"> <small>Speed Out</small> </th>
+              <th rowspan="2" class="th-sticky local-td"> IP </th>
+              <th rowspan="2" class="th-sticky local-td"> <small>Routed subnet</small> </th>
+              <th rowspan="2" class="th-sticky local-td"> <small>VLAN DGtek</small> </th>
+              <th rowspan="2" class="th-sticky local-td"> <small>VLAN RSP</small> </th>
             </tr>
             <tr>
-              <th style="top: 96px !important;" class="th-sticky"> <small>Login</small> </th>
-              <th style="top: 96px !important;" class="th-sticky"> <small>PWD</small> </th>
-              <th style="top: 96px !important;" class="th-sticky"> <small>Login</small> </th>
-              <th style="top: 96px !important;" class="th-sticky"><small>PWD</small></th>
+              <th style="top: 96px !important;" class="th-sticky local-td"> <small>Login</small> </th>
+              <th style="top: 96px !important;" class="th-sticky local-td"> <small>PWD</small> </th>
+              <th style="top: 96px !important;" class="th-sticky local-td"> <small>Login</small> </th>
+              <th style="top: 96px !important;" class="th-sticky local-td"><small>PWD</small></th>
             </tr>
           </thead>
           <tbody>
@@ -41,15 +41,15 @@
               style="padding-bottom: 16px; text-align: center"
               @click="clickCallback(service)"
             >
-              <td>
+              <td class="local-td">
                 <b> {{ customers[service.customerId].uniqueCode }} </b><br>
                 <small> {{ customers[service.customerId].address }} </small><br>
                 <small> <b style="color: #09b">{{ serviceList[service.id] }}</b> </small>
               </td>
-              <td class="text-center">
-                {{ partners[customers[service.customerId].resellerId].uniqueCode }}
+              <td class="local-td text-center">
+                {{ getPartner(service.customerId) }}
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service.Login.PPPOE"
@@ -61,7 +61,7 @@
                 />
                 <span v-else> {{ service.Login.PPPOE }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service.PWD.PPPOE"
@@ -73,7 +73,7 @@
                 />
                 <span v-else> {{ service.PWD.PPPOE }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service.Login.IPoE"
@@ -84,7 +84,7 @@
                 />
                 <span v-else> {{ service.Login.IPoE }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service.PWD.IPoE"
@@ -95,7 +95,7 @@
                 />
                 <span v-else> {{ service.PWD.IPoE }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service['Speed In']"
@@ -106,7 +106,7 @@
                 />
                 <span v-else> {{ service['Speed In'] }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service['Speed Out']"
@@ -117,7 +117,7 @@
                 />
                 <span v-else> {{ service['Speed Out'] }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service.IP"
@@ -128,7 +128,7 @@
                 />
                 <span v-else> {{ service.IP }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service['Routed subnet']"
@@ -139,7 +139,7 @@
                 />
                 <span v-else> {{ service['Routed subnet'] }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service['VLAN DGtek']"
@@ -150,7 +150,7 @@
                 />
                 <span v-else> {{ service['VLAN DGtek'] }} </span>
               </td>
-              <td class="small-td">
+              <td class="local-td small-td">
                 <v-text-field
                   v-if="service.selected"
                   v-model="service['VLAN RSP']"
@@ -228,6 +228,12 @@ export default {
       return this.services.findIndex(record => record.customerId === service.customerId && record.id === service.id)
     },
 
+    getPartner (customerId) {
+      return this.partners[this.customers[customerId].resellerId]
+        ? this.partners[this.customers[customerId].resellerId].uniqueCode
+        : 'Removed'
+    },
+
     getRecordIndex (service) {
       return this.filteredRecords.findIndex(record => record.customerId === service.customerId && record.id === service.id)
     },
@@ -250,6 +256,7 @@ export default {
     },
 
     getEngineeringData (data) {
+      console.log(data)
       this.customers = data.customers
       this.services = data.services.map(service => Object.assign(service, { selected: false }))
       this.filteredRecords = this.services
@@ -299,8 +306,12 @@ export default {
 </script>
 
 <style>
+
+.local-td {
+  padding: 4px;
+}
+
 .table-relative {
-  /* text-align: left; */
   position: relative !important;
   border-collapse: collapse;
 }
@@ -311,7 +322,9 @@ export default {
   background: #fbfbfb;
   color: #045;
   z-index: 100;
-  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+  background: #eee;
+  border: solid 1px #fff;
+  /* box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); */
 }
 .small-td input {
   font-size: 12px !important;
@@ -319,10 +332,4 @@ export default {
 .selected-row {
   background: #efefef;
 }
-/* .theme--light.v-data-table {
-  background: #fbfbfb;
-}
-.theme--light.v-data-table.v-data-table--fixed-header thead th {
-  background: #f5f5f5;
-} */
 </style>

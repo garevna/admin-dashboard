@@ -174,10 +174,6 @@ img {
   font-size: 0.8rem !important;
 }
 
-/* .main-content {
-  padding-top: 64px;
-} */
-
 .field-set {
   border: solid 1px #ddd;
   padding: 32px 0;

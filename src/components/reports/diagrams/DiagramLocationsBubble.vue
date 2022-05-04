@@ -39,10 +39,9 @@
     </v-row> -->
 
     <GChart
-      type="BarChart"
+      type="BubbleChart"
       :data="chartData"
       :options="options"
-      :style="{ height: diagramHeight + 'px' }"
     />
   </v-container>
 </template>
@@ -52,7 +51,7 @@
 import { GChart } from 'vue-google-charts'
 
 export default {
-  name: 'DiagramLocations',
+  name: 'DiagramLocationsBubble',
 
   components: {
     GChart
@@ -71,14 +70,27 @@ export default {
     ],
     chart: null,
     chartData: [
-      ['Location', 'Connections']
+      ['Locality', 'Total on-net buildings', 'Total premises passed', 'MRR'],
+      ['CAN', 80.66, 1.67, 33739900],
+      ['DEU', 79.84, 1.36, 81902307],
+      ['DNK', 78.6, 1.84, 5523095],
+      ['EGY', 72.73, 2.78, 79716203],
+      ['GBR', 80.05, 2, 61801570],
+      ['IRN', 72.49, 1.7, 73137148],
+      ['IRQ', 68.09, 4.77, 31090763],
+      ['ISR', 81.55, 2.96, 7485600],
+      ['RUS', 68.6, 1.54, 141850000],
+      ['USA', 78.09, 2.05, 307007000]
     ],
     options: {
-      title: '',
+      title: 'Locations',
       height: 480,
+      bubble: {
+        textStyle: {
+          fontSize: 10
+        }
+      },
       backgroundColor: '#fbfbfb',
-      fontSize: '10px',
-      // chartArea: { left: 160, top: 0, width: '95%' },
       legend: { position: 'none' },
       animation: {
         startup: true,
@@ -86,21 +98,23 @@ export default {
       },
       colors: ['#900'],
       hAxis: {
-        title: 'Connections',
+        title: 'Total on-net buildings',
+        viewWindowMode: 'maximized',
+        minValue: -10,
         textStyle: {
           fontSize: 10,
           fontName: 'Gilroy'
         },
         titleTextStyle: {
-          fontSize: 11,
+          fontSize: 10,
           bold: true,
           fontName: 'Gilroy'
-        },
-        minValue: 0
+        }
       },
       vAxis: {
-        title: 'Location',
+        title: 'Total premises passed',
         viewWindowMode: 'maximized',
+        minValue: -200,
         textStyle: {
           fontSize: 10,
           fontName: 'Gilroy'
@@ -126,25 +140,32 @@ export default {
       this.buildDiagramData(item.text, item.propName)
     },
 
-    buildDiagramData (title, propName) {
-      this.options.hAxis.title = title
+    buildDiagramData (header, items) {
+      const [titleX, titleY, xPropName, yPropName] = [items[0].text, items[1].text, items[0].propName, items[1].propName]
+
+      this.options.hAxis.title = header
       this.chartData = [
-        ['Location', title]
+        ['Locality', titleX, titleY, 'Location', 'MRR']
       ]
 
-      const props = propName.split('.')
+      const [propsX, propsY] = [xPropName.split('.'), yPropName.split('.')]
 
       for (const location of Object.keys(this.sourceData)) {
-        if (props.length > 1) this.chartData.push([location, this.sourceData[location][props[0]][props[1]]])
-        else this.chartData.push([location, this.sourceData[location][props[0]]])
-      }
+        const row = [location]
+        const [valueX, valueY] = [
+          propsX.length > 1 ? this.sourceData[location][propsX[0]][propsX[1]] : this.sourceData[location][propsX[0]],
+          propsY.length > 1 ? this.sourceData[location][propsY[0]][propsY[1]] : this.sourceData[location][propsY[0]]
+        ]
+        row.push(valueX, valueY, 'location', this.sourceData[location].MRR)
 
-      this.options.height = Object.keys(this.sourceData).length * 24
+        this.chartData.push(row)
+      }
     }
   },
 
   beforeMount () {
-    this.buildDiagramData(this.items[0].text, this.items[0].propName)
+    console.log(this.sourceData)
+    this.buildDiagramData('MRR', [this.items[0], this.items[1]])
   }
 }
 </script>
@@ -152,6 +173,9 @@ export default {
 <style>
 .this-component-menu {
   margin-top: 200px !important;
+  /* background: #005 !important; */
+  /* top: 540px !important;
+  right: 48px !important; */
   z-index: 100;
 }
 </style>

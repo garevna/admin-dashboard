@@ -30,7 +30,5 @@ export default {
   font-size: 14px;
   background: #fbfbfb;
   padding: 4px 8px;
-  /* border: solid 1px #bbb;
-  border-radius: 8px; */
 }
 </style>

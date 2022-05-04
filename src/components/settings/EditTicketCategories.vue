@@ -76,17 +76,9 @@ export default {
       this.__updateTicketCategories(this.items, this.showAnswer)
     }
   },
-  beforeDestroy () {
-    // this.$root.$off('settings-data-received', this.data)
-    // this.$root.$off('settings-data-updated', this.showAnswer)
-  },
+
   mounted () {
-    // this.$root.$on('settings-data-received', this.getData)
-    // this.$root.$on('settings-data-updated', this.showAnswer)
     this.__getTicketCategories(this.getData)
   }
 }
 </script>
-
-<style>
-</style>

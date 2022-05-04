@@ -3,11 +3,11 @@
     <v-row v-if="!editCustomerDetails" align="start" justify="center">
       <v-card flat class="transparent mx-auto py-5" width="800">
         <v-toolbar flat style="background: #efefef">
-          <small>Ticket</small> <b>{{ ticket.number }}</b>
+          <small>Ticket</small> <b class="bold-item">{{ ticket.number }}</b>
           <v-spacer />
-          <small>RSP:</small> <b>{{ ticket.resellerName }}</b>
+          <small>RSP:</small> <b class="bold-item">{{ ticket.resellerName }}</b>
           <v-spacer />
-          <small>Subject:</small> <b>{{ ticket.subject }}</b>
+          <small>Subject:</small> <b class="bold-item">{{ ticket.subject }}</b>
           <v-spacer />
           <v-btn icon @click="$emit('update:edit', false)">
             <v-icon large>mdi-close</v-icon>
@@ -37,8 +37,8 @@
           class="mt-5"
           @click="editCustomerDetails = true"
         >
-          Customer: <b class="show-customer-details">{{ ticket.customer.uniqueCode }}</b>
-          <b class="show-customer-details">{{ ticket.customer.apartmentNumber }}/{{ ticket.customer.address }}</b>
+          Customer: <b class="bold-item show-customer-details">{{ ticket.customer.uniqueCode }}</b>
+          <b class="bold-item show-customer-details">{{ ticket.customer.apartmentNumber }}/{{ ticket.customer.address }}</b>
         </v-card-text>
 
         <v-card flat class="my-5 pa-4" width="100%" style="background: #eee; padding: 16px; border-radius: 4px;">
@@ -186,8 +186,15 @@ export default {
   color: #900;
   cursor: pointer;
 }
+</style>
 
-b {
+<style scoped>
+
+fieldset {
+  border: solid 1px #ccc;
+}
+
+.bold-item {
   border: solid 1px #ddd;
   border-radius: 4px;
   padding: 8px 16px;
@@ -195,16 +202,6 @@ b {
   margin-left: 8px;
 }
 
-fieldset {
-  border: solid 1px #ccc;
-}
-
-.v-label {
-  font-size: 14px!important;
-}
-</style>
-
-<style scoped>
 .customer-info {
   border: solid 1px #ddd;
   border-radius: 4px;
