@@ -1,53 +1,65 @@
 <template>
   <v-container class="mb-12 pb-12">
     <v-card flat class="transparent mx-auto" max-width="900">
-      <v-row justify="end">
+      <v-toolbar flat class="transparent">
+        <v-text-field
+          v-model="search"
+          outlined
+          hide-details
+          dense
+          max-width="200"
+          prepend-inner-icon="mdi-magnify"
+        />
+        <v-spacer />
         <v-btn text @click="refresh" class="mr-12 mb-5">
           <v-icon>mdi-refresh</v-icon>
           Refresh
         </v-btn>
-      </v-row>
-      <v-expansion-panels v-model="panel" multiple v-if="ready">
-        <v-expansion-panel v-for="(bookingRecords, date) in booking" :key="date">
-          <v-expansion-panel-header>
-            <b>{{ date }}</b>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <table width="100%">
-              <thead>
-                <tr>
-                  <th>Customer unique code</th>
-                  <th width="240">Service name</th>
-                  <th width="360">Status</th>
-                </tr>
-              </thead>
+      </v-toolbar>
 
-              <tbody>
-                <tr v-for="record of bookingRecords" :key="record._id">
-                  <td>
-                    <v-btn text @click="showCustomerDetails(record.customer)">
-                      <v-icon small>mdi-account</v-icon>
-                      {{ record.customer.uniqueCode }}
-                    </v-btn>
-                  </td>
-                  <td>
-                    <p><small>{{ record.serviceName }}</small></p>
-                  </td>
-                  <td>
-                    <BookingRecordStatusButton
-                      :record.sync="record"
-                      :activated.sync="activated"
-                      :suspended.sync="suspended"
-                      :canceled.sync="canceled"
-                      :resumed.sync="resumed"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <v-data-table
+        :headers="headers"
+        :items="filteredRecords"
+        :items-per-page="filteredRecords.length"
+        :sort-by="['modified']"
+        :sort-desc="[true, false, false]"
+        multi-sort
+        group-by="modified"
+        class="transparent"
+        hide-default-footer
+      >
+        <template v-slot:group.header="{ items, isOpen, toggle }">
+          <th colspan="2">
+            <v-icon @click="toggle" :color="isOpen ? '#900' : '#999'">
+              {{ isOpen ? 'mdi-folder-open-outline' : 'mdi-folder-outline' }}
+            </v-icon>
+            {{ items[0].modified }}
+          </th>
+        </template>
+
+        <template v-slot:item.customer.uniqueCode="{ item }">
+          <v-btn text @click="clickCallback(item.customer)">
+            {{ item.customer.uniqueCode }}
+          </v-btn>
+        </template>
+
+        <template v-slot:item.status="{ item }">
+          <BookingRecordStatusButton
+            :record.sync="item"
+            :activated.sync="activated"
+            :suspended.sync="suspended"
+            :canceled.sync="canceled"
+            :resumed.sync="resumed"
+            :search="search"
+          />
+        </template>
+
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length">
+            More info about {{ item.serviceName }}
+          </td>
+        </template>
+      </v-data-table>
     </v-card>
   </v-container>
 </template>
@@ -64,8 +76,7 @@ export default {
   },
 
   data: () => ({
-    panel: [],
-    booking: null,
+    search: '',
     selected: null,
     activated: false,
     suspended: false,
@@ -73,8 +84,23 @@ export default {
     resumed: false,
     status: null,
     ready: false,
-    icons: {}
+    icons: {},
+    records: [],
+    headers: [
+      { text: 'Date', value: 'modified' },
+      { text: 'Customer unique code', value: 'customer.uniqueCode' },
+      { text: 'Service name', value: 'serviceName' },
+      { text: 'Status', value: 'status' }
+    ]
   }),
+
+  computed: {
+    filteredRecords () {
+      return this.search
+        ? this.records.filter(record => this.test(record.customer.uniqueCode) || this.test(record.status) || this.test(record.serviceName))
+        : this.records
+    }
+  },
 
   watch: {
     activated (val) {
@@ -104,16 +130,19 @@ export default {
   },
 
   methods: {
+    test (source) {
+      return source.toLowerCase().indexOf(this.search.toLowerCase()) !== -1
+    },
+
+    clickCallback (customer) {
+      this.showCustomerDetails(customer)
+    },
+
     getData (booking) {
-      this.panel = Object.keys(booking).map(value => Number(value))
-
-      this.records = booking.map(item => Object.assign(item, { modified: new Date(item.modified).toISOString().slice(0, 10) }))
-
-      const dates = Array.from(new Set(booking.map(record => record.modified)))
-
-      this.booking = Object.assign({}, ...dates.map(date => ({ [date]: [] })))
-
-      this.records.forEach(record => this.booking[record.modified].push(record))
+      this.records = booking.map(item => Object.assign(item, {
+        modified: new Date(item.modified).toISOString().slice(0, 10),
+        uniqueCode: item.customer.uniqueCode
+      }))
 
       this.ready = true
     },
@@ -127,10 +156,12 @@ export default {
     },
 
     updated (event) {
+      console.log('UPDATED')
       this.selected.status = this.status
     },
 
     changeRecordStatus (record, status) {
+      console.log('CHANGE RECORD STATUS')
       this.selected = record
       this.status = status
       this.__changeServiceDeliveryStatus(Object.assign(record, { status }))

@@ -5,7 +5,6 @@
         :headers="headers"
         :items="requests"
         :items-per-page="requests.length"
-        hide-default-header
         hide-default-footer
         dense
         sort-by="date"
@@ -28,9 +27,9 @@ export default {
     requests: null,
     sortDesc: true,
     headers: [
-      { text: '', align: 'start', sortable: true, value: 'date' },
-      { text: '', value: 'uniqueCode' },
-      { text: '', value: 'status' }
+      { text: 'Date', align: 'start', sortable: true, value: 'date' },
+      { text: 'Unique code', value: 'uniqueCode', sortable: true },
+      { text: 'Status', value: 'status', sortable: true }
     ]
   }),
 
@@ -60,7 +59,7 @@ export default {
   },
 
   mounted () {
-    this.__getPendingRequests(this.getSchedule)
+    this.sendRequestForData()
     this.$root.$on('customers-updates-received', this.sendRequestForData)
   }
 }

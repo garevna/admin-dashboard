@@ -1,6 +1,6 @@
 <template>
   <v-card flat class="transparent" width="340" height="auto">
-    <v-expansion-panels flat>
+    <v-expansion-panels flat class="transparent" dense>
       <v-expansion-panel>
         <v-expansion-panel-header hide-actions>
           <v-icon :color="color" small class="mr-1">
@@ -17,7 +17,7 @@
         </v-expansion-panel-header>
 
         <v-expansion-panel-content>
-          <table>
+          <table class="transparent ml-12">
             <tbody>
               <tr>
                 <td class="pl-4">

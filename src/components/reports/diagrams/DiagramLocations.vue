@@ -1,6 +1,7 @@
 <template>
   <v-container class="transparent">
     <v-system-bar color="#eee">
+      <strong>{{ chartData[0][1] }}</strong>
       <v-spacer></v-spacer>
       <v-btn text v-if="!open" @click="open = !open">
         <v-icon> mdi-dots-vertical </v-icon>
@@ -19,43 +20,19 @@
       </div>
     </v-system-bar>
 
-    <!-- <v-row justify="end" style="height: 32px">
-      <v-btn icon @click="open = !open">
-        <v-icon> mdi-dots-vertical </v-icon>
-      </v-btn>
-
-      <div class="my-menu v-menu__content" v-if="open" style="z-index: 100">
-        <v-list dense>
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            @click="getSelected(item)"
-            style="cursor: pointer;"
-          >
-            <v-list-item-title>{{ item.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-row> -->
-
-    <GChart
-      type="BarChart"
-      :data="chartData"
-      :options="options"
-      :style="{ height: diagramHeight + 'px' }"
+    <BarChart
+      :sourceData="chartData"
     />
   </v-container>
 </template>
 
 <script>
 
-import { GChart } from 'vue-google-charts'
-
 export default {
   name: 'DiagramLocations',
 
   components: {
-    GChart
+    BarChart: () => import('@/components/reports/diagrams/BarChart.vue')
   },
 
   props: ['sourceData'],
@@ -71,54 +48,9 @@ export default {
     ],
     chart: null,
     chartData: [
-      ['Location', 'Connections']
-    ],
-    options: {
-      title: '',
-      height: 480,
-      backgroundColor: '#fbfbfb',
-      fontSize: '10px',
-      // chartArea: { left: 160, top: 0, width: '95%' },
-      legend: { position: 'none' },
-      animation: {
-        startup: true,
-        duration: 500
-      },
-      colors: ['#900'],
-      hAxis: {
-        title: 'Connections',
-        textStyle: {
-          fontSize: 10,
-          fontName: 'Gilroy'
-        },
-        titleTextStyle: {
-          fontSize: 11,
-          bold: true,
-          fontName: 'Gilroy'
-        },
-        minValue: 0
-      },
-      vAxis: {
-        title: 'Location',
-        viewWindowMode: 'maximized',
-        textStyle: {
-          fontSize: 10,
-          fontName: 'Gilroy'
-        },
-        titleTextStyle: {
-          fontSize: 11,
-          bold: true,
-          fontName: 'Gilroy'
-        }
-      }
-    }
+      ['Locality', 'Connections']
+    ]
   }),
-
-  computed: {
-    diagramHeight () {
-      return this.sourceData.length * 24
-    }
-  },
 
   methods: {
     getSelected (item) {
@@ -127,7 +59,6 @@ export default {
     },
 
     buildDiagramData (title, propName) {
-      this.options.hAxis.title = title
       this.chartData = [
         ['Location', title]
       ]
@@ -138,8 +69,6 @@ export default {
         if (props.length > 1) this.chartData.push([location, this.sourceData[location][props[0]][props[1]]])
         else this.chartData.push([location, this.sourceData[location][props[0]]])
       }
-
-      this.options.height = Object.keys(this.sourceData).length * 24
     }
   },
 
