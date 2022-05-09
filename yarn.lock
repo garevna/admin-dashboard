@@ -3386,10 +3386,10 @@ dgtek-portal-map-package@^1.1.87:
   resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.87.tgz#8d01778f875c3baae5837c2ab92eb8cdd6b73721"
   integrity sha512-Y2EZ4b6EeRwPpHgvNgnXxmE4ja5Mnu/YoFhk0gjva+DGDDeiSCtz7NziTeKhiHP5i+OsJjOni1e4HE0uGZ/RGg==
 
-dgtek-portal-pits-editor@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/dgtek-portal-pits-editor/-/dgtek-portal-pits-editor-1.0.8.tgz#01dac41c301fc44342b968255bc36df56bc74d64"
-  integrity sha512-WC993R9LxfH6VTDbI7cd/QIRz6uv3KpAIWMaZpUHGrG14RDLZIS8ZPVwO1nnR4846DGW6CHqkaqUEZOllSlrKg==
+dgtek-portal-pits-editor@^1.0.94:
+  version "1.0.94"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-pits-editor/-/dgtek-portal-pits-editor-1.0.94.tgz#60e89057f5af15fbd0fb37bcb3c9356d73e882c9"
+  integrity sha512-7yXbcyi/slFGab1SdFpsTsAiP4xlnLpJPGwCnS7eYJo+ks4Gg/REPIiTz9tjJrWJJwle0wpOJTZgc4/V8gAoPA==
   dependencies:
     core-js "^3.6.5"
     vue "^2.6.11"
