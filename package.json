@@ -19,7 +19,7 @@
     "pits-editor": "yarn add dgtek-portal-pits-editor && yarn pits-editor-clear"
   },
   "dependencies": {
-    "dgtek-portal-map-package": "^1.1.87",
+    "dgtek-portal-map-package": "^1.2.1",
     "dgtek-portal-pits-editor": "^1.0.94",
     "dgtek-portal-polygons-editor": "^1.1.5",
     "dgtek-styles": "^0.0.8",

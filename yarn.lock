@@ -3381,10 +3381,10 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
-dgtek-portal-map-package@^1.1.87:
-  version "1.1.87"
-  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.1.87.tgz#8d01778f875c3baae5837c2ab92eb8cdd6b73721"
-  integrity sha512-Y2EZ4b6EeRwPpHgvNgnXxmE4ja5Mnu/YoFhk0gjva+DGDDeiSCtz7NziTeKhiHP5i+OsJjOni1e4HE0uGZ/RGg==
+dgtek-portal-map-package@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/dgtek-portal-map-package/-/dgtek-portal-map-package-1.2.1.tgz#156de92f714daa3b93b477903281331f0cc7671c"
+  integrity sha512-RT7JTsKdyuiyLRh3LCs3IXt5IK0Qte+vv/OCHK1bwB6JYL2w/TnpgJqgMoR0g0jfTvMMJ/LFbdmhtO00WjR78g==
 
 dgtek-portal-pits-editor@^1.0.94:
   version "1.0.94"
