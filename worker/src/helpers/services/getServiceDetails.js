@@ -9,7 +9,8 @@ export const getServiceDetails = async function (id) {
   else {
     const promises = result.partners.map(partnerId => getRecordByKey('rsp', partnerId))
     const partners = await Promise.all(promises)
-    result.partnerNames = partners.map(partner => partner.result.company.name)
+    result.partnerNames = partners
+      .map(partner => partner.status === 200 ? partner.result.company.name : 'Not found')
   }
 
   return { status, route: 'services', action: 'get', result }
