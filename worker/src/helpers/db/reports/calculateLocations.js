@@ -23,7 +23,7 @@ export const calculateLocations = async function () {
       if (cursor) {
         const record = cursor.value
 
-        const location = record.city
+        const location = record.city.toUpperCase()
 
         if (!result[location]) {
           result[location] = {
