@@ -18,5 +18,6 @@ export const serviceSchema = {
   gstIncEx: false,
   serviceSLA: '',
   promo: '',
-  partners: []
+  partners: [],
+  legacy: false
 }

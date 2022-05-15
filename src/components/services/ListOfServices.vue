@@ -28,10 +28,10 @@
       <v-data-table
         :headers="headers"
         :items="items"
+        :page.sync="pagination.page"
         fixed-header
         :footer-props="{
           showFirstLastPage: true,
-          itemsPerPage: 10,
           itemsPerPageOptions: [10, 20, 50, 100, -1],
           firstIcon: 'mdi-skip-previous',
           lastIcon: 'mdi-skip-next',
@@ -46,6 +46,17 @@
             <v-icon small color="primary">mdi-delete</v-icon>
           </v-btn>
         </template>
+
+        <template v-slot:item.legacy="{ item }">
+          <v-checkbox
+            v-if="item.legacy"
+            v-model="item.legacy"
+            color="primary"
+            readonly
+            dense
+            hide-details
+          />
+        </template>
       </v-data-table>
 
       <span class="bottom-info mx-4">
@@ -59,11 +70,14 @@
 
 <script>
 
+import { serviceListPageNumberHandler, serviceListSearchValueHandler } from '@/components/services/handlers'
+
 export default {
   name: 'ListOfServices',
   data: () => ({
     items: [],
-    search: '',
+    pagination: {},
+    search: serviceListSearchValueHandler('GET'),
     headers: [
       { text: 'Actions', value: 'actions', sortable: false },
       { text: 'Service name', align: 'start', sortable: true, value: 'serviceName' },
@@ -73,13 +87,20 @@ export default {
       { text: 'Contract term (months)', value: 'contractTerm' },
       { text: 'MRC ($)', value: 'subscriptionFee' },
       { text: 'Connection fee', value: 'connectionFee' },
-      { text: 'Trial (months)', value: 'freeTrial' }
+      { text: 'Trial (months)', value: 'freeTrial' },
+      { text: 'Legacy', value: 'legacy' }
     ]
   }),
 
   computed: {
     selectedServicesNumber () {
       return this.items.length
+    }
+  },
+
+  watch: {
+    search (val) {
+      serviceListSearchValueHandler(val)
     }
   },
 
@@ -123,12 +144,18 @@ export default {
   },
 
   beforeDestroy () {
+    serviceListPageNumberHandler(this.pagination.page)
     this.$root.$off('operation-confirmed', this.confirmationReceived)
   },
 
   mounted () {
     this.$vuetify.goTo(0)
     this.$root.$on('operation-confirmed', this.confirmationReceived)
+
+    this.$nextTick(() => {
+      this.search = serviceListSearchValueHandler('GET')
+      Object.assign(this.pagination, { page: serviceListPageNumberHandler() })
+    })
   }
 }
 </script>

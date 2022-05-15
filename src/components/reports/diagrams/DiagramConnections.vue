@@ -4,18 +4,19 @@
       type="PieChart"
       :data="statusChartData"
       :options="chartOptions"
-      width="320"
+      width="480"
     />
     <GChart
       type="PieChart"
       :data="typeChartData"
-      :options="chartOptions"
-      width="320"
+      :options="activeChartOptions"
+      width="480"
     />
     <GChart
       type="PieChart"
       :data="pendingChartData"
       :options="pendingChartOptions"
+      width="480"
     />
   </v-sheet>
 </template>
@@ -41,42 +42,47 @@ export default {
     chartOptions: {
       backgroundColor: '#fbfbfb',
       title: 'Connections',
+      fontSize: 11,
+      fontName: 'Gilroy',
       colors: ['#900', '#004'],
       animation: {
         startup: true,
         duration: 500
       },
       chart: {
-        title: 'Connections',
-        height: 300
+        height: 360
       }
     },
-    activeChartOptions: {
-      backgroundColor: '#fbfbfb',
-      title: 'Active connections',
-      colors: ['#900', '#004'],
-      animation: {
-        startup: true,
-        duration: 500
-      },
-      chart: {
-        title: 'Active connections',
-        height: 320
-      }
-    },
-    pendingChartOptions: {
-      backgroundColor: '#fbfbfb',
-      colors: ['#900', '#004'],
-      title: 'Pending connections',
-      animation: {
-        startup: true,
-        duration: 500
-      },
-      chart: {
-        title: 'Pending connections',
-        height: 320
-      }
-    }
+
+    activeChartOptions: {},
+    pendingChartOptions: {}
+
+    // activeChartOptions: {
+    //   backgroundColor: '#fbfbfb',
+    //   title: 'Active connections',
+    //   colors: ['#900', '#004'],
+    //   animation: {
+    //     startup: true,
+    //     duration: 500
+    //   },
+    //   chart: {
+    //     title: 'Active connections',
+    //     height: 320
+    //   }
+    // },
+    // pendingChartOptions: {
+    //   backgroundColor: '#fbfbfb',
+    //   colors: ['#900', '#004'],
+    //   title: 'Pending connections',
+    //   animation: {
+    //     startup: true,
+    //     duration: 500
+    //   },
+    //   chart: {
+    //     title: 'Pending connections',
+    //     height: 320
+    //   }
+    // }
   }),
 
   methods: {
@@ -109,6 +115,12 @@ export default {
 
   mounted () {
     this.createChartData()
+    this.activeChartOptions = Object.assign({}, this.chartOptions, {
+      title: 'Active connections'
+    })
+    this.pendingChartOptions = Object.assign({}, this.chartOptions, {
+      title: 'Pending connections'
+    })
   }
 }
 </script>

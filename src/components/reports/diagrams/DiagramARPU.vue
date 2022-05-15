@@ -1,7 +1,7 @@
 <template>
   <v-sheet color="transparent" height="480" class="mt-12">
     <GChart
-      type="PieChart"
+      type="BarChart"
       :data="chartData"
       :options="chartOptions"
       width="480"
@@ -13,41 +13,47 @@
 
 import { GChart } from 'vue-google-charts'
 
+import { getARPU } from '@/components/reports/helpers'
+
 export default {
-  name: 'DiagramPendingMRR',
+  name: 'DiagramARPU',
 
   components: {
     GChart
   },
 
-  props: ['values'],
+  props: ['sourceData'],
 
   data: () => ({
     chartData: [],
     chartOptions: {
       backgroundColor: '#fbfbfb',
-      title: 'Pending MRR',
+      title: 'ARPU',
+      legend: { position: 'none' },
       fontSize: 11,
       fontName: 'Gilroy',
-      colors: ['#900', '#004'],
-      height: 420,
       animation: {
-        startup: true,
-        duration: 500
+        duration: 500,
+        startup: true
       },
       chart: {
-        title: 'Pending MRR',
-        height: 420
+        title: 'ARPU',
+        height: 320
+      },
+      hAxis: {
+        minValue: 0
       }
     }
   }),
 
   methods: {
     createChartData () {
+      const { residential, commercial } = getARPU(this.sourceData)
+
       this.chartData = [
-        ['Status', 'Amount'],
-        ['Residential', this.values.residential],
-        ['Commercial', this.values.commercial]
+        ['Status', 'Amount', { role: 'style' }],
+        ['Residential', parseFloat(residential.slice(1)), 'color: #900'],
+        ['Commercial', parseFloat(commercial.slice(1)), 'color: #004']
       ]
     }
   },

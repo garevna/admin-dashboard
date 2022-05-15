@@ -26,7 +26,7 @@ export default {
       height: 0,
       chartArea: { width: '70%' },
       backgroundColor: '#fbfbfb',
-      fontSize: 10,
+      fontSize: 11,
       fontName: 'Gilroy',
       titlePosition: 'none',
       animation: {
@@ -34,10 +34,8 @@ export default {
         startup: true
       },
       titleTextStyle: {
-        fontSize: 11,
         bold: true,
-        color: '#555',
-        fontName: 'Gilroy'
+        color: '#555'
       },
       colors: ['#900'],
       legend: {
@@ -53,9 +51,8 @@ export default {
         minValue: 0,
         textPosition: 'out',
         textStyle: {
-          color: '#777',
-          fontSize: 10,
-          fontName: 'Gilroy'
+          bold: true,
+          color: '#555'
         }
       },
       vAxis: {

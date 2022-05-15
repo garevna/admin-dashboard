@@ -14,7 +14,7 @@
 import { GChart } from 'vue-google-charts'
 
 export default {
-  name: 'DiagramPendingMRR',
+  name: 'DiagramPremisesPassed',
 
   components: {
     GChart
@@ -26,18 +26,18 @@ export default {
     chartData: [],
     chartOptions: {
       backgroundColor: '#fbfbfb',
-      title: 'Pending MRR',
       fontSize: 11,
       fontName: 'Gilroy',
-      colors: ['#900', '#004'],
       height: 420,
+      title: 'Total premises passed',
+      colors: ['#900', '#004', '#999'],
       animation: {
         startup: true,
         duration: 500
       },
       chart: {
-        title: 'Pending MRR',
-        height: 420
+        title: 'Total premises passed',
+        height: 320
       }
     }
   }),
@@ -47,7 +47,8 @@ export default {
       this.chartData = [
         ['Status', 'Amount'],
         ['Residential', this.values.residential],
-        ['Commercial', this.values.commercial]
+        ['Commercial', this.values.commercial],
+        ['Mixed', this.values.mixed]
       ]
     }
   },

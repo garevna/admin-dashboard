@@ -1,4 +1,9 @@
 export const serviceSchema = {
+  legacy: {
+    title: 'Legacy',
+    type: 'checkbox',
+    value: false
+  },
   serviceName: {
     title: 'Service name',
     type: 'simple-text',

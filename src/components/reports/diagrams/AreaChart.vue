@@ -1,9 +1,25 @@
 <template>
-  <GChart
-    type="AreaChart"
-    :data="sourceData"
-    :options="chartOptions"
-  />
+  <v-sheet color="transparent" height="480" class="mt-8">
+    <table>
+      <tr class="justify-center">
+        <td width="140">
+        </td>
+        <td width="140">
+          <v-select :items="dates" v-model="from" label="From" outlined dense hide-details />
+        </td>
+        <td width="140">
+          <v-select :items="dates.filter(item => item > from)" v-model="to" label="To" outlined dense hide-details />
+        </td>
+      </tr>
+    </table>
+
+    <GChart
+      type="AreaChart"
+      :data="filteredItems"
+      :options="chartOptions"
+      style="height: 300px"
+    />
+  </v-sheet>
 </template>
 
 <script>
@@ -17,16 +33,19 @@ export default {
     GChart
   },
 
-  props: ['sourceData'],
+  props: ['sourceData', 'title'],
 
   data: () => ({
+    dates: [],
+    from: null,
+    to: null,
     chartData: null,
     chartOptions: {
       title: '',
       height: 0,
       chartArea: { width: '70%' },
       backgroundColor: '#fbfbfb',
-      fontSize: 10,
+      fontSize: 11,
       fontName: 'Gilroy',
       titlePosition: 'none',
       animation: {
@@ -34,10 +53,8 @@ export default {
         startup: true
       },
       titleTextStyle: {
-        fontSize: 11,
         bold: true,
-        color: '#555',
-        fontName: 'Gilroy'
+        color: '#555'
       },
       colors: ['#900'],
       legend: {
@@ -49,13 +66,11 @@ export default {
         maxZoomOut: 2
       },
       hAxis: {
-        title: '',
+        title: 'Year-month',
         minValue: 0,
         textPosition: 'out',
         textStyle: {
-          color: '#777',
-          fontSize: 10,
-          fontName: 'Gilroy'
+          color: '#777'
         }
       },
       vAxis: {
@@ -71,23 +86,50 @@ export default {
     }
   }),
 
+  computed: {
+    filteredItems () {
+      if (!this.from || !this.to || this.from > this.to) return this.chartData
+
+      const array = this.chartData.filter(item => item[0] <= this.to && item[0] >= this.from)
+      array.unshift(['Year-Month', 'MRR'])
+
+      return array
+    }
+  },
+
   watch: {
+    title (val) {
+      this.chartOptions.vAxis.title = this.title || 'MRR'
+    },
     sourceData: {
       deep: true,
       handler (data) {
-        console.log(data)
-        this.chartOptions.hAxis.title = data[0][1]
-        this.chartOptions.title = data[0][1]
+        this.getCollection()
       }
     }
   },
 
+  methods: {
+    getCollection () {
+      this.chartData = [
+        ['Year-Month', this.title]
+      ]
+
+      this.dates = Object.keys(this.sourceData).sort()
+      this.from = this.dates.slice(-8)[0]
+      this.to = this.dates.slice(-1)[0]
+
+      for (const date of this.dates) {
+        this.chartData.push([date, this.sourceData[date] || 0])
+      }
+
+      this.ready = true
+    }
+  },
+
   mounted () {
-    this.chartOptions.height = this.sourceData.length * 24
-    this.chartOptions.chartArea.height = this.sourceData.length * 24 - 48
-    this.chartOptions.hAxis.title = this.sourceData[0][1]
-    this.chartOptions.vAxis.title = this.sourceData[0][0]
-    // this.chartOptions.title = this.title || this.sourceData[0][1]
+    this.getCollection()
+    this.chartOptions.vAxis.title = this.title || 'MRR'
   }
 }
 </script>

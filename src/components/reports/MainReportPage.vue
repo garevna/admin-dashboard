@@ -59,7 +59,9 @@
       </v-btn>
     </v-row>
 
-    <v-row class="mb-12">
+    <OverviewPage :overviewData="overviewData" />
+
+    <!-- <v-row class="mb-12">
       <v-col cols="5">
         <v-card dark class="mt-12 pa-8" color="#003" width="600">
           <OverviewDash
@@ -101,7 +103,7 @@
         </v-sheet>
         <Locations v-if="overviewClickedItem === 'buildings'" />
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-card>
 
 </template>
@@ -126,27 +128,28 @@ export default {
     ARPU,
     Buildings,
     TopOfPage: () => import('@/components/reports/TopOfPage.vue'),
-    OverviewDash: () => import('@/components/reports/OverviewDash.vue'),
-    Diagram: () => import('@/components/reports/diagrams/Diagram.vue'),
-    DiagramPendingMRR: () => import('@/components/reports/diagrams/DiagramPendingMRR.vue'),
-    DiagramConnections: () => import('@/components/reports/diagrams/DiagramConnections.vue'),
-    DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue'),
-    DiagramUptake: () => import('@/components/reports/diagrams/DiagramUptake.vue'),
-    Locations: () => import('@/components/reports/Locations.vue')
+    OverviewPage: () => import('@/components/reports/OverviewPage.vue')
+    // OverviewDash: () => import('@/components/reports/OverviewDash.vue'),
+    // Diagram: () => import('@/components/reports/diagrams/Diagram.vue'),
+    // DiagramPendingMRR: () => import('@/components/reports/diagrams/DiagramPendingMRR.vue'),
+    // DiagramConnections: () => import('@/components/reports/diagrams/DiagramConnections.vue'),
+    // DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue'),
+    // DiagramUptake: () => import('@/components/reports/diagrams/DiagramUptake.vue'),
+    // Locations: () => import('@/components/reports/Locations.vue')
   },
 
   data: () => ({
     ready: false,
     active: [true, false, false, false, false],
-    diagram: '',
-    diagramType: 'bars',
-    diagramTitle: 'Diagram title',
-    diagramData: null,
-    showDiagram: false,
-    overviewData: null,
-    locations: null,
-    locationsReady: false,
-    overviewClickedItem: null
+    // diagram: '',
+    // diagramType: 'bars',
+    // diagramTitle: 'Diagram title',
+    // diagramData: null,
+    // showDiagram: false,
+    overviewData: null
+    // locations: null,
+    // locationsReady: false,
+    // overviewClickedItem: null
   }),
 
   // watch: {

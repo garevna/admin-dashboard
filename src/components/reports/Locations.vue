@@ -44,7 +44,7 @@
         <v-card flat class="transparent" v-if="locationDynamicReady">
           <DiagramDynamicMRR
             :title="locationName"
-            :dynamic="locationDynamic"
+            :sourceData="locationDynamic"
           />
         </v-card>
       </v-tab-item>
@@ -93,7 +93,9 @@ export default {
     },
 
     showDynamicDiagram (data) {
-      this.locationDynamic = data
+      console.log(data)
+      this.locationDynamic = Object.assign({}, { dynamic: data })
+      console.log(this.locationDynamic)
       this.tab = 'location'
       this.locationDynamicReady = true
     }

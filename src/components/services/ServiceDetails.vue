@@ -29,12 +29,12 @@
       <v-card v-if="ready" flat class="transparent mt-0 mx-auto" min-width="700">
         <table width="100%">
           <tbody>
-            <tr v-for="(prop, propName) in schema" :key="propName">
+            <tr v-for="(prop, propName) in schema" :key="propName" class="mb-4">
               <td width="280">
                 <p class="right-title mr-4"><small>{{ prop.title }}</small></p>
               </td>
 
-              <td v-if="prop.type === 'switcher'" width="*">
+              <td v-if="prop.type === 'switcher'" width="*" class="text-right">
                 <SwitchValues
                   label="Residential/commercial"
                   :value.sync="prop.value"
@@ -44,7 +44,7 @@
                 />
               </td>
 
-              <td v-if="propName !== 'serviceType' && propName !== 'serviceSLA' && textField(prop)">
+              <td v-if="propName !== 'serviceType' && propName !== 'serviceSLA' && textField(prop)" class="text-right">
                 <v-text-field
                   v-model="prop.value"
                   :label="prop.title"
@@ -56,7 +56,7 @@
                 />
               </td>
 
-              <td v-if="prop.type === 'checkbox'" class="td-checkbox">
+              <td v-if="prop.type === 'checkbox'" class="td-checkbox text-right">
                 <v-checkbox
                   v-model="prop.value"
                   :label="prop.title"
@@ -225,11 +225,19 @@ export default {
 </script>
 
 <style>
+
+/*
+.text-right {
+  text-align: right;
+}
+*/
 .right-title {
-  width: 100%;
+  /* width: 100%; */
   text-align: right;
   padding-right: 16px;
+  margin-bottom: 0 !important;
 }
+/*
 tr {
   vertical-align: super;
 }
@@ -237,6 +245,7 @@ td {
   height: 32px !important;
   text-align: right!important;
 }
+*/
 .partners-col {
   border: solid 1px #aaa;
   border-radius: 4px;

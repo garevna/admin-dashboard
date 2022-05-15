@@ -24,7 +24,7 @@ export const topOfPageItems = [
     value: 0
   },
   {
-    title: 'Current month MRC increase',
+    title: 'Current month MRR increase',
     value: 0
   }
 ]
