@@ -7,7 +7,8 @@
       :search="search"
       :page.sync="page"
       show-select
-      class="transparent"
+      fixed-header
+      class="transparent mb-12 pb-12"
       @click:row="edit($event)"
     >
       <template v-slot:item.selected="{ item }">
@@ -27,6 +28,9 @@
       </template>
 
       <template v-slot:footer.prepend>
+        <h5 class="mr-8">
+          <small>{{ footprint }}</small>
+        </h5>
         <span class="mx-3">Total selected buildings: {{ selectedBuildingsNumber }}</span>
       </template>
 
@@ -95,6 +99,20 @@ import { filterHandler } from '@/components/footprint/building/filterHandler'
 
 const { footprintOptions } = require('@/configs').default
 
+const headers = [
+  { text: 'Building name', align: 'start', sortable: true, value: 'buildingName' },
+  { text: 'Building address', align: 'start', sortable: true, value: 'address' },
+  { text: 'Building unique code', value: 'uniqueCode' },
+  // { text: 'Footprint', value: 'status' },
+  // { text: 'Connection date', value: 'connectionDate' },
+  { text: 'Master', value: 'isMaster' },
+  { text: 'Slave', value: 'isSlave' },
+  { text: 'Type', value: 'buildingType' },
+  { text: 'Estimated service delivery time', value: 'estimatedServiceDeliveryTime' },
+  { text: '', value: 'actions', sortable: false }
+
+]
+
 export default {
   name: 'BuildingsList',
 
@@ -113,24 +131,31 @@ export default {
     search: '',
     page: buildingsListPageNumberHandler(),
     footprintOptions,
-    selectedBuildingId: undefined,
-    headers: [
-      { text: 'Building name', align: 'start', sortable: true, value: 'buildingName' },
-      { text: 'Building address', align: 'start', sortable: true, value: 'address' },
-      { text: 'Building unique code', value: 'uniqueCode' },
-      { text: 'Footprint', value: 'status' },
-      { text: 'Master', value: 'isMaster' },
-      { text: 'Slave', value: 'isSlave' },
-      { text: 'Type', value: 'buildingType' },
-      { text: 'Estimated service delivery time', value: 'estimatedServiceDeliveryTime' },
-      { text: '', value: 'actions', sortable: false }
-
-    ]
+    selectedBuildingId: undefined
+    // headers
   }),
 
   computed: {
     selectedStatus () {
       return this.$route.name.split('-buildings')[0]
+    },
+    headers () {
+      const array = JSON.parse(JSON.stringify(headers))
+      return this.selectedStatus === 'lit'
+        ? array.slice(0, 3).concat([{ text: 'Connection date', value: 'connectionDate' }], array.slice(3))
+        // ? tmp.splice(3, 0, { text: 'Connection date', value: 'connectionDate' })
+        : array
+    },
+    footprint () {
+      return this.selectedStatus === 'lit'
+        ? 'On-net'
+        : this.selectedStatus === 'footprint'
+          ? 'Footprint'
+          : this.selectedStatus === 'build'
+            ? 'Under construction'
+            : this.selectedStatus === 'soon'
+              ? 'Coming soon'
+              : 'Not available'
     },
     filteredItems () {
       return this.ready ? this.buildings.filter(building => !this.postCode || (building.addressComponents.postCode === this.postCode)) : []
@@ -172,8 +197,10 @@ export default {
 
     getBuildings (data) {
       if (!data || !Array.isArray(data)) return
+
       this.$root.$emit('progress-event', false)
       this.buildings = data.map(building => ({
+        connectionDate: building.addressComponents.buildingConnectionDate,
         isMaster: building.addressComponents.isMaster,
         isSlave: building.addressComponents.isSlave,
         buildingType: building.addressComponents.buildingType,

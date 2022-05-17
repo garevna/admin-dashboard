@@ -133,7 +133,7 @@ export default {
 
     const dates = Object.keys(dynamic).sort((a, b) => a > b)
 
-    const [lastMonthDate, currentMonthDate] = [dates.slice(0)[0], dates.slice(1)[0]]
+    const [lastMonthDate, currentMonthDate] = [dates.slice(1)[0], dates.slice(0)[0]]
 
     this.titleValues = [
       `${dynamic[lastMonthDate]} (+${this.increaseMRR.total.lastMonth})`,

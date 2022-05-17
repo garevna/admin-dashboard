@@ -12,6 +12,7 @@
         prepend-icon="mdi-calendar"
         readonly
         outlined
+        dense
         hide-details
         color="primary"
         v-bind="attrs"
@@ -44,7 +45,7 @@ export default {
   computed: {
     localDate: {
       get () {
-        return this.date || new Date().toISOString().substr(0, 10)
+        return this.date || new Date().toISOString().slice(0, 10)
       },
       set (value) {
         this.$emit('update:date', value)

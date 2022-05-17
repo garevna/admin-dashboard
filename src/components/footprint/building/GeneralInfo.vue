@@ -25,8 +25,9 @@
       <v-row justify="center" class="outlined-row mt-0">
         <table style="width: 480px">
           <tr>
-            <td width="320">Footprint</td>
-            <td width="240">Estimated service delivery time</td>
+            <td>Footprint</td>
+            <td v-if="generalBuildingData.status === 'LIT'">Connection date</td>
+            <td>Estimated service delivery time</td>
           </tr>
           <tr>
             <td width="180">
@@ -39,6 +40,11 @@
                 dense
                 hide-details
                 :menu-props="{ bottom: true, offsetY: true }"
+              />
+            </td>
+            <td width="200" v-if="generalBuildingData.status === 'LIT'">
+              <DatePicker
+                :date.sync="buildingAddressDetails.addressComponents.buildingConnectionDate"
               />
             </td>
             <td width="180">
@@ -149,15 +155,13 @@ import {
 
 import { roleHandler, accessRightsHandler } from '@/controllers/data-handlers'
 
-import Marketing from '@/components/footprint/building/Marketing.vue'
-import Concierge from '@/components/footprint/building/Concierge.vue'
-
 export default {
   name: 'GeneralInfo',
 
   components: {
-    Marketing,
-    Concierge,
+    DatePicker: () => import('@/components/inputs/DatePicker.vue'),
+    Marketing: () => import('@/components/footprint/building/Marketing.vue'),
+    Concierge: () => import('@/components/footprint/building/Concierge.vue'),
     GeoscapeAutocomplete: () => import('@/components/inputs/GeoscapeAutocomplete.vue')
   },
 
@@ -191,6 +195,7 @@ export default {
         this.$emit('update:buildingData', Object.assign(this.buildingData, { address: value }))
       }
     },
+
     buildingDetails: {
       get () {
         return JSON.parse(JSON.stringify(this.buildingData))
@@ -199,6 +204,7 @@ export default {
         // console.log(data)
       }
     },
+
     status: {
       get () {
         return convertBuildingStatus(this.generalBuildingData.status)
@@ -207,6 +213,7 @@ export default {
         Object.assign(this.generalBuildingData.status, { status: convertBuildingStatus(value) })
       }
     },
+
     buildingAddressDetails: {
       get () {
         const { address, addressComponents, coordinates, status } = this.buildingData
