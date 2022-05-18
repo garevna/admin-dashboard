@@ -21,12 +21,12 @@ export const serviceSchema = {
   },
   connectionFee: {
     title: 'Connection fee $NRC',
-    type: 'number',
+    type: 'money',
     value: 0
   },
   subscriptionFee: {
     title: 'Monthly fee $MRC',
-    type: 'number',
+    type: 'money',
     value: 0
   },
   serviceType: {
@@ -47,7 +47,7 @@ export const serviceSchema = {
   },
   equipmentCost: {
     title: 'Equipment cost',
-    type: 'number',
+    type: 'money',
     value: 0
   },
   equipmentType: {

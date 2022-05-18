@@ -60,50 +60,6 @@
     </v-row>
 
     <OverviewPage :overviewData="overviewData" />
-
-    <!-- <v-row class="mb-12">
-      <v-col cols="5">
-        <v-card dark class="mt-12 pa-8" color="#003" width="600">
-          <OverviewDash
-            :overviewData="overviewData"
-            :clicked.sync="overviewClickedItem"
-          />
-        </v-card>
-      </v-col>
-      <v-col cols="7">
-        <v-sheet
-          v-if="overviewClickedItem !== 'buildings' && showDiagram"
-          color="transparent"
-          height="480"
-          class="mt-8"
-        >
-          <DiagramMRR
-            v-if="overviewClickedItem === 'MRR-active'"
-            :overviewData="overviewData"
-          />
-
-          <DiagramPendingMRR
-            v-if="overviewClickedItem === 'MRR-pending'"
-            :values="overviewData.MRR.pending"
-          />
-
-          <DiagramConnections
-            v-if="overviewClickedItem === 'connections'"
-            :values="overviewData.connections"
-          />
-
-          <DiagramUptake v-if="overviewClickedItem === 'Uptake'" :values="overviewData" />
-
-          <Diagram
-            v-if="overviewClickedItem === 'premises' || overviewClickedItem === 'ARPU'"
-            :diagramType="diagramType"
-            :title="diagramTitle"
-            :values="diagramData"
-          />
-        </v-sheet>
-        <Locations v-if="overviewClickedItem === 'buildings'" />
-      </v-col>
-    </v-row> -->
   </v-card>
 
 </template>
@@ -129,34 +85,13 @@ export default {
     Buildings,
     TopOfPage: () => import('@/components/reports/TopOfPage.vue'),
     OverviewPage: () => import('@/components/reports/OverviewPage.vue')
-    // OverviewDash: () => import('@/components/reports/OverviewDash.vue'),
-    // Diagram: () => import('@/components/reports/diagrams/Diagram.vue'),
-    // DiagramPendingMRR: () => import('@/components/reports/diagrams/DiagramPendingMRR.vue'),
-    // DiagramConnections: () => import('@/components/reports/diagrams/DiagramConnections.vue'),
-    // DiagramMRR: () => import('@/components/reports/diagrams/DiagramMRR.vue'),
-    // DiagramUptake: () => import('@/components/reports/diagrams/DiagramUptake.vue'),
-    // Locations: () => import('@/components/reports/Locations.vue')
   },
 
   data: () => ({
     ready: false,
     active: [true, false, false, false, false],
-    // diagram: '',
-    // diagramType: 'bars',
-    // diagramTitle: 'Diagram title',
-    // diagramData: null,
-    // showDiagram: false,
     overviewData: null
-    // locations: null,
-    // locationsReady: false,
-    // overviewClickedItem: null
   }),
-
-  // watch: {
-  //   overviewClickedItem (val) {
-  //     console.log(val)
-  //   }
-  // },
 
   methods: {
     setActive (index) {
@@ -178,8 +113,6 @@ export default {
 
     showOverview (data) {
       this.overviewData = data
-
-      // console.log(this.overviewData)
 
       this.diagramData = [
         ['MRR', 'Year and month'],

@@ -1,7 +1,7 @@
 <template>
   <v-row class="mb-12">
     <v-col cols="5">
-      <v-card dark class="mt-12 pa-8" color="#003" width="600">
+      <v-card dark class="mt-12 pa-4" color="#003" width="600">
         <OverviewDash
           :overviewData="overviewData"
           :clicked.sync="overviewClickedItem"

@@ -4,6 +4,7 @@ export const rules = {
   required: value => !!value || 'Required.',
   'simple-text': value => true,
   number: value => patterns.number.test(value) || 'Invalid number.',
+  money: value => patterns.money.test(value) || 'Invalid value.',
   mobile: value => patterns.mobile.test(value) || 'Invalid mobile phone number.',
   phone: value => patterns.phone.test(value) || 'Invalid phone number.',
   email: value => patterns.email.test(value) || 'Invalid e-mail.',

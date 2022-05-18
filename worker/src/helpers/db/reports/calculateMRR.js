@@ -27,19 +27,19 @@ export const calculateMRR = (active, pending) => {
   ]
 
   return {
-    residential: residentialMRR,
-    commercial: commercialMRR,
+    residential: Math.round(residentialMRR * 100) / 100,
+    commercial: Math.round(commercialMRR * 100) / 100,
     lastMonth: {
-      residential: lastMonthResidentialMRR,
-      commercial: lastMonthCommercialMRR
+      residential: Math.round(lastMonthResidentialMRR * 100) / 100,
+      commercial: Math.round(lastMonthCommercialMRR * 100) / 100
     },
     currentMonth: {
-      residential: currentMonthResidentialMRR,
-      commercial: currentMonthCommercialMRR
+      residential: Math.round(currentMonthResidentialMRR * 100) / 100,
+      commercial: Math.round(currentMonthCommercialMRR * 100) / 100
     },
     pending: {
-      residential: pendingResidentialMRR,
-      commercial: pendingCommercialMRR
+      residential: Math.round(pendingResidentialMRR * 100) / 100,
+      commercial: Math.round(pendingCommercialMRR * 100) / 100
     }
   }
 }

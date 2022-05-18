@@ -81,16 +81,16 @@ export default {
       const [current, last, prev] = [dates.pop(), dates.pop(), dates.pop()]
       return {
         total: {
-          currentMonth: dynamic[current] - dynamic[last],
-          lastMonth: dynamic[last] - dynamic[prev]
+          currentMonth: Math.round((dynamic[current] - dynamic[last]) * 100) / 100,
+          lastMonth: Math.round((dynamic[last] - dynamic[prev]) * 100) / 100
         },
         residential: {
-          currentMonth: residentialDynamic[current] - residentialDynamic[last],
-          lastMonth: residentialDynamic[last] - residentialDynamic[prev]
+          currentMonth: Math.round((residentialDynamic[current] - residentialDynamic[last]) * 100) / 100,
+          lastMonth: Math.round((residentialDynamic[last] - residentialDynamic[prev]) * 100) / 100
         },
         commercial: {
-          currentMonth: commercialDynamic[current] - commercialDynamic[last],
-          lastMonth: commercialDynamic[last] - commercialDynamic[prev]
+          currentMonth: Math.round((commercialDynamic[current] - commercialDynamic[last]) * 100) / 100,
+          lastMonth: Math.round((commercialDynamic[last] - commercialDynamic[prev]) * 100) / 100
         }
       }
     },
@@ -136,9 +136,9 @@ export default {
     const [lastMonthDate, currentMonthDate] = [dates.slice(1)[0], dates.slice(0)[0]]
 
     this.titleValues = [
-      `${dynamic[lastMonthDate]} (+${this.increaseMRR.total.lastMonth})`,
-      `${dynamic[currentMonthDate]} (+${this.increaseMRR.total.currentMonth})`,
-      MRR.pending.residential + MRR.pending.commercial,
+      `$ ${dynamic[lastMonthDate]} (+$ ${this.increaseMRR.total.lastMonth})`,
+      `$ ${dynamic[currentMonthDate]} (+$ ${this.increaseMRR.total.currentMonth})`,
+      `$ ${MRR.pending.residential + MRR.pending.commercial}`,
       connections.active,
       totalOnNetBuildings,
       premisesPassed.total,
@@ -147,15 +147,22 @@ export default {
     ]
     this.subtitleValues = [
       [
-        `${residentialDynamic[lastMonthDate]} (+${this.increaseMRR.residential.lastMonth})`,
-        `${commercialDynamic[lastMonthDate]} (+${this.increaseMRR.commercial.lastMonth})`
+        `$ ${residentialDynamic[lastMonthDate]} (+$ ${this.increaseMRR.residential.lastMonth})`,
+        `$ ${commercialDynamic[lastMonthDate]} (+$ ${this.increaseMRR.commercial.lastMonth})`
       ],
       [
-        `${residentialDynamic[currentMonthDate]} (+${this.increaseMRR.residential.currentMonth})`,
-        `${commercialDynamic[currentMonthDate]} (+${this.increaseMRR.commercial.currentMonth})`
+        `$ ${residentialDynamic[currentMonthDate]} (+$ ${this.increaseMRR.residential.currentMonth})`,
+        `$ ${commercialDynamic[currentMonthDate]} (+$ ${this.increaseMRR.commercial.currentMonth})`
       ],
-      [MRR.pending.residential, MRR.pending.commercial],
-      [connections.newLastMonth, connections.newCurrentMonth, connections.pending],
+      [`$ ${MRR.pending.residential}`, `$ ${MRR.pending.commercial}`],
+      [
+        connections.residential,
+        connections.commercial,
+        connections.newLastMonth,
+        connections.newCurrentMonth,
+        connections.pendingCommercial + connections.pendingResidential,
+        connections.pending
+      ],
       [],
       [
         premisesPassed.residential,
