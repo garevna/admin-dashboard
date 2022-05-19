@@ -16,14 +16,14 @@ export const calculateMRR = (active, pending) => {
     pendingResidentialMRR,
     pendingCommercialMRR
   ] = [
-    activeResidential.reduce((res, item) => res + item.subscriptionFee, 0),
-    activeCommercial.reduce((res, item) => res + item.subscriptionFee, 0),
-    activeResidential.filter(item => item.lastMonth).reduce((res, item) => res + item.subscriptionFee, 0),
-    activeCommercial.filter(item => item.lastMonth).reduce((res, item) => res + item.subscriptionFee, 0),
-    activeResidential.filter(item => item.currentMonth).reduce((res, item) => res + item.subscriptionFee, 0),
-    activeCommercial.filter(item => item.currentMonth).reduce((res, item) => res + item.subscriptionFee, 0),
-    pendingResidential.reduce((res, item) => res + item.subscriptionFee, 0),
-    pendingCommercial.reduce((res, item) => res + item.subscriptionFee, 0)
+    activeResidential.reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0),
+    activeCommercial.reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0),
+    activeResidential.filter(item => item.lastMonth).reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0),
+    activeCommercial.filter(item => item.lastMonth).reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0),
+    activeResidential.filter(item => item.currentMonth).reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0),
+    activeCommercial.filter(item => item.currentMonth).reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0),
+    pendingResidential.reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0),
+    pendingCommercial.reduce((res, item) => res + (parseFloat(item.subscriptionFee) || 0), 0)
   ]
 
   return {

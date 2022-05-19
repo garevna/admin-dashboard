@@ -150,6 +150,12 @@ export default {
 
   mounted () {
     const rights = accessRightsHandler().access[roleHandler()]
+    if (!rights) {
+      console.warn('Access rights error for the role', roleHandler())
+      console.warn(accessRightsHandler())
+      console.warn(accessRightsHandler().access)
+      console.warn('Try to reload page')
+    }
     const dashboard = accessRightsHandler().dashboard
 
     const [partners, rsp, footprint, polygons, buildings, customers, tickets, services, schedule, documents, settings, reports] = [

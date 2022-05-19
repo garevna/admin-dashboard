@@ -52,7 +52,9 @@ export const overview = async function () {
 
         cursor.continue()
       } else {
-        const minDate = Array.from(new Set(active.map(service => service.date))).sort()[0]
+        const rawDates = Array.from(new Set(active.map(service => service.date)))
+        const rightDates = rawDates.filter(date => Date.parse(date))
+        const minDate = rightDates.sort()[0]
 
         const dates = generateDates(minDate)
 
