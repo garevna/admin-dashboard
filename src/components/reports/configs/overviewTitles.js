@@ -6,5 +6,8 @@ export const overviewTitles = [
   'Total on-net buildings',
   'Total premises passed',
   'ARPU',
-  'Uptake'
+  'Uptake',
+  'Churn',
+  'Churn current month',
+  'Churn last month'
 ]

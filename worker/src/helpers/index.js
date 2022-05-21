@@ -19,6 +19,8 @@ import reports from './reports'
 
 import { testDBVersion } from './db'
 
+import { __clone } from './__clone'
+
 const {
   auth,
   changePassword,
@@ -45,7 +47,8 @@ const result = Object.assign({}, building, rsp, customers, services, tickets, sc
   getAdmins,
   createAdmin,
   getUserDetails,
-  updateAdmin
+  updateAdmin,
+  __clone
 })
 
 Object.keys(result).forEach((key) => { self[key] = result[key] })

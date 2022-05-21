@@ -2,7 +2,7 @@
 const countByType = (array, type) => array.filter(item => item.serviceType === type).length
 const countByMonth = (array, monthName) => array.filter(item => item[monthName]).length
 
-export const updateRecord = function (record, activeServices, pendingServices) {
+export const updateRecord = function (record, activeServices, pendingServices, churn) {
   const services = {
     residential: countByType(activeServices, 'residential'),
     commercial: countByType(activeServices, 'commercial'),
@@ -27,6 +27,10 @@ export const updateRecord = function (record, activeServices, pendingServices) {
     newLastMonth: record.services.newLastMonth + services.newLastMonth,
     pending: record.services.pending + services.pendingResidential + services.pendingCommercial
   })
+
+  for (const key of ['awaitingSuspension', 'suspended', 'awaitingCancelation', 'canceled']) {
+    for (const propName of ['total', 'lastMonth', 'currentMonth']) record.churn[key][propName] += churn[key][propName]
+  }
 
   return record
 }

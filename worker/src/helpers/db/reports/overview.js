@@ -5,7 +5,8 @@ import {
   overviewTemplate,
   getPremises,
   createDynamic,
-  calculateMRR
+  calculateMRR,
+  testCurrentMonth
 } from './'
 
 import { initialValues } from '../../reports/initialValues'
@@ -22,9 +23,14 @@ export const overview = async function () {
 
   const result = {
     totalOnNetBuildings: 0,
-    premisesPassed: JSON.parse(JSON.stringify(overviewTemplate.premisesPassed)),
-    connections: JSON.parse(JSON.stringify(initialValues.connections)),
-    services: JSON.parse(JSON.stringify(initialValues.services))
+    newLeadIngsCurrentMonth: 0,
+    premisesPassed: self.__clone(overviewTemplate.premisesPassed),
+    connections: self.__clone(initialValues.connections),
+    services: self.__clone(initialValues.services),
+    awaitingSuspension: self.__clone(initialValues.churn.awaitingSuspension),
+    suspended: self.__clone(initialValues.churn.suspended),
+    awaitingCancelation: self.__clone(initialValues.churn.awaitingCancelation),
+    canceled: self.__clone(initialValues.churn.canceled)
   }
 
   const [active, pending] = [[], []]
@@ -40,9 +46,12 @@ export const overview = async function () {
 
         result.totalOnNetBuildings += 1
 
+        result.newLeadIngsCurrentMonth += record.buildingConnectionDate ? testCurrentMonth({ date: record.buildingConnectionDate }) : 0
+
         const premisesPassed = getPremises(record)
-        const { connections, services } = record
-        const sections = { premisesPassed, connections, services }
+        const { connections, services, churn } = record
+        const { awaitingSuspension, suspended, awaitingCancelation, canceled } = churn
+        const sections = { premisesPassed, connections, services, awaitingSuspension, suspended, awaitingCancelation, canceled }
 
         for (const section of Object.keys(sections)) {
           for (const key of Object.keys(sections[section])) {

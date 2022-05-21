@@ -2,94 +2,27 @@
   <v-card flat class="transparent mx-auto" width="90%" v-if="ready">
     <TopOfPage :overviewData="overviewData" />
 
-    <v-row justify="center" class="mt-12">
-      <v-btn
-        :dark="active[0]"
-        :class="active[0] ? 'primary mx-2 text-left' : 'transparent mx-2 text-left'"
-        height="64"
-        width="160"
-        @click="setActive(0)"
-      >
-        <Overview style="position: absolute; left: -12px" />
-        <b class="ml-8"> Overview </b>
-      </v-btn>
+    <MainReportTabs :tab.sync="tab" />
 
-      <v-btn
-        :dark="active[1]"
-        :class="active[1] ? 'primary mx-2 text-left' : 'transparent mx-2 text-left'"
-        height="64"
-        width="160"
-        @click="setActive(1)"
-      >
-        <Financials style="position: absolute; left: -12px" />
-        <b class="ml-8"> Financials </b>
-      </v-btn>
-
-      <v-btn
-        :dark="active[2]"
-        :class="active[2] ? 'primary mx-2 text-left' : 'transparent mx-2 text-left'"
-        height="64"
-        width="160"
-        @click="setActive(2)"
-      >
-        <Buildings style="position: absolute; left: -12px" />
-        <b class="ml-8"> Buildings </b>
-      </v-btn>
-
-      <v-btn
-        :dark="active[3]"
-        :class="active[3] ? 'primary mx-2 text-left' : 'transparent mx-2 text-left'"
-        height="64"
-        width="160"
-        @click="setActive(3)"
-      >
-        <ARPU style="position: absolute; left: -12px" />
-        <b class="ml-8"> ARPU </b>
-      </v-btn>
-
-      <v-btn
-        :dark="active[4]"
-        :class="active[4] ? 'primary mx-2 text-left' : 'transparent mx-2 text-left'"
-        height="64"
-        width="160"
-        @click="setActive(4)"
-      >
-        <Forecast style="position: absolute; left: -12px" />
-        <b class="ml-8"> Forecast </b>
-      </v-btn>
-    </v-row>
-
-    <OverviewPage :overviewData="overviewData" />
+    <OverviewPage v-if="tab === 0" :overviewData="overviewData" />
   </v-card>
 
 </template>
 
 <script>
 
-import {
-  Overview,
-  Financials,
-  Forecast,
-  ARPU,
-  Buildings
-} from '@/components/icons'
-
 export default {
   name: 'MainReportPage',
 
   components: {
-    Overview,
-    Financials,
-    Forecast,
-    ARPU,
-    Buildings,
     TopOfPage: () => import('@/components/reports/TopOfPage.vue'),
+    MainReportTabs: () => import('@/components/reports/MainReportTabs.vue'),
     OverviewPage: () => import('@/components/reports/OverviewPage.vue')
   },
 
   data: () => ({
     ready: false,
-    active: [true, false, false, false, false],
+    tab: 0,
     overviewData: null
   }),
 
@@ -97,10 +30,6 @@ export default {
     setActive (index) {
       this.active = [false, false, false, false, false]
       this.active[index] = true
-      if (index < 3) {
-        this.overviewClickedItem = 'MRR'
-        this.collectionName = index < 2 ? 'active' : 'pending'
-      }
     },
 
     calcReport (response) {
@@ -114,11 +43,6 @@ export default {
     showOverview (data) {
       this.overviewData = data
 
-      this.diagramData = [
-        ['MRR', 'Year and month'],
-        ...Object.keys(data.dynamic).map(key => ([key, data.dynamic[key]]))
-      ]
-
       this.showDiagram = true
       this.ready = true
     }
@@ -126,8 +50,6 @@ export default {
 
   created () {
     this.__createReport(this.calcReport)
-    this.diagramType = 'bars'
-    this.diagramTitle = 'New connections (MRR+)'
   }
 }
 </script>

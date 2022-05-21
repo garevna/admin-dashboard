@@ -12,7 +12,7 @@ export const getRecord = (store, buildingId, address) => new Promise(resolve => 
         self.postMessage(Object.assign(response, {
           status: 409,
           errorType: 'Customer link to building broken',
-          errorMessage: `Building ${address} not found`
+          errorMessage: `${address} not found in reports DB`
         }))
         resolve(null)
       } else resolve(record)
@@ -21,7 +21,7 @@ export const getRecord = (store, buildingId, address) => new Promise(resolve => 
       self.postMessage(Object.assign(response, {
         status: 400,
         errorType: 'Local DB error',
-        errorMessage: `Failed to read record ${address}`
+        errorMessage: `Failed to read record ${address} from reports DB`
       }))
       resolve(null)
     }

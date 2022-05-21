@@ -128,7 +128,7 @@ export default {
     groupUpdate: false,
     groupUpdated: false,
     toBeRemoved: null,
-    search: '',
+    search: filterHandler('GET'),
     page: buildingsListPageNumberHandler(),
     footprintOptions,
     selectedBuildingId: undefined
@@ -279,7 +279,7 @@ export default {
   },
 
   mounted () {
-    this.search = filterHandler()
+    this.search = filterHandler('GET')
     this.page = buildingsListPageNumberHandler()
     this.$root.$on('operation-confirmed', this.confirmationReceived)
     this.$root.$on('settings-updated', this.buildingsGroupUpdated)

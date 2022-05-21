@@ -6,5 +6,8 @@ export const overviewItems = [
   'buildings',
   'premises',
   'ARPU',
-  'Uptake'
+  'Uptake',
+  'Churn',
+  'churn-last-month',
+  'churn-current-month'
 ]

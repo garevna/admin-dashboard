@@ -12,7 +12,8 @@ export const get = async function (path) {
     method: 'GET',
     headers: {
       Authorization: apiKeyHandler(),
-      Credentials: defaultAdminCredsHandler()
+      Credentials: defaultAdminCredsHandler(),
+      'Content-Type': 'application/json;charset=utf-8'
     }
   })
 

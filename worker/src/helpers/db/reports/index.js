@@ -14,6 +14,8 @@ import { getPremises } from './getPremises'
 
 import { getActiveServices } from './getActiveServices'
 import { getPendingServices } from './getPendingServices'
+import { getServicesByStatus } from './getServicesByStatus'
+
 import { createDynamic } from './createDynamic'
 
 import { calculateServices } from './calculateServices'
@@ -35,6 +37,7 @@ export {
 
   getActiveServices,
   getPendingServices,
+  getServicesByStatus,
 
   getRecord,
   putRecord,

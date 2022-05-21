@@ -40,6 +40,9 @@ Object.assign(window[Symbol.for('vue.prototype')], {
       .filter(script => script.src.indexOf('https://maps.googleapis.com') === 0)
       .forEach(script => script.remove())
     window.google = null
+  },
+  __clone: function (object) {
+    return JSON.parse(JSON.stringify(object))
   }
 })
 

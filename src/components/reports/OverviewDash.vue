@@ -18,7 +18,7 @@
                 <b>{{ title }}</b>
               </td>
               <td width="160" style="text-align: right">
-                <b>{{ titleValues[index] }}</b>
+                <b>{{ titleValues[index] || '' }}</b>
               </td>
             </tr>
           </table>
@@ -37,7 +37,7 @@
               </td>
               <td style="text-align: right">
                 <span style="color: #aefa">
-                  {{ subtitleValues[index][num] }}
+                  {{ subtitleValues[index][num] || '' }}
                 </span>
               </td>
             </tr>
@@ -65,7 +65,7 @@ export default {
 
   data: () => ({
     panel: [],
-    active: [false, false, false, false, false, false, false, false],
+    active: [false, false, false, false, false, false, false, false, false, false, false],
     titles: overviewTitles,
     subtitles: overviewSubtitles,
     titleValues: [],
@@ -120,12 +120,17 @@ export default {
   created () {
     const {
       totalOnNetBuildings,
+      newLeadIngsCurrentMonth,
       premisesPassed,
       connections,
       MRR,
       dynamic,
       residentialDynamic,
-      commercialDynamic
+      commercialDynamic,
+      awaitingSuspension,
+      suspended,
+      awaitingCancelation,
+      canceled
     } = this.overviewData
 
     const { total: totalARPU, residential: residentialARPU, commercial: commercialARPU } = getARPU(this.overviewData)
@@ -163,14 +168,17 @@ export default {
         connections.pendingCommercial + connections.pendingResidential,
         connections.pending
       ],
-      [],
+      [newLeadIngsCurrentMonth],
       [
         premisesPassed.residential,
         premisesPassed.commercial,
         premisesPassed.mixed
       ],
       [residentialARPU, commercialARPU],
-      [residentialUptake, commercialUptake]
+      [residentialUptake, commercialUptake],
+      [awaitingSuspension.total, suspended.total, awaitingCancelation.total, canceled.total],
+      [awaitingSuspension.lastMonth, suspended.lastMonth, awaitingCancelation.lastMonth, canceled.lastMonth],
+      [awaitingSuspension.currentMonth, suspended.currentMonth, awaitingCancelation.currentMonth, canceled.currentMonth]
     ]
   }
 }

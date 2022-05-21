@@ -35,7 +35,7 @@ export default {
   }),
 
   beforeMount () {
-    const { premisesPassed, connections, MRR, totalOnNetBuildings, dynamic } = this.overviewData
+    const { premisesPassed, connections, MRR, totalOnNetBuildings, dynamic, canceled } = this.overviewData
 
     const dates = Object.keys(dynamic).sort()
     const [current, last] = [dates.pop(), dates.pop()]
@@ -51,7 +51,8 @@ export default {
       totalMRR,
       totalOnNetBuildings,
       connections.commercial,
-      currentMonthMRRIncrease
+      currentMonthMRRIncrease,
+      canceled.currentMonth
     ]
 
     this.topOfPageItems = topOfPageItems.map((item, index) => Object.assign(item, { value: values[index] }))

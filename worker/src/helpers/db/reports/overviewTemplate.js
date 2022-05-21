@@ -1,5 +1,6 @@
 export const overviewTemplate = {
   totalOnNetBuildings: 0,
+  newLeadIngsCurrentMonth: 0,
   premisesPassed: {
     total: 0,
     residential: 0,

@@ -26,5 +26,9 @@ export const topOfPageItems = [
   {
     title: 'Current month MRR increase',
     value: 0
+  },
+  {
+    title: 'Churn current month',
+    value: 0
   }
 ]

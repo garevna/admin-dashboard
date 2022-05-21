@@ -1,6 +1,6 @@
-let filter = ''
+let search = ''
 
 export const filterHandler = arg => {
-  if (arg) filter = arg
-  else return filter
+  if (arg === 'GET') return search
+  search = arg
 }

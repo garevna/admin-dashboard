@@ -17,6 +17,7 @@ export const createReport = async (list) => {
       'addressComponents.isSlave',
       'addressComponents.buildingType',
       'addressComponents.city',
+      'addressComponents.buildingConnectionDate',
       'coordinates',
       'numberOfDwellings',
       'internalInstallationCosts',

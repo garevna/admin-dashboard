@@ -6,5 +6,8 @@ export const overviewSubtitles = [
   ['New lead-ings current month'],
   ['Residential', 'Commercial', 'Mixed'],
   ['ARPU residential', 'ARPU commercial'],
-  ['Uptake residential', 'Uptake commercial']
+  ['Uptake residential', 'Uptake commercial'],
+  ['Canceled', 'Awaiting Cancelation', 'Suspended', 'Awaiting Suspension'],
+  ['Canceled', 'Awaiting Cancelation', 'Suspended', 'Awaiting Suspension'],
+  ['Canceled', 'Awaiting Cancelation', 'Suspended', 'Awaiting Suspension']
 ]

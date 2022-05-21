@@ -1,6 +1,16 @@
 import { openDB } from '../openDB'
 
-import { getRecord, putRecord, updateRecord, calculateServices } from './'
+import {
+  getRecord,
+  putRecord,
+  updateRecord,
+  calculateServices,
+  getServicesByStatus
+  // getSuspendingServices,
+  // getSuspendedServices,
+  // getCancelingServices,
+  // getCanceledServices
+} from './'
 
 const [route, action] = ['reports', 'calculate']
 
@@ -26,20 +36,28 @@ export const calculate = async function () {
 
         const { active: activeServices, pending: pendingServices } = await calculateServices(serviceStore, services, `${apartmentNumber}/${address}`)
 
-        if (activeServices.length || pendingServices.length) {
+        if (services.length) {
           const record = await getRecord(reportStore, buildingId, `${apartmentNumber}/${address}`)
 
           if (!record) {
-            console.log('BUILDING ID: ', buildingId)
-            console.log('ADDRESS: ', address)
-            console.log('CUSTOMER ID: ', customer._id)
+            console.warn('BUILDING ID: ', buildingId)
+            console.warn('ADDRESS: ', address)
+            console.warn('CUSTOMER ID: ', customer._id)
             return
           }
 
           record.active.push(...activeServices)
           record.pending.push(...pendingServices)
 
-          updateRecord(record, activeServices, pendingServices)
+          const churn = {
+            awaitingSuspension: getServicesByStatus(services, 'Awaiting to be suspended'),
+            suspended: getServicesByStatus(services, 'Suspended'),
+            awaitingCancelation: getServicesByStatus(services, 'Awaiting for cancelation'),
+            canceled: getServicesByStatus(services, 'Canceled'),
+            notConnected: getServicesByStatus(services, 'Not connected')
+          }
+
+          updateRecord(record, activeServices, pendingServices, churn)
 
           await putRecord(reportStore, record)
         }

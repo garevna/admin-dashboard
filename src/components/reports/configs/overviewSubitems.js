@@ -6,5 +6,8 @@ export const overviewSubitems = [
   [],
   ['total-residential-premises', 'total-commercial-premises', 'total-mixed-premises'],
   ['ARPU-residential', 'ARPU-commercial'],
-  []
+  [],
+  ['canceled', 'awaitingCancelation', 'suspended', 'awaitingSuspension'],
+  ['canceled', 'awaitingCancelation', 'suspended', 'awaitingSuspension'],
+  ['canceled', 'awaitingCancelation', 'suspended', 'awaitingSuspension']
 ]

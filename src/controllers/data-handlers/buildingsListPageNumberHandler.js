@@ -1,10 +1,6 @@
-export const buildingsListPageNumberHandler = (function (value) {
-  let pageNumber = 1
-  return function (value) {
-    if (!value || typeof value !== 'number') {
-      return pageNumber
-    } else {
-      pageNumber = value
-    }
-  }
-})()
+let pageNumber = 1
+
+export function buildingsListPageNumberHandler (value) {
+  if (!value || typeof value !== 'number') return pageNumber
+  pageNumber = value
+}
