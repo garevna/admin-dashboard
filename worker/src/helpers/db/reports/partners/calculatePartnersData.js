@@ -1,29 +1,25 @@
-import { openDB } from '../openDB'
-
 import {
+  openDB,
+
   getRecord,
   putRecord,
   updateRecord,
   calculateServices,
   getServicesByStatus
-  // getSuspendingServices,
-  // getSuspendedServices,
-  // getCancelingServices,
-  // getCanceledServices
-} from './'
+} from '../'
 
-const [route, action] = ['reports', 'calculate']
+const [route, action] = ['reports', 'calculate-partners-data']
 
-export const calculate = async function () {
+export const calculatePartnersData = async function () {
   const { status, result: db } = await openDB()
 
   if (status !== 200) return { status, result: db, route, action }
 
-  const transaction = db.transaction(['customers', 'services', 'reports'], 'readwrite')
+  const transaction = db.transaction(['customers', 'services', 'partners'], 'readwrite')
   const [customerStore, serviceStore, reportStore] = [
     transaction.objectStore('customers'),
     transaction.objectStore('services'),
-    transaction.objectStore('reports')
+    transaction.objectStore('partners')
   ]
 
   return new Promise((resolve) => {
@@ -32,17 +28,15 @@ export const calculate = async function () {
 
       if (cursor) {
         const customer = cursor.value
-        const { buildingId, services, apartmentNumber, address } = customer
+        const { resellerId: _id, services, apartmentNumber, address } = customer
 
         const { active: activeServices, pending: pendingServices } = await calculateServices(serviceStore, services, `${apartmentNumber}/${address}`)
 
         if (services.length) {
-          const record = await getRecord(reportStore, buildingId, `${apartmentNumber}/${address}`)
+          const record = await getRecord(reportStore, _id, `${apartmentNumber}/${address}`)
 
           if (!record) {
-            console.warn('BUILDING ID: ', buildingId)
-            console.warn('ADDRESS: ', address)
-            console.warn('CUSTOMER ID: ', customer._id)
+            console.warn('RESELLER ID: ', _id, '\nCUSTOMER ID: ', customer._id)
             return
           }
 
@@ -61,9 +55,8 @@ export const calculate = async function () {
 
           await putRecord(reportStore, record)
         }
-
         cursor.continue()
-      } else resolve({ status: 200, route, action })
+      } else resolve({ status: 200, route, action, result: 'Partner\'s data stored' })
     }
   })
 }

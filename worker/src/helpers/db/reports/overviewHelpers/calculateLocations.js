@@ -1,7 +1,13 @@
-import { openDB } from '../openDB'
+import {
+  openDB,
 
-import { initialValues } from '../../reports/initialValues'
-import { generateDates, createDynamic, locationDynamicHolder } from './'
+  clone,
+
+  initialValues,
+  generateDates,
+  createDynamic,
+  locationDynamicHolder
+} from '../'
 
 const [route, action] = ['reports', 'locations']
 
@@ -29,8 +35,8 @@ export const calculateLocations = async function () {
           result[location] = {
             totalOnNetBuildings: 0,
             premises: 0,
-            connections: JSON.parse(JSON.stringify(initialValues.connections)),
-            services: JSON.parse(JSON.stringify(initialValues.services))
+            connections: clone(initialValues.connections),
+            services: clone(initialValues.services)
           }
         }
         if (!active[location]) active[location] = []

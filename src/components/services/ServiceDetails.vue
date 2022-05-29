@@ -122,7 +122,7 @@ export default {
 
   data: () => ({
     service: null,
-    schema: JSON.parse(JSON.stringify(serviceSchema)),
+    schema: {},
     updateSLA: false,
     rules: rules,
     ready: false,
@@ -213,8 +213,9 @@ export default {
   },
 
   mounted () {
+    this.schema = this.__clone(serviceSchema)
     this.access = accessRightsHandler().access[roleHandler()].services === 2
-    this.service = JSON.parse(JSON.stringify(serviceSchema))
+    this.service = this.__clone(serviceSchema)
 
     if (this.serviceId) this.__getServiceDetails(this.serviceId, this.getData)
     else this.ready = true

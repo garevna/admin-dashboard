@@ -124,6 +124,12 @@ export default {
       // localStorage.setItem('admin', roleHandler())
       // localStorage.setItem('refresh', credentialsHandler())
 
+      const channel = new MessageChannel()
+
+      window[Symbol.for('map.worker')].postMessage({ route: 'channel', action: 'port', port: channel.port1 }, [channel.port1])
+
+      window[Symbol.for('vue.instance')].__worker.postMessage({ route: 'channel', action: 'port', port: channel.port2 }, [channel.port2])
+
       this.$router.push({ name: 'dash' }).catch(failure => console.warn('Router failure:\n', failure))
     },
 

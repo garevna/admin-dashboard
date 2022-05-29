@@ -128,7 +128,7 @@ export default {
 
   methods: {
     addLevel () {
-      this.levels.push(JSON.parse(JSON.stringify(levelSchema)))
+      this.levels.push(this.__clone(levelSchema))
     },
 
     updateDetails () {
@@ -148,7 +148,7 @@ export default {
 
   mounted () {
     this.buildingId = this.buildingData._id
-    this.levels = this.buildingData.levels.map(level => Object.assign(JSON.parse(JSON.stringify(levelSchema)), level))
+    this.levels = this.buildingData.levels.map(level => Object.assign(this.__clone(levelSchema), level))
   }
 }
 </script>

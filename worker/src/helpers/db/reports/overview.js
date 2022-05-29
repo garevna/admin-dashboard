@@ -1,15 +1,14 @@
-import { openDB } from '../openDB'
-
 import {
+  openDB,
+
   generateDates,
   overviewTemplate,
   getPremises,
   createDynamic,
   calculateMRR,
-  testCurrentMonth
+  testCurrentMonth,
+  initialValues
 } from './'
-
-import { initialValues } from '../../reports/initialValues'
 
 const [route, action] = ['reports', 'overview']
 

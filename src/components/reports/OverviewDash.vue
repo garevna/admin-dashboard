@@ -50,7 +50,8 @@
 
 <script>
 
-import { getARPU, getUptake } from '@/components/reports/helpers'
+import { roundFloat, getARPU, getUptake } from '@/components/reports/helpers'
+
 import {
   overviewTitles,
   overviewSubtitles,
@@ -79,18 +80,19 @@ export default {
       const { dynamic, residentialDynamic, commercialDynamic } = this.overviewData
       const dates = Object.keys(dynamic).sort()
       const [current, last, prev] = [dates.pop(), dates.pop(), dates.pop()]
+
       return {
         total: {
-          currentMonth: Math.round((dynamic[current] - dynamic[last]) * 100) / 100,
-          lastMonth: Math.round((dynamic[last] - dynamic[prev]) * 100) / 100
+          currentMonth: roundFloat(dynamic[current] - dynamic[last]),
+          lastMonth: roundFloat(dynamic[last] - dynamic[prev])
         },
         residential: {
-          currentMonth: Math.round((residentialDynamic[current] - residentialDynamic[last]) * 100) / 100,
-          lastMonth: Math.round((residentialDynamic[last] - residentialDynamic[prev]) * 100) / 100
+          currentMonth: roundFloat(residentialDynamic[current] - residentialDynamic[last]),
+          lastMonth: roundFloat(residentialDynamic[last] - residentialDynamic[prev])
         },
         commercial: {
-          currentMonth: Math.round((commercialDynamic[current] - commercialDynamic[last]) * 100) / 100,
-          lastMonth: Math.round((commercialDynamic[last] - commercialDynamic[prev]) * 100) / 100
+          currentMonth: roundFloat(commercialDynamic[current] - commercialDynamic[last]),
+          lastMonth: roundFloat(commercialDynamic[last] - commercialDynamic[prev])
         }
       }
     },

@@ -33,7 +33,7 @@ export default {
     GChart
   },
 
-  props: ['sourceData', 'title'],
+  props: ['sourceData', 'title', 'header'],
 
   data: () => ({
     dates: [],
@@ -106,6 +106,9 @@ export default {
       handler (data) {
         this.getCollection()
       }
+    },
+    header (val) {
+      this.chartOptions.title = val
     }
   },
 

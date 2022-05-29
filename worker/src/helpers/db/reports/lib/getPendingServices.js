@@ -1,5 +1,6 @@
-import { getServiceDate } from './'
-import { pendingConnectionStatusHandler } from '../../../data-handlers'
+import { getServiceDate } from './getServiceDate'
+
+import { pendingConnectionStatusHandler } from '../handlers'
 
 export const getPendingServices = services => !services ? [] : services
   .filter(service => pendingConnectionStatusHandler().admin.includes(service.status))

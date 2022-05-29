@@ -60,7 +60,7 @@ export default {
     detailsReady: false,
     messageReady: false,
     messageId: null,
-    schema: JSON.parse(JSON.stringify(schemaRSP)),
+    schema: {},
     steps: Object.keys(schemaRSP),
     updatesNeeded: []
   }),
@@ -217,6 +217,8 @@ export default {
   },
 
   mounted () {
+    this.schema = this.__clone(schemaRSP)
+
     this.getData()
     this.$vuetify.goTo(0)
 

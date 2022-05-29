@@ -110,7 +110,7 @@ export default {
   },
 
   mounted () {
-    this.buildings = JSON.parse(JSON.stringify(this.items))
+    this.buildings = this.__clone(this.items)
     this.status = this.buildings[0].status
     this.estimatedServiceDeliveryTime = this.buildings[0].estimatedServiceDeliveryTime
   }

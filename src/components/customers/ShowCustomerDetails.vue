@@ -142,9 +142,9 @@ export default {
     customer: null,
     message: null,
     messageId: null,
-    customerDetails: JSON.parse(JSON.stringify(customerDetails)),
-    commercial: JSON.parse(JSON.stringify(commercial)),
-    customerAddress: JSON.parse(JSON.stringify(customerAddress))
+    customerDetails: this.__clone(customerDetails),
+    commercial: this.__clone(commercial),
+    customerAddress: this.__clone(customerAddress)
   }),
 
   computed: {

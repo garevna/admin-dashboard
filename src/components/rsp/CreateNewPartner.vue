@@ -117,7 +117,7 @@ export default {
 
   data: () => ({
     ready: false,
-    partner: JSON.parse(JSON.stringify(partnerSchema)),
+    partner: this.__clone(partnerSchema),
     rules: Object.assign(rules, { test: value => !uniqueCodeList.includes(value) || 'Allready in use' }),
     errors: {
       name: false,

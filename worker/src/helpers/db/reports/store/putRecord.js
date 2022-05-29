@@ -1,12 +1,14 @@
 const response = {
   route: 'reports',
-  action: 'calculate',
+  // action: 'calculate',
   status: 400,
   error: true,
   errorType: 'Local DB error'
 }
 
 export const putRecord = (reportStore, data) => new Promise(resolve => {
+  Object.assign(response, { action: reportStore.name === 'reports' ? 'calculate' : 'partners' })
+
   Object.assign(reportStore.put(data), {
     onsuccess: e => {
       const result = e.target.result

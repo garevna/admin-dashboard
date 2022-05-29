@@ -142,7 +142,7 @@ export default {
 
     const { infrastructureSchema } = require('@/configs/buildingSchemaSections/infrastructureSchema')
 
-    this.infrastructure = Object.assign({}, JSON.parse(JSON.stringify(infrastructureSchema)), this.buildingData.infrastructure)
+    this.infrastructure = Object.assign({}, this.__clone(infrastructureSchema), this.buildingData.infrastructure)
   }
 }
 </script>

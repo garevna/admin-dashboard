@@ -4,7 +4,7 @@ import {
   getActiveServices,
   getPendingServices,
   getServiceFee
-} from './'
+} from '../'
 
 export const calculateServices = async (store, services) => {
   const [activeServices, pendingServices] = [getActiveServices(services), getPendingServices(services)]

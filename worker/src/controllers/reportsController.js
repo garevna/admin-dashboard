@@ -7,8 +7,16 @@ class ReportsController {
     self.postMessage(await self.calculateReport())
   }
 
+  async calculatePartners () {
+    self.postMessage(await self.calculatePartners())
+  }
+
   async getOverview () {
     self.postMessage(await self.getReportsOverview())
+  }
+
+  async getPartnersOverview () {
+    self.postMessage(await self.getPartnersOverview())
   }
 
   async getLocations () {
@@ -21,6 +29,10 @@ class ReportsController {
 
   async getRecord (request) {
     self.postMessage(await self.getRecord(request.recordId))
+  }
+
+  async getPartnerData (request) {
+    self.postMessage(await self.getPartnerData(request.partnerId))
   }
 }
 

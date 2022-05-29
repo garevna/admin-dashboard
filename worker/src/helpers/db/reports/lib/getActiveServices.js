@@ -1,4 +1,4 @@
-import { getServiceDate } from './'
+import { getServiceDate } from './getServiceDate'
 
 export const getActiveServices = services => !services ? [] : services
   .filter(service => service.status === 'Active')

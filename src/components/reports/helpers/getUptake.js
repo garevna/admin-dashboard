@@ -1,10 +1,12 @@
+import { roundFloat } from './'
+
 export const getUptake = (sourceData) => {
   const { premisesPassed, connections } = sourceData
 
   const [total, residential, commercial] = [
-    Math.round(connections.active * 10000 / premisesPassed.total) / 100 + ' %',
-    Math.round(connections.residential * 10000 / premisesPassed.total) / 100 + ' %',
-    Math.round(connections.commercial * 10000 / premisesPassed.total) / 100 + ' %'
+    roundFloat(connections.active * 100 / premisesPassed.total) + '%',
+    roundFloat(connections.residential * 100 / premisesPassed.total) + '%',
+    roundFloat(connections.commercial * 100 / premisesPassed.total) + '%'
   ]
 
   return { total, residential, commercial }

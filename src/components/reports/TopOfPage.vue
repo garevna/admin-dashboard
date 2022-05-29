@@ -24,6 +24,7 @@
 <script>
 
 import { topOfPageItems } from '@/components/reports/configs'
+import { roundFloat } from '@/components/reports/helpers'
 
 export default {
   name: 'TopOfPage',
@@ -40,9 +41,9 @@ export default {
     const dates = Object.keys(dynamic).sort()
     const [current, last] = [dates.pop(), dates.pop()]
 
-    const totalMRR = `$ ${Math.round((MRR.residential + MRR.commercial) * 100) / 100}`
+    const totalMRR = `$ ${roundFloat(MRR.residential + MRR.commercial)}`
 
-    const currentMonthMRRIncrease = `$ ${Math.round((dynamic[current] - dynamic[last]) * 100) / 100}`
+    const currentMonthMRRIncrease = `$ ${roundFloat(dynamic[current] - dynamic[last])}`
 
     const values = [
       premisesPassed.total,

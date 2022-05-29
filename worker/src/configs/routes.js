@@ -23,6 +23,11 @@ import { reports } from './routes/reports'
 const { cryptoController } = require('../controllers').default
 
 export const routes = {
+  channel: {
+    port: request => {
+      self.channelPort = request.port
+    }
+  },
   '*': {
     refresh: async () => {
       const response = await self.refreshSettings()

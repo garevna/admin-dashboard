@@ -48,8 +48,7 @@ export default {
 
     getMessages (data) {
       this.ready = false
-      this.messages = JSON.parse(JSON.stringify(data
-        .map(message => Object.assign(message, ({ date: new Date(message.modified - 0).toISOString().slice(0, 10) })))))
+      this.messages = this.__clone(data.map(message => Object.assign(message, ({ date: new Date(message.modified - 0).toISOString().slice(0, 10) }))))
       this.$nextTick(() => { this.ready = true })
     },
 

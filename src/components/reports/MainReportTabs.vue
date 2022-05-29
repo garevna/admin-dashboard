@@ -56,6 +56,7 @@
     </v-btn>
 
     <v-btn
+      v-if="partnersReady"
       :dark="active[5]"
       :class="active[5] ? 'primary mx-2 text-left' : 'transparent mx-2 text-left'"
       height="64"
@@ -105,7 +106,7 @@ export default {
     Performance
   },
 
-  props: ['tab'],
+  props: ['tab', 'partnersReady'],
 
   data: () => ({
     active: [true, false, false, false, false, false, false]
@@ -117,6 +118,10 @@ export default {
       this.active[index] = true
       this.$emit('update:tab', index)
     }
+  },
+
+  mounted () {
+    console.log(this.partnersReady)
   }
 }
 </script>

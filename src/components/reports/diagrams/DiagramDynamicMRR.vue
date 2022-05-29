@@ -31,7 +31,7 @@ export default {
     },
 
     dynamic () {
-      return JSON.parse(JSON.stringify(this.sourceData[this.propName]))
+      return this.__clone(this.sourceData[this.propName])
     },
 
     title () {

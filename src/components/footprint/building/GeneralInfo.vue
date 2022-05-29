@@ -198,7 +198,7 @@ export default {
 
     buildingDetails: {
       get () {
-        return JSON.parse(JSON.stringify(this.buildingData))
+        return this.__clone(this.buildingData)
       },
       set (data) {
         // console.log(data)

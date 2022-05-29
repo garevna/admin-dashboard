@@ -15,20 +15,20 @@ import {
 import * as events from './events'
 
 export const globalCallback = function (event) {
+  if (!event || !event.data || event.data.route === 'channel') return
   const { route, action, section, status, result, error, message } = event.data
 
-  if (status === 300) return debuggerCallback(event)
-
   if (error || message) error ? errorCallback(event) : messageCallback(event)
+
+  if (route === 'updates') return updatesCallback(event)
+
+  if (status === 300) return debuggerCallback(event)
 
   if (action === 'init') return initCallback(event)
   if (route === 'settings' && action === 'refresh') return settingsRefreshCallback(event)
 
-  // if (route === 'admin') return adminCallback(event)
-
   if (action === 'initial-refresh') return refreshCallback(event)
 
-  if (route === 'updates') return updatesCallback(event)
   if (route === 'schedule' && action === 'updated') {
     window[Symbol.for('vue.instance')].$root.$emit('schedule-updates-received', result.booking)
     return

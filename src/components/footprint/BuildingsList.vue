@@ -140,7 +140,7 @@ export default {
       return this.$route.name.split('-buildings')[0]
     },
     headers () {
-      const array = JSON.parse(JSON.stringify(headers))
+      const array = this.__clone(headers)
       return this.selectedStatus === 'lit'
         ? array.slice(0, 3).concat([{ text: 'Connection date', value: 'connectionDate' }], array.slice(3))
         // ? tmp.splice(3, 0, { text: 'Connection date', value: 'connectionDate' })
