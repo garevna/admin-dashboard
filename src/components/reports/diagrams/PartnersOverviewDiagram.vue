@@ -45,7 +45,7 @@ export default {
       { text: 'MRR total', propName: 'MRR.total' },
       { text: 'MRR residential', propName: 'MRR.residential' },
       { text: 'MRR commercial', propName: 'MRR.commercial' },
-      { text: 'Churn', propName: 'churn' }
+      { text: 'Churn (canceled)', propName: 'canceled.total' }
     ],
     chart: null,
     chartData: [

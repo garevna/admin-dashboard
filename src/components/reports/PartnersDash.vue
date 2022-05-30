@@ -55,7 +55,7 @@ import { roundFloat } from '@/components/reports/helpers'
 export default {
   name: 'PartnersDash',
 
-  props: ['partnersData', 'clicked'],
+  props: ['partnersData', 'clickedPartner', 'clickedOption'],
 
   data: () => ({
     panel: [],
@@ -74,8 +74,7 @@ export default {
 
   methods: {
     partnerClickHandler (index) {
-      console.log(index)
-      this.$emit('update:clicked', index)
+      this.$emit('update:clickedPartner', index)
       this.active = this.partnersData.map(item => false)
       this.active[index] = true
       this.clickedItem = this.partners[index]
@@ -119,41 +118,13 @@ export default {
     },
 
     optionClickHandler (index, num) {
-      console.log(index, num)
-      // this.clickedItem = this.options[index][num] ? this.options[index][num] : this.items[index]
+      this.$emit('update:clickedOption', num)
     }
   },
 
   created () {
-    // const {
-    //   totalOnNetBuildings,
-    //   newLeadIngsCurrentMonth,
-    //   premisesPassed,
-    //   connections,
-    //   MRR,
-    //   dynamic,
-    //   residentialDynamic,
-    //   commercialDynamic,
-    //   awaitingSuspension,
-    //   suspended,
-    //   awaitingCancelation,
-    //   canceled
-    // } = this.partnersData
-    //
-    // const { total: totalARPU, residential: residentialARPU, commercial: commercialARPU } = getARPU(this.overviewData)
-    // const { total: totalUptake, residential: residentialUptake, commercial: commercialUptake } = getUptake(this.overviewData)
-    //
-    // const dates = Object.keys(dynamic).sort((a, b) => a > b)
-
-    // const [lastMonthDate, currentMonthDate] = [dates.slice(1)[0], dates.slice(0)[0]]
-
-    console.log(this.partnersData)
-
     this.active = this.partnersData.map(item => false)
-
     this.partners = this.partnersData.map(partner => partner.name)
-    // this.subtitleValues = this.titles.map(title => ([]))
-    // this.titleValues = this.partnersData.map(partner => partner.company.name)
   }
 }
 </script>

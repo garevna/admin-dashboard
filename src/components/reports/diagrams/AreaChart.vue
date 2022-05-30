@@ -5,10 +5,10 @@
         <td width="140">
         </td>
         <td width="140">
-          <v-select :items="dates" v-model="from" label="From" outlined dense hide-details />
+          <v-select class="area-chart" :items="dates" v-model="from" label="From" outlined dense hide-details />
         </td>
         <td width="140">
-          <v-select :items="dates.filter(item => item > from)" v-model="to" label="To" outlined dense hide-details />
+          <v-select class="area-chart" :items="dates.filter(item => item > from)" v-model="to" label="To" outlined dense hide-details />
         </td>
       </tr>
     </table>
@@ -136,3 +136,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.area-chart .v-select__selection {
+  font-size: 12px !important;
+}
+</style>

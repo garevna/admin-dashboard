@@ -1,15 +1,64 @@
 <template>
-  <AreaChart
-    :sourceData="sourceData"
-    title="MRR total"
-    :header="sourceData.name"
-    v-if="ready"
-  />
+  <v-card flat class="transparent mt-12">
+    <h5 style="color: #005">
+      <small>{{ partner.name }}</small>
+    </h5>
+    <table class="mb-8" cellpadding="16" cellspacing="16">
+      <tbody>
+        <tr>
+          <th :class="propName === 'dynamic' ? 'td-clickable clicked-item' : 'td-clickable'" @click="propName = 'dynamic'">
+            <small>MRR total</small>
+          </th>
+          <td :class="propName === 'dynamic' ? 'td-clickable clicked-item' : 'td-clickable'" @click="propName = 'dynamic'">
+            $ {{ total }}
+          </td>
+          <th :class="propName === 'residentialDynamic' ? 'td-clickable clicked-item' : 'td-clickable'" @click="propName = 'residentialDynamic'">
+            <small>Residential</small>
+          </th>
+          <td :class="propName === 'residentialDynamic' ? 'td-clickable clicked-item' : 'td-clickable'" @click="propName = 'residentialDynamic'">
+            $ {{ residential }}
+          </td>
+          <th :class="propName === 'commercialDynamic' ? 'td-clickable clicked-item' : 'td-clickable'" @click="propName = 'commercialDynamic'">
+            <small>Commercial</small>
+          </th>
+          <td :class="propName === 'commercialDynamic' ? 'td-clickable clicked-item' : 'td-clickable'" @click="propName = 'commercialDynamic'">
+            $ {{ commercial }}
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td></td>
+          <th><small>Last month (+)</small></th>
+          <td>$ {{ lastMonth }}</td>
+          <th><small>Current month (+)</small></th>
+          <td>$ {{ currentMonth }}</td>
+        </tr>
+        <tr>
+          <th><small>MRR pending</small></th>
+          <td>$ {{ __roundFloat(partner.MRR.pending.residential + partner.MRR.pending.commercial) }}</td>
+          <th><small>Residential</small></th>
+          <td>$ {{ partner.MRR.pending.residential }}</td>
+          <th><small>Commercial</small></th>
+          <td>$ {{ partner.MRR.pending.commercial }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <AreaChart
+      v-if="ready"
+      :sourceData="chartData"
+      :title="title"
+      :header="partner.name"
+    />
+  </v-card>
 </template>
 
 <script>
 
-const dynamicMenuItems = ['MRR total', 'MRR residential', 'MRR commercial']
+const titles = {
+  dynamic: 'MRR total',
+  residentialDynamic: 'MRR residential',
+  commercialDynamic: 'MRR commercial'
+}
 
 export default {
   name: 'PartnerMRRDiagram',
@@ -18,44 +67,103 @@ export default {
     AreaChart: () => import('@/components/reports/diagrams/AreaChart.vue')
   },
 
-  props: ['partner', 'clickedItem', 'sourceData'],
+  props: ['partner'],
 
   data: () => ({
-    ready: true
+    partnerId: null,
+    dynamic: null,
+    residentialDynamic: null,
+    commercialDynamic: null,
+    ready: false,
+    chartData: null,
+    title: null,
+    header: null,
+    propName: 'dynamic',
+    total: 0,
+    residential: 0,
+    commercial: 0,
+    lastMonth: 0,
+    currentMonth: 0
   }),
 
-  computed: {
-    propName () {
-      return dynamicMenuItems.includes(this.clickedItem)
-        ? this.clickedItem.indexOf('residential') !== -1
-          ? 'residentialDynamic'
-          : this.clickedItem.indexOf('commercial') !== -1
-            ? 'commercialDynamic'
-            : 'dynamic'
-        : 'dynamic'
+  watch: {
+    propName (val) {
+      this.ready = false
+      this.getChartData()
     },
 
-    title () {
-      const titles = {
-        dynamic: 'MRR',
-        residentialDynamic: 'MRR residential',
-        commercialDynamic: 'MRR commercial'
+    partner: {
+      deep: true,
+      immediate: true,
+      handler (data) {
+        this.partnerId = data.partnerId
+        this.__getPartnerData(this.partnerId, this.showPartnerData)
       }
-
-      return titles[this.propName]
     }
   },
 
-  watch: {
-    sourceData (data) {
-      this.ready = Boolean(data)
-    }
-  },
+  methods: {
+    showPartnerData (data) {
+      if (!data) {
+        this.total = 0
+        this.residential = 0
+        this.commercial = 0
+        this.lastMonth = 0
+        this.currentMonth = 0
+        this.ready = false
+        return
+      }
+      const { dynamic, residentialDynamic, commercialDynamic } = data
+      this.dynamic = dynamic
+      this.residentialDynamic = residentialDynamic
+      this.commercialDynamic = commercialDynamic
 
-  created () {
-    console.log(this.clickedItem)
-    console.log('MRR chart source data:\n', this.sourceData)
-    this.ready = Boolean(this.sourceData)
+      this.getTableData()
+      this.getChartData()
+    },
+
+    getDates () {
+      const date = new Date()
+      const [year, month] = [date.getFullYear(), date.getMonth() + 1]
+      const [prev, lastMonth, currentMonth] = [
+        `${year}-${month < 10 ? '0' : ''}${month - 2}`,
+        `${year}-${month < 10 ? '0' : ''}${month - 1}`,
+        `${year}-${month < 10 ? '0' : ''}${month}`
+      ]
+
+      return { prev, lastMonth, currentMonth }
+    },
+
+    getTableData () {
+      const { prev, lastMonth, currentMonth } = this.getDates()
+
+      this.total = this.dynamic[currentMonth] || 0
+      this.residential = this.residentialDynamic[currentMonth] || 0
+      this.commercial = this.commercialDynamic[currentMonth] || 0
+      this.lastMonth = this.__roundFloat((this.dynamic[lastMonth] || 0) - (this.dynamic[prev] || 0))
+      this.currentMonth = this.__roundFloat(this.dynamic[currentMonth] - (this.dynamic[lastMonth] || 0))
+    },
+
+    getChartData () {
+      this.ready = Boolean(this[this.propName])
+      if (this.ready) {
+        this.title = titles[this.propName]
+        this.chartData = this[this.propName]
+      }
+    }
   }
 }
 </script>
+
+<style>
+.td-clickable {
+  font-weight: bold;
+  color: #09b;
+  cursor: pointer;
+  /* text-align: center; */
+}
+
+.clicked-item {
+  color: #900;
+}
+</style>

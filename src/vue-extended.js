@@ -19,7 +19,8 @@ Object.assign(Vue.prototype, {
   getWeekNumber,
   getWeekStartDateByWeekNumber,
   getWeekEndDateByWeekNumber,
-  getWeekDatesByWeekNumber
+  getWeekDatesByWeekNumber,
+  __roundFloat: number => Math.round((number + Number.EPSILON) * 100) / 100
 })
 
 window[Symbol.for('vue.prototype')] = Vue.prototype

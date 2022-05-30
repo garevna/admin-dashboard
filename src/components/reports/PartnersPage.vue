@@ -5,7 +5,8 @@
         <PartnersDash
           v-if="showOverview"
           :partnersData="partnersOverviewData"
-          :clicked.sync="selectedPartnerIndex"
+          :clickedPartner.sync="selectedPartnerIndex"
+          :clickedOption.sync="selectedPartnerOption"
         />
       </v-card>
     </v-col>
@@ -16,7 +17,18 @@
         class="mt-8"
       >
         <PartnersOverviewDiagram v-if="showOverview && !showPartner" :sourceData="partnersOverviewData" />
-        <PartnerMRRDiagram v-if="showPartner" :sourceData="partnerData" />
+        <PartnerMRRDiagram
+          v-if="showPartner && selectedPartnerOption === 0"
+          :partner="partnersOverviewData[selectedPartnerIndex]"
+        />
+        <PartnerConnectionsDiagram
+          v-if="showPartner && selectedPartnerOption === 1"
+          :partner="partnersOverviewData[selectedPartnerIndex]"
+        />
+        <PartnerServicesDiagram
+          v-if="showPartner && selectedPartnerOption === 2"
+          :partner="partnersOverviewData[selectedPartnerIndex]"
+        />
       </v-sheet>
     </v-col>
   </v-row>
@@ -30,7 +42,9 @@ export default {
   components: {
     PartnersDash: () => import('@/components/reports/PartnersDash.vue'),
     PartnersOverviewDiagram: () => import('@/components/reports/diagrams/PartnersOverviewDiagram.vue'),
-    PartnerMRRDiagram: () => import('@/components/reports/diagrams/PartnerMRRDiagram.vue')
+    PartnerMRRDiagram: () => import('@/components/reports/diagrams/PartnerMRRDiagram.vue'),
+    PartnerConnectionsDiagram: () => import('@/components/reports/diagrams/PartnerConnectionsDiagram.vue'),
+    PartnerServicesDiagram: () => import('@/components/reports/diagrams/PartnerServicesDiagram.vue')
   },
 
   data: () => ({
@@ -38,27 +52,25 @@ export default {
     partnersOverviewData: null,
     partnerData: null,
     selectedPartnerIndex: undefined,
+    selectedPartnerOption: 0,
     showOverview: false,
     showPartner: false
   }),
 
   watch: {
     selectedPartnerIndex (index) {
-      this.__getPartnerData(this.partnersOverviewData[index].partnerId, this.showPartnerData)
-      // this.showOverview = false
+      this.selectedPartnerOption = 0
+      this.showPartner = true
     }
+    // selectedPartnerOption (val) {
+    //   console.log(val)
+    // }
   },
 
   methods: {
     showPartnersOverview (data) {
       this.partnersOverviewData = data.result
-      // this.partnersList = data.result.map(partner => partner.name)
       this.showOverview = true
-    },
-
-    showPartnerData (dynamic) {
-      this.partnerData = dynamic
-      this.showPartner = true
     }
   },
 

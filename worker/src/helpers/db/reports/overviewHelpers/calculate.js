@@ -36,9 +36,11 @@ export const calculate = async function () {
           const record = await getRecord(reportStore, buildingId, `${apartmentNumber}/${address}`)
 
           if (!record) {
+            console.group('ERROR! Customer\' link to building is broken')
             console.warn('BUILDING ID: ', buildingId)
             console.warn('ADDRESS: ', address)
             console.warn('CUSTOMER ID: ', customer._id)
+            console.groupEnd('Customer\' link to building is broken')
             return
           }
 

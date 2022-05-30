@@ -33,8 +33,6 @@ const callback = async event => {
     'buildingConnectionCosts'
   ]))
 
-  // console.log(response)
-
   const result = response
     .filter(item => !item.isSlave)
     .map(record => Object.assign(record, initialValues))

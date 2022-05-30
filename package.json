@@ -1,6 +1,6 @@
 {
   "name": "dgtek-admin-dash",
-  "version": "5.7.9",
+  "version": "5.8.0",
   "license": "MIT",
   "scripts": {
     "worker-dev": "yarn add crypto-js && webpack --config ./worker/webpack.config.worker.js --mode development -w && yarn remove crypto-js",
@@ -19,7 +19,7 @@
     "pits-editor": "yarn add dgtek-portal-pits-editor && yarn pits-editor-clear"
   },
   "dependencies": {
-    "dgtek-portal-map-package": "^1.2.88",
+    "dgtek-portal-map-package": "^1.3.1",
     "dgtek-portal-pits-editor": "^1.0.95",
     "dgtek-portal-polygons-editor": "^1.1.5",
     "dgtek-styles": "^0.0.8",
