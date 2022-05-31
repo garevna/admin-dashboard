@@ -64,7 +64,6 @@ export default {
     },
 
     setPartnersReady () {
-      console.log('PARTNER\'s data ready')
       this.partnersReady = true
     }
   },

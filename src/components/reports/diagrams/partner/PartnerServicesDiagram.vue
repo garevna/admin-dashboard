@@ -8,26 +8,12 @@
         <tr>
           <th style="color: #777"><small>Total active services</small></th>
           <td> {{ partner.services.active }} </td>
-          <!-- <th style="color: #777"><small>Residential</small></th>
-          <td> {{ partner.services.residential }} </td>
-          <th style="color: #777"><small>Commercial</small></th>
-          <td> {{ partner.services.commercial }} </td>
-        </tr>
-        <tr>
-          <th style="color: #777"><small>New services</small></th>
-          <td></td> -->
           <th style="color: #777"><small>New last month</small></th>
           <td> {{ partner.services.newLastMonth }} </td>
           <th style="color: #777"><small>New current month</small></th>
           <td> {{ partner.services.newCurrentMonth }} </td>
-        <!-- </tr>
-        <tr> -->
           <th style="color: #777"><small>Pending</small></th>
           <td> {{ partner.services.pending }} </td>
-          <!-- <th style="color: #777"><small>Residential</small></th>
-          <td> {{ partner.connections.pendingResidential }} </td>
-          <th style="color: #777"><small>Commercial</small></th>
-          <td> {{ partner.connections.pendingCommercial }} </td> -->
         </tr>
       </tbody>
     </table>

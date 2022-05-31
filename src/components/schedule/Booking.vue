@@ -156,12 +156,10 @@ export default {
     },
 
     updated (event) {
-      console.log('UPDATED')
       this.selected.status = this.status
     },
 
     changeRecordStatus (record, status) {
-      console.log('CHANGE RECORD STATUS')
       this.selected = record
       this.status = status
       this.__changeServiceDeliveryStatus(Object.assign(record, { status }))

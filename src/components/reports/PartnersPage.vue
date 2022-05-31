@@ -16,7 +16,11 @@
         height="480"
         class="mt-8"
       >
-        <PartnersOverviewDiagram v-if="showOverview && !showPartner" :sourceData="partnersOverviewData" />
+        <PartnersOverviewDiagram
+          v-if="showOverview && !showPartner"
+          :sourceData="partnersOverviewData"
+        />
+
         <PartnerMRRDiagram
           v-if="showPartner && selectedPartnerOption === 0"
           :partner="partnersOverviewData[selectedPartnerIndex]"
@@ -27,6 +31,10 @@
         />
         <PartnerServicesDiagram
           v-if="showPartner && selectedPartnerOption === 2"
+          :partner="partnersOverviewData[selectedPartnerIndex]"
+        />
+        <PartnerChurnDiagram
+          v-if="showPartner && selectedPartnerOption === 3"
           :partner="partnersOverviewData[selectedPartnerIndex]"
         />
       </v-sheet>
@@ -41,10 +49,11 @@ export default {
 
   components: {
     PartnersDash: () => import('@/components/reports/PartnersDash.vue'),
-    PartnersOverviewDiagram: () => import('@/components/reports/diagrams/PartnersOverviewDiagram.vue'),
-    PartnerMRRDiagram: () => import('@/components/reports/diagrams/PartnerMRRDiagram.vue'),
-    PartnerConnectionsDiagram: () => import('@/components/reports/diagrams/PartnerConnectionsDiagram.vue'),
-    PartnerServicesDiagram: () => import('@/components/reports/diagrams/PartnerServicesDiagram.vue')
+    PartnersOverviewDiagram: () => import('@/components/reports/diagrams/partners/PartnersOverviewDiagram.vue'),
+    PartnerConnectionsDiagram: () => import('@/components/reports/diagrams/partner/PartnerConnectionsDiagram.vue'),
+    PartnerServicesDiagram: () => import('@/components/reports/diagrams/partner/PartnerServicesDiagram.vue'),
+    PartnerChurnDiagram: () => import('@/components/reports/diagrams/partner/PartnerChurnDiagram.vue'),
+    PartnerMRRDiagram: () => import('@/components/reports/diagrams/partner/PartnerMRRDiagram.vue')
   },
 
   data: () => ({
@@ -60,11 +69,8 @@ export default {
   watch: {
     selectedPartnerIndex (index) {
       this.selectedPartnerOption = 0
-      this.showPartner = true
+      this.showPartner = typeof index === 'number'
     }
-    // selectedPartnerOption (val) {
-    //   console.log(val)
-    // }
   },
 
   methods: {

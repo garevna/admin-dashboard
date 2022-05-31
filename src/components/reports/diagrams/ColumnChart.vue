@@ -1,6 +1,6 @@
 <template>
   <GChart
-    type="BarChart"
+    type="ColumnChart"
     :data="sourceData"
     :options="chartOptions"
   />
@@ -11,7 +11,7 @@
 import { GChart } from 'vue-google-charts'
 
 export default {
-  name: 'BarChart',
+  name: 'ColumnChart',
 
   components: {
     GChart
@@ -23,8 +23,8 @@ export default {
     chartData: null,
     chartOptions: {
       title: '',
-      height: 0,
-      chartArea: { width: '70%' },
+      height: 360,
+      chartArea: { width: '70%', height: 280 },
       backgroundColor: '#fbfbfb',
       fontSize: 11,
       fontName: 'Gilroy',
@@ -37,28 +37,31 @@ export default {
         bold: true,
         color: '#555'
       },
-      colors: ['#004'],
+      // colors: ['#ddd', '#999', '#004', '#900'],
       legend: {
         position: 'none'
       },
       hAxis: {
         title: '',
-        minValue: 0,
         textPosition: 'out',
         textStyle: {
           textStyle: {
             color: '#777',
             fontSize: 10
           }
-        }
+        },
+        ticks: []
       },
       vAxis: {
-        viewWindowMode: 'maximized',
         title: '',
+        minValue: 0,
         textPosition: 'out',
         textStyle: {
           color: '#777',
           fontSize: 10
+        },
+        gridlines: {
+          interval: 1
         }
       }
     }
@@ -68,18 +71,17 @@ export default {
     sourceData: {
       deep: true,
       handler (data) {
-        this.chartOptions.hAxis.title = data[0][1]
+        this.chartOptions.hAxis.title = this.title
+        this.chartOptions.hAxis.ticks = this.sourceData.slice(1).map(item => item[0])
+        console.log(this.chartOptions.hAxis.ticks)
         this.chartOptions.title = data[0][1]
       }
     }
   },
 
   mounted () {
-    this.chartOptions.height = this.sourceData.length * 28
-    this.chartOptions.chartArea.height = this.sourceData.length * 28 - 60
-    this.chartOptions.hAxis.title = this.sourceData[0][1]
-    this.chartOptions.vAxis.title = this.sourceData[0][0]
-    // this.chartOptions.title = this.title || this.sourceData[0][1]
+    this.chartOptions.hAxis.title = this.title
+    this.chartOptions.vAxis.title = this.sourceData[0][1]
   }
 }
 </script>

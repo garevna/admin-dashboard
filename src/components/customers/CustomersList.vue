@@ -178,7 +178,6 @@ export default {
 
   methods: {
     pagination (options) {
-      // console.log(options)
       this.tablePage = options.page
       this.tablePages = options.pageCount
     },

@@ -84,14 +84,11 @@ export default {
       }
 
       this.ready = true
-
-      console.log(this.diagramData)
     }
   },
 
   mounted () {
     this.getCollection()
-    console.log(this.from, this.to)
   }
 }
 </script>

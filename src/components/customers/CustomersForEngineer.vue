@@ -256,7 +256,6 @@ export default {
     },
 
     getEngineeringData (data) {
-      console.log(data)
       this.customers = data.customers
       this.services = data.services.map(service => Object.assign(service, { selected: false }))
       this.filteredRecords = this.services

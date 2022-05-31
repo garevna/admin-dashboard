@@ -11,21 +11,23 @@
 import { GChart } from 'vue-google-charts'
 
 export default {
-  name: 'BarChart',
+  name: 'StackedBarChart',
 
   components: {
     GChart
   },
 
-  props: ['sourceData'],
+  props: ['sourceData', 'title'],
 
   data: () => ({
     chartData: null,
     chartOptions: {
+      isStacked: true,
       title: '',
       height: 0,
       chartArea: { width: '70%' },
       backgroundColor: '#fbfbfb',
+      colors: ['#09b', '#fa0', '#090', '#900'],
       fontSize: 11,
       fontName: 'Gilroy',
       titlePosition: 'none',
@@ -37,19 +39,21 @@ export default {
         bold: true,
         color: '#555'
       },
-      colors: ['#004'],
+      // colors: ['#900'],
       legend: {
-        position: 'none'
+        position: 'top',
+        maxLines: 3
       },
       hAxis: {
         title: '',
         minValue: 0,
         textPosition: 'out',
         textStyle: {
-          textStyle: {
-            color: '#777',
-            fontSize: 10
-          }
+          color: '#777',
+          fontSize: 10
+        },
+        gridlines: {
+          color: '#eee'
         }
       },
       vAxis: {
@@ -68,18 +72,17 @@ export default {
     sourceData: {
       deep: true,
       handler (data) {
-        this.chartOptions.hAxis.title = data[0][1]
-        this.chartOptions.title = data[0][1]
+        this.chartOptions.hAxis.title = this.title
+        this.chartOptions.title = this.title
       }
     }
   },
 
   mounted () {
     this.chartOptions.height = this.sourceData.length * 28
-    this.chartOptions.chartArea.height = this.sourceData.length * 28 - 60
-    this.chartOptions.hAxis.title = this.sourceData[0][1]
+    this.chartOptions.chartArea.height = this.sourceData.length * 28 - 80
+    this.chartOptions.hAxis.title = this.title
     this.chartOptions.vAxis.title = this.sourceData[0][0]
-    // this.chartOptions.title = this.title || this.sourceData[0][1]
   }
 }
 </script>

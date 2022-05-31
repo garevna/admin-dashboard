@@ -118,10 +118,6 @@ export default {
       this.active[index] = true
       this.$emit('update:tab', index)
     }
-  },
-
-  mounted () {
-    console.log(this.partnersReady)
   }
 }
 </script>

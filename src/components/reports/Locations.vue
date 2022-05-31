@@ -93,9 +93,7 @@ export default {
     },
 
     showDynamicDiagram (data) {
-      console.log(data)
       this.locationDynamic = Object.assign({}, { dynamic: data })
-      console.log(this.locationDynamic)
       this.tab = 'location'
       this.locationDynamicReady = true
     }

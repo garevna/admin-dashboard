@@ -164,7 +164,6 @@ export default {
   },
 
   beforeMount () {
-    console.log(this.sourceData)
     this.buildDiagramData('MRR', [this.items[0], this.items[1]])
   }
 }

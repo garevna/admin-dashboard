@@ -148,7 +148,7 @@ export default {
   props: ['opened', 'data', 'submitted'],
 
   data: () => ({
-    connectionData: this.__clone(newConnectionData)
+    connectionData: JSON.parse(JSON.stringify(newConnectionData))
   }),
 
   computed: {

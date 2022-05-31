@@ -74,6 +74,11 @@ export default {
 
   methods: {
     partnerClickHandler (index) {
+      if (this.active[index]) {
+        this.active[index] = false
+        this.$emit('update:clickedPartner', undefined)
+        return
+      }
       this.$emit('update:clickedPartner', index)
       this.active = this.partnersData.map(item => false)
       this.active[index] = true

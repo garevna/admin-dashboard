@@ -138,7 +138,6 @@ export default {
     },
 
     getBuildingsData (data) {
-      console.log(data)
       this.$root.$dispatchProgressEvent(true)
       this.customers.forEach((customer, index) => Object.assign(customer, { buildingId: data[index] }))
       this.buildingsReady = true
