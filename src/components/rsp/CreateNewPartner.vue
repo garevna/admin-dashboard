@@ -117,7 +117,7 @@ export default {
 
   data: () => ({
     ready: false,
-    partner: this.__clone(partnerSchema),
+    partner: {},
     rules: Object.assign(rules, { test: value => !uniqueCodeList.includes(value) || 'Allready in use' }),
     errors: {
       name: false,
@@ -218,6 +218,7 @@ export default {
 
   created () {
     this.__getUniqueCodeList(this.getUniqueCodeList)
+    this.partner = this.__clone(partnerSchema)
   }
 }
 </script>

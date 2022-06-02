@@ -142,9 +142,9 @@ export default {
     customer: null,
     message: null,
     messageId: null,
-    customerDetails: this.__clone(customerDetails),
-    commercial: this.__clone(commercial),
-    customerAddress: this.__clone(customerAddress)
+    customerDetails: {},
+    commercial: {},
+    customerAddress: ''
   }),
 
   computed: {
@@ -318,6 +318,9 @@ export default {
   mounted () {
     if (this.customerId) {
       this.__getCustomerData(this.customerId, this.getCustomerDetails)
+      this.customerDetails = this.__clone(customerDetails)
+      this.commercial = this.__clone(commercial)
+      this.customerAddress = this.__clone(customerAddress)
     }
   }
 }
