@@ -1,21 +1,61 @@
 <template>
-  <v-card flat class="transparent mx-auto" max-width="480" v-if="ready">
-    <h5><small>Partner</small></h5>
-    <v-select
-      :items="partners"
-      label="Select partner"
-      v-model="partnerId"
-      item-text="name"
-      item-value="id"
-      outlined
-      hide-details
-      :disabled="partnerSelectDisabled"
-    />
+  <v-container>
+    <v-card flat class="transparent mx-auto" max-width="800" v-if="ready">
+      <table>
+        <tbody>
+          <tr>
+            <td width="320">
+              <h5><small>Partner</small></h5>
+              <v-select
+                :items="partners"
+                label="Select partner"
+                v-model="partnerId"
+                item-text="name"
+                item-value="id"
+                outlined
+                hide-details
+                :disabled="partnerSelectDisabled"
+              />
+            </td>
+            <td width="60"></td>
+            <td>
+              <h5><small>Pick the text file with customer data</small></h5>
+              <v-file-input :disabled="fileSelectDisabled" @change="readFile" hide-details outlined dense  />
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <v-card-text class="text-center">
-      <h5><small>Pick the text file with customer data</small></h5>
-      <v-file-input :disabled="fileSelectDisabled" @change="readFile" hide-details outlined dense  />
-    </v-card-text>
+      <table class="my-12" v-if="readyToShow">
+        <tbody>
+          <tr v-if="show">
+            <td v-if="fatalErrors.length" style="vertical-align: top;">
+              <ImportCustomersErrorsList
+                title="Fatal errors:"
+                type="fatal"
+                :items="fatalErrors"
+              />
+            </td>
+            <td v-if="errors.length" style="vertical-align: top;">
+              <ImportCustomersErrorsList
+                title="Errors:"
+                type="error"
+                :items="errors"
+              />
+            </td>
+            <td v-if="warnings.length" style="vertical-align: top;">
+              <ImportCustomersErrorsList
+                title="Warnings:"
+                type="warning"
+                :items="warnings"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </v-card>
+
+    <ImportedCustomersList v-if="readyToShow" :customers.sync="customers" />
 
     <v-card-text class="text-center my-12" v-if="readyToShow">
       <v-btn
@@ -37,32 +77,7 @@
         Exit
       </v-btn>
     </v-card-text>
-
-    <v-card-text class="my-12" v-if="readyToShow">
-      <div v-if="show">
-        <ImportCustomersErrorsList
-          v-if="fatalErrors.length"
-          title="Fatal errors:"
-          type="fatal"
-          :items="fatalErrors"
-        />
-
-        <ImportCustomersErrorsList
-          v-if="errors.length"
-          title="Errors:"
-          type="error"
-          :items="errors"
-        />
-
-        <ImportCustomersErrorsList
-          v-if="warnings.length"
-          title="Warnings:"
-          type="warning"
-          :items="warnings"
-        />
-      </div>
-    </v-card-text>
-  </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -90,11 +105,14 @@ export default {
   name: 'ImportCustomers',
 
   components: {
-    ImportCustomersErrorsList: () => import('@/components/customers/ImportCustomersErrorsList.vue')
+    ImportedCustomersList: () => import('@/components/customers/import/ImportedCustomersList.vue'),
+    // EditCustomerDetails: () => import('@/components/customers/import/EditCustomerDetails.vue'),
+    ImportCustomersErrorsList: () => import('@/components/customers/import/ImportCustomersErrorsList.vue')
   },
 
   data: () => ({
     ready: false,
+    // customersListReady: false,
     accessRights: accessRightsHandler().access[roleHandler()].customers,
     buildingsReady: false,
     servicesReady: false,
@@ -128,6 +146,12 @@ export default {
       this.testForErrors()
       this.testForWarnings()
       this.show = true
+    },
+    customers: {
+      deep: true,
+      handler (data) {
+        console.log('CUSTOMERS UPDATED:\n', data)
+      }
     }
   },
 
@@ -201,10 +225,11 @@ export default {
       const customers = JSON.parse(data).Customers
 
       for (const customer of customers) {
-        const commercial = {
-          companyName: customer.businessName || customer.companyName,
-          companyAbn: customer.companyAbn || customer.businessAbn || ''
-        }
+        const [companyAbn, companyName] = [
+          customer.companyAbn || customer.businessAbn || customer.companyABN || customer.businessABN || '',
+          customer.businessName || customer.companyName || ''
+        ]
+        const commercial = companyAbn || companyName ? { companyAbn, companyName } : null
 
         this.customers.push({
           customerCreationDate: this.parseDate(customer.customerCreationDate),
@@ -228,6 +253,8 @@ export default {
       this.__searchBuildingsByAddress(customers.map(customer => customer.address), this.getBuildingsData)
       this.__searchServicesByNames(customers.map(customer => customer.serviceName), this.servicesReceived)
       this.$root.$dispatchProgressEvent(true)
+
+      this.customersListReady = true
     },
 
     testForErrors () {

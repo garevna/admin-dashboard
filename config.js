@@ -33,7 +33,6 @@ const geoscapeKeyHandler = (function () {
 })()
 
 const buildingsHostHandler = (function () {
-  // const buildingHost = process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BUILDINGS_API_HOST_PROD : process.env.VUE_APP_BUILDINGS_API_HOST_DEV
   const buildingHost = apiHost
   return function () {
     return buildingHost

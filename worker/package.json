@@ -6,7 +6,9 @@
     "worker-prod": "yarn add crypto-js && yarn add tokml && webpack --config webpack.config.worker.js --mode production && yarn remove crypto-js && yarn remove tokml"
   },
   "dependencies": {
-    "core-js": "^3.10.1"
+    "core-js": "^3.10.1",
+    "crypto-js": "^4.1.1",
+    "tokml": "^0.4.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.12.1",

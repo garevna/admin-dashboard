@@ -6,7 +6,7 @@ export const rules = {
   number: value => patterns.number.test(value) || 'Invalid number.',
   money: value => patterns.money.test(value) || 'Invalid value.',
   mobile: value => patterns.mobile.test(value) || 'Invalid mobile phone number.',
-  phone: value => patterns.phone.test(value) || 'Invalid phone number.',
+  phone: value => value ? (patterns.phone.test(value) || 'Invalid phone number.') : true,
   email: value => patterns.email.test(value) || 'Invalid e-mail.',
   state: value => patterns.state.indexOf(value) !== -1 || 'Invalid state.',
   postcode: value => patterns.postcode.test(value) || 'Invalid state.',
