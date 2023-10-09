@@ -1,0 +1,5 @@
+<template>
+  <v-card flat class="transparent" width="40">
+    <v-img src="@/assets/images/report-icon.png" height="48" contain />
+  </v-card>
+</template>

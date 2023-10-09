@@ -1,0 +1,22 @@
+{
+  "name": "admin-worker",
+  "version": "7.4.0",
+  "scripts": {
+    "worker-dev": "yarn add crypto-js && yarn add tokml && webpack --config webpack.config.worker.js --mode development -w && yarn remove crypto-js && yarn remove tokml",
+    "worker-prod": "yarn add crypto-js && yarn add tokml && webpack --config webpack.config.worker.js --mode production && yarn remove crypto-js && yarn remove tokml"
+  },
+  "dependencies": {
+    "core-js": "^3.10.1",
+    "crypto-js": "^4.1.1",
+    "tokml": "^0.4.0"
+  },
+  "devDependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.13.12",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack": "^5.31.2",
+    "webpack-cli": "^4.6.0"
+  }
+}

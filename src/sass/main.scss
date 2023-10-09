@@ -1,0 +1,115 @@
+@import "base";
+@import "variables";
+@import "fonts";
+
+html {
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+body {
+  overflow: hidden;
+  /* margin-bottom: 88px; */
+  background: #fbfbfb;
+}
+
+.v-date-picker-title__date {
+  font-size: 20px !important;
+  font-weight: bold;
+}
+
+img {
+  user-select: none;
+}
+
+.v-expansion-panel--active > .v-expansion-panel-header {
+  // min-height: 48px;
+  min-height: 48px !important;
+  max-height: 48px !important;
+}
+
+.main-header {
+  font-weight: 900;
+  margin-top: -64px;
+}
+
+.v-list-item__title {
+  font-size: 0.8rem !important;
+}
+
+.field-set {
+  border: solid 1px #ddd;
+  padding: 32px 0;
+  box-shadow: 0 0 4px #0003;
+}
+.field-set > legend {
+  font-size: 14px;
+  font-weight: bold;
+  color: #881F1A!important;
+  background: #FBFBFB;
+  border: solid 1px #ddd!important;
+  box-shadow: 0 0 4px #0003;
+  border-radius: 4px;
+  padding: 4px 16px;
+}
+
+.v-input, .v-label {
+  font-size: 14px !important;
+}
+
+.theme--light.v-list,
+.theme--light.v-expansion-panels .v-expansion-panel {
+  background: #FBFBFB !important;
+  background-color: #FBFBFB !important;
+}
+
+.theme--light.v-data-table {
+  background: #fbfbfb;
+}
+
+.theme--light.v-data-table.v-data-table--fixed-header thead th {
+  background: #f5f5f5;
+}
+
+@media screen and (max-width: 600px) {
+  h3 {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 420px) {
+  h3 {
+    font-size: 18px;
+  }
+}
+.bottom-info-bar {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  height: 28px;
+  background: #999;
+  margin: 0!important;
+  padding: 0;
+  line-height: 80%;
+}
+.bottom-info-bar--text {
+  color: #efefef;
+  margin-top: -16px;
+}
+
+.clickable-list-item {
+  cursor: pointer;
+}
+.clickable-list-item:hover {
+  font-weight: bold;
+  color: #900;
+}
+
+.theme--light.v-card,
+.theme--light.v-sheet,
+.theme--light.v-application,
+.theme--light.v-tabs-items {
+  background: transparent !important;
+  background-color: #fbfbfb !important;
+  border-color: #fbfbfb !important;
+}

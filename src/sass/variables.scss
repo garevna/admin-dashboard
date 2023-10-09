@@ -1,0 +1,35 @@
+// @import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
+
+$body-font-family: 'Gilroy';
+// $heading-font-family: 'Bebas Neue';
+$heading-font-family: 'Gilroy';
+$primary:#881F1A;
+$secondary:#E82F37;
+$active: #881F1A;
+$menu: #58120E;
+$headings: (
+  'h1': (
+    'size': 46px,
+    'line-height': 150%
+  ),
+  'h2': (
+    'size': 32px,
+    'line-height': 150%
+  ),
+  'h3': (
+    'size': 28px,
+    'line-height': 150%
+  ),
+  'h4': (
+    'size': 24px,
+    'line-height': 100%
+  ),
+  'h5': (
+    'size': 18px,
+    'line-height': 100%
+  ),
+  'p': (
+    'size': 16px,
+    'line-height': 100%
+  )
+)
